@@ -4,3 +4,6 @@
 [submodule "modules/cache"]
 	path = modules/cache
 	url = https://github.com/kohana/cache.git
+[submodule "modules/database"]
+	path = modules/database
+	url = https://github.com/kohana/database.git
