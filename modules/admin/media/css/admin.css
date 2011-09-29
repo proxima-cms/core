@@ -1,0 +1,466 @@
+/*
+ * @filename : admin.css
+ * @developer : badsyntax.co
+ */
+
+body { text-align: center; }
+h1 { font-size: 1.5em; margin-bottom: .6em; display: none;}
+h2, h2, h4 { margin-bottom: 1em; }
+ul, ol { margin: 0 2em 1em 2em; }
+p, form { margin: 0 0 1em 0; }
+
+a, a:active, a:visited { color: #000;}
+
+/* FORMS & CONTROLS 
+===============================*/
+form {
+	
+}
+label { 
+	padding: .2em 0; 
+	display: inline-block;
+}
+input, select, textarea { 
+	margin: 0; 
+	display: block;
+}
+.form-error, .errors { 
+	color: #BB0000;
+}
+.form-success {
+	color: #458B00;
+}
+form .field { 
+	margin-bottom: .8em;
+}
+form .field.checkbox input { 
+	float: left; 
+	margin-right: .5em
+}
+fieldset, #messages { 
+	-moz-border-radius: 4px; 
+	-webkit-border-radius: 4px; 
+	border-radius: 4px; 
+	padding: .8em 1.2em; 
+	border: 1px solid #dfdfdf;	
+	background: #fff; 
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fbfbfb'); 
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#fbfbfb)); 
+	background: -moz-linear-gradient(top,  #ffffff, #fbfbfb);
+}
+fieldset {
+	margin-bottom: 1em;
+	clear: both;
+}
+fieldset.last { 
+	margin: 0;
+}
+legend { 
+	color: #888; 
+}
+select, 
+input[type=text], 
+input[type=email], 
+input[type=url], 
+input[type=password] { 
+	width: 24em;
+}
+select { 
+	width: 20em; 
+}
+select, 
+input[type=text], 
+input[type=email], 
+input[type=url], 
+input[type=password], 
+textarea { 
+	padding:.45em .4em .3em .3em;
+	border: 1px solid #aaa;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: inset 2px 2px 1px #ddd;
+	-webkit-box-shadow: inset 2px 2px 1px #ddd;
+	box-shadow: inset 2px 2px 1px #ddd;
+}
+input[type=text]:focus, 
+input[type=password]:focus, 
+textarea:focus { 
+	border-color: #222;
+}
+input.error-field, 
+textarea.error-field { 
+	border-color: #BB0000;
+}
+.label-error { 
+	color: #BB0000; 
+	background: url(../img/error.gif) no-repeat 5px 2px;
+	padding-left: 20px;
+}
+.checkbox input { 
+	float: left; 
+	margin-right: .5em;
+}
+
+
+/* PAGE SECTIONS
+============================*/
+
+header, #content, footer { 
+	width: 880px; 
+	margin: auto; 
+	text-align: left; 
+}
+header { 
+	margin: 2em auto 1.2em auto; 
+}
+#content { 
+	margin-top: 1em;
+}
+#profiler-container { 
+	display: none; 
+	margin-top: 1em; 
+	padding: 1em 0; 
+	font-size: .9em; 
+	color: #AAA; 
+	border-top: 1px solid #CCC; 
+}
+
+/* TABLES
+===========================*/
+
+table { 
+	border-collapse: collapse; 
+	width: 100%;
+}
+table,th, td { 
+	border: 1px solid #dfdfdf;
+}
+table thead th, table tfoot tr { 
+	color: #333; 
+	-moz-text-shadow: 1px 1px 0 #FFFFFF; 
+	-webkit-text-shadow: 1px 1px 0 #FFFFFF; 
+	text-shadow: 1px 1px 0 #FFFFFF; 
+	background: #ffffff; 
+	background: url(http://kohana3-examples/modules/admin/media/img/ui-theme/bg_glass.png);
+}
+table thead th:hover {
+	background-position: 0 -8px;
+}
+table tbody tr:hover {
+	background: #F6F6F6;
+}
+table tfoot p {
+	padding: 0;
+	margin: 0;
+}
+table tfoot td { 
+	font-size: .9em; 
+	color: #666;
+}
+td, th { 
+	padding: .5em;
+}
+
+/* PAGE INNER SECTIONS
+==================================*/
+
+.action-bar { 
+	margin-bottom: .6em;
+}
+.action-bar h1 {
+	margin: 0;
+	line-height: 1.5em;
+}
+#messages {
+	padding: .5em;
+	margin-bottom: .8em;
+	display: none;
+}
+#messages ul, #messages p {
+	margin: 0;
+	padding: 0;
+}
+#messages li {
+	list-style: none;
+	padding-left: 22px;
+	min-height: 16px;
+}
+#messages .success { 
+	background: url(/modules/admin/media/img/tick-circle-frame.png) no-repeat 0 0;
+}
+#messages .error { 
+	background: url(/modules/admin/media/img/exclamation-red-frame.png) no-repeat 0 0;
+}
+
+#page-links p {
+	margin: 0;
+}
+
+.grid-50 .unit { float: right; width: 48%; }
+.grid-50 .first { float: left; } 
+.helper-center { text-align: center; }
+.helper-right { float: right; }
+.helper-left { float: left; }
+.helper-hidden { display: none; }
+
+/* DEVELOPMENT */
+.development .benchmark { 
+	margin: 1em auto; 
+	padding-top: 1em; 
+	border-top: 1px solid #ddd;
+	font-size: .9em; 
+	color: #888; 
+	text-align: left; 
+	width: 850px;
+}
+.development .benchmark .profiler .ui-icon {
+	margin: -2px 0 0 0;
+}
+.development .benchmark .profiler .ui-helper-hidden {
+	display: none;
+}
+
+:outline {
+	border: 1px dotted #000;
+}
+
+/* AJAX LOADER 
+==============================*/
+#ajax-loading {
+	margin: .5em 0 0 0;
+	height: 11px;
+}
+#ajax-loading img {
+	display: none;
+}
+
+/* BREADCRUMBS
+==============================*/
+#breadcrumbs {
+	margin: .2em 0 1em 0;
+	padding: 0;
+	float: left;
+}
+#breadcrumbs li {
+	list-style: none;
+	float: left;
+	padding: 0 .4em 0 0;
+	font-size: 130%;
+	text-transform: capitalize;
+}
+
+/* LOGS
+==============================*/
+.admin table.crud-list input.checkbox { float: left; }
+.logs-directories { float: left; width: 100px; }
+.logs-entries { float: left; width: 620px; }
+.logs-directories ol { list-style: none; margin: 0; padding: 0;}
+.logs-directories li { list-style: none; }
+.js .logs-directories ol ol { display: none; }
+.js .logs-directories ol.open { display: block; }
+.logs-directories a.selected { font-weight: bold; }
+
+.dashboard-logs {}
+.dashboard-logs ul { margin: 0; }
+.dashboard-logs li { list-style: none;  }
+.dashboard-logs li a { text-decoration: none; color: #444; display: block; font-size: .9em;}
+.dashboard-logs li a:hover { background: #F4F4F4; }
+
+/* WYSIWYG
+========================*/
+form { 
+		margin: 0;
+	}
+textarea.wysiwyg { 
+	width: 98%;
+	height: 20em;
+}
+
+/* OVERRIDES
+========================== */
+.admin .cirkuitSkin td.mceToolbar {
+	background-color: #F6F6F6;
+}
+.admin .cirkuitSkin .mceButtonEnabled span,
+.admin .cirkuitSkin .mceButtonEnabled img,
+.admin .cirkuitSkin .mceListBox a.mceText, 
+.admin .cirkuitSkin .mceSplitButton a.mceAction,
+.admin .cirkuitSkin .mceListBox .mceOpen span,
+.admin .cirkuitSkin .mceSplitButton span.mceAction,
+.admin .cirkuitSkin span.mce_numlist,
+.admin .cirkuitSkin .mceSplitButton a, 
+.admin .cirkuitSkin .mceListBox a {
+	cursor: pointer;
+}
+/* NB: background-image: none; is set in cirkuit/ui.css */
+.admin .cirkuitSkin table.mceListBoxEnabled:hover .mceText, 
+.admin .cirkuitSkin .mceListBoxHover .mceText, 
+.admin .cirkuitSkin .mceListBoxSelected .mceText, 
+.admin .cirkuitSkin table.mceListBoxEnabled:hover .mceOpen, 
+.admin .cirkuitSkin .mceListBoxHover .mceOpen, 
+.admin .cirkuitSkin .mceListBoxSelected .mceOpen {
+	/*
+	background-position: 0 -2px;
+	*/
+	border-color: #777;
+}
+.admin .cirkuitSkin .mceSeparator {
+	margin: 0 1px;
+}
+.admin .cirkuitSkin td.mceToolbar {
+	padding: 1px 0;
+} 
+
+/* CONFIG
+================================*/
+
+.config fieldset input {
+	width: 36em;
+}
+
+/* ASSETS 
+===============================*/
+.assets-list.view-thumbs ul {
+	padding: 0;
+	margin: 0;
+}
+.assets-list.view-thumbs li {
+	list-style: none;
+	margin: 0 6px 6px 0;
+	float: left;
+	width: 84px;
+	height: 84px;
+	position: relative;
+}
+.assets-list.view-thumbs a {
+	border: 1px solid #AAA;
+	float: left;
+	padding: 2px;
+	width: 80px;
+	height: 80px;
+}
+.assets-list.view-thumbs li .checkbox {
+	position: absolute;
+	left: 4px;
+	bottom: 4px;
+}
+.assets-list.view-thumbs a:hover {
+	border-color: #000;
+}
+.assets-list.view-thumbs img {
+	display: block;
+	width: 80px;
+	height: 80px;
+}
+.assets-edit a.thumb {
+	border: 1px solid #AAA;
+	margin: 0 4px 4px 0;
+	padding: 2px;
+	display: inline-block;
+}
+.assets-edit a.thumb img {
+	display: block;
+}	
+
+.assets-list.view-list tbody a {
+	padding-left: 2px;
+	min-height: 16px;
+}
+.assets-list.view-list a.asset-type {
+	min-height: 16px;
+	padding-left: 20px;
+	display: block;
+}
+.assets-list.view-list a.subtype-image {
+	background: url(../img/assets/image-medium.png) no-repeat 0 center;
+}
+.assets-list.view-list a.subtype-application.type-pdf {
+	background: url(../img/assets/document-pdf.png) no-repeat 0 center;
+}
+.assets-list.view-list a.subtype-text.type-plain {
+	background: url(../img/assets/document-text.png) no-repeat 0 center;
+}
+.assets-list.view-list a.subtype-application.type-x-tar,
+.assets-list.view-list a.subtype-application.type-zip {
+	background: url(../img/assets/folder-zipper.png) no-repeat 0 center;
+}
+.assets-list.view-list img.asset-thumb {
+	width: 60px;
+	height: 60px;
+	border: 1px solid #ccc;
+	padding: 2px;
+}
+
+/*
+Uploadify v3.0.0
+Copyright (c) 2010 Ronnie Garcia
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+.uploadifyButton {
+	background-color: #505050;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	color: #FFF;
+	font: 12px Arial, Helvetica, sans-serif;
+	padding: 8px 0;
+	text-align: center;
+	width: 100%;
+}
+.uploadify:hover .uploadifyButton {
+	background-color: #808080;
+}
+.uploadifyQueueItem {
+	background-color: #F5F5F5;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font: 11px Verdana, Geneva, sans-serif;
+	margin-top: 5px;
+	max-width: 350px;
+	padding: 10px;
+}
+.uploadifyError {
+	background-color: #FDE5DD !important;
+}
+.uploadifyQueueItem .cancel {
+	float: right;
+}
+.uploadifyQueue .completed {
+	background-color: #E5E5E5;
+}
+.uploadifyProgress {
+	background-color: #E5E5E5;
+	margin-top: 10px;
+	width: 100%;
+}
+.uploadifyProgressBar {
+	background-color: #0099FF;
+	height: 3px;
+	width: 1px;
+}
+
+
+
+#kohana_error h1 { 
+	display: block;
+}

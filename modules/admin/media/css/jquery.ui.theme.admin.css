@@ -1,0 +1,366 @@
+/*
+ * @filename : jquery.ui.theme.admin.css
+ * @developer : badsyntax.co
+ * jQuery UI admin theme - requires the ui base theme!
+ */
+
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 1em;
+	font-family: Tahoma,Verdana,Arial,Helvetica;
+    font-size: 11px;
+}
+.ui-state-default, 
+.ui-widget-content .ui-state-default, 
+.ui-widget-header .ui-state-default {
+	color: #000;
+	background-image: url(../img/ui-theme/bg_glass.png);
+	background-position: left top;
+    background-repeat: repeat-x;
+	background-color: #D5D5D5;
+    border-color: #B2B2B2;
+}
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus{
+	border: 1px solid #777;
+	background-position: 0 -6px;
+	border-color: #777;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
+	border: 1px solid #aaa;
+	background: #F2F2F2;
+	font-weight: normal;
+	color: #212121;
+}
+/* Tabs */
+.ui-tabs {
+	position: relative;
+}
+.ui-tabs-selected, .ui-widget-content .ui-tabs-selected {
+	background: #FFF;
+}
+
+/* Selectmenu
+----------------------------------*/
+.ui-selectmenu-status {
+	 line-height: 1.3em;
+}
+.ui-selectmenu-menu li a, .ui-selectmenu-status {
+	padding: 0.3em 0.6em;
+}
+.ui-selectmenu-menu-dropdown {
+	text-align: left;
+	border-top: 0;
+}
+
+/* Tabs
+----------------------------------*/
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, 
+.ui-tabs .ui-tabs-nav li.ui-state-disabled a, 
+.ui-tabs .ui-tabs-nav li.ui-state-processing a {
+	cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+	padding: .4em 1em;
+}
+.ui-tabs .ui-tabs-nav li.ui-helper-right {
+	float: right;
+}
+.ui-tabs .ui-tabs-panel {
+	padding: 1em;
+}
+
+
+/* Menu
+----------------------------------*/
+.ui-menu {
+	position: absolute; 
+	z-index: 10;
+	-moz-box-shadow: 1px 1px 5px #AAAAAA;
+	-webkit-box-shadow: 1px 1px 5px #AAAAAA;
+	box-shadow: 1px 1px 5px #AAAAAA;
+}
+
+/* Dialog */
+.ui-dialog {
+	-moz-box-shadow: 0 0 6px #AAA;
+	-webkit-box-shadow: 0 0 6px #AAA;
+	box-shadow:  0 0 6px #AAA;
+}
+.ui-datepicker {
+	-moz-box-shadow: 0 0 6px #AAA;
+	-webkit-box-shadow: 0 0 6px #AAA;
+	box-shadow:  0 0 6px #AAA;
+}
+.ui-dialog .ui-dialog-titlebar {
+	padding: 0.2em 1em 0.3em;	
+}
+.ui-dialog.ui-dialog-tinymce .ui-dialog-titlebar .ajax-loader {
+	position: absolute;
+	left: 50%;
+	margin-left: -21px;
+	top: .4em;
+}
+
+/* Overlay */
+.ui-widget-overlay {
+	background: #FFF;
+	opacity: 0.5;
+}
+
+.ui-dialog.ui-dialog-tinymce {
+	background: #F1F1F1;
+}
+.ui-dialog.ui-dialog-tinymce .ui-dialog-content {
+	padding: 0;
+	overflow: hidden;
+	background: #FFF;	
+}
+
+/* TinyMCE Buttons */
+.ui-dialog .ui-dialog-buttonpane {
+	text-align: center;
+	border: 0;
+	margin: 0;
+}
+.ui-dialog.ui-dialog-tinymce .ui-dialog-buttonpane .ui-dialog-buttonset {
+	float: none;
+}
+
+.ui-dialog-tinymce .ui-dialog-buttonset button {
+	width: 94px;
+	height: 24px;
+	font-weight: bold;
+}
+.ui-dialog-tinymce .ui-button-text-only .ui-button-text {
+	padding: 0;
+}
+.ui-dialog-tinymce-content {
+	padding: 1em 2em;
+	font-size: 1.1em;
+}
+
+
+/* TREE 
+==============================*/
+#files { 
+	margin:2em 0 5em; 
+	width:400px; 
+}
+.tree { 
+	font-size:1.3em; 
+}
+.tree,.tree ul,
+.tree li { 
+	list-style:none; 
+	margin:0; 
+	padding:0; 
+	zoom: 1; 
+}
+.tree ul { 
+	clear: both;
+}
+.tree li {
+	/*background: transparent url(../img/ui-theme/tree_default_line.gif) no-repeat 0 0;*/
+	padding: 0;
+}
+.tree li.collapsable, .tree li.expandable {
+    background-position: 0 -176px;
+}
+.tree li a { 
+	color: #555; 
+	height: 11px; 
+	display: block; 
+	text-decoration: none;
+	padding: .1em 0;
+	font-size: 96%;
+	min-height: 16px;
+}
+.tree li a.tree-parent { 
+	background: url(../img/ui-theme/icon_toggle_open.gif) 5px 50% no-repeat;
+}
+.tree li a.tree-parent-collapsed { 
+	background: url(../img/ui-theme/icon_toggle_closed.gif) 8px 50% no-repeat;
+}
+.tree li a:hover,
+.tree li a.tree-parent:hover,
+.tree li a:focus,
+.tree li a.tree-parent:focus,
+.tree li a.tree-item-active { 
+	color: #000;
+
+}
+.tree li a:focus,
+.tree li a.tree-parent:focus,
+.tree li a.tree-item-active { 
+	background-color: #FAFAFA;
+}
+.tree ul.tree-group-collapsed { 
+	display:none; 
+}
+.tree li .tree-icon-toggle,
+.tree li .tree-icon-item {
+
+}
+.tree li .tree-icon-toggle,
+.tree li .tree-icon-item,
+.tree-icon-toggle-transparent {
+	height: 16px;
+	width: 16px;
+	float: left;
+	cursor: pointer;
+	margin-right: 5px;
+}
+.tree-icon-toggle-transparent {
+	background: transparent;
+}
+.tree li img {
+	float: left;
+}
+.tree li .checkbox {
+	float: left;
+	margin: 0 2px 0 0;
+	padding: 0;
+}
+/* Default icon */
+.tree li .tree-icon-item {
+	background: url(../img/ui-theme/icon_file.gif) 0px 50% no-repeat;
+}
+
+.tree,.tree ul,.tree li { list-style:none; margin:0; padding:0; zoom: 1; }
+.tree ul { margin-left:8px; }
+.tree li a { color:#555; display:block; text-decoration:none; border:1px dashed #fff;  }
+.tree li a:hover,.tree li a.tree-parent:hover,.tree li a:focus,.tree li a.tree-parent:focus,.tree li a.tree-item-active { color:#000; border:1px solid#eee; background-color:#fafafa; -moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px; }
+.tree li a:focus,.tree li a.tree-parent:focus,.tree li a.tree-item-active { border:1px solid #e2f3fb; background-color:#f2fafd; }
+.tree ul.tree-group-collapsed { display:none; }
+
+/* Groups */
+.groups .tree li a .tree-icon-item,
+.users .tree li a .tree-icon-item {
+	background-image: url(../img/ui-theme/icon_users.png);
+}
+.users li a.user .tree-icon-item {
+	background-image: url(../img/ui-theme/icon_user.png);
+}
+
+/* Selectmenu default
+----------------------------------*/
+.ui-selectmenu { display: block; display: inline-block; position: relative; height: 2.2em; text-decoration: none; overflow: hidden; zoom: 1; }
+.ui-selectmenu-icon { position:absolute; right:6px; margin-top:-8px; top: 50%; }
+.ui-selectmenu-menu { padding:0; margin:0; list-style:none; position:absolute; top: 0; visibility: hidden; overflow: auto; z-index: 1005;} /* z-index: 1005 to make selectmenu work with dialog */
+.ui-selectmenu-open { visibility: visible; }
+.ui-selectmenu-menu-popup { margin-top: -1px; }
+.ui-selectmenu-menu-dropdown { }
+.ui-selectmenu-menu li { padding:0; margin:0; display: block; border-top: 1px dotted transparent; border-bottom: 1px dotted transparent; border-right-width: 0 !important; border-left-width: 0 !important; font-weight: normal !important; }
+.ui-selectmenu-menu li a,.ui-selectmenu-status { line-height: 1.4em; display: block; padding: .405em 1em; outline:none; text-decoration:none; }
+.ui-selectmenu-menu li.ui-selectmenu-hasIcon a,
+.ui-selectmenu-hasIcon .ui-selectmenu-status { padding-left: 20px; position: relative; margin-left: 5px; }
+.ui-selectmenu-menu li .ui-icon, .ui-selectmenu-status .ui-icon { position: absolute; top: 1em; margin-top: -8px; left: 0; }
+.ui-selectmenu-status { line-height: 1.4em; }
+.ui-selectmenu-open li.ui-selectmenu-item-focus a { }
+.ui-selectmenu-open li.ui-selectmenu-item-selected { }
+.ui-selectmenu-menu li span,.ui-selectmenu-status span { display:block; margin-bottom: .2em; }
+.ui-selectmenu-menu li .ui-selectmenu-item-header { font-weight: bold; }
+.ui-selectmenu-menu li .ui-selectmenu-item-content { }
+.ui-selectmenu-menu li .ui-selectmenu-item-footer { opacity: .8; }
+/* for optgroups */
+.ui-selectmenu-menu .ui-selectmenu-group { font-size: 1em; }
+.ui-selectmenu-menu .ui-selectmenu-group .ui-selectmenu-group-label { line-height: 1.4em; display:block; padding: .6em .5em 0; font-weight: bold; }
+.ui-selectmenu-menu .ui-selectmenu-group ul { margin: 0; padding: 0; }
+/* IE6 workaround (dotted transparent borders) */
+* html .ui-selectmenu-menu li { border-color: pink; filter:chroma(color=pink); width:100%; }
+* html .ui-selectmenu-menu li a { position: relative }
+
+/* Selectmenu custom 
+----------------------------------*/
+.ui-selectmenu {
+	display: block;
+	height: 2em;
+}
+.ui-selectmenu-menu {
+	-moz-box-shadow: 1px 2px 4px #CCCCCC;
+	-webkit-box-shadow: 1px 2px 4px #CCCCCC;
+	box-shadow: 1px 2px 4px #CCCCCC;
+}
+.ui-selectmenu-menu li a, 
+.ui-selectmenu-status {
+	padding: .3em 1em;
+}
+
+/* Widget header (eg dialog) */
+.ui-dialog-titlebar {
+	background: url(../img/ui-theme/bg_glass.png) repeat-x 0 -15px transparent;
+}
+
+/* Grid
+----------------------------------*/
+.ui-grid th {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+.ui-grid th a {	
+	display: block;	
+	padding: .5em;
+}
+.ui-grid th a .ui-icon {
+	float: right;
+}
+
+/* Paging
+----------------------------------*/
+.ui-paging .ui-icon { 
+	float: right; 
+	width: 18px;
+}
+.ui-paging { 
+	float: right; 
+	margin-top: -2px; 
+}
+.ui-paging-num { 
+	float: left; 
+	width: 22px; 
+	height: 16px; 
+	text-align: center;
+}
+.ui-paging-num.ui-state-focus { 
+	background: #fff;
+}
+.ui-paging-prev { 
+	float: left;
+	width: 20px;
+	height: 16px;
+}
+.ui-paging-next {
+	float: right;
+	width: 20px;
+	height: 16px;
+ }
+.ui-paging a:hover {
+	background-position: 0 -12px;
+	border-color: #555;
+}		
+
+/* Slider 
+-----------------------------*/
+.ui-slider-horizontal .ui-slider-handle {
+    background-position: 0 -12px !important;
+	cursor: pointer;
+}
+
+/* Datepicker */
+.datepicker-wrapper label {
+}
+input.datepicker {
+	float: left;
+	width: 15em !important;
+}
+.ui-datepicker-trigger {
+	cursor: pointer;
+	float: left;
+	margin-left: .4em;
+	margin-top: .2em;
+}
