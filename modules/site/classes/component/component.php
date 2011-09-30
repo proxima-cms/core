@@ -12,4 +12,19 @@ abstract class Component_Component {
 	{
 		$this->_config = array_merge($this->_default_config, $config);
 	}
+
+	public function __toString()
+	{
+		try 
+		{		
+			return $this->render();
+		}		
+		catch (Exception $e) 
+		{		
+			// Display the exception message
+			Kohana_Exception::handler($e);
+
+			return ''; 
+		}		
+	}
 }

@@ -68,6 +68,11 @@ class Model_Page extends Model_Base_Page {
 
 		$data = $data->as_array();
 
+		if (Arr::get($data, 'visible_to_forever', FALSE) !== FALSE)
+		{
+			$data['visible_to'] = NULL;
+		}
+
 		$this->values($data);
 		$this->save();
 		$this->update_tags($tags);
