@@ -13,14 +13,9 @@ class Controller_Site extends Controller_Base {
 
 	public function action_index()
 	{
-		$uri = $this->request->param('url');
+		$uri = Arr::get($this->request->param(), 'url', '');
 
-		if ($uri === NULL)
-		{
-			$uri = '';
-		}
-
-		$page = ORM::factory('page')->where('uri', '=', $uri)->find();
+		$page = ORM::factory('site_page')->where('uri', '=', $uri)->find();
 
 		if (!$page->loaded())
 		{
@@ -32,8 +27,7 @@ class Controller_Site extends Controller_Base {
 		$this->template->set_global('body', $page->body);
 		$this->template->set_global('theme', $this->theme);
 
-		$template_name = str_replace(EXT, '', $page->pagetype->template);
-		$template = $this->theme.'templates/'.$template_name;
+		$template = $this->theme.'templates/'.str_replace(EXT, '', $page->pagetype_template);
 
 		$this->template->content = View::factory($template);
 	}

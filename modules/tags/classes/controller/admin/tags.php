@@ -53,7 +53,7 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 		{		
 			if ($tag->admin_update($_POST))
 			{		
-				Message::set(Message::SUCCESS, __('Role successfully updated.'));		 
+				Message::set(Message::SUCCESS, __('Tag successfully updated.'));		 
 				$this->request->redirect($this->request->uri());
 			}		
 

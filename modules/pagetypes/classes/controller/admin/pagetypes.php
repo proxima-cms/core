@@ -69,7 +69,7 @@ class Controller_Admin_Pagetypes extends Controller_Admin_Base {
 			// Try update the role, if successful then reload the page
 			if ($pagetype->admin_update($_POST))
 			{		
-				Message::set(Message::SUCCESS, __('Role successfully updated.'));		 
+				Message::set(Message::SUCCESS, __('Page type successfully updated.'));		 
 				$this->request->redirect($this->request->uri());
 			}
 

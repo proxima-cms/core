@@ -57,7 +57,8 @@ class Model_PageType extends Model_Base {
       'template'
     );  
 
-    foreach($fields as $field) {
+    foreach($fields as $field)
+		{
       $data->rules($field, $this->_rules[$field]);
     }   
 
@@ -66,7 +67,7 @@ class Model_PageType extends Model_Base {
       return FALSE;
     }   
 
-		$this->values($data);
+		$this->values($data->as_array());
 		$this->save();
 
 		return $data;

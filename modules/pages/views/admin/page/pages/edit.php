@@ -96,6 +96,13 @@
 				<?php echo 
 					Form::label('visible_to', __('Visible to'), NULL, $errors)
 				?>
+				<?php 
+					$visible_to_forever = ((bool) Arr::get($_POST, 'visible_to_forever') OR Arr::get($_POST, 'visible_to', NULL) === NULL);
+					echo 
+						Form::checkbox('visible_to_forever', 1, $visible_to_forever, array('style' => 'display:inline'), $errors);
+					echo 
+						Form::label('visible_to_forever', __('Forever'), NULL, $errors)
+				?>
 			</div>
 			<div>
 				<?php echo 

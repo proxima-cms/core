@@ -12,7 +12,7 @@ abstract class Controller_Base extends Controller_Template {
 	{
 	
 		// FIME: Load the database config driver
-		Kohana::$config->attach(new Config_Database);
+		//Kohana::$config->attach(new Config_Database);
 
 		parent::before();
 
@@ -21,8 +21,6 @@ abstract class Controller_Base extends Controller_Template {
 			$this->template->title = NULL;
 			$this->template->content = NULL;
 			$this->template->environment = Kohana::$environment == Kohana::DEVELOPMENT ? 'development' : 'production';
-			$this->template->styles = Kohana::$config->load("assets.default.style");
-			$this->template->scripts = Kohana::$config->load("assets.default.script");
 		}
 	}
 
@@ -61,7 +59,8 @@ abstract class Controller_Base extends Controller_Template {
 		// Prep the data
 		$data = array(
 			'{memory_usage}' => Text::bytes($memory),
-			'{execution_time}' => round($time, 3).'s'
+			'{execution_time}' => round($time, 3).'s',
+			'{profiler}' => Kohana::$environment === Kohana::DEVELOPMENT ? View::factory('profiler/stats') : ''
 		);
 
 		// Replace the placeholders with data

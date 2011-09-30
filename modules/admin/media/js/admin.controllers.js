@@ -21,6 +21,15 @@
 		},
 		
 		action_edit: function(){
+			var $visible_to = $('#visible_to');
+
+			$('#visible_to_forever').change(function(){
+				if (this.checked) {
+					$visible_to.val('');
+				} else {
+					$visible_to.datepicker('setDate', new Date());
+				}
+			});
 		}
 	};
 	
