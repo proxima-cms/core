@@ -10,6 +10,10 @@ abstract class Controller_Base extends Controller_Template {
 
 	public function before()
 	{
+	
+		// FIME: Load the database config driver
+		Kohana::$config->attach(new Config_Database);
+
 		parent::before();
 
 		if ($this->auto_render === TRUE)

@@ -14,19 +14,29 @@ class Controller_Admin_Config extends Controller_Admin_Base {
 			$db_config = ORM::factory('config')->find_all();
 		}
 
-		!$_POST AND $default_data = array();
+		if (!$_POST)
+		{
+			$default_data = array();
+		}
 
 		$config = array();
 		foreach($db_config as $item)
 		{
-			!isset($config[$item->group_name]) AND $config[$item->group_name] = array();
+			if (!isset($config[$item->group_name]))
+			{
+				$config[$item->group_name] = array();
+			}
+			
+			$citem = $item;
 
-			$config[$item->group_name][] = $item;
+			$config[$item->group_name][] = $citem;
 
 			// If POST is empty then set the default form data
-			!$_POST AND $default_data["{$item->group_name}-{$item->config_key}"] = unserialize($item->config_value);
+			if (!$_POST)
+			{
+				$default_data["config-{$item->group_name}-{$item->config_key}"] = unserialize($item->config_value);
+			}
 		}
-
 
 		if ($_POST)
 		{
@@ -39,7 +49,7 @@ class Controller_Admin_Config extends Controller_Admin_Base {
 				Cache::instance()->delete(Config_Database::$_cache_key);
 
 				// Redirect to prevent POST refresh
-				$this->request->redirect($this->request->uri);
+				$this->request->redirect($this->request->uri());
 			}
 
 			// Get the validation errors
@@ -48,11 +58,11 @@ class Controller_Admin_Config extends Controller_Admin_Base {
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 
+		}
+		else
+		{
 			// If POST is empty then add the default form data to POST
-			if (isset($default_data))
-			{
-				$_POST = array_merge($_POST->as_array(), $default_data);
-			}
+			$_POST = $default_data;
 		}
 	}
 	

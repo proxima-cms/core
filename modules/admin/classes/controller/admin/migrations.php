@@ -68,8 +68,8 @@ class Controller_Admin_Migrations extends Controller_Admin_Base {
 		$config->default = serialize('Default title');
 		$config->rules = serialize(array
 			(
-				'not_empty'	  => NULL,
-				'max_length'  => array(32),
+				array('not_empty'),
+				array('max_length', array(':value', 32)),
 			));
 		$config->save();
 
@@ -82,8 +82,22 @@ class Controller_Admin_Migrations extends Controller_Admin_Base {
 		$config->default = serialize('Default description');
 		$config->rules = serialize(array
 			(
-				'not_empty'	  => NULL,
-				'max_length'	=> array(255),
+				array('not_empty'),
+				array('max_length', array(':value', 255)),
+			));
+		$config->save();
+		
+		// Site description
+		$config = ORM::factory('config');
+		$config->group_name = 'theming';
+		$config->config_key = 'theme';
+		$config->label = 'Site theme';
+		$config->config_value = serialize('1');
+		$config->default = serialize('1');
+		$config->rules = serialize(array
+			(
+				array('not_empty'),
+				array('max_length', array(':value', 255)),
 			));
 		$config->save();
 		
@@ -96,8 +110,8 @@ class Controller_Admin_Migrations extends Controller_Admin_Base {
 		$config->default = serialize('safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,koassets');
 		$config->rules = serialize(array
 			(
-				'not_empty'	  => NULL,
-				'max_length'	=> array(255),
+				array('not_empty'),
+				array('max_length', array(':value', 255)),
 			));
 		$config->save();
 		
@@ -110,8 +124,8 @@ class Controller_Admin_Migrations extends Controller_Admin_Base {
 		$config->default = serialize('formatselect,|,bold,italic,strikethrough,|,bullist,numlist,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,image,koassets,media,|,removeformat,cleanup,code');
 		$config->rules = serialize(array
 			(
-				'not_empty'	  => NULL,
-				'max_length'	=> array(255),
+				array('not_empty'),
+				array('max_length', array(':value', 255)),
 			));
 		$config->save();
 		
@@ -124,8 +138,8 @@ class Controller_Admin_Migrations extends Controller_Admin_Base {
 		$config->default = serialize('jpg,png,gif,pdf,txt,zip,tar');
 		$config->rules = serialize(array
 			(
-				'not_empty'	  => NULL,
-				'max_length'	=> array(255),
+				array('not_empty'),
+				array('max_length', array(':value', 255)),
 			));
 		$config->save();		
 	}

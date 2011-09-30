@@ -8,7 +8,7 @@
 		<p>Max uploads: <?php echo $max_file_uploads?></p>
 		
 		<div class="field">
-			<?php if ($errors[$field_name]){?>
+			<?php if (isset($errors[$field_name])){?>
 				<strong>Errors:</strong><br />
 				<ul>
 					<?php foreach($errors[$field_name] as $field_errors){
@@ -21,7 +21,6 @@
 			<div class="field">	
 				<?php echo Form::file($field_name.'[]', array(
 					'id' => '', 
-					'class' => 'multi',
 					'maxlength' => $max_file_uploads,
 					'accept' => preg_replace('/,\s*/', '|', $allowed_upload_type)
 				), $errors)?>

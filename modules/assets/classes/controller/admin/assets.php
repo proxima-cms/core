@@ -42,9 +42,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->_filter = Arr::get($_REQUEST, 'filter', NULL);
 
 		// Get the total amount of items in the table
-		$this->_total = ORM::factory('asset')
-			->join('mimetypes')
-			->on('assets.mimetype_id', '=', 'mimetypes.id');
+		$this->_total = ORM::factory('asset');
 		
 		$this->_filter_results($this->_total);
 		$this->_total = $this->_total->count_all();
@@ -57,8 +55,6 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		));
 
 		$this->_assets = ORM::factory('asset')
-			->join('mimetypes')
-			->on('assets.mimetype_id', '=', 'mimetypes.id')
 			->order_by($this->_order_by, $this->_direction)			
 			->limit($this->_pagination->items_per_page)
 			->offset($this->_pagination->offset);
@@ -92,8 +88,8 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		array_push($this->template->scripts, 'modules/admin/media/js/jquery.uploadify.min.js');
 		array_push($this->template->scripts, 'modules/admin/media/js/jquery.multifile.pack.js');
 		
-		$allowed_upload_type = str_replace(',', ', ', Kohana::config('asset.allowed_upload_type'));
-		$max_file_uploads = Kohana::config('admin/asset.max_file_uploads');
+		$allowed_upload_type = str_replace(',', ', ', Kohana::$config->load('asset.allowed_upload_type'));
+		$max_file_uploads = Kohana::$config->load('admin/asset.max_file_uploads');
 		
 		$field_name = 'asset';
 		$assets = array();

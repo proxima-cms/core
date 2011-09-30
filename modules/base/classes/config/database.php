@@ -2,7 +2,7 @@
 /**
  * An example database configuration reader.
  */
-class Config_Database extends Kohana_Config_Reader {
+class Config_Database implements Kohana_Config_Source {
 
 	protected $_cache_lifetime = NULL;
 	
@@ -14,6 +14,7 @@ class Config_Database extends Kohana_Config_Reader {
 
 	public function __construct(array $config = NULL)
 	{
+
 		if ($this->_cache_lifetime === NULL)
 		{
 			$this->_cache_lifetime = PHP_INT_MAX;
@@ -30,8 +31,6 @@ class Config_Database extends Kohana_Config_Reader {
 		}
 		
 		self::$_cache_key = sha1(self::$_cache_key);
-
-		parent::__construct($config);
 	}
 
 	/**
@@ -44,6 +43,7 @@ class Config_Database extends Kohana_Config_Reader {
 	 */
 	public function load($group, array $config = NULL)
 	{
+		die('load config');
 		if ( $config !== NULL OR $group === 'database' OR $group === 'cache')
 		{
 			return parent::load($group, $config);

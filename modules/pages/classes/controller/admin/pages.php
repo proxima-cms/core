@@ -8,21 +8,30 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		$this->template->content = View::factory('admin/page/pages/index');
 	}
 
-	public function action_add($parent_id = 0)
+	public function action_add()
 	{
 		$this->template->title = __('Add page');
 
 		array_push($this->template->styles, Kohana::$config->load('admin/media.paths.tinymce_skin'));
+		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce'));
+		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce_init'));
 		
 		$this->template->content = View::factory('admin/page/pages/add')
 			->bind('pages', $pages)
 			->bind('tags', $tags)
-			->set('parent_id', Arr::get($_POST, 'parent_id', $parent_id))
+			->bind('pagetypes', $pagetypes)
 			->bind('errors', $errors);
 
 		$pages = ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title');
 
 		$tags = ORM::factory('tag')->find_all();
+
+		$pagetypes = array('' => 'None');
+
+		foreach(ORM::factory('pagetype')->find_all() as $pagetype)
+		{
+			$pagetypes[$pagetype->id] = $pagetype->name;
+		}
 
 		if ($_POST)
 		{
@@ -45,6 +54,8 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		$this->template->title = __('Edit page');
 
 		array_push($this->template->styles, Kohana::$config->load('admin/media.paths.tinymce_skin'));
+		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce'));
+		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce_init'));
 
 		$id = Request::current()->param('id');
 
@@ -58,6 +69,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		$this->template->content = View::factory('admin/page/pages/edit')
 			->bind('page', $page)
 			->bind('pages', $pages)
+			->bind('pagetypes', $pagetypes)
 			->bind('tags', $tags)
 			->bind('page_tags', $page_tags)
 			->bind('errors', $errors);
@@ -70,6 +82,12 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		foreach($page->tags->find_all() as $tag)
 		{
 			$page_tags[] = $tag->id;
+		}
+		
+		$pagetypes = array('' => 'None');
+		foreach(ORM::factory('pagetype')->find_all() as $pagetype)
+		{
+			$pagetypes[$pagetype->id] = $pagetype->name;
 		}
 
 		if ($_POST)

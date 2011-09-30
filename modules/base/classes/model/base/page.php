@@ -6,17 +6,23 @@ class Model_Base_Page extends Model_Base {
 	
 	protected $_belongs_to = array(
 		'parent' => array('model' => 'page', 'foreign_key' => 'parent_id'),
+		'pagetype'	=> array('model' => 'pagetype'),
 	);	
 	
 	protected $_has_many = array(
 		'children'	=> array('model' => 'page', 'foreign_key' => 'parent_id'),
 		'tags'			=> array('model' => 'tag', 'through' => 'tags_pages'),
 	);
-
+	
 	// Validation rules
 	protected $_rules = array(
 		'parent_id' => array(
 			array('not_empty'),
+			array('numeric'),
+		),
+		'pagetype_id' => array(
+			array('not_empty'),
+			array('numeric'),
 		),
 		'description' => array(
 			array('not_empty'),
@@ -26,24 +32,22 @@ class Model_Base_Page extends Model_Base {
 		'title' => array(
 			array('not_empty'),
 			array('min_length', array(':value', 4)),
-			array('max_length', array(':value', 32)),
+			array('max_length', array(':value', 128)),
 		),
 		'uri' => array(
 			array('not_empty'),
 			array('min_length', array(':value', 3)),
 			array('max_length', array(':value', 128)),
-			array('regex', array(':value', '/^[-\pL\pN_.]++$/uD')),
 		),
 		'body' => array(
-			array('trim'),
-			array('not_empty'),
 		),
 		'visible_from' => array(
-			array('trim'),
-			array('not_empty')
+			array('not_empty'),
+			array('date'),
 		),
 		'visible_to' => array(
-			array('trim')
+			array('not_empty'),
+			array('date'),
 		)
 	);
 	

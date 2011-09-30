@@ -4,12 +4,13 @@ class Model_Page extends Model_Base_Page {
 
 	public function admin_add(& $data)
 	{
-		$tags = isset($data['tags']) ? (array) $data['tags'] : array();
+		$tags = Arr::get($data, 'tags', array());
 
 		$data = Validation::factory($data);
 
 		$fields = array(
 			'parent_id',
+			'pagetype_id',
 			'title',
 			'description',
 			'uri',
@@ -17,8 +18,8 @@ class Model_Page extends Model_Base_Page {
 			'visible_from',
 			'visible_to'
 		);
-
-		foreach($fields as $field) {
+		foreach($fields as $field)
+		{
 			$data->rules($field, $this->_rules[$field]);
 		}
 
@@ -41,19 +42,29 @@ class Model_Page extends Model_Base_Page {
 	
 	public function admin_update(& $data)
 	{
-		$tags = isset($data['tags']) ? (array) $data['tags'] : array();
+		$tags = Arr::get($data, 'tags', array());
 
-		$data = Validation::factory($data)
-			->rules('parent_id', $this->_rules['parent_id'])
-			->rules('title', $this->_rules['title'])
-			->rules('description', $this->_rules['description'])
-			->rules('uri', $this->_rules['uri'])
-			->rules('body', $this->_rules['body'])
-			->rules('visible_from', $this->_rules['visible_from'])
-			->rules('visible_to', $this->_rules['visible_to']);
-			//->callback('parent_id', array($this, 'admin_check_parent_id'));
+		$data = Validation::factory($data);
+
+		$fields = array(
+			'parent_id',
+			'pagetype_id',
+			'title',
+			'description',
+			'uri',
+			'body',
+			'visible_from',
+			'visible_to'
+		);
+		foreach($fields as $field)
+		{
+			$data->rules($field, $this->_rules[$field]);
+		}
 		
-		if ( !$data->check()) return FALSE;
+		if ( !$data->check())
+		{
+			return FALSE;
+		}
 
 		$data = $data->as_array();
 

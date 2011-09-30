@@ -10,10 +10,10 @@
 		theme : "advanced",
 		skin : "cirkuit",
 		debug : true,
-		plugins : '<?php echo Kohana::config('tinymce.plugins')?>',
+		plugins : 'safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,koassets',
 		
 		// Theme options
-		theme_advanced_buttons1 : '<?php echo Kohana::config('tinymce.toolbar1')?>',
+		theme_advanced_buttons1 : 'formatselect,|,bold,italic,strikethrough,|,bullist,numlist,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,image,koassets,media,|,removeformat,cleanup,code',
 		theme_advanced_buttons2 : "",
 		theme_advanced_buttons3 : "",
 		theme_advanced_buttons4 : "",		

@@ -73,7 +73,7 @@
 						))?>
 					<br /><br />
 					<div class="helper-left" style="padding-left:6px;color:#888">
-					<?php echo $asset->friendly_date()?>
+					<?php echo $asset->date?>
 					</div>
 
 					</td>

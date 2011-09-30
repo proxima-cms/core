@@ -12,8 +12,8 @@
 			<div class="field">
 			<?php if ($item->field_type == 'text'){
 				echo 
-					Form::label("{$group}-{$item->config_key}", $item->label, NULL, $errors) . '<br />' .
-					Form::input("{$group}-{$item->config_key}", Arr::Get($_POST, $group.'-'.$item->config_key), NULL, $errors);
+					Form::label("config-{$group}-{$item->config_key}", $item->label, NULL, $errors) . '<br />' .
+					Form::input("config-{$group}-{$item->config_key}", Arr::Get($_POST, 'config-'.$group.'-'.$item->config_key), NULL, $errors);
 			}?>
 			</div>
 		<?php }?>

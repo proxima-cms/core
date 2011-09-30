@@ -14,7 +14,7 @@ class Controller_Admin_Media extends Controller_Admin_Base {
 		if ($file)
 		{
 			// Send the file content as the response
-			$this->request->response = View::factory('admin/media/'.$file);
+			$this->response->body(View::factory('admin/media/'.$file));
 		}
 		else
 		{

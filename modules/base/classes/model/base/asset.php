@@ -14,23 +14,18 @@ class Model_Base_Asset extends Model_Base {
 	);
 
 	protected $_rules = array(
-		// Validate the $_FILES array
 		'upload' => array(
-			'Upload::valid' => array(),
-			'Upload::not_empty' => array(),
-			'Upload::size' => array('10M')
+	  	array('not_empty'),
+			array('Upload::valid'),
+			array('Upload::size', array(':value', '10M'))
 		),
-		'update' => array(
-			'filename' => array(
-				'trim' => NULL,
-				'max_length' => array(127),
-				'not_empty' => NULL,
-			),
-			'description' => array(
-				'trim' => NULL,
-				'max_length' => array(255),
-				'not_empty' => NULL,
-			)
+		'filename' => array(
+	  	array('not_empty'),
+			array('max_length', array(':value', array(128))),
+		),
+		'description' => array(
+	  	array('not_empty'),
+			array('max_length', array(':value', array(255))),
 		)
 	);
 	

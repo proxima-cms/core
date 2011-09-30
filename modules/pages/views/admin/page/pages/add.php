@@ -29,7 +29,13 @@
 		<div class="field">
 			<?php echo 
 				Form::label('parent_id', __('Parent page'), NULL, $errors).
-				Form::select('parent_id', $pages, (Arr::get($_POST, 'parent_id') ? Arr::get($_POST, 'parent_id') : $parent_id), NULL, $errors)
+				Form::select('parent_id', $pages, Arr::get($_POST, 'parent_id'), NULL, $errors)
+			?>
+		</div>
+		<div class="field">
+			<?php echo 
+				Form::label('pagetype_id', __('Page type'), NULL, $errors).
+				Form::select('pagetype_id', $pagetypes, Arr::get($_POST, 'pagetype_id'), NULL, $errors)
 			?>
 		</div>
 	</fieldset>
@@ -42,11 +48,11 @@
 			<span style="float:left">
 			<?php 
 				$tagid = 'tag-'.$tag->id;
-				echo Form::checkbox('tags[]', $tag->id, (bool) Arr::get($_POST, $tagid, FALSE))?>
+				echo Form::checkbox('tags[]', $tag->id, (bool) Arr::get($_POST, $tagid, FALSE), array('id' => $tagid))?>
 			</span>
 			<span style="float:left">
 			<?php echo
-				Form::label('tag-' + $tag->id, __($tag->name), NULL, $errors)
+				Form::label('tag-'.$tag->id, __($tag->name), NULL, $errors)
 			?>
 			</span>
 		</li>

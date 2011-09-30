@@ -46,7 +46,7 @@ class Base_Asset {
 
 		$crop = (string) (int) $crop;
 		
-		$path = Kohana::config('admin/asset.upload_path').'/'.$asset->filename;
+		$path = Kohana::$config->load('admin/asset.upload_path').'/'.$asset->filename;
 
 		if ($asset->mimetype->subtype == 'image' AND $width AND $height)
 		{

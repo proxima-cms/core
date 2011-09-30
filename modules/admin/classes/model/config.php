@@ -9,24 +9,30 @@ class Model_Config extends Model_Base_Config {
 		foreach($this->find_all() as $config)
 		{
 			$rules = unserialize($config->rules);
-			
-				$data->rules($config->group_name.'-'.$config->config_key, $rules);
+
+			$data->rules('config-'.$config->group_name.'-'.$config->config_key, $rules);
 		}
 
-		if (!$data->check()) return FALSE;
+		if (!$data->check())
+		{
+			return FALSE;
+		}
 
-		foreach($data as $name => $value)
+		foreach($data->as_array() as $name => $value)
 		{			
-			list($group_name, $config_key) = explode('-', $name);
+			if (strstr($name, 'config-') !== FALSE)
+			{
+				list($config, $group_name, $config_key) = explode('-', $name);
 
-			$config = ORM::factory('config')
-				->where('group_name', '=', $group_name)
-				->where('config_key', '=', $config_key)
-				->find();
+				$config = ORM::factory('config')
+					->where('group_name', '=', $group_name)
+					->where('config_key', '=', $config_key)
+					->find();
 
-			$config->config_value = serialize($value);
-			$config->config_key = $config_key;
-			$config->save();
+				$config->config_value = serialize($value);
+				$config->config_key = $config_key;
+				$config->save();
+			}
 		}
 
 		return TRUE;

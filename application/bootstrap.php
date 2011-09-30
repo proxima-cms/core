@@ -102,25 +102,17 @@ Kohana::modules(array(
 	'assets'			=> MODPATH.'assets',
 	'tags'				=> MODPATH.'tags',
 	'pages'				=> MODPATH.'pages',
+	'pagetypes'		=> MODPATH.'pagetypes',
 	'base'				=> MODPATH.'base',
 	'pagination'	=> MODPATH.'pagination',
 	'cache'				=> MODPATH.'cache',      // Caching with multiple backends
 	'database'		=> MODPATH.'database',   // Database access
 	'orm'					=> MODPATH.'orm',        // Object Relationship Mapping
-	'message'			=> MODPATH.'message'
+	'message'			=> MODPATH.'message',
+	'site'				=> MODPATH.'site',
 	// 'auth'       => MODPATH.'auth',       // Basic authentication
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	// 'image'      => MODPATH.'image',      // Image manipulation
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-	));
-
-/**
- * Set the routes. Each route must have a minimum of a name, a URI and a set of
- * defaults for the URI.
- */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
-	->defaults(array(
-		'controller' => 'home',
-		'action'     => 'index',
 	));

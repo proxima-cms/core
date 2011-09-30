@@ -49,6 +49,12 @@
 				Form::select('parent_id', $pages, Arr::GET($_POST, 'parent_id'), NULL, $errors)
 			?>
 		</div>
+		<div class="field">
+			<?php echo 
+				Form::label('pagetype_id', __('Page type'), NULL, $errors).
+				Form::select('pagetype_id', $pagetypes, Arr::get($_POST, 'pagetype_id'), NULL, $errors)
+			?>	
+		</div>	
 	</fieldset>
 
 	<fieldset>

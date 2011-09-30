@@ -18,30 +18,10 @@
 		},
 		
 		action_add: function(){
-	
-			this.getWysiwyg();
-			
-			Admin.util.validate({
-				redirect_url: window.location.toString()
-			});
 		},
 		
 		action_edit: function(){
-
-			this.getWysiwyg();
-			
-			Admin.util.validate({
-				redirect_url: window.location.toString()
-			});
-		},
-		
-		getWysiwyg: function(){
-
-			// load and initiate wysiwyg
-			require([Admin.config.paths.tinymce, Admin.config.paths.tinymce_init], function() {
-			
-			});
-		},
+		}
 	};
 	
 	Admin.controller.wysiwyg = {
