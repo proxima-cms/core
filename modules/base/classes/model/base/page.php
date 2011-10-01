@@ -6,7 +6,7 @@ class Model_Base_Page extends Model_Base {
 	
 	protected $_belongs_to = array(
 		'parent' => array('model' => 'page', 'foreign_key' => 'parent_id'),
-		'pagetype'	=> array('model' => 'pagetype'),
+		'page_type'	=> array('model' => 'page_type', 'foreign_ley' => 'pagetype_id'),
 	);	
 	
 	protected $_has_many = array(
