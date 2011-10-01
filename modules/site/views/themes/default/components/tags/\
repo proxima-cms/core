@@ -1,0 +1,15 @@
+<ul>
+<?php foreach($pages as $page){?>
+	<li>
+		<h3><?php echo HTML::anchor($page->uri, $page->title)?></h3>
+		<div>
+			<?php echo $page->body?>
+		</div>
+		<div>
+			<?php foreach($page->tags->find_all() as $tag){?>
+			<?php echo HTML::anchor($tag->slug, $tag->name)?>
+			<?php }?>
+		</div>
+	</li>
+<?php }?>
+</ul>

@@ -80,23 +80,34 @@ class Model_Asset extends Model_Base_Asset {
 	
 	public function admin_update(& $data)
 	{
-		$data = Validate::factory($data)
-			->rules('filename', $this->_rules['update']['filename'])
-			->rules('description', $this->_rules['update']['description']);
+		$data = Validation::factory($data);
+
+    $fields = array(
+			'filename',
+			'description',
+    );  
+
+    foreach($fields as $field)
+		{
+      $data->rules($field, $this->_rules[$field]);
+    }   
 		
 		// Add validation callbacks			
-		foreach($this->_callbacks['update'] as $type => $callbacks)
-		{
-			foreach($callbacks as $callback)
-			{
-				$data->callback('filename', array($this, $callback));
-			}
-		}
+		//foreach($this->_callbacks['update'] as $type => $callbacks)
+		//{
+		//	foreach($callbacks as $callback)
+		//	{
+		//		$data->callback('filename', array($this, $callback));
+		//	}
+	//	}
 		
 		if (!$data->check())
+		{
 			return FALSE;
+		}
 
-		$this->values($data);
+		$this->values($data->as_array());
+
 		return $this->save();
 	}
 	

@@ -15,8 +15,8 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	
 	public function after()
 	{
-		array_push($this->template->styles, 'modules/assetmanager/media/css/admin.assetmanager.css');		
-		array_push($this->template->scripts, 'modules/assetmanager/media/js/admin.assetmanager.js');
+		array_push($this->template->styles, 'modules/assets/media/css/admin.assetmanager.css');		
+		array_push($this->template->scripts, 'modules/assets/media/js/admin.assetmanager.js');
 
 		parent::after();
 	}
@@ -158,9 +158,11 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		//$_POST = $_POST->as_array();
 	}
 	
-	public function action_edit($id = 0)	
+	public function action_edit()	
 	{
-		$asset = ORM::factory('asset', (int) $id);
+		$id = (int) $this->request->param('id');
+
+		$asset = ORM::factory('asset', $id);
 
 		if (!$asset->loaded())
 		{
@@ -168,26 +170,29 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			$this->request->redirect('admin/assets');
 		} 
 		
-		!$_POST AND $default_data = $asset->as_array();
-
 		$this->template->title = __('Admin - Edit asset');
 		$this->template->content = View::factory('admin/page/assets/edit')
 			->set('resized', $asset->sizes->where('resized', '=', 1)->find_all())
 			->bind('asset', $asset)
 			->bind('errors', $errors);
 
-		if ($asset->admin_update($_POST))
+		if (!$_POST)
 		{
-			Message::set(Message::SUCCESS, __('Asset successfully updated.'));			
-			!$this->is_ajax AND $this->request->redirect($this->request->uri);
+			$_POST = $asset->as_array();
 		}
-		
-		if ($errors = $_POST->errors('admin/assets'))
+		else
 		{
-			Message::set(MESSAGE::ERROR, __('Please correct the errors.'));
+			if ($asset->admin_update($_POST))
+			{
+				Message::set(Message::SUCCESS, __('Asset successfully updated.'));			
+				$this->request->redirect($this->request->uri());
+			}
+			else
+			{
+				$errors = $_POST->errors('admin/assets');
+				Message::set(MESSAGE::ERROR, __('Please correct the errors.'));
+			}
 		}
-
-		isset($default_data) AND $_POST = array_merge($_POST->as_array(), $default_data);	
 	}
 
 	public function action_download($id = 0)
@@ -213,7 +218,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			$data = array('id' => $id);
 			if ($item->admin_delete(NULL, $data))
 			{
-				$file = DOCROOT.Kohana::config('admin/asset.upload_path').'/'.$item->filename;
+				$file = DOCROOT.Kohana::$config->load('admin/asset.upload_path').'/'.$item->filename;
 				try
 				{
 					unlink($file);
@@ -231,7 +236,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 				if ($resized->admin_delete(NULL, $data))
 				{
-					$resized_file = DOCROOT.Kohana::config('admin/asset.upload_path').'/resized/'.$resized->filename;
+					$resized_file = DOCROOT.Kohana::$config->load('admin/asset.upload_path').'/resized/'.$resized->filename;
 					try
 					{
 						unlink($resized_file);
@@ -285,7 +290,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			
 			if ($asset->mimetype->subtype === 'application' AND $asset->mimetype->type == 'pdf')
 			{
-				$file_in = DOCROOT.Kohana::config('admin/asset.upload_path').'/'.$asset->filename;
+				$file_in = DOCROOT.Kohana::$config->load('admin/asset.upload_path').'/'.$asset->filename;
 				
 				// Generate a PNG thumbnail of the PDF
 				Asset::pdfthumb($file_in, $path, $width, $height, $crop);

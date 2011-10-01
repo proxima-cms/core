@@ -5,6 +5,18 @@
 		<div>
 			<?php echo $page->body?>
 		</div>
+		<div>
+			Tagged: 
+			<?php 
+				$tags = $page->tags->find_all();
+				$anchors = array();
+				foreach($tags as $tag)
+				{
+						$anchors[] = HTML::anchor($tag->slug, $tag->name);
+				}
+				echo implode($anchors, ', ');
+			?>
+		</div>
 	</li>
 <?php }?>
 </ul>

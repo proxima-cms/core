@@ -30,7 +30,7 @@
     <div class="field">
       <?php echo 
         Form::label('template', __('Template'), NULL, $errors),
-        Form::select('template', $templates, NULL, $errors)
+        Form::select('template', $templates, Arr::get($_POST, 'template', NULL), NULL, $errors)
       ?>  
     </div>
 

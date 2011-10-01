@@ -4,7 +4,7 @@
 		<p>Allowed types: <?php echo $allowed_upload_type?></p>
 		<!-- <p>Max uploads: <?php echo $max_file_uploads?></p> -->
 	
-		<?php if ($errors[$field_name]){?>
+		<?php if (isset($errors[$field_name])){?>
 			<strong>Errors:</strong><br />
 			<ul>
 				<?php foreach($errors[$field_name] as $field_errors){

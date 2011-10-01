@@ -18,8 +18,8 @@
 
 				<div class="field">	
 					<?php echo 
-						Form::label('search-query', __('Query'), NULL, $errors),
-						Form::input('search-query', $_POST['search-query'], NULL, $errors)
+						Form::label('search-query', __('Query'), NULL),
+						Form::input('search-query', Arr::get($_POST, 'search-query'), NULL)
 					?>
 				</div>
 				<?php echo Form::button('search-submit', 'Search', array('type' => 'submit', 'class' => 'ui-button search'))?>	

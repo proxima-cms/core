@@ -110,7 +110,7 @@ Kohana::modules(array(
 	'orm'					=> MODPATH.'orm',        // Object Relationship Mapping
 	'message'			=> MODPATH.'message',
 	'site'				=> MODPATH.'site',
-	// 'auth'       => MODPATH.'auth',       // Basic authentication
+	'auth'       => MODPATH.'auth',       // Basic authentication
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	// 'image'      => MODPATH.'image',      // Image manipulation
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing

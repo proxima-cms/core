@@ -1,12 +1,11 @@
 <!doctype html>
-<html lang="en" class="no-js admin <?php echo Kohana::$environment?> <?php echo str_replace('_', ' ', Request::instance()->controller)?> assetmanager popup" dir="ltr">
+<html lang="en" class="no-js admin <?php echo Kohana::$environment?> <?php echo str_replace('_', ' ', Request::current()->controller())?> assetmanager popup" dir="ltr">
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title><?php echo $title ?></title>
 	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n"?>
 	<?php echo implode("\n\t", array_map('HTML::script', $scripts)), "\n"?>
-	<?php echo View::factory('page/fragments/analytics'), "\n"?>
 </head>
 	<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
 	<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
@@ -23,8 +22,8 @@
 			paths: <?php echo $paths?>,
 			param: <?php echo $param?>,
 			route: {
-				controller: '<?php echo Request::instance()->controller?>',
-				action: '<?php echo Request::instance()->action?>'
+				controller: '<?php echo Request::current()->controller()?>',
+				action: '<?php echo Request::current()->action()?>'
 			}
 		});			
 	})(this.jQuery);

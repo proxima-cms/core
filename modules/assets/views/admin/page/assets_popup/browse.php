@@ -17,14 +17,13 @@
 		return urldecode($url);
 	}
 
-	$cur_url = Request::instance()->uri . URL::query();
+	$cur_url = Request::current()->uri() . URL::query();
 
 ?>
 
 <div class="clear">
 
 	<div class="sidepane">
-
 		
 		<div class="section first clear">
 			<h3>Filters</h3>
@@ -34,21 +33,16 @@
 						array('class' => clean($cur_url) === clean($links['all']) ? 'selected' : NULL))?>
 				</li>
 				<li>
-					<a href="#">Type</a>
-					<ul>
-						<li>
-							<?php echo HTML::anchor($links['img'], 'Image',
-								array('class' => clean($cur_url) === clean($links['img']) ? 'selected' : NULL))?>
-						</li>
-						<li>
-							<?php echo HTML::anchor($links['doc'], 'Document', 
-								array('class' => clean($cur_url) === clean($links['doc']) ? 'selected' : NULL))?>
-						</li>
-						<li>
-							<?php echo HTML::anchor($links['arc'], 'Archive',
-								array('class' => clean($cur_url) === clean($links['arc']) ? 'selected' : NULL))?> 
-						</li>
-					</ul>
+					<?php echo HTML::anchor($links['img'], 'Image',
+						array('class' => clean($cur_url) === clean($links['img']) ? 'selected' : NULL))?>
+				</li>
+				<li>
+					<?php echo HTML::anchor($links['doc'], 'Document', 
+						array('class' => clean($cur_url) === clean($links['doc']) ? 'selected' : NULL))?>
+				</li>
+				<li>
+					<?php echo HTML::anchor($links['arc'], 'Archive',
+						array('class' => clean($cur_url) === clean($links['arc']) ? 'selected' : NULL))?> 
 				</li>
 			</ul>
 		</div>
@@ -62,7 +56,7 @@
 		<div class="section clear">
 			<h3>Search</h3>
 			<?php echo Form::open()?>
-				<?php echo Form::input('search', '', array('class' => 'helper-left', 'style' => 'width: 124px'), $errors)?>
+				<?php echo Form::input('search', '', array('class' => 'helper-left', 'style' => 'width: 124px'))?>
 				<?php echo Form::button('search', 'Go', array('class' => 'helper-left ui-button default'))?>
 			<?php echo Form::close()?>
 		</div>
@@ -122,7 +116,7 @@
 							<?php echo $asset->friendly_filename?>
 						</a>
 						<div style="color:#888;padding-top:.5em">
-						<?php echo $asset->friendly_date()?>
+						<?php echo $asset->date?>
 						</div>
 					</td>
 					<td>

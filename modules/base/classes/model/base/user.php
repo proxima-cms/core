@@ -55,7 +55,7 @@ class Model_Base_User extends Model_Auth_User {
 		return $data;
 	}
 
-	public function update(& $data)
+	public function validate_update(& $data)
 	{
 		$data = Validate::factory($data)
 			->rules('email', $this->_rules['email'])

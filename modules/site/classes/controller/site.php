@@ -4,6 +4,8 @@ class Controller_Site extends Controller_Base {
 
 	public $theme = 'themes/default/';
 
+	public $theme_url = 'modules/site/views/themes/default/';
+
 	public function before()
 	{
 		$this->template = $this->theme.'master_page';
@@ -26,6 +28,7 @@ class Controller_Site extends Controller_Base {
 		$this->template->set_global('page', $page);
 		$this->template->set_global('body', $page->body);
 		$this->template->set_global('theme', $this->theme);
+		$this->template->set_global('theme_url', $this->theme_url);
 
 		$template = $this->theme.'templates/'.str_replace(EXT, '', $page->pagetype_template);
 

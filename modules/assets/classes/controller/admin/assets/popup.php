@@ -6,7 +6,7 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 	
 	public $template = 'admin/page/assets_popup/master_page';
 
-	public function action_index()
+	public function action_index($view = 'admin/page/assets/index')
 	{	
 		parent::action_index('admin/page/assets_popup/index');
 		
@@ -21,18 +21,18 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 			->bind('filter', $this->_filter)
 			->bind('pagination', $this->_pagination);
 
-		$upload_html = Request::factory('admin/assets/popup/upload')->execute()->response;
+		$upload_html = Request::factory('admin/assets/popup/upload')->execute()->body();
 		
 		$this->template->set_global('browse_html', $browse_html);
 		$this->template->set_global('upload_html', $upload_html);
 		
 		array_push($this->template->scripts, 'modules/admin/media/js/jquery.tablescroll.js');
-		array_push($this->template->scripts, Kohana::config('admin/media.paths.tinymce_popup'));
+		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce_popup'));
 	}
 	
-	public function action_upload()
+	public function action_upload($view_path = 'admin/page/assets_popup/upload', $redirect_to = 'admin/assets/popup#browse')
 	{
-		parent::action_upload('admin/page/assets_popup/upload', 'admin/assets/popup#browse');
+		parent::action_upload($view_path, $redirect_to);
 	}
 	
 	public function action_resize($id = 0)
