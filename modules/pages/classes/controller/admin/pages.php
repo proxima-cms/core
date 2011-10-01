@@ -19,18 +19,18 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		$this->template->content = View::factory('admin/page/pages/add')
 			->bind('pages', $pages)
 			->bind('tags', $tags)
-			->bind('pagetypes', $pagetypes)
+			->bind('page_types', $page_types)
 			->bind('errors', $errors);
 
 		$pages = ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title');
 
 		$tags = ORM::factory('tag')->find_all();
 
-		$pagetypes = array('' => 'None');
+		$page_types = array('' => 'None');
 
-		foreach(ORM::factory('pagetype')->find_all() as $pagetype)
+		foreach(ORM::factory('page_type')->find_all() as $page_type)
 		{
-			$pagetypes[$pagetype->id] = $pagetype->name;
+			$page_types[$page_type->id] = $page_type->name;
 		}
 
 		if ($_POST)
@@ -38,6 +38,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			if (ORM::factory('page')->admin_add($_POST))
 			{
 				Message::set(Message::SUCCESS, __('Page saved.'));
+				
 				Request::current()->redirect('admin/pages');
 			} 
 			else if ($errors = $_POST->errors('admin/pages'))
@@ -69,7 +70,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		$this->template->content = View::factory('admin/page/pages/edit')
 			->bind('page', $page)
 			->bind('pages', $pages)
-			->bind('pagetypes', $pagetypes)
+			->bind('page_types', $page_types)
 			->bind('tags', $tags)
 			->bind('statuses', $statuses)
 			->bind('page_tags', $page_tags)
@@ -85,10 +86,10 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			$page_tags[] = $tag->id;
 		}
 		
-		$pagetypes = array('' => 'None');
-		foreach(ORM::factory('pagetype')->find_all() as $pagetype)
+		$page_types = array('' => 'None');
+		foreach(ORM::factory('page_type')->find_all() as $page_type)
 		{
-			$pagetypes[$pagetype->id] = $pagetype->name;
+			$page_types[$page_type->id] = $page_type->name;
 		}
 
 		$statuses = array(
@@ -126,6 +127,26 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		}
 
 		$this->template->content = ORM::factory('page')->tree_list_html('admin/page/pages/tree', 0, $open_pages);
+	}
+
+	public function action_generate_uri()
+	{
+		$id = Arr::get($_GET, 'page_id');
+		$title = Arr::get($_GET, 'title', NULL);
+
+		$page = ORM::factory('page', $id);
+
+		if (!$page->loaded())
+		{
+			throw new Kohana_Request_Exception('Page not found.');
+		}
+
+		if ($title !== NULL)
+		{
+			$page->title = $title;
+		}
+
+		$this->template->content = $page->generate_uri();
 	}
 
 } // End Controller_Admin_Pages

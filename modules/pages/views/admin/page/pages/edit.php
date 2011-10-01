@@ -28,8 +28,14 @@
 			?>
 		</div>
 		<div class="field">
-			<?php echo 
-				Form::label('uri', __('URI'), NULL, $errors).
+			<?php 
+				echo 
+				Form::label('uri', __('URI'), NULL, $errors);
+
+				echo '&nbsp;&nbsp;&nbsp;'. 
+				HTML::anchor('admin/pages/generate_uri?page_id='.$page->id, '[Update]', array('id' => 'update-uri'));
+			
+				echo
 				Form::input('uri', $_POST['uri'], NULL, $errors)
 			?>
 		</div>
@@ -52,7 +58,7 @@
 		<div class="field">
 			<?php echo 
 				Form::label('pagetype_id', __('Page type'), NULL, $errors).
-				Form::select('pagetype_id', $pagetypes, Arr::get($_POST, 'pagetype_id'), NULL, $errors)
+				Form::select('pagetype_id', $page_types, Arr::get($_POST, 'pagetype_id'), NULL, $errors)
 			?>	
 		</div>	
 	</fieldset>
@@ -79,6 +85,22 @@
 	
 	<fieldset>
 		<legend>Publishing</legend>
+		<div class="field clear">
+			<div class="clear">
+				<?php echo 
+					Form::label('visible_in_nav', __('Visible in nav?'), NULL, $errors);
+				?>
+			</div>
+			<div>
+				<?php 
+				echo
+					Form::select('visible_in_nav', array(
+						0 => 'No',
+						1 => 'Yes'
+					), (int) Arr::get($_POST, 'visible_in_nav'), NULL, $errors);
+				?>
+			</div>
+		</div>
 		<div class="field clear">
 			<div class="clear">
 				<?php echo 

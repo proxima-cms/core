@@ -2,7 +2,7 @@
   <div class="action-menu helper-right">
     <button>Actions</button>
     <ul>
-      <li><?php echo HTML::anchor('admin/page_types/add', __('Add page type'))?></li>
+      <li><?php echo HTML::anchor('admin/pages/types/add', __('Add page type'))?></li>
     </ul>
   </div>
   <?php echo $breadcrumbs?>

@@ -131,11 +131,11 @@ abstract class Controller_Admin_Base extends Controller_Base {
 		{
 			$message = ucfirst($this->crud_model_singular).' '.__('successfully deleted.');			
 			Message::set(Message::SUCCESS, $message);
-			
+
 			$this->request->redirect('admin/'.$this->crud_model);
 		}
 		
-		if ($errors = $data->errors('admin/pages'))
+		if ($errors = $data->errors('admin/delete'))
 		{
 			throw new Exception(implode("\n", $errors));
 		}		

@@ -2,7 +2,7 @@
 
 class Component_Driver_Page_Nav extends Component_Component {
 
-	protected $view_path = 'themes/default/components/pages/pagenav/nav';
+	protected $view_path = 'themes/default/components/pages/nav/';
 
 	protected $_default_config = array(
 		'parent_id' => 1
@@ -10,11 +10,26 @@ class Component_Driver_Page_Nav extends Component_Component {
 
 	public function render()
 	{
-		$pages = ORM::factory('site_page')
-			->where('parent_id', '=', $this->_config['parent_id'])
-			->find_all();
+		$cache_key = 'page-nav-'.$this->_config['parent_id'];
 
-    return View::factory($this->view_path)
+		if (!$pages = Cache::instance()->get($cache_key))
+		{
+			$pages_result = ORM::factory('site_page')
+				->where('parent_id', '=', $this->_config['parent_id'])
+				->where('visible_in_nav', '=', 1)
+				->find_all();
+				
+			$pages = array();
+
+			foreach($pages_result as $page)
+			{
+				$pages[] = (object) $page->as_array();
+			}
+			
+			Cache::instance()->set($cache_key, $pages);
+		}
+
+		return View::factory($this->view_path.'nav')
 			->set('pages', $pages)
 			->render();
 	}

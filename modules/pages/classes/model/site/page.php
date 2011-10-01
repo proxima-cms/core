@@ -8,7 +8,7 @@ class Model_Site_Page extends Model_Base {
 
   protected $_belongs_to = array(
     'parent' => array('model' => 'site_page', 'foreign_key' => 'parent_id'),
-    'pagetype'  => array('model' => 'pagetype'),
+    'page_type'  => array('model' => 'page_type', 'foreign_key' => 'pagetype_id'),
   );  
   
   protected $_has_many = array(

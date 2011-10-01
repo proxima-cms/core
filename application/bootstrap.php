@@ -80,8 +80,9 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-	'base_url'   => '/',
-	'index_file' => FALSE
+	'base_url'		=> '/',
+	'index_file'	=> FALSE,
+	'caching'			=> TRUE
 ));
 
 /**
@@ -106,6 +107,7 @@ Kohana::modules(array(
 	'base'				=> MODPATH.'base',
 	'core'				=> MODPATH.'core',
 	'pagination'	=> MODPATH.'pagination',
+	'compress'		=> MODPATH.'compress',
 	'cache'				=> MODPATH.'cache',      // Caching with multiple backends
 	'database'		=> MODPATH.'database',   // Database access
 	'orm'					=> MODPATH.'orm',        // Object Relationship Mapping
@@ -116,3 +118,5 @@ Kohana::modules(array(
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
+
+Cache::$default = 'apc';

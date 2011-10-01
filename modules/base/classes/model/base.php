@@ -128,4 +128,12 @@ class Model_Base extends ORM {
 			$html .= View::factory($view_path.'/list_close');
 		}
 	}
+
+
+	public function save(Validation $validation = NULL)
+	{
+		Cache::instance()->delete_all();
+
+		return parent::save($validation);
+	}
 }

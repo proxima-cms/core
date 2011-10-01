@@ -4,7 +4,6 @@ return array(
 	'links' => array(
 		'admin'				=> __('Dashboard'),
 		'admin/pages'			=> __('Pages'),
-		'admin/pages/types'			=> __('Page types'),
 		//'admin/users'			=> __('Users'),
 		//'admin/groups'		=> __('Groups'),
 		//'admin/roles'			=> __('Roles'),

@@ -12,11 +12,6 @@ class Model_Page extends Model_Base_Page {
 			'parent_id',
 			'pagetype_id',
 			'title',
-			'description',
-			'uri',
-			'body',
-			'visible_from',
-			'visible_to'
 		);
 		foreach($fields as $field)
 		{
@@ -28,18 +23,17 @@ class Model_Page extends Model_Base_Page {
 			return FALSE;
 		}
 
-		$this->values($data->as_array());
+		$post = $data->as_array();
+		$post['uri'] = NULL;
+		$this->values($post);
 		#$this->user_id = Auth::instance()->get_user()->id;
 		$this->save();
 
-    foreach($tags as $tag)
-    {   
-      $this->add('tags', new Model_Tag(array('id' => $tag)));
-    }   
+		$this->generate_uri();
 
-		return $data;
+		return $this->save();
 	}
-	
+
 	public function admin_update(& $data)
 	{
 		$tags = Arr::get($data, 'tags', array());
@@ -108,5 +102,45 @@ class Model_Page extends Model_Base_Page {
 		}
 		
 		return parent::delete($id);		
+	}
+
+	public function generate_uri()
+	{
+		if ($this->is_homepage)
+		{
+			$page_uri = '';
+		}
+		else
+		{
+			$uri_prefix = ''; 
+
+			if ((int) $this->parent_id > 0)
+			{		
+				$parent_page = ORM::factory('page', (int) $this->parent_id);
+
+				if ($parent_page->loaded() AND $parent_page->uri)
+				{		
+					$uri_prefix = $parent_page->uri.'/';
+				}		
+			}		
+
+			$page_uri = $orig_uri = $uri_prefix.URL::title($this->title, '-');
+			$c = 1;
+
+			while(
+				ORM::factory('page')
+				->where('uri', '=', $page_uri)
+				->where('id', '<>', $this->id)
+				->find()
+				->loaded())
+			{		
+				$c++;
+				$page_uri = $orig_uri.$c;
+			}
+		
+			$this->uri = $page_uri;
+		}
+
+		return $page_uri;
 	}
 } // End Model_Page

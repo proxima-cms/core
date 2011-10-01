@@ -19,12 +19,13 @@
 	</div>
 
 	<div id="tags">
-		<?php echo Component::factory('Tag_List', array())->render();?>
+		<?php echo Component::factory('Tag_List');?>
 	</div>
 
 	<footer>
-		<!-- {execution_time} - {memory_usage} -->
-		{profiler}
+		<?php echo
+			Component::factory('Footer_Scripts');
+		?>
 	</footer>
 
 </body>

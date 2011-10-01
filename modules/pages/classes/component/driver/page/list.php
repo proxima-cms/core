@@ -2,7 +2,7 @@
 
 class Component_Driver_Page_List extends Component_Component {
 
-	protected $view_path = 'themes/default/components/pages/pagelist';
+	protected $view_path = 'themes/default/components/pages/list/';
 
 	protected $_default_config = array(
 		'parent_id' => 1
@@ -10,9 +10,10 @@ class Component_Driver_Page_List extends Component_Component {
 
 	public function render()
 	{
+		return '';
 		$pages = ORM::factory('site_page')->where('parent_id', '=', $this->_config['parent_id'])->find_all();
 
-    return View::factory($this->view_path.'/list')
+    return View::factory($this->view_path.'list')
 			->set('pages', $pages)
 			->render();
 	}

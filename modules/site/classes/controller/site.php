@@ -4,7 +4,7 @@ class Controller_Site extends Controller_Base {
 
 	public $theme = 'themes/default/';
 
-	public $theme_url = 'modules/site/views/themes/default/';
+	public $theme_url = 'application/views/themes/default/';
 
 	public function before()
 	{
@@ -15,14 +15,21 @@ class Controller_Site extends Controller_Base {
 
 	public function action_index()
 	{
-		$uri = Arr::get($this->request->param(), 'url', '');
+		$uri = Arr::get($this->request->param(), 'uri', '');
+		
+		$cache_key = 'page-'.$uri;
 
-		$page = ORM::factory('site_page')->where('uri', '=', $uri)->find();
+		if (!$page = Cache::instance()->get($cache_key))
+		{		
+			$page = ORM::factory('site_page')->where('uri', '=', $uri)->find();
+		
+			if (!$page->loaded())
+			{
+				throw new HTTP_Exception_404('Page not found.');
+			}
 
-		if (!$page->loaded())
-		{
-			throw new HTTP_Exception_404('Page not found.');
-		}
+			Cache::instance()->set($cache_key, (object) $page->as_array());
+		}		
 
 		$this->template->set_global('title', $page->title);
 		$this->template->set_global('page', $page);

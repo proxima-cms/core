@@ -8,11 +8,12 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 	{
 		$this->template->title = __('Add tag');
 
-		$this->template->content = View::factory('admin/page/page_types/add')
+		$this->template->content = View::factory('admin/page/types/add')
 			->bind('errors', $errors)
 			->bind('templates', $templates);
 
 		$templates = array();
+
 		foreach(Kohana::list_files('views/themes/default/templates') as $key => $template)
 		{
 			$templates[basename($key)] = basename($key);
@@ -23,10 +24,9 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			if (ORM::factory('page_type')->admin_add($_POST))
 			{		
 				Message::set(Message::SUCCESS, __('Page type successfully saved.'));		 
-				$this->request->redirect('admin/page_types');
+				$this->request->redirect('admin/pages/types');
 			}	
-
-			if ($errors = $_POST->errors('admin/page_types'))
+			else if ($errors = $_POST->errors('admin/pages/types'))
 			{		
 				 Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
@@ -34,7 +34,6 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			$_POST = $_POST->as_array();
 		}
 	}
-	
 
 	public function action_edit()
 	{
@@ -44,12 +43,11 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 
 		if (!$page_type->loaded())
 		{
-			throw new Kohana_Exception('Pagetype not found.');
+			throw new Kohana_Exception('Page type not found.');
 		}
 
-		$this->template->title = __('Edit page_type');
+		$this->template->title = __('Edit page type');
 
-		// If POST is empty then set the default form data
 		if (!$_POST)
 		{
 			$default_data = $page_type->as_array();
@@ -68,24 +66,29 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 
 		if ($_POST)
 		{
-			// Try update the role, if successful then reload the page
 			if ($page_type->admin_update($_POST))
 			{		
 				Message::set(Message::SUCCESS, __('Page type successfully updated.'));		 
 				$this->request->redirect($this->request->uri());
 			}
-
-			if ($errors = $_POST->errors('admin/roles'))
+			else if ($errors = $_POST->errors('admin/page_types'))
 			{
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
-		} else {
+		}
+		else
+		{
 			// If POST is empty, then add the default data to POST
 			$_POST = array_merge($_POST, $default_data);
 		}
-
 	}
 
-
+	public function action_delete()
+	{
+		// Nasty hack to adjust the redirect URL :/
+		$this->crud_model = 'pages/types';
 	
-} // End Controller_Admin_Tags
+		return parent::action_delete();
+	}
+	
+} // End Controller_Admin_Pages_Types

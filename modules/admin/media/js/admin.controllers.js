@@ -30,6 +30,18 @@
 					$visible_to.datepicker('setDate', new Date());
 				}
 			});
+
+			$('#update-uri').click(function(e){
+				e.preventDefault();
+
+				$.ajax({
+					'method': 'GET',
+					'url': this.href + '&title=' + $('#title').val(),
+					'success': function(data){
+						$('#uri').val(data);
+					}
+				});
+			});
 		}
 	};
 	

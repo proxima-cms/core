@@ -2,17 +2,25 @@
 
 class Component_Driver_Tag_List extends Component_Component {
 
-	protected $_default_config = array(
-		'parent_id' => 1
-	);
-
 	public function render()
 	{
-		$tree_path = 'themes/default/components/pages/pagelist/tree';
+    $cache_key = 'tag-list-all';
 
-  	$tags = ORM::factory('tag')->find_all();
+    if (!$tags = Cache::instance()->get($cache_key))
+    {   
+      $tags_result = ORM::factory('tag')->find_all();
+      $tags = array();
+
+      foreach($tags_result as $tag)
+      {   
+        $tags[] = (object) $tag->as_array();
+      }   
+          
+      Cache::instance()->set($cache_key, $tags);
+    }   
 
 		return View::factory('themes/default/components/tags/taglist/tags')
-			->set('tags', $tags);
+			->set('tags', $tags)
+			->render();
 	}
 }

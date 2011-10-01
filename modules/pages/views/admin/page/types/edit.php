@@ -3,7 +3,7 @@
  		<button>Actions</button>
 	  <ul>
 			<li>
-				<a href="<?php echo URL::site('admin/page_types/delete/'.$page_type->id)?>" id="delete-page_type" class="button delete small helper-right">
+				<a href="<?php echo URL::site('admin/pages/types/delete/'.$page_type->id)?>" id="delete-page_type" class="button delete small helper-right">
 					<span>Delete page_type</span>
 				</a>
 			</li>
