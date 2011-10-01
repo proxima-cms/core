@@ -8,7 +8,7 @@ class Controller_Site extends Controller_Base {
 
 	public function before()
 	{
-		$this->template = $this->theme.'master_page';
+		$this->template = $this->theme.'page';
 
 		parent::before();
 	}

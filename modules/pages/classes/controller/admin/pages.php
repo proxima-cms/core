@@ -71,6 +71,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			->bind('pages', $pages)
 			->bind('pagetypes', $pagetypes)
 			->bind('tags', $tags)
+			->bind('statuses', $statuses)
 			->bind('page_tags', $page_tags)
 			->bind('errors', $errors);
 
@@ -89,6 +90,11 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		{
 			$pagetypes[$pagetype->id] = $pagetype->name;
 		}
+
+		$statuses = array(
+			'' => __('Published'),
+			'1' => __('Draft')
+		);
 
 		if ($_POST)
 		{

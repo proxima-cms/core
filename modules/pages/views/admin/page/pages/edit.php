@@ -79,6 +79,18 @@
 	
 	<fieldset>
 		<legend>Publishing</legend>
+		<div class="field clear">
+			<div class="clear">
+				<?php echo 
+					Form::label('status', __('Status'), NULL, $errors);
+				?>
+			</div>
+			<div>
+				<?php echo
+					Form::select('draft', $statuses, (int) Arr::get($_POST, 'draft'), NULL, $errors);
+				?>
+			</div>
+		</div>
 		<div class="field datepicker-wrapper clear">
 			<div class="clear">
 				<?php echo 
@@ -87,7 +99,7 @@
 			</div>
 			<div>
 				<?php echo
-					Form::input('visible_from', $_POST['visible_from'], array('class' => 'datepicker'), $errors);
+					Form::input('visible_from', Arr::get($_POST, 'visible_from'), array('class' => 'datepicker'), $errors);
 				?>
 			</div>
 		</div>
