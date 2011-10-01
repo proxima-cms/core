@@ -22,3 +22,6 @@
 [submodule "modules/site/classes/component/driver/contact/vendor"]
 	path = modules/site/classes/component/driver/contact/vendor
 	url = https://github.com/swiftmailer/swiftmailer.git
+[submodule "modules/compress"]
+	path = modules/compress
+	url = https://github.com/azampagl/kohana-compress.git
