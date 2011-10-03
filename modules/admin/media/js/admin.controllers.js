@@ -60,7 +60,6 @@
 	
 		action_index: function(){
 			
-			Admin.model.user.getTree('#page-tree');
 		},
 		
 		action_add: function(){

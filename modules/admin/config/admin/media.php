@@ -2,7 +2,6 @@
 
 return array(
 	'styles' => array(
-		'modules/admin/media/css/base.css',
 		'modules/admin/media/js/jquery-ui/build/dist/jquery-ui-1.9pre/themes/base/jquery-ui.css',
 		'modules/admin/media/css/jquery.ui.theme.admin.css',
 		'modules/admin/media/css/admin.css'
@@ -14,8 +13,6 @@ return array(
 		'modules/admin/media/js/jquery-tree/js/jquery.tree.js',
 		'modules/admin/media/js/require.js',
 		'modules/admin/media/js/admin.js',
-		'modules/admin/media/js/admin.controllers.js',
-		'modules/admin/media/js/admin.models.js',
 		'modules/admin/media/js/admin.util.js',
 	),
 	'paths' => array(

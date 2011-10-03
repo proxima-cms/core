@@ -6,6 +6,14 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 	
 	public $template = 'admin/page/assets_popup/master_page';
 
+	public function before()
+	{
+		parent::before();
+
+		array_merge($this->template->scripts, Kohana::$config->load('admin/assets_popup.scripts'));
+		array_merge($this->template->styles, Kohana::$config->load('admin/assets_popup.styles'));
+	}
+
 	public function action_index($view = 'admin/page/assets/index')
 	{	
 		parent::action_index('admin/page/assets_popup/index');

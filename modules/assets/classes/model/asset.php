@@ -8,57 +8,49 @@ class Model_Asset extends Model_Base_Asset {
 		$file_data = $file;
 		$filename = strtolower($file[$field_name]['name']);
 
-		// Get the validation rules
-		$rules = $this->_rules['upload'];
+		$rules = $this->_rules;
 		
-		// Add allowed upload types to validation
-		$rules['Upload::type'] = array(explode(',', Kohana::$config->load('asset.allowed_upload_type')));
-
-		// Add file extension to file array (which we'll be validating against the available mimetypes)
-		$file['extension'] = strtolower(trim(strrchr($filename, '.'), '.'));
+		$rules['upload'][] = array('Upload::type', 
+			array(':value', explode(',', Kohana::$config->load('admin/assets.allowed_upload_type')))
+		);
 
 		$file = Validation::factory($file);
 
-    $fields = array(
-			//'upload',
+    $validate_fields = array(
+			'upload',
     );  
 
-    foreach($fields as $field)
+    foreach($validate_fields as $field)
 		{
-      $file->rules($field, $this->_rules[$field]);
+    	$file->rules($field_name, $rules[$field]);
     }   
 		
-		// Add validation callbacks			
-		//foreach($this->_callbacks['upload'] as $type => $callbacks)
-		//{
-		//	foreach($callbacks as $callback)
-		//	{
-		//		$file->callback('extension', array($this, $callback));
-		//	}
-		//}
-
 		if (!$file->check())
 		{	
 			return $this;
 		}
 
-		// Try move the asset to the specified upload path
 		try
 		{
-			$filepath = Upload::save($file_data[$field_name], $filename, DOCROOT.Kohana::$config->load('admin/asset.upload_path'));
+			$filepath = Upload::save($file_data[$field_name], $filename, DOCROOT.Kohana::$config->load('assets.upload_path'));
 		}
 		catch(Exception $e)
 		{
 			throw new Kohana_Exception($e);
 		}
 
+		$extension = Asset::extension($file[$field_name]['name']);
 		$description = preg_replace('/\.\w+$/', '', $filename);		// remove extension
 		$description = preg_replace('/[_-]/', ' ', $description);	// replace special chars
+
+		$mimetype = ORM::factory('mimetype')
+			->where('extension', '=', $extension)
+			->find();
 
 		// Save the file data
 		$data = array(
 			//'user_id' => Auth::instance()->get_user()->id,
-			//'mimetype_id' => $file->mimetype_id, // Set in validation callback
+			'mimetype_id' => $mimetype->id,
 			'filename' => $filename,
 			'friendly_filename' => $filename,
 			'description' => $description,

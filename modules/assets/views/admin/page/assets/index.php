@@ -23,7 +23,6 @@
 </fieldset>
 
 <form id="assets-list">
-	<fieldset>	
 		<div class="assets-list view-list ui-grid clear">
 		<table>
 			<thead>
@@ -90,8 +89,8 @@
 			</tbody>
 		</table>
 		</div>
-	</fieldset>
 </form>
+<br/>
 
 <fieldset class="last">
 	<div id="page-links">

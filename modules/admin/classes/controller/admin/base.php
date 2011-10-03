@@ -22,6 +22,8 @@ abstract class Controller_Admin_Base extends Controller_Base {
 	
 	public function before()
 	{
+		$this->authenticate();
+
 		// If the crud model isn't set then use the controller name (default)
 		$this->crud_model === FALSE AND $this->crud_model = $this->request->controller();
 		
@@ -41,11 +43,32 @@ abstract class Controller_Admin_Base extends Controller_Base {
 	{
 		if ($this->auto_render)
 		{
-			$this->template->styles = array_merge(Kohana::$config->load('admin/media.styles'), $this->template->styles);
-			$this->template->scripts = array_merge(Kohana::$config->load('admin/media.scripts'), $this->template->scripts);
-			$this->template->paths = json_encode(array_map('URL::site', array_merge(Kohana::$config->load('admin/media.paths', $this->template->paths))));
-			$this->template->param = json_encode($this->request->param());
+			$styles = array_merge(
+				(array) Kohana::$config->load('admin/media.styles'), 
+				(array) Kohana::$config->load('admin/'.$this->request->controller().'.styles'),
+				(array) $this->template->styles
+			);
+			
+			$scripts = array_merge(
+				(array) Kohana::$config->load('admin/media.scripts'), 
+				(array) Kohana::$config->load('admin/'.$this->request->controller().'.scripts'),
+				(array) $this->template->scripts
+			);
+
+			$paths = array_merge(
+				(array) Kohana::$config->load('admin/media.paths'),
+				(array) Kohana::$config->load('admin/'.$this->request->controller().'.paths'),
+				(array) $this->template->paths
+			);
+			
+			$this->template->styles = $styles;
+			$this->template->scripts = $scripts; 
+			$this->template->paths = $paths;
+			$this->template->param = $this->request->param();
+
 			$this->template->set_global('breadcrumbs', $this->get_breadcrumbs());
+		
+			//	json_encode(array_map('URL::site', array_merge(Kohana::$config->load('admin/media.paths', $this->template->paths))));
 		}
 		
 		if (Request::current()->is_ajax() AND $this->errors !== NULL)
@@ -97,6 +120,8 @@ abstract class Controller_Admin_Base extends Controller_Base {
 
 	public function authenticate()
 	{
+		return;
+
 		// The user may be logged in but not have the correct permissions to view this controller and/or action, 
 		// so instead of redirecting to signin page we redirect to 403 Forbidden
 		if ( Auth::instance()->logged_in() AND Auth::instance()->logged_in($this->auth_required) === FALSE)
@@ -111,14 +136,23 @@ abstract class Controller_Admin_Base extends Controller_Base {
 			}
 		}
 
-		parent::authenticate();
+    // If this page is secured and the user is not logged in (or doesn't match role), then redirect to the signin page
+    if ($this->auth_required !== FALSE && Auth::instance()->logged_in($this->auth_required) === FALSE)
+    {   
+      Message::set(Message::ERROR, __('You need to be signed in to do that.'));
+    
+      // Set the return path so user is redirect back to this page after successful sign in
+      $uri = 'admin/auth/signin?return_to=' . $this->request->uri();
+
+      $this->request->redirect($uri);
+    }  
 	}
 	
 	// A generic delete action to delete a model item by ID
 	public function action_delete()
 	{
 		$id = (int) Request::current()->param('id');
-		$item = ORM::factory( $this->crud_model_singular, $id);
+		$item = ORM::factory($this->crud_model_singular, $id);
 
 		if (!$item->loaded())
 		{

@@ -13,17 +13,9 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	
 	protected $_direction;
 	
-	public function after()
-	{
-		array_push($this->template->styles, 'modules/assets/media/css/admin.assetmanager.css');		
-		array_push($this->template->scripts, 'modules/assets/media/js/admin.assetmanager.js');
-
-		parent::after();
-	}
-	
 	public function action_index($view = 'admin/page/assets/index')
 	{
-		$this->template->title = 'Assets';
+		$this->template->title = __('Assets');
 
 		$this->template->content = View::factory($view)
 			->bind('assets', $this->_assets)
@@ -53,6 +45,15 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			'items_per_page' => 18,
 			'view'  => 'admin/pagination/asset_links'
 		));
+
+		switch($this->_order_by)
+		{
+			case 'type':
+				$this->_order_by = 'mimetype_id';
+				break;
+			default:
+				break;
+		}
 
 		$this->_assets = ORM::factory('asset')
 			->order_by($this->_order_by, $this->_direction)			
@@ -85,12 +86,12 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->bind('max_file_uploads', $max_file_uploads)
 			->bind('field_name', $field_name);
 		
-		array_push($this->template->scripts, 'modules/admin/media/js/jquery.uploadify.min.js');
-		array_push($this->template->scripts, 'modules/admin/media/js/jquery.multifile.pack.js');
+		//array_push($this->template->scripts, 'modules/admin/media/js/jquery.uploadify.min.js');
+		//array_push($this->template->scripts, 'modules/admin/media/js/jquery.multifile.pack.js');
 		
-		$allowed_upload_type = str_replace(',', ', ', Kohana::$config->load('asset.allowed_upload_type'));
-		$max_file_uploads = Kohana::$config->load('admin/asset.max_file_uploads');
-		
+		$allowed_upload_type = str_replace(',', ', ', Kohana::$config->load('admin/assets.allowed_upload_type'));
+		$max_file_uploads = Kohana::$config->load('admin/assets.max_file_uploads');
+
 		$field_name = 'asset';
 		$assets = array();
 		$errors = array();
@@ -195,17 +196,24 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		}
 	}
 
-	public function action_download($id = 0)
+	public function action_download()
 	{
+		$id = $this->request->param('id');
+
 		$asset = ORM::factory('asset', (int) $id);
 
-		if (!$asset->loaded()) exit;
-		
-		$this->request->send_file($asset->path(TRUE), $asset->friendly_filename);
+		if (!$asset->loaded())
+		{
+			exit;
+		}
+
+		$this->response->send_file($asset->path(TRUE), $asset->friendly_filename);
 	}
 	
-	public function action_delete($id = 0)
+	public function action_delete()
 	{	
+		$id = $this->request->param('id');
+
 		$assets = (int) $id ? $id : Arr::get($_GET, 'assets', '');
 		
 		foreach($assets = explode(',', $assets) as $id)
@@ -218,7 +226,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			$data = array('id' => $id);
 			if ($item->admin_delete(NULL, $data))
 			{
-				$file = DOCROOT.Kohana::$config->load('admin/asset.upload_path').'/'.$item->filename;
+				$file = DOCROOT.Kohana::$config->load('assets.upload_path').'/'.$item->filename;
 				try
 				{
 					unlink($file);
@@ -236,7 +244,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 				if ($resized->admin_delete(NULL, $data))
 				{
-					$resized_file = DOCROOT.Kohana::$config->load('admin/asset.upload_path').'/resized/'.$resized->filename;
+					$resized_file = DOCROOT.Kohana::$config->load('assets.upload_path').'/resized/'.$resized->filename;
 					try
 					{
 						unlink($resized_file);
@@ -256,14 +264,22 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->request->redirect('admin/assets');
 	}
 	
-	public function action_get_asset($id = 0, $width = NULL, $height = NULL, $crop = NULL, $filename = '')
+	public function action_get_asset()
 	{	
 		$this->auto_render = FALSE;
+
+		$id = (int) $this->request->param('id');
+		$width = (int) $this->request->param('width');
+		$height = (int) $this->request->param('height');
+		$crop = (int) $this->request->param('crop');
+		$filename = $this->request->param('filename');
+
+		if (!$id OR !$width OR !$height OR !$filename)
+		{
+			exit;
+		}
 		
-		// Prefix id to filename
 		$filename = "{$id}_$filename";
-	
-		if (!(int) $id OR !(int) $width OR !(int) $height OR !$filename) exit;
 
 		$asset = ORM::factory('asset')
 			->where('id', '=', $id)
@@ -282,15 +298,15 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->where('crop', '=', $crop)
 			->find();
 			
+		$path = $asset->image_path($width, $height, $crop, TRUE);
+
 		if ($size->loaded() AND !file_exists($path))
 		{			
-			$path = $asset->image_path($width, $height, $crop, TRUE);
-
 			$this->request->headers['Content-Type'] = $asset->mimetype->subtype.'/'.$asset->mimetype->type;
 			
 			if ($asset->mimetype->subtype === 'application' AND $asset->mimetype->type == 'pdf')
 			{
-				$file_in = DOCROOT.Kohana::$config->load('admin/asset.upload_path').'/'.$asset->filename;
+				$file_in = DOCROOT.Kohana::$config->load('assets.upload_path').'/'.$asset->filename;
 				
 				// Generate a PNG thumbnail of the PDF
 				Asset::pdfthumb($file_in, $path, $width, $height, $crop);
@@ -304,12 +320,14 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			$size->resized = 1;
 			$size->save();
 			
-			$this->request->send_file($path, FALSE, array('inline' => true));			
+			$this->response->send_file($path, FALSE, array('inline' => true));			
 		}	
 	}
 	
-	public function action_get_url($id = 0)
+	public function action_get_url()
 	{
+		$id = $this->request->param('id');
+
 		$this->auto_render = FALSE;
 		
 		$asset = ORM::factory('asset', $id);
@@ -319,8 +337,12 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		echo $asset->url(TRUE);
 	}
 	
-	public function action_get_image_url($id = 0, $width = NULL, $height = NULL)
+	public function action_get_image_url()
 	{
+		$id = $this->request->param('id');
+		$width = $this->request->param('width');
+		$height = $this->request->param('height');
+
 		$this->auto_render = FALSE;
 		
 		$asset = ORM::factory('asset', $id);
@@ -330,8 +352,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		echo $asset->image_url($width, $height, NULL, TRUE);
 	}
 	
-	public function action_get_download_html($id = 0)
+	public function action_get_download_html()
 	{
+		$id = $this->request->param('id');
+
 		$this->auto_render = FALSE;
 		
 		$asset = ORM::factory('asset', $id);
@@ -341,8 +365,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		echo View::factory('admin/page/assets_popup/download_html')->set('asset', $asset);
 	}	
 	
-	public function action_rotate($id = 0)
+	public function action_rotate()
 	{
+		$id = $this->request->param('id');
+
 		$asset = ORM::factory('asset', (int) $id);
 		
 		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image') exit;
@@ -356,8 +382,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->request->redirect('admin/assets/edit/'.$asset->id);
 	}
 	
-	public function action_sharpen($id = 0)
+	public function action_sharpen()
 	{
+		$id = $this->request->param('id');
+
 		$asset = ORM::factory('asset', (int) $id);
 
 		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image') exit;
@@ -367,8 +395,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->request->redirect('admin/assets/edit/'.$asset->id);
 	}
 	
-	public function action_flip_horizontal($id = 0)
+	public function action_flip_horizontal()
 	{
+		$id = $this->request->param('id');
+
 		$asset = ORM::factory('asset', (int) $id);
 
 		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image') exit;
@@ -378,8 +408,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->request->redirect('admin/assets/edit/'.$asset->id);
 	}
 	
-	public function action_flip_vertical($id = 0)
+	public function action_flip_vertical()
 	{
+		$id = $this->request->param('id');
+
 		$asset = ORM::factory('asset', (int) $id);
 
 		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image') exit;

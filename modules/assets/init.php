@@ -40,7 +40,6 @@ Route::set('media/assets', 'media/assets/resized/(<id>_<width>_<height>_<crop>_<
 		'controller'	=> 'assets',
 		'action'	=> 'get_asset',
 		'id'		=> 0,
-		'width'		=> NULL,
 		'height'	=> NULL,
 		'crop'		=> NULL,	
 		'filename'	=> NULL,
