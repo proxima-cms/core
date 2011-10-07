@@ -17,40 +17,29 @@ class Model_Base_User extends Model_Auth_User {
 
 	public function login(array & $data, $redirect = FALSE)
 	{
-		$rules = $this->rules();
-
-		$data = Validation::factory($data);
-
-    $validate_fields = array(
-			'password',
-    );  
-
-    foreach($validate_fields as $field)
-    {   
-      $data->rules($field, $rules[$field]);
-    }   
-    
-    if (!$data->check())
-    {   
-      return FALSE;
-    }   
-
-		$post = $data->as_array();
-
-		if (Auth::instance()->login($post['username'], $post['password']))
+		if (Auth::instance()->login(Arr::get($data, 'username'), Arr::get($data, 'password')))
 		{
-			
+			return TRUE;
 		}
 		else
 		{
-			exit('Unable to log user in.');
+			$data = Validation::factory($data)
+				->rule('username','trim')
+				->rule('username','not_empty')
+				->rule('password','not_empty');
+
+			if ($data->check())
+			{
+				$data->error('password','invalid');
+			}
+			
+			return FALSE;
 		}
 	}
 
-
 	public function signup(& $data)
 	{
-		$data = Validate::factory($data)
+		$data = Validation::factory($data)
 			->rules('password', $this->_rules['password'])
 			->rules('username', $this->_rules['username'])
 			->rules('email', $this->_rules['email'])
@@ -80,7 +69,7 @@ class Model_Base_User extends Model_Auth_User {
 
 	public function validate_update(& $data)
 	{
-		$data = Validate::factory($data)
+		$data = Validation::factory($data)
 			->rules('email', $this->_rules['email'])
 			->rules('password', $this->_rules['password'])
 			->rules('password_confirm', $this->_rules['password_confirm']);
@@ -138,30 +127,46 @@ class Model_Base_User extends Model_Auth_User {
 
 	public function reset_password(& $data)
 	{
-		$data = Validate::factory($data)
-			->filter('email', 'trim')
-			->rules('email', $this->_rules['email']);
+		$rules = $this->rules();
 
-		if ( !$data->check()) return FALSE;
+		$data = Validation::factory($data)
+			->rule('email','not_empty')
+			->rule('email','email');
+
+		if (!$data->check())
+		{
+			return FALSE;
+		}
 
 		$this->where('email', '=', $data['email']);
 		$this->find();
 
-		if (!$this->loaded()) return FALSE;
+		if (!$this->loaded())
+		{
+			return FALSE;
+		}
 
 		// generate the token
 		$token = Auth::instance()->hash_password($this->email.'+'.$this->password);
 	
 		// generate the reset password link
-		$uri = Request::instance()->uri(array('action' => 'confirm_reset_password')) . '?id=' . $this->id . '&auth_token=' . $token;
-		$url = URL::site($uri, TRUE);
+		$url = URL::site('admin/auth/confirm_reset_password?id=' . $this->id . '&auth_token=' . $token, TRUE);
 
 		// set the token in cookie
 		Cookie::set('token', $token);
 
-		$body = View::factory('email/auth/reset_password')
+		$body = View::factory('admin/page/auth/email/reset_password')
 			->set('user', $this)
 			->set('url', $url);
+
+		$swift_loader = Kohana::find_file('vendor', 'swiftmailer/lib/swift_required');
+
+		if ($swift_loader === FALSE)
+		{		
+			throw new Kohana_Exception('Swiftmailer library not found.');
+		}		
+
+		require_once $swift_loader;
 
 		$message = Swift_Message::newInstance()
 			->setSubject('Password reset')
@@ -185,16 +190,25 @@ class Model_Base_User extends Model_Auth_User {
 			throw new Exception(__('Invalid auth token.'));
 		}
 
-		$data = Validate::factory($data)
-			->filter('token', 'trim')
-			->rules('password', $this->_rules['password'])
-			->rules('password_confirm', $this->_rules['password_confirm']);
+    $rules = array_merge(
+			$this->rules(),
+      array('password_confirm' =>  
+        array(
+          array('matches', 
+            array(':validation', ':field', 'password')
+          )   
+        )   
+      )
+    );  
+
+		$data = Validation::factory($data)
+			->rules('password', $rules['password'])
+			->rules('password_confirm', $rules['password_confirm']);
 
 		$hash = $this->email.'+'.$this->password;
-		$salt = Auth::instance()->find_salt($token);
 
-		if ( !$data->check() OR !$this->loaded() OR $token !== Auth::instance()->hash_password($hash, $salt)) {
-
+		if ( !$data->check() OR !$this->loaded() OR $token !== Auth::instance()->hash_password($hash))
+		{
 			return FALSE;
 		}
 		
@@ -204,21 +218,8 @@ class Model_Base_User extends Model_Auth_User {
 		/* Change users password. The password will be auto-hashed on save.*/
 		$this->password = $data['password'];
 		$this->save();
-
-		Request::instance()->redirect('auth/signin?username='.$this->username);
-	}
-
-	public function save_openid($openid='')
-	{
-		$this->where('openid_id', '=', $openid)->find();
-
-		if ( $this->loaded()) return $this;
-
-		$this->openid_id = 
-		$this->email = 
-		$this->username = $openid;
-		
-		return $this->save();
-	}
 	
+		return TRUE;
+	}
+
 } // End Model_Base_User

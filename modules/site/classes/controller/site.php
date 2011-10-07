@@ -15,8 +15,8 @@ class Controller_Site extends Controller_Base {
 
 	public function action_index()
 	{
-		$uri = Arr::get($this->request->param(), 'uri', '');
-		
+		$uri = (string) $this->request->param('uri');
+
 		$cache_key = 'page-'.$uri;
 
 		if (!$page = Cache::instance()->get($cache_key))
@@ -41,6 +41,5 @@ class Controller_Site extends Controller_Base {
 
 		$this->template->content = View::factory($template);
 	}
-	
 	
 } // End Controller_Site

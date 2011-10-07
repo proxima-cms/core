@@ -25,7 +25,7 @@ class Component_Driver_Contact_Form extends Component_Component {
 
 			if ($swift_loader === FALSE)
 			{
-				throw new Exception('Swiftmailer library not found.');
+				throw new Kohana_Exception('Swiftmailer library not found.');
 			}
 
 			require_once $swift_loader;

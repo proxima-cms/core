@@ -13,7 +13,6 @@ abstract class Controller_Base extends Controller_Template {
 		// FIME: Load the database config driver
 		//Kohana::$config->attach(new Config_Database);
 
-		// Secure this controller
 		$this->authenticate();
 
 		parent::before();

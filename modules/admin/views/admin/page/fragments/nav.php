@@ -14,7 +14,7 @@
 		<?php }?>
 		
 		<li class="ui-state-default ui-corner-top ui-helper-right">
-			<?php echo HTML::anchor('admin/signout', 'Sign out')?>
+			<?php echo HTML::anchor('admin/auth/signout', 'Sign out')?>
 		</li>
 	</ul>
 </nav>

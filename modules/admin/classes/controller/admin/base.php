@@ -15,15 +15,8 @@ abstract class Controller_Admin_Base extends Controller_Base {
 	// Only users with role 'admin' can view this controller
 	protected $auth_required = 'admin';
 	
-	protected $view_path = NULL;
-	
-	// Validation errors
-	protected $errors = NULL;
-	
 	public function before()
 	{
-		$this->authenticate();
-
 		// If the crud model isn't set then use the controller name (default)
 		$this->crud_model === FALSE AND $this->crud_model = $this->request->controller();
 		
@@ -43,6 +36,9 @@ abstract class Controller_Admin_Base extends Controller_Base {
 	{
 		if ($this->auto_render)
 		{
+
+			// Merge in the generic admin config with the controller config.
+
 			$styles = array_merge(
 				(array) Kohana::$config->load('admin/media.styles'), 
 				(array) Kohana::$config->load('admin/'.$this->request->controller().'.styles'),
@@ -65,16 +61,8 @@ abstract class Controller_Admin_Base extends Controller_Base {
 			$this->template->scripts = $scripts; 
 			$this->template->paths = $paths;
 			$this->template->param = $this->request->param();
-
 			$this->template->set_global('breadcrumbs', $this->get_breadcrumbs());
-		
-			//	json_encode(array_map('URL::site', array_merge(Kohana::$config->load('admin/media.paths', $this->template->paths))));
 		}
-		
-		if (Request::current()->is_ajax() AND $this->errors !== NULL)
-		{			
-			$this->json_response($this->errors);
-		} 
 				
 		parent::after();
 	}
@@ -120,8 +108,6 @@ abstract class Controller_Admin_Base extends Controller_Base {
 
 	public function authenticate()
 	{
-		return;
-
 		// The user may be logged in but not have the correct permissions to view this controller and/or action, 
 		// so instead of redirecting to signin page we redirect to 403 Forbidden
 		if ( Auth::instance()->logged_in() AND Auth::instance()->logged_in($this->auth_required) === FALSE)
@@ -156,7 +142,7 @@ abstract class Controller_Admin_Base extends Controller_Base {
 
 		if (!$item->loaded())
 		{
-			throw new Kohana_Request_Exception('Item not found.');
+			throw new Kohana_Exception('Item not found.');
 		}
 		
 		$data = array('id' => $id);
@@ -186,26 +172,6 @@ abstract class Controller_Admin_Base extends Controller_Base {
 		}
 		
 		return View::factory('admin/page/fragments/breadcrumbs')->set('pages', $pages);
-	}
-	
-	public function json_response($data=array(), $data_type='errors')
-	{
-		if ($this->is_ajax)
-		{			
-			$data = ($data)
-				? array(
-					'status' => FALSE,
-					$data_type => $data
-				)
-				: array(
-					'status' => TRUE,
-					'redirect_url' => URL::site('admin/'.$this->request->controller)
-				);
-				
-			$this->template->content = json_encode($data);
-
-			$this->request->headers['Content-Type'] = 'application/json';
-		}
 	}
 
 } // End Controller_Admin_Base

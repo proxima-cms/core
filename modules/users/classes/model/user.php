@@ -4,8 +4,8 @@ class Model_User extends Model_Base_User {
 
 	public function admin_add(& $data)
 	{
-		$roles = isset($data['roles']) ? (array) $data['roles'] : array();
-		$groups = isset($data['groups']) ? (array) $data['groups'] : array();
+		$roles = (array) Arr::get($data, 'roles');
+		$groups = (array) Arr::get($data, 'groups');
 		$rules = $this->rules();
 
 		$data = Validation::factory($data)
@@ -47,10 +47,19 @@ class Model_User extends Model_Base_User {
 
 	public function admin_update(& $data)
 	{
-		$roles = isset($data['roles']) ? (array) $data['roles'] : array();
-		$groups = isset($data['groups']) ? (array) $data['groups'] : array();
+		$roles = (array) Arr::get($data, 'roles');
+		$groups = (array) Arr::get($data, 'groups');
 
-		$rules = array_merge($this->rules(), array('password_confirm' => array(array('matches', array(':validation', ':field', 'password')))));
+		$rules = array_merge(
+			$this->rules(), 
+			array('password_confirm' => 
+				array(
+					array('matches', 
+						array(':validation', ':field', 'password')
+					)
+				)
+			)
+		);
 
 		$data = Validation::factory($data)
 			->rules('email', $rules['email'])
@@ -64,6 +73,8 @@ class Model_User extends Model_Base_User {
 		}
 
 		$this->values($data->as_array());
+
+		//die(print_r($this->as_array()));
 		$this->save();
 		$this->update_roles($roles);
 		$this->update_groups($groups);
