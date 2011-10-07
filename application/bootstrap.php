@@ -110,10 +110,10 @@ Kohana::modules(array(
 	'pagination'	=> MODPATH.'pagination',
 	'compress'		=> MODPATH.'compress',
 	'cache'				=> MODPATH.'cache',      // Caching with multiple backends
+	'auth'				=> MODPATH.'auth',       // Basic authentication
 	'database'		=> MODPATH.'database',   // Database access
 	'orm'					=> MODPATH.'orm',        // Object Relationship Mapping
 	'message'			=> MODPATH.'message',
-	'auth'				=> MODPATH.'auth',       // Basic authentication
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
