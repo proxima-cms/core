@@ -4,8 +4,6 @@
  */
 class Model_Base extends ORM {
 	
-	public $_table_columns = NULL;
-	
 	/**
 	 * Tests if a unique key value exists in the database.
 	 *

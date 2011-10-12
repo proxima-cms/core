@@ -2,17 +2,20 @@
 
 class Component_Driver_Head_Scripts extends Component_Component {
 
-	public $view_path = 'themes/default/components/head/scripts';
-
 	public function render()
 	{
-    $styles = array(
-      'application/views/themes/default/media/css/screen.css'
-    );  
+		$styles = array();
+		foreach($config_styles = Theme::config('media.styles') as $style)
+		{
+			$styles[] = 'application/views/'.Theme::path($style);
+		}
 
-    $styles = Compress::instance()->styles($styles);
+    if (Kohana::$environment !== Kohana::DEVELOPMENT)
+    {   
+      $styles = array(Compress::instance()->scripts($styles));
+    } 
 
-		return View::factory($this->view_path)
+		return View::factory(Theme::path('components/head/scripts'))
 			->set('styles', $styles)
 			->render();
 	}

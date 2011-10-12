@@ -2,17 +2,20 @@
 
 class Component_Driver_Footer_Scripts extends Component_Component {
 
-	public $view_path = 'themes/default/components/footer/scripts';
-
 	public function render()
 	{
-    $scripts = array(
-      'application/views/themes/default/media/js/global.js'
-    );  
+		$scripts = array();
+		foreach($config_scripts = Theme::config('media.scripts') as $script)
+		{		
+			$scripts[] = 'application/views/'.Theme::path($script);
+		}		
 
-    $scripts = Compress::instance()->scripts($scripts);
+		if (Kohana::$environment !== Kohana::DEVELOPMENT)
+		{		
+			$scripts = array(Compress::instance()->scripts($scripts));
+		}		
 
-		return View::factory($this->view_path)
+		return View::factory(Theme::path('components/footer/scripts'))
 			->set('scripts', $scripts)
 			->render();
 	}
