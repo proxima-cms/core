@@ -211,14 +211,15 @@ class Model_Base_User extends Model_Auth_User {
 		{
 			return FALSE;
 		}
-		
+
 		/* Remove token from cookie */
 		Cookie::delete('token');
 
 		/* Change users password. The password will be auto-hashed on save.*/
 		$this->password = $data['password'];
-		$this->save();
-	
+
+    $this->save();
+
 		return TRUE;
 	}
 

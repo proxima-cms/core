@@ -22,7 +22,7 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 				Message::set(Message::SUCCESS, __('User successfully saved.'));
 				$this->request->redirect('admin/users');
 			}
-			else if ($errors = $_POST->errors('auth'))
+			else if ($errors = $_POST->errors('admin/users'))
 			{
 				 Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
@@ -83,7 +83,7 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 				Message::set(Message::SUCCESS, __('User successfully updated.'));
 				$this->request->redirect($this->request->uri());
 			}
-			else if ($errors = $_POST->errors('profile'))
+			else if ($errors = $_POST->errors('admin/users'))
 			{
  				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}

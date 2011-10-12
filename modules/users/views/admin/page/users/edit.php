@@ -32,13 +32,13 @@
 		<div class="field">
 			<?php echo 
 				Form::label('password', 'New password', NULL, $errors),
-				Form::password('password', NULL, $errors)
+				Form::password('password', NULL, NULL, $errors)
 			?>
 		</div>
 		<div class="field">
 			<?php echo 
 				Form::label('password_confirm', 'Confirm password', NULL, $errors),
-				Form::password('password_confirm', NULL, $errors)
+				Form::password('password_confirm', NULL, NULL, $errors)
 			?>
 		</div>
 	</fieldset>
