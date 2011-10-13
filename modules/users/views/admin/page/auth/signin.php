@@ -2,7 +2,7 @@
 		<?php echo Form::open()?>
 			<fieldset>
 
-				<?php echo Form::hidden('return_to', $return_to)?>
+				<?php echo Form::hidden('return_to', Arr::get($_REQUEST, 'return_to', 'admin'))?>
 
 				<div class="field">
 					<?php echo 

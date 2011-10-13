@@ -4,6 +4,8 @@ class Model_User extends Model_Base_User {
 
 	public function rules()
 	{
+		return parent::rules();
+
 		return array_merge(
 			parent::rules(), 
 			array('password_confirm' =>  

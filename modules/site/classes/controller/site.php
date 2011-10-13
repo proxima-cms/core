@@ -14,8 +14,6 @@ class Controller_Site extends Controller_Base {
 
 	public function action_index()
 	{
-		$rules = ORM::factory('user')->rules();
-
 		$uri = (string) $this->request->param('uri');
 
 		$cache_key = 'page-'.$uri;

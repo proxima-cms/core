@@ -2,8 +2,6 @@
 
 class Component_Driver_Contact_Form extends Component_Component {
 
-	public $view_path = 'themes/default/components/site/contact/form/';
-
 	public $_default_config = array(
 		'recipient' => 'null@example.com',
 		'subject' => 'Default subject'
@@ -11,7 +9,7 @@ class Component_Driver_Contact_Form extends Component_Component {
 
 	public function render()
 	{
-		$view = View::factory($this->view_path.'form')
+		$view = View::factory(Theme::path('components/contact/form/form'))
 			->bind('errors', $errors);
 
 		$data = Validation::factory($_POST)

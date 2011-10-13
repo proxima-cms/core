@@ -2,8 +2,6 @@
 
 class Component_Driver_Page_Nav extends Component_Component {
 
-	protected $view_path = 'themes/default/components/pages/nav/';
-
 	protected $_default_config = array(
 		'parent_id' => 1
 	);
@@ -25,11 +23,11 @@ class Component_Driver_Page_Nav extends Component_Component {
 			{
 				$pages[] = (object) $page->as_array();
 			}
-			
+
 			Cache::instance()->set($cache_key, $pages);
 		}
 
-		return View::factory($this->view_path.'nav')
+		return View::factory(Theme::path('components/pages/nav/nav'))
 			->set('pages', $pages)
 			->render();
 	}

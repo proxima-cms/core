@@ -16,8 +16,7 @@ class Controller_Admin_Auth extends Controller_Admin_Base {
 
 		$this->template->title = __('Sign in');
 		$this->template->content = View::factory('admin/page/auth/signin')
-			->bind('errors', $errors)
-			->bind('return_to', $return_to);
+			->bind('errors', $errors);
 	
 		if ($_POST)
 		{
@@ -25,10 +24,11 @@ class Controller_Admin_Auth extends Controller_Admin_Base {
 			if (ORM::factory('user')->login($_POST))
 			{
 				$message = $_POST['username'].' successfully signed in.';
+
 				Message::set(Message::SUCCESS, __($message));
 
-				$return = Arr::get($_REQUEST, 'return_to') ?: 'admin';
-							
+				$return = Arr::get($_POST, 'return_to', 'admin');
+
 				$this->request->redirect( $return );
 			}
 			else

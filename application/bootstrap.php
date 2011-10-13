@@ -114,6 +114,7 @@ Kohana::modules(array(
 	'database'		=> MODPATH.'database',   // Database access
 	'orm'					=> MODPATH.'orm',        // Object Relationship Mapping
 	'message'			=> MODPATH.'message',
+	'blogimport'	=> MODPATH.'blogimport',
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
