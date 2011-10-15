@@ -2,7 +2,7 @@
 
 class Importer_Driver_Tumblr extends Importer_Driver
 {
-	public function import_posts($config=array())
+	public function import_posts()
 	{
 		try
 		{
@@ -102,7 +102,8 @@ class Importer_Driver_Tumblr extends Importer_Driver
 				$intro = $body = $data['video-player'];
 			}
 			// Unsupported video post
-			else {
+			else
+			{
 				continue;
 			}
 
@@ -117,61 +118,46 @@ class Importer_Driver_Tumblr extends Importer_Driver
 				continue;
 			}
 
-			$tags = (array) @$data['tag'];
-
-			// Save post tag as category
-			//$category_id = ($tags && $this->config['categories']) ? $this->save_post_tags($tags) : 0;
-			$category_id = 0;
-
-			// Try save the post as a page.
+			// Set post data
 			$page->title = $title;
-			$page->parent_id = '236';
-				//'category_id' => $category_id,
-				//'intro' => $intro,
+			$page->description = $title;
+			$page->parent_id = $this->config['parent_id'];
 			$page->body = (string) $body;
 			$page->draft = (string) $this->config['status'];
-			$page->pagetype_id = '4';
+			$page->pagetype_id = $this->config['page_type_id'];
 			$page->user_id = Auth::instance()->get_user()->id;
-				//'status' => $this->config['status'],
 			$page->visible_from = date('Y-m-d H:i:s', $data['@attributes']['unix-timestamp']);
+			$page->generate_uri($this->config['url_prefix']);
+		
+			// Save page
+			$saved += (int) !!$page->save();
 
-			$page->generate_uri();
-			
-			$result = $page->save();
+			// Save page tags
+			$tags = (array) @$data['tag'];
 
-			if ($result)
+			if ($tags && $this->config['categories'])
 			{
-				$saved += (int) !!$result;
+				$this->save_page_tags($page, $tags);
 			}
 		}
 
 		return $saved;
 	}
 
-	public function save_post($data=array())
+	public function save_page_tags($page = NULL, $tags = array())
 	{
-		$id = $this->ci->blog_m->insert($data);
-
-		if ($id)
+		foreach($tags as $tag)
 		{
-			$this->ci->cache->delete_all('ci->blog_m');
-			return $id;
+			$tag_model = ORM::factory('tag')->where('name', '=', $tag)->find();
+
+			if (!$tag_model->loaded())
+			{
+				$tag_model->name = $tag;
+				$tag_model->slug = $tag;
+				$tag_model->save();
+			}
+			
+			$page->add('tags', new Model_Tag(array('id' => $tag_model->id)));
 		}
-		return false;
-	}
-
-	public function save_post_tags($tags=array())
-	{
-		// Use the first tag for the category
-		$category = $tags[0];
-
-		if (!$this->ci->blog_categories_m->check_title($category))
-		{	
-			$this->ci->blog_categories_m->insert(array('title' => $category));
-		}
-
-		$category_db = current($this->ci->db->get_where('blog_categories', array('slug' => url_title($category)))->result_array());
-
-		return $category_db['id'];
 	}
 }

@@ -12,6 +12,7 @@ return array(
 		//'admin/logs'		=> __('Logs'),
 		'admin/config'		=> __('Config'),
 		'admin/cache'			=> __('Cache'),
+		'admin/blogimport'			=> __('Blog Import'),
 		//'admin/activity'	=> __('Activity'),
 		//'admin/wysiwyg'		=> __('Wysiwyg'),
 		//'admin/migrations'	=> __('Migrations'),

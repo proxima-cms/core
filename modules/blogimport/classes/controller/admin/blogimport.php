@@ -1,72 +1,50 @@
 <?php 
-/**
- *
- * The Tumblr Import module will import posts and tags from a tumblr XML feed.
- *
- * @author	Richard Willis
- * @package	PyroCMS
- * @subpackage	TumblrImport
- * @category	Modules
- * @license	Apache License v2.0
- */
 
 class Controller_Admin_BlogImport extends Controller_Admin_Base {
 
-	/**
-	 * Validation callback method that checks the format of the feed URL
-	 * @access public
-	 * @param string url The URL to check
-	 * @return bool
-	 */
-	public static function validation_check_url($url)
-	{
-		if (!preg_match('/^https?:\/\/.+/', $url))
-		{
-			return FALSE;
-		}
-		// Strip end slashes
-		$url = preg_replace('/[\/]+$/', '', $url);
-
-		return true;
-	}
-
-	/**
-	 * Main request
-	 * @access public
-	 * @return void
-	 */
   public function action_index()
   {
     $this->template->title = __('Blog import');
-    $this->template->content = View::factory('admin/page/blogimport/index');
+    $this->template->content = View::factory('admin/page/blogimport/index')
+			->bind('pages', $pages)
+			->bind('page_types', $page_types)
+			->bind('errors', $errors);
 
-    //$data = Validation::factory($_POST);
-      //->rule('blog_url', 'not_empty')
-      //->rule('blog_url', array($this, 'validation_check_url'));
+		$pages = ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title');
 
-		if ($_POST)
+		$page_types = array();
+		foreach($types = ORM::factory('page_type')->find_all() as $type)
 		{
-			$result = Importer::factory('Tumblr', $_POST)
-				->import_posts();
-			}
+			$page_types[$type->id] = $type->name;
+		}
 
-	//		if ($result === FALSE)
-	//		{
-	//			$this->session->set_flashdata('error', 'Error loading XML feed.');
-	//			redirect('admin/tumblrimport');
-	//		} 
+    $data = Validation::factory($_POST)
+    	->rule('blog_url', 'not_empty')
+      ->rule('blog_url', 'url');
 
-	//		$flashmsg = sprintf('Saved %s of %s posts.', 
-	//			$result['saved'],
-	//			$result['total_posts']
-	//		);
+		if ($_POST AND $data->check())
+		{
+			$result = Importer::factory($_POST['service'], $_POST)->import_posts();
+	
+			if ($result === FALSE)
+			{
+				Message::set(Message::ERROR, __('Error loading the XML feed.'));
 
-	//		$this->session->set_flashdata($result['saved'] ? 'success' : 'error', $flashmsg);
-	//		redirect('admin/tumblrimport');
-		//}
-		//else
-		//{
-		//	$errors = $data->errors();
-	//	}
+				Request::current()->redirect('admin/blogimport');
+			} 
+			
+			$message = sprintf('Saved %s of %s posts.', 
+				$result['saved'],
+				$result['total_posts']
+			);
+				
+			Message::set($result > 0 ? Message::SUCCESS : Message::NOTICE, $message);
+
+			Request::current()->redirect('admin/blogimport');
+		}
+		else
+		{
+			$errors = $data->errors('blogimport');
+		}
 	}
 }

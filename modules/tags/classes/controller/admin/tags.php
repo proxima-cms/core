@@ -26,7 +26,7 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 		}
 	}
 
- public function action_edit()
+	public function action_edit()
 	{
 		$id = (int) $this->request->param('id');
 
@@ -67,6 +67,21 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 			// If POST is empty, then add the default data to POST
 			$_POST = array_merge($_POST, $default_data);
 		}		
+	}
+
+	public function action_delete($id = NULL, $set_message = TRUE)
+	{
+		$ids = explode(',', (string) $this->request->param('id'));
+
+		foreach($ids as $id)
+		{
+			parent::action_delete($id, false);
+		}
+
+  	$message = __('Tag'.(count($ids) > 1?'s':'').' successfully deleted.');
+		Message::set(Message::SUCCESS, $message);
+
+		$this->request->redirect('admin/tags');
 	}
 	
 } // End Controller_Admin_Tags

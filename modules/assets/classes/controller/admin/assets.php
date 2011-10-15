@@ -210,7 +210,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->response->send_file($asset->path(TRUE), $asset->friendly_filename);
 	}
 	
-	public function action_delete()
+	public function action_delete($id = NULL, $set_message = TRUE)
 	{	
 		$id = $this->request->param('id');
 

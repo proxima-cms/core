@@ -121,10 +121,14 @@ form {
 label { 
 	padding: .2em 0; 
 	display: inline-block;
+	display: block;
+}
+thead label {
+	padding: 0;
 }
 input, select, textarea { 
 	margin: 0; 
-	display: block;
+	clear:both;
 }
 .form-error, .errors { 
 	color: #BB0000;
@@ -168,7 +172,7 @@ input[type=password] {
 	width: 24em;
 }
 select { 
-	width: 20em; 
+	width: 25.5em; 
 }
 select, 
 input[type=text], 

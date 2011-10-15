@@ -72,7 +72,7 @@ abstract class Controller_Admin_Base extends Controller_Base {
 	{
 		if (!$this->template->content)
 		{
-			$this->template->content = View::factory('admin/page/'.$this->request->controller().'/index');
+			$this->template->content = View::factory('admin/page/'.str_replace('_', '/', $this->request->controller()).'/index');
 		}
 		
 		// Crud model needs to be set
@@ -135,9 +135,13 @@ abstract class Controller_Admin_Base extends Controller_Base {
 	}
 	
 	// A generic delete action to delete a model item by ID
-	public function action_delete()
+	public function action_delete($id = NULL, $set_message = TRUE)
 	{
-		$id = (int) Request::current()->param('id');
+		if ($id === NULl)
+		{
+			$id = (int) Request::current()->param('id');
+		}
+
 		$item = ORM::factory($this->crud_model_singular, $id);
 
 		if (!$item->loaded())
@@ -145,20 +149,15 @@ abstract class Controller_Admin_Base extends Controller_Base {
 			throw new Kohana_Exception('Item not found.');
 		}
 		
-		$data = array('id' => $id);
+		$item->admin_delete(NULL, array('id' => $id));
 
-		if ( $item->admin_delete(NULL, $data))
+		if ($set_message === TRUE)
 		{
 			$message = ucfirst($this->crud_model_singular).' '.__('successfully deleted.');			
 			Message::set(Message::SUCCESS, $message);
 
 			$this->request->redirect('admin/'.$this->crud_model);
 		}
-		
-		if ($errors = $data->errors('admin/delete'))
-		{
-			throw new Exception(implode("\n", $errors));
-		}		
 	}
 	
 	public function get_breadcrumbs($pages = array())

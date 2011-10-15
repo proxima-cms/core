@@ -25,8 +25,9 @@ class Model_Page extends Model_Base_Page {
 
 		$post = $data->as_array();
 		$post['uri'] = NULL;
+
 		$this->values($post);
-		#$this->user_id = Auth::instance()->get_user()->id;
+		$this->user_id = Auth::instance()->get_user()->id;
 		$this->save();
 
 		$this->generate_uri();
@@ -104,7 +105,7 @@ class Model_Page extends Model_Base_Page {
 		return parent::delete($id);		
 	}
 
-	public function generate_uri()
+	public function generate_uri($prefix = NULL)
 	{
 		if ($this->is_homepage)
 		{
@@ -112,21 +113,27 @@ class Model_Page extends Model_Base_Page {
 		}
 		else
 		{
-			$uri_prefix = ''; 
+			$prefixes = array();
 
-			if ((int) $this->parent_id > 0)
+			if ($prefix !== NULL AND $prefix !== '')
+			{
+				$prefixes = array($prefix);
+			}
+			else if ($prefix === NULL AND (int) $this->parent_id > 0)
 			{		
 				$parent_page = ORM::factory('page', (int) $this->parent_id);
 
 				if ($parent_page->loaded() AND $parent_page->uri)
 				{		
-					$uri_prefix = $parent_page->uri.'/';
+					$prefixes = array($parent_page->uri);
 				}		
 			}		
 
-			$page_uri = $orig_uri = $uri_prefix.URL::title($this->title, '-');
-			$c = 1;
+			$prefixes[] = URL::title($this->title, '-');
 
+			$page_uri = $orig_uri = join($prefixes, '/');
+
+			$c = 1;
 			while(
 				ORM::factory('page')
 				->where('uri', '=', $page_uri)
@@ -137,7 +144,7 @@ class Model_Page extends Model_Base_Page {
 				$c++;
 				$page_uri = $orig_uri.$c;
 			}
-		
+
 			$this->uri = $page_uri;
 		}
 

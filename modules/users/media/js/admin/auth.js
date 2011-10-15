@@ -12,8 +12,17 @@
 	
 	Admin.controller.auth = {
 		
-		action_index: function(){
-		
+		action_signin: function(){
+
+			var username = $('#username');
+			var password = $('#password');
+
+			if (!username.val()){
+				username.focus();
+			} else if (!password.val()) {
+				password.focus();
+			}
+
 		}
 	
 	};

@@ -8,7 +8,7 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 	{
 		$this->template->title = __('Add tag');
 
-		$this->template->content = View::factory('admin/page/types/add')
+		$this->template->content = View::factory('admin/page/pages/types/add')
 			->bind('errors', $errors)
 			->bind('templates', $templates);
 
@@ -53,7 +53,7 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			$default_data = $page_type->as_array();
 		}
 
-		$this->template->content = View::factory('admin/page/types/edit')
+		$this->template->content = View::factory('admin/page/pages/types/edit')
 			->bind('page_type', $page_type)
 			->bind('templates', $templates)
 			->bind('errors', $errors);
@@ -83,7 +83,7 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 		}
 	}
 
-	public function action_delete()
+	public function action_delete($id = NULL, $set_message = TRUE)
 	{
 		// Nasty hack to adjust the redirect URL :/
 		$this->crud_model = 'pages/types';

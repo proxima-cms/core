@@ -67,7 +67,6 @@ class Model_Tag extends Model_Base {
 
 	public function admin_delete()
 	{
-		die(var_dump($this->pages->find_all()));
 		//$pages->remove($this);
 		 
 		return parent::delete();

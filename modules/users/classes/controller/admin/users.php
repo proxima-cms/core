@@ -94,7 +94,7 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 		}
 	}
 
-	public function action_delete()
+	public function action_delete($id = NULL, $set_message = TRUE)
 	{
 		$id = (int) $this->request->param('id');
 

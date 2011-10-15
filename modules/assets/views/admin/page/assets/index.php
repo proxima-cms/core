@@ -28,6 +28,7 @@
 			<thead>
 				<tr>
 					<th>
+						<?php echo Form::checkbox('asset-all', 1, FALSE, array('style' => 'float:left;margin:6px 6px 0 0')) ?>
 						<a href="<?php echo URL::site('admin/assets?sort=filename&direction='.$reverse_direction.'&page='.$pagination->current_page)?>">
 							Filename
 							<span 
@@ -57,6 +58,15 @@
 				<?php foreach($assets as $asset){?>
 				<tr>
 					<td>
+						<div class="clear" style="margin-bottom:5px;">
+						<?php echo Form::checkbox('asset-'.$asset->id, $asset->id, FALSE, array('style' => 'float:left;margin:0px 2px 0 0')) ?>
+						<?php echo HTML::anchor('admin/assets/edit/'.$asset->id, $asset->friendly_filename, array(
+							'class' => 'asset'
+						))?>
+						<div class="helper-right" style="padding-left:6px;color:#888">
+						<?php echo $asset->date?>
+						</div>
+						</div>
 						<a href="<?php echo URL::site('admin/assets/edit/'.$asset->id)?>" class="helper-left" style="background:transparent;padding:0">
 							<?php if ($asset->is_text_document()){?>
 								<img src="/modules/admin/media/img/assets/page-white-text.png" class="asset-thumb helper-left" />
@@ -66,14 +76,7 @@
 								<img src="<?php echo URL::site($asset->image_url(60, 60, TRUE))?>" class="asset-thumb helper-left" />
 							<?php }?>
 						</a>
-						<input type="checkbox" class="checkbox helper-left" name="asset-<?php echo $asset->id?>" value="<?php echo $asset->id?>" id="asset-<?php echo $asset->id?>" style="margin-right:5px;margin-left:5px"/>
-						<?php echo HTML::anchor('admin/assets/edit/'.$asset->id, $asset->friendly_filename, array(
-							'class' => 'asset'
-						))?>
 					<br /><br />
-					<div class="helper-left" style="padding-left:6px;color:#888">
-					<?php echo $asset->date?>
-					</div>
 
 					</td>
 					<td>

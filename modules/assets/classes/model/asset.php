@@ -103,7 +103,7 @@ class Model_Asset extends Model_Base_Asset {
 		return $this->save();
 	}
 	
-	public function admin_delete($id = NULL, & $data)
+	public function admin_delete($id = NULL, $set_message = TRUE)
 	{
 		return parent::delete($id);		
 	}

@@ -53,13 +53,6 @@ Route::set('admin/popup-assets', 'admin/assets/popup(/<action>)(/<id>)')
 		'directory' 	=> 'admin',
 	));
 	
-// Admin Actions
-Route::set('admin', 'admin/<controller>(/<action>)(/<id>)')
-	->defaults(array(
-		'action' 		=> 'index',
-		'directory' 	=> 'admin'
-	));
-	
 // Admin logs
 Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
 	->defaults(array(
@@ -67,11 +60,12 @@ Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
 		'action'     	=> 'index',	
 		'file'	     	=> NULL
 	));
-	
-// Admin home
-Route::set('admin-home', 'admin')
+
+// Admin controllers
+Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 	->defaults(array(
+		'action' 			=> 'index',
 		'directory' 	=> 'admin',
-		'controller' 	=> 'home',
-		'action' 		=> 'index'
+		'controller'	=> 'home'
 	));
+	

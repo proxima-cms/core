@@ -3,7 +3,7 @@
 abstract class Importer
 {
 
-	public static function factory($driver=NULL, $config)
+	public static function factory($driver = NULL, $config = array())
 	{
 
 		$importer_feeds = Kohana::$config->load('admin/blogimport');

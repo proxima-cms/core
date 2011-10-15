@@ -18,7 +18,7 @@
 				?>
 			</div>
 		
-			<?php echo Form::submit('resetpass', 'Reset password', array('class' => 'button'))?>
+			<?php echo Form::submit('resetpass', 'Reset password', array('class' => 'ui-button default'))?>
 	
 		<?php } else { ?>
 

@@ -3,7 +3,9 @@
 <?php if (Kohana::$environment === Kohana::DEVELOPMENT){?>
 	
 	<div class="benchmark"> 
+		<!--
 		{execution_time} - {memory_usage}
+		-->
 	</div>
 	
 <?php } else {?>

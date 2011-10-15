@@ -23,7 +23,6 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			->bind('errors', $errors);
 
 		$pages = ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title');
-
 		$tags = ORM::factory('tag')->find_all();
 
 		$page_types = array('' => 'None');
@@ -35,11 +34,11 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 		if ($_POST)
 		{
-			if (ORM::factory('page')->admin_add($_POST))
+			if ($page = ORM::factory('page')->admin_add($_POST))
 			{
-				Message::set(Message::SUCCESS, __('Page saved.'));
+				Message::set(Message::SUCCESS, __('Page successfully saved.'));
 				
-				Request::current()->redirect('admin/pages');
+				Request::current()->redirect('admin/pages/edit/'.$page->id);
 			} 
 			else if ($errors = $_POST->errors('admin/pages'))
 			{
@@ -78,7 +77,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 		$pages = ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title');
 			
-		$tags = ORM::factory('tag')->find_all();
+		$tags = ORM::factory('tag')->order_by('name', 'asc')->find_all();
 
 		$page_tags = array();
 		foreach($page->tags->find_all() as $tag)

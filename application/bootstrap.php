@@ -82,7 +82,7 @@ if (isset($_SERVER['KOHANA_ENV']))
 Kohana::init(array(
 	'base_url'		=> '/',
 	'index_file'	=> FALSE,
-	'caching'			=> TRUE
+	'caching'			=> Kohana::$environment !== Kohana::DEVELOPMENT
 ));
 
 /**
@@ -95,13 +95,19 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
  */
 Kohana::$config->attach(new Config_File);
 
+Route::set('validation', 'validation')
+	->defaults(array(
+		'controller' => 'validation',
+		'action'     => 'index',
+	));
+
 /**
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
 	'core'				=> MODPATH.'core',
-	'admin'				=> MODPATH.'admin',
 	'pages'				=> MODPATH.'pages',
+	'admin'				=> MODPATH.'admin',
 	'assets'			=> MODPATH.'assets',
 	'users'				=> MODPATH.'users',
 	'tags'				=> MODPATH.'tags',
@@ -120,4 +126,5 @@ Kohana::modules(array(
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
 
-Cache::$default = 'apc';
+// THIS NEEDS TO BE SET IN A TRANSPARENT CLASS EXTENSION
+//Cache::$default = 'apc';
