@@ -19,7 +19,7 @@ class Component_Driver_Tag_List extends Component_Component {
       Cache::instance()->set($cache_key, $tags);
     }   
 
-		return View::factory('themes/default/components/tags/taglist/tags')
+		return View::factory(Theme::path('components/tags/taglist/tags'))
 			->set('tags', $tags)
 			->render();
 	}

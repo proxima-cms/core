@@ -55,13 +55,14 @@ class Model_Base extends ORM {
 	 * @param	string 		items HTML string
 	 * @return  string
 	 */
-	public function tree_list_html($view_path = NULL, $start_id = 0, $open_items = array(), $list_html = '')
+	public function tree_list_html($view_path = NULL, $start_id = 0, $open_items = array(), $order_by = array('name' => 'date', 'order' => 'desc'), $list_html = '')
 	{
 		$start = $this
 			->where('parent_id', '=', $start_id)
+			->order_by($order_by['name'], $order_by['order'])
 			->find_all();
 
-		$this->recurse_tree_list_html($start, $list_html, $view_path, $open_items);
+		$this->recurse_tree_list_html($start, $list_html, $view_path, $open_items, $order_by);
 		
 		return $list_html;
 	}
@@ -100,7 +101,7 @@ class Model_Base extends ORM {
 	 * @param	string 		path to tree views directory
 	 * @param   integer		the recursion depth
 	 */
-	private function recurse_tree_list_html($items, & $html = '', $view_path = 'tree', $open_items = array(), & $depth = -1)
+	private function recurse_tree_list_html($items, & $html = '', $view_path = 'tree', $open_items = array(), $order_by = array(), & $depth = -1)
 	{		
 		$depth++;
 		
@@ -117,7 +118,11 @@ class Model_Base extends ORM {
 				->set(Inflector::singular($this->_table_name), $item)
 				->set('open_items', $open_items);
 
-			$this->recurse_tree_list_html($item->children->find_all(), $html, $view_path, $open_items, $depth);
+			$children = $item->children
+				->order_by($order_by['name'], $order_by['order'])
+				->find_all();
+
+			$this->recurse_tree_list_html($children, $html, $view_path, $open_items, $order_by, $depth);
 			
 			$html .= View::factory($view_path.'/item_close');
 		}		

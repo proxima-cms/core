@@ -26,6 +26,7 @@ class Importer_Driver_Tumblr extends Importer_Driver
 	public function save_posts($posts = array())
 	{
 		$saved = 0;
+		//die(URL::site(NULL, TRUE));
 
 		foreach($posts as $data)
 		{
@@ -139,6 +140,16 @@ class Importer_Driver_Tumblr extends Importer_Driver
 			{
 				$this->save_page_tags($page, $tags);
 			}
+			
+			// Save page redirect.
+			$redirect_url = parse_url($data['@attributes']['url-with-slug']);
+			$redirect_uri = ltrim($redirect_url['path'], '/');
+
+			$redirect = ORM::factory('redirect')->where('uri', '=', $redirect_uri)->find();
+			$redirect->uri = $redirect_uri;
+			$redirect->target = 'page';
+			$redirect->target_id = $page->id;
+			$redirect->save();
 		}
 
 		return $saved;

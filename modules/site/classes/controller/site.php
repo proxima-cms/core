@@ -7,7 +7,6 @@ class Controller_Site extends Controller_Base {
 		$this->template = Theme::path('page');
 		//$config = Arr::merge(Kohana::$config->load(), require Kohana::find_file('views/themes/badsyntax/config/', 'media'));
 
-
 		//die(print_r($config));
 		parent::before();
 	}
@@ -24,7 +23,16 @@ class Controller_Site extends Controller_Base {
 		
 			if (!$page->loaded())
 			{
-				throw new HTTP_Exception_404(__('Page not found.'));
+				$redirect = ORM::factory('redirect')->where('uri', '=', $uri)->find();
+
+				if (!$redirect->loaded())
+				{
+					throw new HTTP_Exception_404('Page not found.');
+				}
+
+				$target = ORM::factory($redirect->target, $redirect->target_id);
+
+				$this->request->redirect($target->uri, 301);
 			}
 
 			Cache::instance()->set($cache_key, (object) $page->as_array());

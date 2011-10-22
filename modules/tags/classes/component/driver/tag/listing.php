@@ -4,8 +4,13 @@ class Component_Driver_Tag_Listing extends Component_Component {
 
 	public function render()
 	{
-		$tag_slug = Arr::get($_REQUEST, 'name', NULL);
-	 	
+		$tag_slug = Request::current()->param('name');
+	
+		if ($tag_slug === NULL)
+		{
+			$tag_slug = Request::current()->query('name');
+		}
+
 		$cache_key = 'tag-list-'.$tag_slug;
 
 		if (!$listing_html = Cache::instance()->get($cache_key))
@@ -20,7 +25,7 @@ class Component_Driver_Tag_Listing extends Component_Component {
 		
 				if (!$tag->loaded())
 				{
-					throw new Exception('Tag not found.');
+					throw new HTTP_Exception_404('Page not found.');
 				}
 				
 				$pages = $pages_cache

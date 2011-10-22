@@ -24,25 +24,26 @@
 		<div class="field">
 			<?php echo 
 				Form::label('title', __('Title'), NULL, $errors).
-				Form::input('title', $_POST['title'], NULL, $errors)
+				Form::input('title', Arr::get($_POST, 'title'), NULL, $errors)
 			?>
 		</div>
 		<div class="field">
 			<?php 
 				echo 
-				Form::label('uri', __('URI'), NULL, $errors);
+				Form::label('uri', __('URI'), array('style' => 'display:inline'), $errors);
 
 				echo '&nbsp;&nbsp;&nbsp;'. 
-				HTML::anchor('admin/pages/generate_uri?page_id='.$page->id, '[Update]', array('id' => 'update-uri'));
+				HTML::anchor('admin/pages/generate_uri?page_id='.$page->id, '[Generate]', array('id' => 'update-uri')).
+				'<br/>';
 			
 				echo
-				Form::input('uri', $_POST['uri'], NULL, $errors)
+				Form::input('uri', Arr::get($_POST, 'uri'), NULL, $errors)
 			?>
 		</div>
 		<div class="field">
 			<?php echo 
 				Form::label('description', __('Description'), NULL, $errors).
-				Form::input('description', $_POST['description'], NULL, $errors)
+				Form::input('description', Arr::get($_POST, 'description'), NULL, $errors)
 			?>
 		</div>
 	</fieldset>
@@ -61,6 +62,35 @@
 				Form::select('pagetype_id', $page_types, Arr::get($_POST, 'pagetype_id'), NULL, $errors)
 			?>	
 		</div>	
+	</fieldset>
+
+	<fieldset>
+		<legend>Routing</legend>
+		<p>Add key matches to convert url sections into request parameters.</p>
+		<div class="field">
+			<?php echo 
+				Form::label('route_uri', __('Route URI'), array('style' => 'display:inline'), $errors).
+				'&nbsp;&nbsp;&nbsp;'. 
+				HTML::anchor('admin/pages/generate_uri?page_id='.$page->id, '[Generate]', array('id' => 'update-uri')).
+				'<br/>'.
+				Form::input('route_uri', Arr::get($_POST, 'route_uri'), NULL, $errors)
+			?>
+		</div>
+		<div class="field" style="display:none">
+			<?php echo 
+				Form::label('route_key1_name', __('Key name'), NULL, $errors).
+				Form::input('route_key1_name', Arr::get($_POST, 'route_key1_name'), NULL, $errors)
+			?>
+			<?php echo 
+				Form::label('route_key1_regex', __('Key regex'), NULL, $errors).
+				Form::input('route_key1_regex', Arr::get($_POST, 'route_key1_regex'), NULL, $errors)
+			?>
+		</div>
+		<div class="field">
+			<button class="ui-button default">
+				<span>+ Add key match</span>
+			</button>
+		</div>
 	</fieldset>
 
 	<fieldset>
@@ -140,7 +170,7 @@
 			</div>
 			<div>
 				<?php echo 
-					Form::input('visible_to', $_POST['visible_to'], array('class' => 'datepicker'), $errors);
+					Form::input('visible_to', Arr::get($_POST, 'visible_to'), array('class' => 'datepicker'), $errors);
 				?>
 			</div>
 		</div>
@@ -151,7 +181,7 @@
 		<div class="field">
 			<?php echo 
 				Form::label('body', __('Body content'), NULL, $errors),
-				Form::textarea('body', $_POST['body'], array('class' => 'wysiwyg'), TRUE, $errors)
+				Form::textarea('body', Arr::get($_POST, 'body'), array('class' => 'wysiwyg'), TRUE, $errors)
 			?>
 		</div>		
 	</fieldset>

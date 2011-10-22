@@ -95,10 +95,15 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
  */
 Kohana::$config->attach(new Config_File);
 
-Route::set('validation', 'validation')
+
+/**
+ * Custom application routes.
+ */
+Route::set('tag', 'tag(/<name>)')
 	->defaults(array(
-		'controller' => 'validation',
+		'controller' => 'site',
 		'action'     => 'index',
+		'uri'        => 'tag'
 	));
 
 /**
@@ -121,10 +126,9 @@ Kohana::modules(array(
 	'orm'					=> MODPATH.'orm',        // Object Relationship Mapping
 	'message'			=> MODPATH.'message',
 	'blogimport'	=> MODPATH.'blogimport',
+	'redirects'		=> MODPATH.'redirects',
 	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
 
-// THIS NEEDS TO BE SET IN A TRANSPARENT CLASS EXTENSION
-//Cache::$default = 'apc';
