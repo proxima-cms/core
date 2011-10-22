@@ -1,0 +1,7 @@
+<VirtualHost *:80>
+	DocumentRoot	/home/richard/www/sites/dev.blog.badsyntax.co
+	ServerName	dev.blog.badsyntax.co
+
+	# Set environment to development
+	SetEnv KOHANA_ENV development
+</VirtualHost>

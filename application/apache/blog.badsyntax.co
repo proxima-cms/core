@@ -1,5 +1,7 @@
 <VirtualHost *:80>
 	DocumentRoot	/home/richard/www/sites/blog.badsyntax.co
 	ServerName	blog.badsyntax.co
-	ServerAlias	dev.blog.badsyntax.co
+
+	# Set environment to production
+	SetEnv KOHANA_ENV production
 </VirtualHost>
