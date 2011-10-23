@@ -5,9 +5,7 @@ class Controller_Site extends Controller_Base {
 	public function before()
 	{
 		$this->template = Theme::path('page');
-		//$config = Arr::merge(Kohana::$config->load(), require Kohana::find_file('views/themes/badsyntax/config/', 'media'));
 
-		//die(print_r($config));
 		parent::before();
 	}
 
@@ -23,6 +21,7 @@ class Controller_Site extends Controller_Base {
 		
 			if (!$page->loaded())
 			{
+				// Check for a page redirect.
 				$redirect = ORM::factory('redirect')->where('uri', '=', $uri)->find();
 
 				if (!$redirect->loaded())
@@ -38,9 +37,8 @@ class Controller_Site extends Controller_Base {
 			Cache::instance()->set($cache_key, (object) $page->as_array());
 		}		
 
-		$this->template->set_global('title', $page->title);
+		$this->template->set('title', Kohana::$config->load('site.title') . ' - ' . $page->title);
 		$this->template->set_global('page', $page);
-		$this->template->set_global('body', $page->body);
 
 		$template = Theme::path('templates/'.str_replace(EXT, '', $page->pagetype_template));
 

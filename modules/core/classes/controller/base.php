@@ -10,8 +10,7 @@ abstract class Controller_Base extends Controller_Template {
 
 	public function before()
 	{
-		// FIME: Load the database config driver
-		//Kohana::$config->attach(new Config_Database);
+		Kohana::$config->attach(new Config_Database);
 
 		$this->authenticate();
 
@@ -66,7 +65,6 @@ abstract class Controller_Base extends Controller_Template {
 
 	private function profiler($content)
 	{
-		// Load the profiler
 		$profiler = Profiler::application();
 
 		list($time, $memory) = array_values( $profiler['current'] );
