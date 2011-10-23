@@ -658,7 +658,9 @@ CREATE TABLE IF NOT EXISTS `pages` (
 	FULLTEXT KEY `title` (`title`,`description`,`body`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-INSERT INTO `pages` (`id`, `user_id`, `parent_id`, `title`, `uri`, `description`, `body`) VALUES (1, 1, 0, 'Home page', '', 'Description of site.', '<p>Hello, world.</p>');
+INSERT 
+	INTO `pages` (`id`, `user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `title`, `uri`, `description`, `body`, `visible_from`) 
+	VALUES (1, 1, 1, 0, 1, 0, 'Home page', '', 'Description of site.', '<p>Hello, world.</p>', NOW());
 
 -- --------------------------------------------------------
 
@@ -674,6 +676,14 @@ CREATE TABLE IF NOT EXISTS `page_types` (
 	`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `page_types`
+--
+
+INSERT 
+	INTO `page_types` (`id`, `template`, `name`, `description`, `date`) 
+	VALUES (1, 'home.php', 'Home page', 'Home page type', '2011-10-23 14:52:51');
 
 -- --------------------------------------------------------
 
@@ -721,32 +731,6 @@ CREATE TABLE IF NOT EXISTS `roles_users` (
 	KEY `fk_role_id` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `site_pages`
---
-CREATE TABLE IF NOT EXISTS `site_pages` (
-`id` int(11)
-,`user_id` int(11)
-,`pagetype_id` int(11)
-,`parent_id` int(11)
-,`is_homepage` tinyint(1)
-,`visible_in_nav` tinyint(1)
-,`draft` tinyint(1)
-,`title` varchar(128)
-,`uri` varchar(255)
-,`description` varchar(255)
-,`body` text
-,`visible_from` timestamp
-,`visible_to` timestamp
-,`date` timestamp
-,`pagetype_template` varchar(32)
-,`pagetype_name` varchar(32)
-,`pagetype_description` text
-,`user_email` varchar(254)
-,`user_username` varchar(32)
-);
 -- --------------------------------------------------------
 
 --
@@ -823,7 +807,7 @@ CREATE TABLE IF NOT EXISTS `user_tokens` (
 --
 -- Structure for view `site_pages`
 --
-DROP TABLE IF EXISTS `site_pages`;
+DROP VIEW IF EXISTS `site_pages`;
 
 CREATE VIEW `site_pages` AS select `page`.`id` AS `id`,`page`.`user_id` AS `user_id`,`page`.`pagetype_id` AS `pagetype_id`,`page`.`parent_id` AS `parent_id`,`page`.`is_homepage` AS `is_homepage`,`page`.`visible_in_nav` AS `visible_in_nav`,`page`.`draft` AS `draft`,`page`.`title` AS `title`,`page`.`uri` AS `uri`,`page`.`description` AS `description`,`page`.`body` AS `body`,`page`.`visible_from` AS `visible_from`,`page`.`visible_to` AS `visible_to`,`page`.`date` AS `date`,`pagetype`.`template` AS `pagetype_template`,`pagetype`.`name` AS `pagetype_name`,`pagetype`.`description` AS `pagetype_description`,`user`.`email` AS `user_email`,`user`.`username` AS `user_username` from ((`pages` `page` join `page_types` `pagetype` on((`page`.`pagetype_id` = `pagetype`.`id`))) join `users` `user` on((`page`.`user_id` = `user`.`id`))) where ((`page`.`visible_from` <= now()) and (isnull(`page`.`visible_to`) or (`page`.`visible_to` >= now())) and (`page`.`draft` = 0));
 
@@ -835,7 +819,7 @@ CREATE VIEW `site_pages` AS select `page`.`id` AS `id`,`page`.`user_id` AS `user
 -- Constraints for table `groups_users`
 --
 ALTER TABLE `groups_users`
-	ADD CONSTRAINT `groups_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users2` (`id`) ON DELETE CASCADE,
+	ADD CONSTRAINT `groups_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
 	ADD CONSTRAINT `groups_users_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE;
 
 --
@@ -850,4 +834,3 @@ ALTER TABLE `roles_users`
 --
 ALTER TABLE `user_tokens`
 	ADD CONSTRAINT `user_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-
