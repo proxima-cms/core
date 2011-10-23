@@ -132,3 +132,34 @@ Kohana::modules(array(
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
 
+
+if (!is_dir(DOCROOT . 'media'))
+{
+	throw new Kohana_Exception('Directory :dir does not exist',
+		array(':dir' => Debug::path('media')));
+}
+if (!is_dir(DOCROOT . 'media/assets'))
+{
+	throw new Kohana_Exception('Directory :dir does not exist',
+		array(':dir' => Debug::path('media/assets')));
+}
+if (!is_dir(DOCROOT . 'media/assets/resized'))
+{
+	throw new Kohana_Exception('Directory :dir does not exist',
+		array(':dir' => Debug::path('media/assets/resized')));
+}
+if (!is_dir(DOCROOT . 'media/cache'))
+{
+	throw new Kohana_Exception('Directory :dir does not exist',
+		array(':dir' => Debug::path('media/cache')));
+}
+if (! is_writable(DOCROOT . 'media/cache'))
+{
+	throw new Kohana_Exception('Directory :dir must be writable',
+		array(':dir' => Debug::path('../media/cache')));
+}
+if (! is_writable(DOCROOT . 'media/assets/resized'))
+{
+	throw new Kohana_Exception('Directory :dir must be writable',
+		array(':dir' => Debug::path('../media/assets/resized')));
+}
