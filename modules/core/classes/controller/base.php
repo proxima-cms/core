@@ -10,8 +10,6 @@ abstract class Controller_Base extends Controller_Template {
 
 	public function before()
 	{
-		Kohana::$config->attach(new Config_Database);
-
 		$this->authenticate();
 
 		parent::before();
