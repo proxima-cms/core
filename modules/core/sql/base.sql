@@ -809,7 +809,41 @@ CREATE TABLE IF NOT EXISTS `user_tokens` (
 --
 DROP VIEW IF EXISTS `site_pages`;
 
-CREATE VIEW `site_pages` AS select `page`.`id` AS `id`,`page`.`user_id` AS `user_id`,`page`.`pagetype_id` AS `pagetype_id`,`page`.`parent_id` AS `parent_id`,`page`.`is_homepage` AS `is_homepage`,`page`.`visible_in_nav` AS `visible_in_nav`,`page`.`draft` AS `draft`,`page`.`title` AS `title`,`page`.`uri` AS `uri`,`page`.`description` AS `description`,`page`.`body` AS `body`,`page`.`visible_from` AS `visible_from`,`page`.`visible_to` AS `visible_to`,`page`.`date` AS `date`,`pagetype`.`template` AS `pagetype_template`,`pagetype`.`name` AS `pagetype_name`,`pagetype`.`description` AS `pagetype_description`,`user`.`email` AS `user_email`,`user`.`username` AS `user_username` from ((`pages` `page` join `page_types` `pagetype` on((`page`.`pagetype_id` = `pagetype`.`id`))) join `users` `user` on((`page`.`user_id` = `user`.`id`))) where ((`page`.`visible_from` <= now()) and (isnull(`page`.`visible_to`) or (`page`.`visible_to` >= now())) and (`page`.`draft` = 0));
+CREATE VIEW `site_pages` AS 
+	select 
+		`page`.`id` AS `id`,
+		`page`.`user_id` AS `user_id`,
+		`page`.`pagetype_id` AS `pagetype_id`,
+		`page`.`parent_id` AS `parent_id`,
+		`page`.`is_homepage` AS `is_homepage`,
+		`page`.`visible_in_nav` AS `visible_in_nav`,
+		`page`.`draft` AS `draft`,
+		`page`.`title` AS `title`,
+		`page`.`uri` AS `uri`,
+		`page`.`description` AS `description`,
+		`page`.`body` AS `body`,
+		`page`.`visible_from` AS `visible_from`,
+		`page`.`visible_to` AS `visible_to`,
+		`page`.`date` AS `date`,
+		`pagetype`.`template` AS `pagetype_template`,
+		`pagetype`.`name` AS `pagetype_name`,
+		`pagetype`.`description` AS `pagetype_description`,
+		`user`.`email` AS `user_email`,
+		`user`.`username` AS `user_username`,
+		GROUP_CONCAT(CAST(tags.id AS CHAR),'|',CAST(tags.user_id AS CHAR),'|',tags.name,'|',tags.slug,'|',CAST(tags.date AS CHAR)) AS tags
+	FROM (
+		`pages` `page` 
+		join `page_types` `pagetype` on ( `page`.`pagetype_id` = `pagetype`.`id`)
+		join `users` `user` on((`page`.`user_id` = `user`.`id`))
+		LEFT JOIN tags_pages ON ( page.id = tags_pages.page_id )
+		LEFT JOIN tags ON ( tags_pages.tag_id = tags.id )
+	) 
+	where (
+		(`page`.`visible_from` <= now()) 
+		and (isnull(`page`.`visible_to`) or (`page`.`visible_to` >= now())) 
+		and (`page`.`draft` = 0)
+	)
+	GROUP BY page.id ;
 
 --
 -- Constraints for dumped tables
