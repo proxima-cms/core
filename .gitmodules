@@ -13,9 +13,6 @@
 [submodule "modules/message"]
 	path = modules/message
 	url = git://github.com/GeertDD/kohana-message.git
-[submodule "modules/pagination"]
-	path = modules/pagination
-	url = git@github.com:badsyntax/pagination.git
 [submodule "modules/auth"]
 	path = modules/auth
 	url = https://github.com/kohana/auth.git
@@ -31,3 +28,6 @@
 [submodule "modules/compress"]
 	path = modules/compress
 	url = git://github.com/azampagl/kohana-compress.git
+[submodule "modules/pagination"]
+	path = modules/pagination
+	url = git://github.com/kloopko/kohana-pagination.git
