@@ -12,6 +12,7 @@ class Model_Page extends Model_Base_Page {
 			'parent_id',
 			'pagetype_id',
 			'title',
+			'description',
 		);
 		foreach($fields as $field)
 		{

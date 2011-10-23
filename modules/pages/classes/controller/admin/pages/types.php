@@ -14,7 +14,7 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 
 		$templates = array();
 
-		foreach(Kohana::list_files('views/themes/default/templates') as $key => $template)
+		foreach(Kohana::list_files('views/'.Theme::path('templates')) as $key => $template)
 		{
 			$templates[basename($key)] = basename($key);
 		}
@@ -59,7 +59,7 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			->bind('errors', $errors);
 		
 		$templates = array();
-		foreach(Kohana::list_files('views/themes/default/templates') as $key => $template)
+		foreach(Kohana::list_files('views/'.Theme::path('templates')) as $key => $template)
 		{
 			$templates[basename($key)] = basename($key);
 		}

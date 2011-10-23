@@ -68,6 +68,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 		$this->template->content = View::factory('admin/page/pages/edit')
 			->bind('page', $page)
+			->bind('page_published', $page_published)
 			->bind('pages', $pages)
 			->bind('page_types', $page_types)
 			->bind('tags', $tags)
@@ -92,9 +93,18 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		}
 
 		$statuses = array(
-			'' => __('Published'),
+			'' => __('Live'),
 			'1' => __('Draft')
 		);
+	
+		// Check if the page is published.
+		$page_published = FALSE;
+		$site_page = ORM::factory('site_page', $page->id);
+
+		if ($site_page->loaded())
+		{
+			$page_published = TRUE;
+		}
 
 		if ($_POST)
 		{

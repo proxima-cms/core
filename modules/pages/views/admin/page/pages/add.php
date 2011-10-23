@@ -10,6 +10,12 @@
 				Form::input('title', Arr::get($_POST, 'title'), NULL, $errors)
 			?>
 		</div>
+		<div class="field">
+			<?php echo 
+				Form::label('description', __('Description'), NULL, $errors).
+				Form::input('description', Arr::get($_POST, 'description'), NULL, $errors)
+			?>
+		</div>
 	</fieldset>
 	
 	<fieldset>
