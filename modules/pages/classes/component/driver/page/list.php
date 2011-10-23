@@ -13,7 +13,7 @@ class Component_Driver_Page_List extends Component_Component {
 
 		if (!$listing_html = Cache::instance()->get($cache_key))
 		{		
-			$pages = ORM::factory('page')
+			$pages = ORM::factory('site_page')
 				->where('parent_id', '=', $this->_config['parent_id']);
 
 			// Get the total amount of items in the table
@@ -27,24 +27,34 @@ class Component_Driver_Page_List extends Component_Component {
 			)); 
 
 			// Get the items
-			$items = $pages
-			->where('parent_id', '=', $this->_config['parent_id'])
-			->limit($pagination->items_per_page)
-			->offset($pagination->offset)
-			->find_all();
+			$items = ORM::factory('site_page')
+				->where('parent_id', '=', $this->_config['parent_id'])
+				->limit($pagination->items_per_page)
+				->offset($pagination->offset)
+				->find_all();
 
+			$tag_keys = array('id', 'user_id', 'name', 'slug', 'date');
 			$pages = array();
 
 			foreach($items as $page)
 			{		
+				$tags = array();
+				foreach(explode(',', $page->tags) as $tag)
+				{
+					$tag_data = explode('|', $tag);
 
-				$tags = $page->tags->find_all()->as_array();
+					if (count($tag_data) === count($tag_keys))
+					{
+						$tags[] = (object) array_combine($tag_keys, $tag_data);
+					}
+				}
+
 				$page = (object) $page->as_array();
 				$page->tags = $tags;
-				
+
 				$pages[] = $page;
 			}		
-		
+
 			$listing_html = View::factory(Theme::path('components/pages/list/list'))
 				->set('pages', $pages)
 				->set('page_links', $pagination->render())

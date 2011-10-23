@@ -22,7 +22,7 @@ class Component_Driver_SocialMedia_Twitter extends Component_Component {
 				return __('There was an error loading the tweets.');
 			}
 
-			Cache::instance()->set($cache_key, $tweets);
+			Cache::instance()->set($cache_key, $tweets, 24 * 60 * 60);
 		}
 
 		return View::factory(Theme::path('components/socialmedia/twitter'))

@@ -12,9 +12,8 @@
 		<div class="footer clear">
 			Tagged: 
 			<?php 
-				$tags = $page->tags->find_all();
 				$anchors = array();
-				foreach($tags as $tag)
+				foreach($page->tags as $tag)
 				{
 						$anchors[] = HTML::anchor('tag/'.$tag->slug, $tag->name);
 				}
