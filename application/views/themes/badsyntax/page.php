@@ -71,9 +71,7 @@
 
 			<div id="search">
 			<form id="search-form" method="get" action="/search">
-				<input type="hidden" value="badsyntax" name="t">
-				<input type="hidden" value="all_of_tumblr" name="scope">
-				<input type="text" value="" class="query" name="q">
+				<input type="text" value="<?php echo HTML::chars(Arr::get($_REQUEST, 'query')); ?>" class="query" name="query">
 				<input type="submit" class="submit" value="Search">
 				<div class="clear"></div>
 		</form>
