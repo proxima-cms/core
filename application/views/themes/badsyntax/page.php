@@ -55,7 +55,17 @@
 
 			<div class="nav">
 				<div id="tags">
-					<?php echo Component::factory('Tag_List');?>
+					<ul>
+						<li><?php echo HTML::anchor('tag/bash', 'Bash'); ?></li>
+						<li><?php echo HTML::anchor('tag/dubstep', 'Dubstep'); ?></li>
+						<li><?php echo HTML::anchor('tag/git', 'Git'); ?></li>
+						<li><?php echo HTML::anchor('tag/Javascript', 'Javascript'); ?></li>
+						<li><?php echo HTML::anchor('tag/jquery', 'jQuery'); ?></li>
+						<li><?php echo HTML::anchor('tag/kohana', 'Kohana'); ?></li>
+						<li><?php echo HTML::anchor('tag/php', 'PHP'); ?></li>
+						<li><?php echo HTML::anchor('tag/vim', 'Vim'); ?></li>
+					</ul>
+					<?php /* echo Component::factory('Tag_List');*/?>
 				</div>
 			</div>
 
@@ -69,26 +79,10 @@
 		</form>
 	</div>
 
-	<div class="widget twitter_feed" style="display:none">
+
+	<div class="widget twitter_feed">
 		<h3>Latest Tweets</h3>
-		<ul class="rss">
-			<li>
-				<a href="https://twitter.com/badsyntax/status/123804747080802304">
-					TIL it's pretty much impossible to handle multi touch gestures in the Android browser (as they don't exist).		</a>
-			</li>
-			<li>
-				<a href="https://twitter.com/badsyntax/status/121876163521032192">
-					<a href="http://twitter.com/kohanaphp" target="_blank">@kohanaphp</a> hey, perhaps you are already aware, but the forums are down...		</a>
-		
-			</li>
-			<li>
-				<a href="https://twitter.com/badsyntax/status/120889217369899008">
-					Having one of those frustrating days.. Gets to end of day and realize ive mostly been doing the wrong thing. <a href="http://twitter.com/search?q=%23fuckedoff" target="_blank">#fuckedoff</a>		</a>
-			</li>
-			<li>
-					<a href="http://twitter.com/googledocs" target="_blank">@googledocs</a> its impossible to paste text into a google document on android. i reckon this is quite a big issue..		</a>
-			</li>
-		</ul>
+		<?php echo Component::factory('SocialMedia_Twitter', array('username' => 'badsyntax'))?>
 	</div>
 
 </div>
