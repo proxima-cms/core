@@ -12,12 +12,12 @@ class Component_Driver_Contact_Form extends Component_Component {
 		$view = View::factory(Theme::path('components/contact/form/form'))
 			->bind('errors', $errors);
 
-		$data = Validation::factory($_POST)
+		$data = Validation::factory(Request::current()->post())
 			->rule('name', 'not_empty')
 			->rule('email', 'not_empty')
 			->rule('email', 'email');
 
-		if ($_POST AND $data->check())
+		if (Request::current()->method() === 'POST' && $data->check())
 		{
 			$swift_loader = Kohana::find_file('classes', 'component/driver/contact/vendor/swiftmailer/lib/swift_required');
 
