@@ -19,7 +19,7 @@ class Component_Driver_Contact_Form extends Component_Component {
 
 		if (Request::current()->method() === 'POST' && $data->check())
 		{
-			$swift_loader = Kohana::find_file('classes', 'component/driver/contact/vendor/swiftmailer/lib/swift_required');
+			$swift_loader = Kohana::find_file('vendor', 'swiftmailer/lib/swift_required');
 
 			if ($swift_loader === FALSE)
 			{
