@@ -16,9 +16,6 @@
 [submodule "modules/auth"]
 	path = modules/auth
 	url = https://github.com/kohana/auth.git
-[submodule "modules/site/classes/component/driver/contact/vendor"]
-	path = modules/site/classes/component/driver/contact/vendor
-	url = https://github.com/swiftmailer/swiftmailer.git
 [submodule "modules/image"]
 	path = modules/image
 	url = https://github.com/kohana/image.git
