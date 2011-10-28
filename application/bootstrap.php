@@ -82,6 +82,7 @@ if (isset($_SERVER['KOHANA_ENV']))
 Kohana::init(array(
 	'base_url'		=> '/',
 	'index_file'	=> FALSE,
+	'errors'      => TRUE,
 	'caching'			=> Kohana::$environment !== Kohana::DEVELOPMENT
 ));
 
@@ -104,6 +105,11 @@ Route::set('tag', 'tag(/<name>)')
 		'controller' => 'site',
 		'action'     => 'index',
 		'uri'        => 'tag'
+	));
+
+Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
+	->defaults(array(
+		'controller' => 'error'
 	));
 
 /**
