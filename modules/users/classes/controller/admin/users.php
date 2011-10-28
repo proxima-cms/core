@@ -1,4 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');
+/*
+* User model
+* some concepts and code taken from https://github.com/GeertDD/kohanajobs/blob/master/application/classes/model/user.php
+*/
 
 class Controller_Admin_Users extends Controller_Admin_Base {
 
@@ -15,19 +19,22 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 		$roles = ORM::factory('role')->find_all();
 		$groups = ORM::factory('group')->find_all();
 
-		if ($_POST)
+		if ($this->request->method() === 'POST')
 		{
-			if (ORM::factory('user')->admin_add($_POST))
+			try
 			{
+				ORM::factory('user')->admin_add($this->request->post());
+
 				Message::set(Message::SUCCESS, __('User successfully saved.'));
+
 				$this->request->redirect('admin/users');
 			}
-			else if ($errors = $_POST->errors('admin/users'))
+			catch(ORM_Validation_Exception $e)
 			{
-				 Message::set(Message::ERROR, __('Please correct the errors.'));
+				$errors = $e->errors('admin/users');
+				 
+				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
-
-			$_POST = $_POST->as_array();
 		}
 	}
 
@@ -41,7 +48,7 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 		{
 			throw new HTTP_Exception_500('User not found.');
 		}
-		
+
 		$this->template->title = __('Edit user').' '.$user->username;
 
 		// Bind user data to template
@@ -64,10 +71,10 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 			$user_roles[] = $role->id;
 		}
 
-		// Find all roles
+		// Find all groups
 		$groups = ORM::factory('group')->find_all();
 				
-		// Create array of user role ids
+		// Create array of user group ids
 		$user_groups = array();
 
 		foreach($user->groups->find_all() as $group)
@@ -75,22 +82,22 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 			$user_groups[] = $group->id;
 		}
 		
-		if ($_POST)
+		if ($this->request->method() === 'POST')
 		{
-			// Try update the user, if succesful then reload the page
-			if ($user->admin_update($_POST))
+			try
 			{
+				$user->admin_update($this->request->post());
+
 				Message::set(Message::SUCCESS, __('User successfully updated.'));
+
 				$this->request->redirect($this->request->uri());
 			}
-			else if ($errors = $_POST->errors('admin/users'))
+			catch(ORM_Validation_Exception $e)
 			{
- 				Message::set(Message::ERROR, __('Please correct the errors.'));
+				$errors = $e->errors('admin/users');
+				 
+				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
-		}
-		else
-		{
-			$_POST = $user->as_array();
 		}
 	}
 
@@ -102,9 +109,12 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 		$id === 1 AND $this->request->redirect('403');
 
 		// Try load the user
-		$user = ORM::factory( inflector::singular($this->crud_model), (int) $id);
+		$user = ORM::factory('user', $id);
 
-		!$user->loaded() AND $this->request->redirect('admin');
+		if (!$user->loaded())
+		{
+			$this->request->redirect('admin');
+		}
 
 		// Remove the user's roles relationship
 		foreach ($user->roles->find_all() as $role)

@@ -67,7 +67,7 @@ class Model_User extends Model_Auth_User {
 
 			if ($data->check())
 			{
-				$data->error('password','invalid');
+				$data->error('password', 'invalid');
 			}
 			
 			return FALSE;

@@ -20,13 +20,13 @@
 		<div class="field">
 			<?php echo 
 				Form::label('username', 'Username', NULL, $errors),
-				Form::input('username', $_POST['username'], array('class' => 'test'), $errors)
+				Form::input('username', Request::current()->post('username') ?: $user->username, array('class' => 'test'), $errors)
 			?>
 		</div>
 		<div class="field">
 			<?php echo 
 				Form::label('email', 'Email', NULL, $errors),
-				Form::input('email', $_POST['email'], array('type' => 'email'), $errors)
+				Form::input('email', Request::current()->post('email') ?: $user->email, array('type' => 'email'), $errors)
 			?>
 		</div>
 		<div class="field">
