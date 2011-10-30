@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 return array(
-  'file'    => array(
+  'file' => array(
     'driver'             => 'file',
     'cache_dir'          => APPPATH.'cache',
     'default_expire'     => Kohana::$environment === Kohana::DEVELOPMENT ? -1 : 365 * 24 * 60 * 60,
@@ -11,9 +11,9 @@ return array(
       '.svn'
     )
   ),	
-	'apc'      => array
+	'apc' => array
 	(
 		'driver'					=> 'apc',
-		'default_expire'	=> 3600
+		'default_expire'	=> Kohana::$environment === Kohana::DEVELOPMENT ? -1 : 365 * 24 * 60 * 60,
 	)
 );
