@@ -4,8 +4,6 @@ class Controller_Site extends Controller {
 
 	public function action_index()
 	{
-
-		die('site');
 		$page = Page::factory($this->request->param('uri'));
 
 		// Get the page route.

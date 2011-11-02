@@ -8,10 +8,4 @@ Route::set('default', '(<controller>(/<action>(/<id>)))')
 ));
 */
 
-
-Route::set('site', '<uri>', array('uri' => '.*'))
-  ->defaults(array(
-    'controller'  => 'site',
-		'action' => 'index'
-  ));
-	
+Core::set_routes();

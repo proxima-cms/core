@@ -4,19 +4,16 @@ class Component_Driver_Search_Results extends Component_Component {
 
 	public $_default_config = array(
 		'amount' => 5,
+		'query'  => NULL,
 	);	
 
 	public function render()
 	{
+		$amount = $this->_config['amount'];
+		$query = $this->_config['query'];
 
-    $query = Request::current()->param('query');
-  
-    if ($query === NULL)
-    {   
-      $query = Request::current()->query('query');
-    }
-
-		$query = HTML::chars($query);
+		// TODO: cache results ?
+		$cache_key = 'search-results' . (string) $amount . (string) $query;
 
 		// Perform a fulltext search.
 		$pages = ORM::factory('page')
@@ -31,7 +28,7 @@ class Component_Driver_Search_Results extends Component_Component {
 		return View::factory(Theme::path('components/search/results'))
 			->set('query', $query)
 			->set('pages', $pages)
-			->set('amount', $this->_config['amount'])
+			->set('amount', $amount)
 			->render();
 	}
 }
