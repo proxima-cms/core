@@ -12,20 +12,25 @@ class Controller_Page extends Controller_Base {
 		// Set the controller template (along with other controller based stuff).
 		parent::before();
 
-		// Find the page.
+		// Get the page.
 		$this->page = Page::factory($this->request->param('uri'));
 	
-		// Set the page template.
+		// Get the page template from the page type.
 		$template = Theme::path('templates/'.str_replace(EXT, '', $this->page->pagetype_template));
+
+		// Set the page template & content. (Content is set via page components in the template.)
 		$this->template->content = View::factory($template);
 
 		// Set some generic page vars.
-		$this->template->set('title', Kohana::$config->load('site.title') . ' - ' . $this->page->title);
-		$this->template->set_global('page', $this->page);
+		$this->template->set_global(array(
+			'title' => Kohana::$config->load('site.title') . ' - ' . $this->page->title,
+			'page'  => $this->page
+		));
 	}
 
 	public function action_index()
 	{
-
+		// Nothing by default, but intentionally set to allow the route to match the default method.
 	}
+
 } // End Controller_Page

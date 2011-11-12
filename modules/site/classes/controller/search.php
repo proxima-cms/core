@@ -29,6 +29,5 @@ class Controller_Search extends Controller_Page {
 		// Pass the search results into the template.
 		$this->template->set_global('search_results', $search_results);
 	}
-
 	
 } // End Controller_Search
