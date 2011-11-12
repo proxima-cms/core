@@ -34,5 +34,5 @@
 <?php }?>
 
 <div class="pagination">
-<?php echo $page_links; ?>
+	<?php echo $page_links; ?>
 </div>

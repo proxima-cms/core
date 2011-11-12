@@ -1,4 +1,3 @@
 <?php 
-	echo 
-	Component::factory('Search_Results');
+	echo $search_results;
 ?>
