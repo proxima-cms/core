@@ -100,13 +100,6 @@ Kohana::$config->attach(new Config_File);
 /**
  * Custom application routes.
  */
-Route::set('tag', 'tag(/<name>)')
-	->defaults(array(
-		'controller' => 'site',
-		'action'     => 'index',
-		'uri'        => 'tag'
-	));
-
 Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
 	->defaults(array(
 		'controller' => 'error'

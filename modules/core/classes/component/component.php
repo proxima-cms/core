@@ -13,6 +13,7 @@ abstract class Component_Component {
 		$this->_config = array_merge($this->_default_config, $config);
 	}
 
+	// Render the component when echoing out.
 	public function __toString()
 	{
 		try 
@@ -26,5 +27,11 @@ abstract class Component_Component {
 
 			return ''; 
 		}		
+	}
+
+	// Config getter.
+	public function config($key = NULL)
+	{
+		return $this->_config[$key];
 	}
 }

@@ -12,7 +12,7 @@ class Component_Driver_SocialMedia_Twitter extends Component_Component {
 		$cache_key = 'socialmedia-twitter-'.$this->_config['username'];
 
 		if (!$tweets = Cache::instance()->get($cache_key))
-		{		
+		{
 			try
 			{
 				$tweets = file_get_contents('http://twitter.com/status/user_timeline/'.$this->_config['username'].'.json');
@@ -22,6 +22,7 @@ class Component_Driver_SocialMedia_Twitter extends Component_Component {
 				return __('There was an error loading the tweets.');
 			}
 
+			// Cache for one day.
 			Cache::instance()->set($cache_key, $tweets, 24 * 60 * 60);
 		}
 

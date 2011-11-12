@@ -9,8 +9,8 @@ class Component_Driver_Search_Results extends Component_Component {
 
 	public function render()
 	{
-		$amount = $this->_config['amount'];
-		$query = $this->_config['query'];
+		$amount = $this->config('amount');
+		$query = $this->config('query');
 
 		// TODO: cache results ?
 		$cache_key = 'search-results' . (string) $amount . (string) $query;

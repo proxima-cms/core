@@ -9,9 +9,8 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 		$this->template->content = View::factory('admin/page/tags/add')
 			->bind('errors', $errors);
 
-		if ($_POST)
+		if ($this->request->method() === 'POST')
 		{
-
 			if (ORM::factory('tag')->admin_add($_POST))
 			{		
 				Message::set(Message::SUCCESS, __('Tag successfully saved.'));		 
