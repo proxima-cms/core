@@ -48,38 +48,37 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 
 		$this->template->title = __('Edit page type');
 
-		if (!$_POST)
-		{
-			$default_data = $page_type->as_array();
-		}
-
 		$this->template->content = View::factory('admin/page/pages/types/edit')
 			->bind('page_type', $page_type)
 			->bind('templates', $templates)
 			->bind('errors', $errors);
-		
+
+		// Get the file templates.
 		$templates = array();
-		foreach(Kohana::list_files('views/'.Theme::path('templates')) as $key => $template)
+		$template_files = Kohana::list_files('views/'.Theme::path('templates'));
+
+		// Format the templates array.
+		foreach($template_files as $key => $template)
 		{
 			$templates[basename($key)] = basename($key);
 		}
 
-		if ($_POST)
+		if ($this->request->method() === 'POST')
 		{
-			if ($page_type->admin_update($_POST))
-			{		
+			try
+			{
+				$page_type->admin_update($this->request->post());
+
 				Message::set(Message::SUCCESS, __('Page type successfully updated.'));		 
+
 				$this->request->redirect($this->request->uri());
 			}
-			else if ($errors = $_POST->errors('admin/page_types'))
+			catch(ORM_Validation_Exception $e)
 			{
+				$errors = $e->errors('admin/page_types');
+
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
-		}
-		else
-		{
-			// If POST is empty, then add the default data to POST
-			$_POST = array_merge($_POST, $default_data);
 		}
 	}
 

@@ -2,75 +2,52 @@
 
 class Model_Page_Type extends Model_Base
 { 
-	protected $_rules = array(
-		'name' => array(
-			array('not_empty'),
-			array('min_length', array(':value', 4)),
-			array('max_length', array(':value', 32)),
-		),	
-		'description' => array(
-			array('not_empty'),
-			array('min_length', array(':value', 4)),
-			array('max_length', array(':value', 255)),
-		),	
-		'template' => array(
-			array('not_empty'),
-			array('min_length', array(':value', 4)),
-			array('max_length', array(':value', 32)),
-		),	
-	);	
-
-	public function admin_add(& $data)
+	public function rules()
 	{
-		$data = Validation::factory($data);
-
-		$fields = array(
-			'name',
-			'description',
-			'template'
-		);	
-
-		foreach($fields as $field) {
-			$data->rules($field, $this->_rules[$field]);
-		}		
-
-		if (!$data->check())
-		{		
-			return FALSE;
-		}		
-
-		$this->values($data->as_array());
-		#$this->user_id = Auth::instance()->get_user()->id;
-		#$this->user_id = 0;
-		$this->save();
-
-		return $data;
+		return array(
+			'name' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 32)),
+			),	
+			'description' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 255)),
+			),	
+			'template' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 32)),
+			)	
+		);
 	}
 
-	public function admin_update(& $data)
+	public function filters()
 	{
-		$data = Validation::factory($data);
+		return array(
+			// As the 'controller' field may be NULL in the DB, 
+			// we need to ensure a PHP NULL value if empty string,
+			'controller' => array(
+				array(function($value){
+					return ($value === '') ? NULL : $value;
+				}, array(':value')),
+			)
+		);
+	}
 
-    $fields = array(
-      'name',
-      'description',
-      'template'
-    );  
+	public function admin_add($data)
+	{
+		$this->values($data);
 
-    foreach($fields as $field)
-		{
-      $data->rules($field, $this->_rules[$field]);
-    }   
+		return $this->save();
+	}
 
-    if (!$data->check())
-    {   
-      return FALSE;
-    }   
+	public function admin_update($data)
+	{
+		$this->values($data);
 
-		$this->values($data->as_array());
-		$this->save();
-
-		return $data;
+		return $this->save();
 	}
 
 	public function admin_delete()
