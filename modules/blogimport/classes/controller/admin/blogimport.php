@@ -2,10 +2,10 @@
 
 class Controller_Admin_BlogImport extends Controller_Admin_Base {
 
-  public function action_index()
-  {
-    $this->template->title = __('Blog import');
-    $this->template->content = View::factory('admin/page/blogimport/index')
+	public function action_index()
+	{
+		$this->template->title = __('Blog import');
+		$this->template->content = View::factory('admin/page/blogimport/index')
 			->bind('pages', $pages)
 			->bind('page_types', $page_types)
 			->bind('errors', $errors);
@@ -18,9 +18,9 @@ class Controller_Admin_BlogImport extends Controller_Admin_Base {
 			$page_types[$type->id] = $type->name;
 		}
 
-    $data = Validation::factory($_POST)
-    	->rule('blog_url', 'not_empty')
-      ->rule('blog_url', 'url');
+		$data = Validation::factory($_POST)
+			->rule('blog_url', 'not_empty')
+			->rule('blog_url', 'url');
 
 		if ($_POST AND $data->check())
 		{
