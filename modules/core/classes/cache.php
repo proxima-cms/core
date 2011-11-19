@@ -3,7 +3,7 @@
 abstract class Cache Extends Kohana_Cache {
 
 	/**
-	 * @var   string     default driver to use
+	 * @var		string		 default driver to use
 	 */
 	public static $default = 'apc';
 

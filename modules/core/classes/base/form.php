@@ -5,12 +5,21 @@ class Base_Form extends Kohana_Form {
 	private static function attributes($name, & $attributes = NULL, $errors = NULL)
 	{
 		// Set the id attribute
-		!isset($attributes['id']) AND $attributes['id'] = $name;
-
-		// Set the error classname
-		if (isset($errors[$name]))
+		if (!isset($attributes['id']))
 		{
-			$attributes['class'] = trim( (string) @$attributes['class'].' error-field');			
+			$attributes['id'] = $name;
+		}
+
+		if ($errors !== NULL)
+		{
+			// Merge in external validation errors.
+			$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+
+			// Set the error classname
+			if (isset($errors[$name]))
+			{
+				$attributes['class'] = trim( (string) @$attributes['class'].' error-field');			
+			}
 		}
 	}
 
@@ -51,10 +60,16 @@ class Base_Form extends Kohana_Form {
 	
 	public static function label($input, $text = NULL, array $attributes = NULL, array $errors = NULL, $view = 'messages/label_error')
 	{
-		// Use the label_error view to append an error message to the label
-		if (isset($errors[$input]))
+		if ($errors !== NULL)
 		{
-			$text .= View::factory($view)->bind('error', $errors[$input]);
+			// Merge in external validation errors.
+			$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+
+			// Use the label_error view to append an error message to the label
+			if (isset($errors[$input]))
+			{
+				$text .= View::factory($view)->bind('error', $errors[$input]);
+			}
 		}
 
 		return parent::label($input, $text, $attributes);

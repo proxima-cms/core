@@ -132,7 +132,9 @@ class Model_Base extends ORM {
 		}
 	}
 
-
+  /** 
+   * Overload the save method to delete ALL cache entries on model save.
+   */
 	public function save(Validation $validation = NULL)
 	{
 		Cache::instance()->delete_all();
