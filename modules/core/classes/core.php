@@ -3,11 +3,28 @@
 class Core {
 
 	/**
-	* Core init: check paths exist and set the database config reader.
+	* Core init: enable system modules, check paths exist and set the database config reader.
 	*
 	* @return  void
 	*/
 	public static function init()
+	{
+		// Enable system modules.
+		Kohana::modules(Kohana::$config->load('modules')->as_array());
+
+		// Check system paths exist.
+		self::check_paths();
+
+		// Attach the database config reader.
+		Kohana::$config->attach(new Config_Database);
+	}
+
+	/**
+	* Check system paths exist.
+	*
+	* @return  void
+	*/
+	public static function check_paths()
 	{
 		if (!is_dir(DOCROOT . 'media'))
 		{
@@ -39,9 +56,6 @@ class Core {
 			throw new Kohana_Exception('Directory :dir must be writable',
 				array(':dir' => Debug::path('../media/assets/resized')));
 		}
-
-		// Attach the database config reader.
-		Kohana::$config->attach(new Config_Database);
 	}
 
 	/**

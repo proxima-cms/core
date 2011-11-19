@@ -65,6 +65,11 @@ if (isset($_SERVER['KOHANA_ENV']))
 {
 	Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
 }
+else
+{
+	// Default to 'development' environment.
+	Kohana::$environment = Kohana::DEVELOPMENT;
+}
 
 /**
  * Initialize Kohana, setting the default options.
@@ -80,11 +85,11 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-	'base_url'		=> '/',
-	'index_file'	=> FALSE,
-	'errors'      => TRUE,
-	'caching'			=> Kohana::$environment !== Kohana::DEVELOPMENT
-));
+		'base_url'    => '/',
+		'index_file'  => FALSE,
+		'errors'      => TRUE,
+		'caching'     => Kohana::$environment !== Kohana::DEVELOPMENT
+	));
 
 /**
  * Attach the file write to logging. Multiple writers are supported.
@@ -99,25 +104,4 @@ Kohana::$config->attach(new Config_File);
 /**
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
-Kohana::modules(array(
-	'core'				=> MODPATH.'core',
-	'pages'				=> MODPATH.'pages',
-	'admin'				=> MODPATH.'admin',
-	'assets'			=> MODPATH.'assets',
-	'users'				=> MODPATH.'users',
-	'tags'				=> MODPATH.'tags',
-	'site'				=> MODPATH.'site',
-	'image'				=> MODPATH.'image',      // Image manipulation
-	'pagination'	=> MODPATH.'pagination',
-	'compress'		=> MODPATH.'compress',
-	'cache'				=> MODPATH.'cache',      // Caching with multiple backends
-	'auth'				=> MODPATH.'auth',       // Basic authentication
-	'database'		=> MODPATH.'database',   // Database access
-	'orm'					=> MODPATH.'orm',        // Object Relationship Mapping
-	'message'			=> MODPATH.'message',
-	'blogimport'	=> MODPATH.'blogimport',
-	'redirects'		=> MODPATH.'redirects',
-	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-	// 'unittest'   => MODPATH.'unittest',   // Unit testing
-	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-	));
+Kohana::modules(array('core' => MODPATH.'core'));
