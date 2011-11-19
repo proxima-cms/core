@@ -85,11 +85,11 @@ else
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-		'base_url'    => '/',
-		'index_file'  => FALSE,
-		'errors'      => TRUE,
-		'caching'     => Kohana::$environment !== Kohana::DEVELOPMENT
-	));
+	'base_url'    => '/',
+	'index_file'  => FALSE,
+	'errors'      => TRUE,
+	'caching'     => Kohana::$environment !== Kohana::DEVELOPMENT
+));
 
 /**
  * Attach the file write to logging. Multiple writers are supported.
@@ -102,6 +102,6 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
 Kohana::$config->attach(new Config_File);
 
 /**
- * Enable modules. Modules are referenced by a relative or absolute path.
+ * Load the core module.
  */
 Kohana::modules(array('core' => MODPATH.'core'));

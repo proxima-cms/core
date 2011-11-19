@@ -28,3 +28,6 @@
 [submodule "modules/pagination"]
 	path = modules/pagination
 	url = git://github.com/kloopko/kohana-pagination.git
+[submodule "modules/minion"]
+	path = modules/minion
+	url = git://github.com/kohana-minion/core.git
