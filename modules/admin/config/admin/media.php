@@ -20,6 +20,8 @@ return array(
 		'tinymce_skin' => 'modules/admin/media/js/tinymce/jscripts/tiny_mce/themes/advanced/skins/cirkuit/ui.css',
 		'tinymce' => 'modules/admin/media/js/tinymce/jscripts/tiny_mce/tiny_mce.js',
 		'tinymce_popup' => 'modules/admin/media/js/tinymce/jscripts/tiny_mce/tiny_mce_popup.js',
-		'tinymce_init' => 'admin/media/js/wysiwyg.init.js'
+		'tinymce_jquery' => 'modules/admin/media/js/tinymce/jscripts/tiny_mce/jquery.tinymce.js',
+		'tinymce_init' => 'admin/media/js/wysiwyg.init.js',
+		'tinymce_config' => 'admin/media/js/wysiwyg.config.js'
 	)		
 );
