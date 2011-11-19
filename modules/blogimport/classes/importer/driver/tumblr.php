@@ -97,8 +97,15 @@ class Importer_Driver_Tumblr extends Importer_Driver
 			// Photo post with title
 			else if (isset($data['photo-caption']) AND isset($data['photo-url']))
 			{
+				// Photo path must have an extension for this to work.
+				$photo_path = $data['photo-url'][1];
+
+				// Download the asset and save it to the database
+				$asset = Asset::add($photo_path);
+
 				$title = $data['photo-caption'];
-				$intro = $body = HTML::image($data['photo-url'][0]);
+
+				$intro = $body = $title . HTML::image($asset->path());
 			}
 			// Photo post with no title
 			else if (isset($data['photo-url']))
@@ -112,7 +119,7 @@ class Importer_Driver_Tumblr extends Importer_Driver
 				$title = $data['video-caption'];
 				$intro = $body = $data['video-player'];
 			}
-			// Unsupported video post
+			// Unsupported post
 			else
 			{
 				continue;

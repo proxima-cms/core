@@ -60,6 +60,8 @@
 		</div>
 		
 	</fieldset>
+	
+	<!-- <?php echo Form::button('test-import', 'Test Import', array('type' => 'submit', 'class' => 'ui-button save'))?> -->
 		
 	<?php echo Form::button('import', 'Import', array('type' => 'submit', 'class' => 'ui-button save'))?>
 
