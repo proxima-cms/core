@@ -105,11 +105,11 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 				// Create the file upload array
 				$file = array(
 					$field_name => array(
-						'name' 		=> $_FILES[$field_name]['name'][$c],
-						'type' 		=> $_FILES[$field_name]['type'][$c],
-						'tmp_name' 	=> $_FILES[$field_name]['tmp_name'][$c],
-						'error'		=> $_FILES[$field_name]['error'][$c],
-						'size' 		=> $_FILES[$field_name]['size'][$c]
+						'name'      => $_FILES[$field_name]['name'][$c],
+						'type'      => $_FILES[$field_name]['type'][$c],
+						'tmp_name'  => $_FILES[$field_name]['tmp_name'][$c],
+						'error'     => $_FILES[$field_name]['error'][$c],
+						'size'      => $_FILES[$field_name]['size'][$c]
 					)
 				);
 
@@ -308,7 +308,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			{
 				$file_in = DOCROOT.Kohana::$config->load('assets.upload_path').'/'.$asset->filename;
 				
-				// Generate a PNG thumbnail of the PDF
+				// Generate an image thumbnail of the PDF
 				Asset::pdfthumb($file_in, $path, $width, $height, $crop);
 			}
 			else
