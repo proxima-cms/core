@@ -96,15 +96,6 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
  */
 Kohana::$config->attach(new Config_File);
 
-
-/**
- * Custom application routes.
- */
-Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
-	->defaults(array(
-		'controller' => 'error'
-	));
-
 /**
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
@@ -130,35 +121,3 @@ Kohana::modules(array(
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
 	));
-
-
-if (!is_dir(DOCROOT . 'media'))
-{
-	throw new Kohana_Exception('Directory :dir does not exist',
-		array(':dir' => Debug::path('media')));
-}
-if (!is_dir(DOCROOT . 'media/assets'))
-{
-	throw new Kohana_Exception('Directory :dir does not exist',
-		array(':dir' => Debug::path('media/assets')));
-}
-if (!is_dir(DOCROOT . 'media/assets/resized'))
-{
-	throw new Kohana_Exception('Directory :dir does not exist',
-		array(':dir' => Debug::path('media/assets/resized')));
-}
-if (!is_dir(DOCROOT . 'media/cache'))
-{
-	throw new Kohana_Exception('Directory :dir does not exist',
-		array(':dir' => Debug::path('media/cache')));
-}
-if (! is_writable(DOCROOT . 'media/cache'))
-{
-	throw new Kohana_Exception('Directory :dir must be writable',
-		array(':dir' => Debug::path('../media/cache')));
-}
-if (! is_writable(DOCROOT . 'media/assets/resized'))
-{
-	throw new Kohana_Exception('Directory :dir must be writable',
-		array(':dir' => Debug::path('../media/assets/resized')));
-}

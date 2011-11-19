@@ -2,8 +2,61 @@
 
 class Core {
 
+	/**
+	* Core init: check paths exist and set the database config reader.
+	*
+	* @return  void
+	*/
+	public static function init()
+	{
+		if (!is_dir(DOCROOT . 'media'))
+		{
+			throw new Kohana_Exception('Directory :dir does not exist',
+				array(':dir' => Debug::path('media')));
+		}
+		if (!is_dir(DOCROOT . 'media/assets'))
+		{
+			throw new Kohana_Exception('Directory :dir does not exist',
+				array(':dir' => Debug::path('media/assets')));
+		}
+		if (!is_dir(DOCROOT . 'media/assets/resized'))
+		{
+			throw new Kohana_Exception('Directory :dir does not exist',
+				array(':dir' => Debug::path('media/assets/resized')));
+		}
+		if (!is_dir(DOCROOT . 'media/cache'))
+		{
+			throw new Kohana_Exception('Directory :dir does not exist',
+				array(':dir' => Debug::path('media/cache')));
+		}
+		if (! is_writable(DOCROOT . 'media/cache'))
+		{
+			throw new Kohana_Exception('Directory :dir must be writable',
+				array(':dir' => Debug::path('../media/cache')));
+		}
+		if (! is_writable(DOCROOT . 'media/assets/resized'))
+		{
+			throw new Kohana_Exception('Directory :dir must be writable',
+				array(':dir' => Debug::path('../media/assets/resized')));
+		}
+
+		// Attach the database config reader.
+		Kohana::$config->attach(new Config_Database);
+	}
+
+	/**
+	* Set the application routes.
+	*
+	* @return  void
+	*/
 	public static function set_routes()
 	{
+		// Set the error page route.
+		Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
+			->defaults(array(
+				'controller' => 'error'
+			)); 
+
 		// Find all pages that require routing to specific controllers.
 		$route_pages = ORM::factory('site_page')
 				->where('pagetype_controller', '<>', 'page')
@@ -16,8 +69,8 @@ class Core {
 			Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
 				->defaults(array(
 					'controller' => $page->pagetype_controller,
-					'action'     => 'index',
-					'uri'        => $page->uri,
+					'action'		 => 'index',
+					'uri'				 => $page->uri,
 				));
 		}
 
@@ -25,7 +78,7 @@ class Core {
 		Route::set('page', '<uri>', array('uri' => '.*'))
 			->defaults(array(
 				'controller' => 'page',
-				'action'     => 'index'
+				'action'		 => 'index'
 			));
 	}
 }
