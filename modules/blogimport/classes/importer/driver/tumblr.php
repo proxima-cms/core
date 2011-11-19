@@ -2,6 +2,11 @@
 
 class Importer_Driver_Tumblr extends Importer_Driver
 {
+	/**  
+	 * Load posts from the blog XML feed and try to save them to the database.
+	 *
+	 * @return	array
+	 */
 	public function import_posts()
 	{
 		try
@@ -22,11 +27,16 @@ class Importer_Driver_Tumblr extends Importer_Driver
 		);
 	}
 
-	// Posts types: text, quote, photo, link, chat, video, audio
+	/**  
+	 * Try save posts to the database.
+	 * (Tumblr Posts types: text, quote, photo, link, chat, video, audio)
+	 *
+	 * @param		array		$posts	Array of posts to save to the database
+	 * @return	integer
+	 */
 	public function save_posts($posts = array())
 	{
 		$saved = 0;
-		//die(URL::site(NULL, TRUE));
 
 		foreach($posts as $data)
 		{
@@ -155,6 +165,13 @@ class Importer_Driver_Tumblr extends Importer_Driver
 		return $saved;
 	}
 
+	/**  
+	 * Create new tags, and create tag => page relationships
+	 *
+	 * @param		mixed		$page	Page ORM object
+	 * @param		array		$tags	Array of tags to save
+	 * @return	void
+	 */
 	public function save_page_tags($page = NULL, $tags = array())
 	{
 		foreach($tags as $tag)

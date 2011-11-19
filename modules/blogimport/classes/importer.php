@@ -3,6 +3,13 @@
 abstract class Importer
 {
 
+	/**
+	 * Creates and returns a new importer.
+	 *
+	 * @param		mixed		$driver	Driver name
+	 * @param		array		$config Driver config
+	 * @return	Importer
+	 */
 	public static function factory($driver = NULL, $config = array())
 	{
 

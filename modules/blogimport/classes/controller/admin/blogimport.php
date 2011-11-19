@@ -2,6 +2,11 @@
 
 class Controller_Admin_BlogImport extends Controller_Admin_Base {
 
+  /**
+   * Index action. Shows the import form.
+   *
+   * @return  void
+   */
 	public function action_index()
 	{
 		$this->template->title = __('Blog import');
