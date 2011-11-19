@@ -1,7 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /*
 * User model
-* some concepts and code taken from https://github.com/GeertDD/kohanajobs/blob/master/application/classes/model/user.php
 */
 
 class Model_User extends Model_Auth_User {

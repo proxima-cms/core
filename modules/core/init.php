@@ -2,4 +2,4 @@
 
 Core::init();
 
-Core::set_routes();
+// Routes are set in the 'site' module
