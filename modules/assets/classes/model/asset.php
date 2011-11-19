@@ -4,7 +4,6 @@ class Model_Asset extends Model_Base_Asset {
 	
 	public function admin_upload(& $file = array(), $field_name = 'asset')
 	{
-
 		$file_data = $file;
 		$filename = strtolower($file[$field_name]['name']);
 
@@ -33,41 +32,45 @@ class Model_Asset extends Model_Base_Asset {
 		try
 		{
 			$filepath = Upload::save($file_data[$field_name], $filename, DOCROOT.Kohana::$config->load('assets.upload_path'));
+		
+			$this->admin_add($filepath);
 		}
 		catch(Exception $e)
 		{
 			throw new Kohana_Exception($e);
 		}
+	}
 
-		$extension = Asset::extension($file[$field_name]['name']);
-		$description = preg_replace('/\.\w+$/', '', $filename);		// remove extension
-		$description = preg_replace('/[_-]/', ' ', $description);	// replace special chars
+	public function admin_add($file_path)
+	{
+		$file_name = basename($file_path);
+
+		$extension = Asset::extension($file_name);
+		$description = preg_replace('/\.\w+$/', '', $file_name);    // remove extension
+		$description = preg_replace('/[_-]/', ' ', $description);   // replace special chars
 
 		$mimetype = ORM::factory('mimetype')
 			->where('extension', '=', $extension)
 			->find();
 
-		// Save the file data
 		$data = array(
-			//'user_id' => Auth::instance()->get_user()->id,
-			'mimetype_id' => $mimetype->id,
-			'filename' => $filename,
-			'friendly_filename' => $filename,
-			'description' => $description,
-			'filesize' => (int) $file_data[$field_name]['size']
+			'user_id'           => Auth::instance()->get_user()->id,
+			'mimetype_id'       => $mimetype->id,
+			'filename'          => $file_name,
+			'friendly_filename' => $file_name,
+			'description'       => $description,
+			'filesize'          => filesize($file_path)
 		);		
 		$this->values($data);
 		$this->save();
 
 		// Create a new filename with id prefixed
-		$new_filename = str_replace($this->filename, $this->id.'_'.$this->filename, $filepath);
+		$new_filename = str_replace($this->filename, $this->id.'_'.$this->filename, $file_path);
 		$this->filename = basename($new_filename);
 		$this->save();
 
 		// Move the file to the new filename path
-		rename($filepath, $new_filename);
-
-		return $this;
+		rename($file_path, $new_filename);
 	}
 	
 	public function admin_update(& $data)

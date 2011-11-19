@@ -23,7 +23,10 @@ class Asset {
 				throw $e;
 			}
 
-			$file_path = DOCROOT.Kohana::$config->load('assets.upload_path').basename($file_path);
+			$file_path = DOCROOT
+				. Kohana::$config->load('assets.upload_path')
+				. DIRECTORY_SEPARATOR
+				. basename($file_path);
 
 			file_put_contents($file_path, $asset_data); 
 		}
@@ -119,7 +122,7 @@ class Asset {
 				->find();
 			
 			// If no size then create one, this is a security feature 
-			// to disallow building image sizes anonymously
+			// to disallow building image sizes anonymously.
 			if (!$size->loaded())
 			{
 				$size->asset_id = $asset->id;
@@ -145,27 +148,21 @@ class Asset {
 	{
 		$path = self::docpath($asset, $width, $height, $crop);
 			
-		return ($full_path)
-			? DOCROOT.$path
-			: $path;
+		return ($full_path) ? DOCROOT.$path : $path;
 	}	
 
 	public static function path($asset, $full = FALSE, $resized = '')
 	{
 		 $path = Kohana::$config->load('assets.upload_path').'/'.$resized.$asset->filename;
 
-		 return ($full)
-				 ? DOCROOT.$path
-				 : $path;
+		 return ($full) ? DOCROOT.$path : $path;
 	}
 	
 	public function url($asset, $full = FALSE)
 	{
 		$url = URL::site('media/assets/'.$asset->filename);
 		
-		return ($full)
-			? URL::site($url, TRUE)
-			: $url;
+		return ($full) ? URL::site($url, TRUE) : $url;
 	}
 	
 	public static function rotate($file_in, $degrees)
