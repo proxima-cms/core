@@ -148,7 +148,7 @@ abstract class Controller_Admin_Base extends Controller_Base {
 		{
 			throw new Kohana_Exception('Item not found.');
 		}
-		
+
 		$item->admin_delete(NULL, array('id' => $id));
 
 		if ($set_message === TRUE)
