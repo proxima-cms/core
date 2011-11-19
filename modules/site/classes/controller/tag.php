@@ -4,7 +4,7 @@ class Controller_Tag extends Controller_Page {
 
 	public function action_index()
 	{
-    $tag_slug = Request::current()->param('name');
+    $tag_slug = Request::current()->param('param');
   
     if ($tag_slug === NULL)
     {   
