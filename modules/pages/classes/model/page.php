@@ -2,67 +2,34 @@
 
 class Model_Page extends Model_Base_Page {
 
-	public function admin_add(& $data)
+	public function admin_add($data)
 	{
-		$tags = Arr::get($data, 'tags', array());
+		$validation = Validation::factory($data);
 
-		$data = Validation::factory($data);
-
-		$fields = array(
-			'parent_id',
-			'pagetype_id',
-			'title',
-			'description',
-		);
-		foreach($fields as $field)
+		foreach($this->create_rules() as $field => $rules)
 		{
-			$data->rules($field, $this->_rules[$field]);
+			$validation->rules($field, $rules);
 		}
 
-		if (!$data->check())
-		{
-			return FALSE;
-		}
-
-		$post = $data->as_array();
-		$post['uri'] = NULL;
-
-		$this->values($post);
+		$this->values($data);
 		$this->user_id = Auth::instance()->get_user()->id;
-		$this->save();
+		$this->save($validation);
 
 		$this->generate_uri();
 
 		return $this->save();
 	}
 
-	public function admin_update(& $data)
+	public function admin_update($data)
 	{
 		$tags = Arr::get($data, 'tags', array());
-
-		$data = Validation::factory($data);
-
-		$fields = array(
-			'parent_id',
-			'pagetype_id',
-			'title',
-			'description',
-			'uri',
-			'body',
-			'visible_from',
-			'visible_to'
-		);
-		foreach($fields as $field)
-		{
-			$data->rules($field, $this->_rules[$field]);
-		}
 		
-		if ( !$data->check())
-		{
-			return FALSE;
-		}
+		$validation = Validation::factory($data);
 
-		$data = $data->as_array();
+		foreach($this->update_rules() as $field => $rules)
+		{
+			$validation->rules($field, $rules);
+		}
 
 		if (Arr::get($data, 'visible_to_forever', FALSE) !== FALSE)
 		{
@@ -70,7 +37,7 @@ class Model_Page extends Model_Base_Page {
 		}
 
 		$this->values($data);
-		$this->save();
+		$this->save($validation);
 		$this->update_tags($tags);
 				
 		return $data;
@@ -93,7 +60,7 @@ class Model_Page extends Model_Base_Page {
 		}
 	}
 	
-	public function admin_delete($id = NULL, & $data)
+	public function admin_delete($id = NULL, $data)
 	{
 		if ($id === NULL)
 		{
@@ -102,6 +69,7 @@ class Model_Page extends Model_Base_Page {
 				
 			if ( !$data->check()) return FALSE;			
 		}
+
 		
 		return parent::delete($id);		
 	}

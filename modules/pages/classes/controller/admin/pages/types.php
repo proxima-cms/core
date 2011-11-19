@@ -19,19 +19,22 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			$templates[basename($key)] = basename($key);
 		}
 
-		if ($_POST)
-		{
-			if (ORM::factory('page_type')->admin_add($_POST))
+		if ($this->request->method() === 'POST')
+		{		
+			try 
 			{		
+				ORM::factory('page_type')->admin_add($this->request->post());
+
 				Message::set(Message::SUCCESS, __('Page type successfully saved.'));		 
+
 				$this->request->redirect('admin/pages/types');
 			}	
-			else if ($errors = $_POST->errors('admin/pages/types'))
+			catch(ORM_Validation_Exception $e) 
 			{		
-				 Message::set(Message::ERROR, __('Please correct the errors.'));
-			}
+				$errors = $e->errors('admin/pages/types');
 
-			$_POST = $_POST->as_array();
+				Message::set(Message::ERROR, __('Please correct the errors.'));
+			}
 		}
 	}
 
@@ -75,7 +78,7 @@ class Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			}
 			catch(ORM_Validation_Exception $e)
 			{
-				$errors = $e->errors('admin/page_types');
+				$errors = $e->errors('admin/pages/types');
 
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}

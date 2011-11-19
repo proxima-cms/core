@@ -14,42 +14,70 @@ class Model_Base_Page extends Model_Base {
 		'tags'			=> array('model' => 'tag', 'through' => 'tags_pages'),
 	);
 	
-	// Validation rules
-	protected $_rules = array(
-		'parent_id' => array(
-			array('not_empty'),
-			array('numeric'),
-		),
-		'pagetype_id' => array(
-			array('not_empty'),
-			array('numeric'),
-		),
-		'description' => array(
-			array('not_empty'),
-			array('min_length', array(':value', 4)),
-			array('max_length', array(':value', 128)),
-		),
-		'title' => array(
-			array('not_empty'),
-			array('min_length', array(':value', 4)),
-			array('max_length', array(':value', 128)),
-		),
-		'uri' => array(
-			array('not_empty'),
-			array('min_length', array(':value', 3)),
-			array('max_length', array(':value', 128)),
-		),
-		'body' => array(
-		),
-		'visible_from' => array(
-			array('not_empty'),
-			array('date'),
-		),
-		'visible_to' => array(
-			array('not_empty'),
-			array('date'),
-		)
-	);
+
+	public function rules()
+	{
+		return array();
+	}
+
+	public function create_rules()
+	{
+		return array(
+			'pagetype_id' => array(
+				array('not_empty'),
+				array('numeric'),
+			),
+			'description' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 128)),
+			),
+			'title' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 128)),
+			),
+		);
+	}
+
+	public function update_rules()
+	{
+		return array(
+			'parent_id' => array(
+				array('not_empty'),
+				array('numeric'),
+			),
+			'pagetype_id' => array(
+				array('not_empty'),
+				array('numeric'),
+			),
+			'description' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 128)),
+			),
+			'title' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 128)),
+			),
+			'uri' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 3)),
+				array('max_length', array(':value', 128)),
+			),
+			'body' => array(
+			),
+			'visible_from' => array(
+				array('not_empty'),
+				array('date'),
+			),
+			'visible_to' => array(
+				array('not_empty'),
+				array('date'),
+			)
+		);
+	}
 	
 	// Validation callbacks
 	protected $_callbacks = array(

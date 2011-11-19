@@ -40,6 +40,17 @@
 					}
 				});
 			});
+			
+			if ($.trim($('#body').html()) === '') {
+				$('#body').append('<p>(<em>No data</em>)</p>').one('click', function(){
+					$('#body').html('');
+				});
+			}
+
+			$('#body').click(function(){
+				console.debug(window.tinymce_config);
+				$(this).tinymce(window.tinymce_config);
+			});
 		}
 	};
 	

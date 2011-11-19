@@ -13,17 +13,18 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		$this->template->title = __('Add page');
 
 		array_push($this->template->styles, Kohana::$config->load('admin/media.paths.tinymce_skin'));
-		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce'));
-		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce_init'));
+
+		array_push($this->template->scripts, 
+			Kohana::$config->load('admin/media.paths.tinymce_jquery'),
+			kohana::$config->load('admin/media.paths.tinymce_config'),
+			'modules/pages/media/js/admin/pages.js'
+		);
 		
 		$this->template->content = View::factory('admin/page/pages/add')
-			->bind('pages', $pages)
-			->bind('tags', $tags)
+			->set('pages', ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title'))
+			->set('set', ORM::factory('tag')->find_all())
 			->bind('page_types', $page_types)
 			->bind('errors', $errors);
-
-		$pages = ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title');
-		$tags = ORM::factory('tag')->find_all();
 
 		$page_types = array('' => 'None');
 
@@ -32,20 +33,22 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			$page_types[$page_type->id] = $page_type->name;
 		}
 
-		if ($_POST)
+		if ($this->request->method() === 'POST')
 		{
-			if ($page = ORM::factory('page')->admin_add($_POST))
+			try
 			{
+				$page = ORM::factory('page')->admin_add($_POST);
+
 				Message::set(Message::SUCCESS, __('Page successfully saved.'));
 				
 				Request::current()->redirect('admin/pages/edit/'.$page->id);
 			} 
-			else if ($errors = $_POST->errors('admin/pages'))
+			catch(ORM_Validation_Exception $e)
 			{
-				 Message::set(Message::ERROR, __('Please correct the errors.'));
+				$errors = $e->errors('admin/pages');
+
+				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
-		
-			$_POST = $_POST->as_array();
 		}
 	}
 	
@@ -54,8 +57,12 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		$this->template->title = __('Edit page');
 
 		array_push($this->template->styles, Kohana::$config->load('admin/media.paths.tinymce_skin'));
-		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce'));
-		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce_init'));
+
+		array_push($this->template->scripts, 
+			Kohana::$config->load('admin/media.paths.tinymce_jquery'),
+			kohana::$config->load('admin/media.paths.tinymce_config'),
+			'modules/pages/media/js/admin/pages.js'
+		);
 
 		$id = Request::current()->param('id');
 
@@ -106,23 +113,22 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			$page_published = TRUE;
 		}
 
-		if ($_POST)
+		if ($this->request->method() === 'POST')
 		{
-			if ($page->admin_update($_POST))
+			try
 			{
+				$page->admin_update($this->request->post());
+
 				Message::set(Message::SUCCESS, __('Page successfully updated.'));
 			
 				Request::current()->redirect('admin/pages/edit/'.$id);
 			}
-			else if ($errors = $_POST->errors('admin/pages'))
+			catch(ORM_Validation_Exception $e)
 			{
+				$errors = $e->errors('admin/pages');
+
  				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
-		}
-		else
-		{
-			// Add the default data to POST
-			$_POST = array_merge($_POST, $page->as_array());
 		}
 	}
 	
