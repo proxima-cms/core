@@ -55,19 +55,5 @@ class Controller_Admin_Config extends Controller_Admin_Base {
 			}
 		}
 	}
-	
-	public function action_group($group_name = NULL)
-	{
-		$db_config = ORM::factory('config')
-			->where('group_name', '=', $group_name)
-			->find_all();
-			
-		if ($db_config->count() == 0)
-		{
-			$this->request->redirect('admin/config');
-		}
-		
-		$this->action_index($db_config);
-	}
 
 } // End Controller_Admin_Config
