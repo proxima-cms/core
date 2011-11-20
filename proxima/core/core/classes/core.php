@@ -107,16 +107,33 @@ class Core {
 			Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
 				->defaults(array(
 					'controller' => $page->pagetype_controller,
-					'action'     => 'index',
-					'uri'        => $page->uri,
+					'action'		 => 'index',
+					'uri'				 => $page->uri,
 				));
 		}
 
+		// Admin config
+		Route::set('admin/config', 'admin/config(/<group>)')
+			->defaults(array(
+				'controller' => 'config',
+				'directory'  => 'admin',
+				'action'		 => 'index',
+				'group'			 => NULL,
+			));
+
+		// Admin logs
+		Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
+			->defaults(array(
+				'controller' => 'admin_logs',
+				'action'		 => 'index',	
+				'file'			 => NULL
+			));
+			
 		// Set the 'catch all' route.
 		Route::set('page', '<uri>', array('uri' => '.*'))
 			->defaults(array(
 				'controller' => 'page',
-				'action'     => 'index'
+				'action'		 => 'index'
 			));
 	}
 }
