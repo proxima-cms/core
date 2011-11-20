@@ -6,14 +6,19 @@
  *
  * @see  http://kohanaframework.org/guide/about.install#application
  */
-$application = 'application';
+$application = 'proxima/application';
 
 /**
  * The directory in which your modules are located.
  *
  * @see  http://kohanaframework.org/guide/about.install#modules
  */
-$modules = 'modules';
+$modules = 'proxima/modules';
+
+/**
+ * The directory in which the proxima core file are located.
+ */
+$core = 'proxima/core';
 
 /**
  * The directory in which the Kohana resources are located. The system
@@ -64,6 +69,10 @@ if ( ! is_dir($application) AND is_dir(DOCROOT.$application))
 if ( ! is_dir($modules) AND is_dir(DOCROOT.$modules))
 	$modules = DOCROOT.$modules;
 
+// Make the core relative to the docroot, for symlink'd index.php
+if ( ! is_dir($core) AND is_dir(DOCROOT.$core))
+	$core = DOCROOT.$core;
+
 // Make the system relative to the docroot, for symlink'd index.php
 if ( ! is_dir($system) AND is_dir(DOCROOT.$system))
 	$system = DOCROOT.$system;
@@ -71,6 +80,7 @@ if ( ! is_dir($system) AND is_dir(DOCROOT.$system))
 // Define the absolute paths for configured directories
 define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
 define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
+define('CORPATH', realpath($core).DIRECTORY_SEPARATOR);
 define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
 
 // Clean up the configuration vars

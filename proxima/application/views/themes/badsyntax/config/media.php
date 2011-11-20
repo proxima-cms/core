@@ -2,9 +2,9 @@
 
 return array(
 	'styles'			 => array(
-		'media/css/screen.css'
+		'screen.css'
 	),
 	'scripts'				=> array(
-		'media/js/global.js'
+		'global.js'
 	),
 );

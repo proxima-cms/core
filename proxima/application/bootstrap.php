@@ -104,4 +104,4 @@ Kohana::$config->attach(new Config_File);
 /**
  * Load the core module.
  */
-Kohana::modules(array('core' => MODPATH.'core'));
+Kohana::modules(array('core' => CORPATH.'core'));
