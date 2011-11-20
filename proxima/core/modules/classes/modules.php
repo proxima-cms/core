@@ -61,7 +61,7 @@ class Modules {
 
 		foreach($modules as $module)
 		{
-			$details['admin_nav'] = FALSE;
+			$details = array('admin_nav' => FALSE);
 	
 			// Load the details config file.
 			$file = CORPATH.join(DIRECTORY_SEPARATOR, array(

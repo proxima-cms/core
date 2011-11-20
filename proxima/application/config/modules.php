@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Sunday 20th of November 2011 08:48:17 PM
+ * Auto generated on: Sunday 20th of November 2011 09:06:07 PM
  */
 
 return array(
@@ -23,4 +23,5 @@ return array(
 	'message' => CORPATH.'message',
 	'blogimport' => CORPATH.'blogimport',
 	'redirects' => CORPATH.'redirects',
+	'modules' => CORPATH.'modules',
 );

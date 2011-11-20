@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Sunday 20th of November 2011 08:48:17 PM
+ * Auto generated on: Sunday 20th of November 2011 09:06:07 PM
  */
 
 return array(
@@ -11,5 +11,6 @@ return array(
 		'admin/users' => __('Users'),
 		'admin/tags' => __('Tags'),
 		'admin/blogimport' => __('Blog import'),
+		'admin/modules' => __('Modules'),
 	)
 );
