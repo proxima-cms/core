@@ -100,9 +100,9 @@ class Core {
 
 		// Find all pages that require routing to specific controllers.
 		$route_pages = ORM::factory('site_page')
-				->where('pagetype_controller', '<>', 'page')
-				->and_where('pagetype_controller', 'IS NOT', NULL)
-				->find_all();
+			->where('pagetype_controller', '<>', 'page')
+			->and_where('pagetype_controller', 'IS NOT', NULL)
+			->find_all();
 
 		foreach($route_pages as $page)
 		{
@@ -110,8 +110,8 @@ class Core {
 			Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
 				->defaults(array(
 					'controller' => $page->pagetype_controller,
-					'action'		 => 'index',
-					'uri'				 => $page->uri,
+					'action'     => 'index',
+					'uri'        => $page->uri,
 				));
 		}
 
@@ -119,7 +119,7 @@ class Core {
 		Route::set('page', '<uri>', array('uri' => '.*'))
 			->defaults(array(
 				'controller' => 'page',
-				'action'		 => 'index'
+				'action'     => 'index'
 			));
 	}
 }
