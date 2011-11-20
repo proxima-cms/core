@@ -6,6 +6,10 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 	{
 		$this->template->title = __('Pages');
 		$this->template->content = View::factory('admin/page/pages/index');
+		
+		array_push($this->template->scripts, 
+			'modules/pages/media/js/admin/pages.js'
+		);
 	}
 
 	public function action_add()

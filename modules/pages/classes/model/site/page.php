@@ -12,7 +12,7 @@ class Model_Site_Page extends Model_Base {
 	);  
 
 	protected $_has_many = array(
-	'children'      => array('model' => 'site_page', 'foreign_key' => 'parent_id'),
+		'children'      => array('model' => 'site_page', 'foreign_key' => 'parent_id'),
 	); 
 
 	protected $_table_columns = array(
