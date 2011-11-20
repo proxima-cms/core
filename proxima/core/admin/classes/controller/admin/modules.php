@@ -13,13 +13,13 @@ class Controller_Admin_Modules extends Controller_Admin_Base {
 
 		$modules = array();
 
-    foreach(Kohana::list_files(rtrim(CORPATH, DIRECTORY_SEPARATOR), array('')) as $path => $dir)
-    {   
-      $modules[str_replace(CORPATH, '', $path)] = $path;
-    }  
-    foreach(Kohana::list_files(rtrim(MODPATH, DIRECTORY_SEPARATOR), array('')) as $path => $dir)
-    {
-      $modules[str_replace(MODPATH, '', $path)] = $path;
+		foreach(Kohana::list_files(rtrim(CORPATH, DIRECTORY_SEPARATOR), array('')) as $path => $dir)
+		{   
+			$modules[str_replace(CORPATH, '', $path)] = $path;
+		}  
+		foreach(Kohana::list_files(rtrim(MODPATH, DIRECTORY_SEPARATOR), array('')) as $path => $dir)
+		{
+			$modules[str_replace(MODPATH, '', $path)] = $path;
 		}
 	}
 
