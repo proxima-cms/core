@@ -1,5 +1,4 @@
 <div class="action-bar clear">
-	
 	<?php echo $breadcrumbs?>
 </div>
 
@@ -13,7 +12,13 @@
 			<?php if ($item->field_type == 'text'){
 				echo 
 					Form::label("config-{$group}-{$item->config_key}", $item->label, NULL, $errors) . '<br />' .
-					Form::input("config-{$group}-{$item->config_key}", Arr::Get($_POST, 'config-'.$group.'-'.$item->config_key), NULL, $errors);
+					
+					Form::input(
+						"config-{$group}-{$item->config_key}", 
+						Request::current()->post('config-'.$group.'-'.$item->config_key) ?: $item->config_value, 
+						NULL, 
+						$errors
+					);
 			}?>
 			</div>
 		<?php }?>

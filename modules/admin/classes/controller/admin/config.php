@@ -2,46 +2,42 @@
 
 class Controller_Admin_Config extends Controller_Admin_Base {
 
-	public function action_index($db_config = NULL)
+	public function action_index()
 	{
 		$this->template->title = __('Admin - Config');
 		$this->template->content = View::factory('admin/page/config/index')
 			->bind('config', $config)
 			->bind('errors', $errors);
-		
-		if ($db_config === NULL)
+
+		$group_filter = $this->request->param('group');
+
+		if ($this->request->method() !== 'POST')
 		{
+			$config = array();
+
 			$db_config = ORM::factory('config')->find_all();
-		}
 
-		if (!$_POST)
-		{
-			$default_data = array();
-		}
-
-		$config = array();
-		foreach($db_config as $item)
-		{
-			if (!isset($config[$item->group_name]))
+			foreach($db_config as $item)
 			{
-				$config[$item->group_name] = array();
-			}
-			
-			$citem = $item;
+				if ($group_filter !== NULL AND $item->group_name !== $group_filter)
+				{
+					continue;
+				}
 
-			$config[$item->group_name][] = $citem;
+				if (!isset($config[$item->group_name]))
+				{
+					$config[$item->group_name] = array();
+				}
 
-			// If POST is empty then set the default form data
-			if (!$_POST)
-			{
-				$default_data["config-{$item->group_name}-{$item->config_key}"] = unserialize($item->config_value);
+				$config[$item->group_name][] = $item;
 			}
 		}
-
-		if ($_POST)
+		else
 		{
+			$config = $this->request->post();
+
 			// Try save the config
-			if (ORM::factory('config')->update_all($_POST))
+			if (ORM::factory('config')->update_all($config))
 			{
 				Message::set(Message::SUCCESS, __('Config successfully saved.'));
 
@@ -57,12 +53,6 @@ class Controller_Admin_Config extends Controller_Admin_Base {
 			{
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
-
-		}
-		else
-		{
-			// If POST is empty then add the default form data to POST
-			$_POST = $default_data;
 		}
 	}
 	
