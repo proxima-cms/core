@@ -1,33 +1,33 @@
 [submodule "system"]
 	path = system
 	url = https://github.com/kohana/core.git
-[submodule "modules/cache"]
-	path = modules/cache
+[submodule "proxima/core/cache"]
+	path = proxima/core/cache
 	url = https://github.com/kohana/cache.git
-[submodule "modules/database"]
-	path = modules/database
+[submodule "proxima/core/database"]
+	path = proxima/core/database
 	url = https://github.com/kohana/database.git
-[submodule "modules/orm"]
-	path = modules/orm
+[submodule "proxima/core/orm"]
+	path = proxima/core/orm
 	url = https://github.com/kohana/orm.git
-[submodule "modules/message"]
-	path = modules/message
+[submodule "proxima/core/message"]
+	path = proxima/core/message
 	url = git://github.com/GeertDD/kohana-message.git
-[submodule "modules/auth"]
-	path = modules/auth
+[submodule "proxima/core/auth"]
+	path = proxima/core/auth
 	url = https://github.com/kohana/auth.git
-[submodule "modules/image"]
-	path = modules/image
+[submodule "proxima/core/image"]
+	path = proxima/core/image
 	url = https://github.com/kohana/image.git
-[submodule "modules/core/vendor/swiftmailer"]
-	path = modules/core/vendor/swiftmailer
+[submodule "proxima/core/core/vendor/swiftmailer"]
+	path = proxima/core/vendor/swiftmailer
 	url = https://github.com/swiftmailer/swiftmailer.git
-[submodule "modules/compress"]
-	path = modules/compress
+[submodule "proxima/core/compress"]
+	path = proxima/core/compress
 	url = git://github.com/azampagl/kohana-compress.git
-[submodule "modules/pagination"]
-	path = modules/pagination
+[submodule "proxima/core/pagination"]
+	path = proxima/core/pagination
 	url = git://github.com/kloopko/kohana-pagination.git
-[submodule "modules/minion"]
-	path = modules/minion
+[submodule "proxima/core/minion"]
+	path = proxima/core/minion
 	url = git://github.com/kohana-minion/core.git
