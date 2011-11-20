@@ -248,7 +248,7 @@ table thead th, table tfoot tr {
 	-webkit-text-shadow: 1px 1px 0 #FFFFFF; 
 	text-shadow: 1px 1px 0 #FFFFFF; 
 	background: #ffffff; 
-	background: url(/modules/admin/media/img/ui-theme/bg_glass.png);
+	background: url(../img/ui-theme/bg_glass.png);
 }
 table thead th:hover {
 	background-position: 0 -8px;

@@ -129,7 +129,7 @@
 	margin-bottom: 1em;
 }
 .assetmanager.popup .sidepane .section h3 {
-	background: url("/modules/admin/media/img/ui-theme/bg_glass.png") repeat-x 0 0;
+	background: url(../../../../img/admin/assets/bg_glass.png) repeat-x 0 0;
 	padding: 5px;
 	margin: -.5em -.5em 1em -.5em;
 }

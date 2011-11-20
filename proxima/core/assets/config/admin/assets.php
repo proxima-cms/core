@@ -5,9 +5,9 @@ return array(
 	'upload_path'					=> 'media/assets',
 	'max_file_uploads'		=> 5,
 	'scripts'	=> array(
-		'modules/assets/media/js/admin/assets.js'
+		Core::path('assets/media/js/admin/assets.js')
 	),
 	'styles'	=> array(
-		'modules/assets/media/css/admin/assets.css'
+		Core::path('assets/media/css/admin/assets.css')
 	),
 );

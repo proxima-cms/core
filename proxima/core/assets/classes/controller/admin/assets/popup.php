@@ -10,9 +10,8 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 	{
 		parent::before();
 
-		$this->template->scripts = array_merge($this->template->scripts, Kohana::$config->load('admin/assets.scripts'));
-
-		$this->template->styles = array_merge($this->template->styles, Kohana::$config->load('admin/assets.styles'));
+		array_push($this->template->scripts, Kohana::$config->load('admin/assets.scripts'));
+		array_push($this->template->styles, Kohana::$config->load('admin/assets.styles'));
 	}
 
 	public function action_index($view = 'admin/page/assets/index')
@@ -35,7 +34,7 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 		$this->template->set_global('browse_html', $browse_html);
 		$this->template->set_global('upload_html', $upload_html);
 		
-		$this->template->scripts = array_push($this->template->scripts, 
+		array_push($this->template->scripts, 
 			'modules/admin/media/js/jquery.tablescroll.js',
 			Kohana::$config->load('admin/media.paths.tinymce_popup')
 		);

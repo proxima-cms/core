@@ -2,9 +2,9 @@
 
 return array(
 	'styles'	=> array(
-		'modules/assets/media/css/admin/assets/popup/assets.css',
+		Core::path('assets/media/css/admin/assets/popup/assets.css'),
 	),
 	'scripts'	=> array(
-		'modules/assets/media/js/admin/assets/popup/assets.js',
+		Core::path('assets/media/js/admin/assets/popup/assets.js'),
 	)
 );
