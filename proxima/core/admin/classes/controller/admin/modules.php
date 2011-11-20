@@ -35,7 +35,7 @@ class Controller_Admin_Modules extends Controller_Admin_Base {
 
 		foreach($modules as $module)
 		{
-			$config .= "'{$module->name}' => CORPATH.'{$module->name}',\n";
+			$config .= "\t'{$module->name}' => CORPATH.'{$module->name}',\n";
 		}
 		$config .= ');';
 

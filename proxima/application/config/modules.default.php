@@ -4,9 +4,6 @@
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 
-return Core::enabled_modules();
-
-/*
 return array(
 	'core'        => CORPATH.'core',       // Core module
 	'pages'       => CORPATH.'pages',      // Pages module
@@ -27,4 +24,3 @@ return array(
 	'blogimport'  => CORPATH.'blogimport', // Blog importer module
 	'redirects'   => CORPATH.'redirects',  // Redirects module
 );
-*/
