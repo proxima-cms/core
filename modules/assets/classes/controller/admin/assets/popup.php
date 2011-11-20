@@ -4,23 +4,24 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 	
 	public $crud_model = 'assets';
 	
-	public $template = 'admin/page/assets_popup/master_page';
+	public $template = 'admin/page/assets/popup/master_page';
 
 	public function before()
 	{
 		parent::before();
 
-		array_merge($this->template->scripts, Kohana::$config->load('admin/assets_popup.scripts'));
-		array_merge($this->template->styles, Kohana::$config->load('admin/assets_popup.styles'));
+		$this->template->scripts = array_merge($this->template->scripts, Kohana::$config->load('admin/assets.scripts'));
+
+		$this->template->styles = array_merge($this->template->styles, Kohana::$config->load('admin/assets.styles'));
 	}
 
 	public function action_index($view = 'admin/page/assets/index')
 	{	
-		parent::action_index('admin/page/assets_popup/index');
+		parent::action_index('admin/page/assets/popup/index');
 		
 		$this->template->title = 'Asset Manager';		
 		
-		$browse_html = View::factory('admin/page/assets_popup/browse')
+		$browse_html = View::factory('admin/page/assets/popup/browse')
 			->bind('assets', $this->_assets)
 			->bind('total', $this->_total)
 			->bind('direction', $this->_direction)
@@ -34,11 +35,13 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 		$this->template->set_global('browse_html', $browse_html);
 		$this->template->set_global('upload_html', $upload_html);
 		
-		array_push($this->template->scripts, 'modules/admin/media/js/jquery.tablescroll.js');
-		array_push($this->template->scripts, Kohana::$config->load('admin/media.paths.tinymce_popup'));
+		$this->template->scripts = array_push($this->template->scripts, 
+			'modules/admin/media/js/jquery.tablescroll.js',
+			Kohana::$config->load('admin/media.paths.tinymce_popup')
+		);
 	}
 	
-	public function action_upload($view_path = 'admin/page/assets_popup/upload', $redirect_to = 'admin/assets/popup#browse')
+	public function action_upload($view_path = 'admin/page/assets/popup/upload', $redirect_to = 'admin/assets/popup#browse')
 	{
 		parent::action_upload($view_path, $redirect_to);
 	}
@@ -53,7 +56,7 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 		}
 		
 		$this->template->title = __('Resize Asset');
-		$this->template->content = View::factory('admin/page/assets_popup/resize')
+		$this->template->content = View::factory('admin/page/assets/popup/resize')
 			->bind('asset', $asset);
 	}
 	
@@ -67,7 +70,7 @@ class Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 		}
 		
 		$this->template->title = __('View Asset');
-		$this->template->content = View::factory('admin/page/assets_popup/view')
+		$this->template->content = View::factory('admin/page/assets/popup/view')
 			->bind('asset', $asset);
 	}
 

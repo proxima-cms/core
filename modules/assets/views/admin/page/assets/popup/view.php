@@ -9,9 +9,9 @@
 			title="<?php echo $asset->description?>">
 
 			<?php if ($asset->is_text_document()){?>
-				<img src="/modules/admin/media/img/assets/page-white-text.png" style="border:1px solid #ccc;padding:3px;" />
+				<img src="/modules/assets/media/img/admin/assets/page-white-text.png" style="border:1px solid #ccc;padding:3px;" />
 			<?php } else if ($asset->is_archive()){?>
-				<img src="/modules/admin/media/img/assets/page-white-zip.png" style="border:1px solid #ccc;padding:3px;" />
+				<img src="/modules/assets/media/img/admin/assets/page-white-zip.png" style="border:1px solid #ccc;padding:3px;" />
 			<?php } else {?>
 				<img src="<?php echo URL::site($asset->image_url(300, 300))?>" style="border:1px solid #ccc;padding:3px;" />
 			<?php }?>

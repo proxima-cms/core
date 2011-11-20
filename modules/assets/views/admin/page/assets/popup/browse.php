@@ -98,6 +98,8 @@
 				<?php foreach($assets as $asset){?>
 				<tr>
 					<td>
+						<div style="white-space: nowrap;
+						overflow: hidden;width:270px">
 						<a 
 							href="<?php echo URL::site('admin/assets/popup/view/'.$asset->id)?>" 
 							class="asset" 
@@ -106,9 +108,9 @@
 							data-filename="<?php echo $asset->filename?>">
 							
 							<?php if ($asset->is_text_document()){?>
-								<img src="/modules/admin/media/img/assets/page-white-text.png" class="asset-thumb helper-left" />
+								<img src="/modules/assets/media/img/admin/assets/page-white-text.png" class="asset-thumb helper-left" />
 							<?php } else if ($asset->is_archive()){?>
-								<img src="/modules/admin/media/img/assets/page-white-zip.png" class="asset-thumb helper-left" />
+								<img src="/modules/assets/media/img/admin/assets/page-white-zip.png" class="asset-thumb helper-left" />
 							<?php } else {?>
 								<img src="<?php echo URL::site($asset->image_url(40, 40, TRUE))?>" class="asset-thumb helper-left" />
 							<?php }?>
@@ -117,6 +119,7 @@
 						</a>
 						<div style="color:#888;padding-top:.5em">
 						<?php echo $asset->date?>
+						</div>
 						</div>
 					</td>
 					<td>

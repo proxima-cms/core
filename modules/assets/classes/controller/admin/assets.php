@@ -12,7 +12,15 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	protected $_order_by;
 	
 	protected $_direction;
-	
+
+	public function before()
+	{
+		parent::before();
+
+		$this->template->scripts = array_merge($this->template->scripts, Kohana::$config->load('admin/assets/popup.scripts'));
+		$this->template->styles = array_merge($this->template->styles, Kohana::$config->load('admin/assets/popup.styles'));
+	}
+
 	public function action_index($view = 'admin/page/assets/index')
 	{
 		$this->template->title = __('Assets');
@@ -34,7 +42,9 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->_filter = Arr::get($_REQUEST, 'filter', NULL);
 
 		// Get the total amount of items in the table
-		$this->_total = ORM::factory('asset');
+		$this->_total = ORM::factory('asset')
+			->join('mimetypes')
+			->on('asset.mimetype_id', '=', 'mimetypes.id');
 		
 		$this->_filter_results($this->_total);
 		$this->_total = $this->_total->count_all();
@@ -43,7 +53,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->_pagination = Pagination::factory(array(
 			'total_items' => $this->_total,
 			'items_per_page' => 18,
-			'view'  => 'admin/pagination/asset_links'
+			'view'	=> 'admin/pagination/asset_links'
 		));
 
 		switch($this->_order_by)
@@ -56,6 +66,8 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		}
 
 		$this->_assets = ORM::factory('asset')
+			->join('mimetypes')
+			->on('asset.mimetype_id', '=', 'mimetypes.id')
 			->order_by($this->_order_by, $this->_direction)			
 			->limit($this->_pagination->items_per_page)
 			->offset($this->_pagination->offset);
@@ -105,11 +117,11 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 				// Create the file upload array
 				$file = array(
 					$field_name => array(
-						'name'      => $_FILES[$field_name]['name'][$c],
-						'type'      => $_FILES[$field_name]['type'][$c],
-						'tmp_name'  => $_FILES[$field_name]['tmp_name'][$c],
-						'error'     => $_FILES[$field_name]['error'][$c],
-						'size'      => $_FILES[$field_name]['size'][$c]
+						'name'			=> $_FILES[$field_name]['name'][$c],
+						'type'			=> $_FILES[$field_name]['type'][$c],
+						'tmp_name'	=> $_FILES[$field_name]['tmp_name'][$c],
+						'error'			=> $_FILES[$field_name]['error'][$c],
+						'size'			=> $_FILES[$field_name]['size'][$c]
 					)
 				);
 
@@ -362,7 +374,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 		if (!$asset->loaded()) exit;
 		
-		echo View::factory('admin/page/assets_popup/download_html')->set('asset', $asset);
+		echo View::factory('admin/page/assets/popup/download_html')->set('asset', $asset);
 	}	
 	
 	public function action_rotate()
