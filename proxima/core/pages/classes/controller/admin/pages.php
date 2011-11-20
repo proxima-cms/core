@@ -8,7 +8,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		$this->template->content = View::factory('admin/page/pages/index');
 		
 		array_push($this->template->scripts, 
-			'modules/pages/media/js/admin/pages.js'
+			Core::path('pages/media/js/admin/pages.js')
 		);
 	}
 
@@ -21,7 +21,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		array_push($this->template->scripts, 
 			Kohana::$config->load('admin/media.paths.tinymce_jquery'),
 			kohana::$config->load('admin/media.paths.tinymce_config'),
-			'modules/pages/media/js/admin/pages.js'
+			Core::path('pages/media/js/admin/pages.js')
 		);
 		
 		$this->template->content = View::factory('admin/page/pages/add')
@@ -65,7 +65,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		array_push($this->template->scripts, 
 			Kohana::$config->load('admin/media.paths.tinymce_jquery'),
 			kohana::$config->load('admin/media.paths.tinymce_config'),
-			'modules/pages/media/js/admin/pages.js'
+			Core::path('pages/media/js/admin/pages.js')
 		);
 
 		$id = Request::current()->param('id');

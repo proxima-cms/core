@@ -58,6 +58,33 @@ class Core {
 		}
 	}
 
+	/** 
+	 * Returns the application path for a theme file.
+	 *
+	 * @param		mixed		$file		File name
+	 * @param		bool		$root		Add the root application path?
+	 * @return	string	$path		The file path
+	 */
+	public static function path($file = NULL, $root = TRUE)
+	{
+		
+		$root = $root === TRUE ? str_replace(DOCROOT, '', CORPATH) : '';
+
+		if (is_array($file))
+		{
+			$files = array();
+
+			foreach($file as $f)
+			{
+				$files[] = $root . $f;
+			}
+
+			return $files;
+		}
+		
+		return $root . $file;
+	}
+
 	/**
 	* Set the application routes.
 	*
