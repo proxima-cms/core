@@ -102,6 +102,8 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
 Kohana::$config->attach(new Config_File);
 
 /**
- * Load the core module.
+ * Load the modules.
  */
-Kohana::modules(array('core' => CORPATH.'core'));
+$modules = Kohana::$config->load('modules')->as_array();
+
+Kohana::modules($modules);

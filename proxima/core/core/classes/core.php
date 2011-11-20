@@ -9,9 +9,6 @@ class Core {
 	*/
 	public static function init()
 	{
-		// Enable system modules.
-		Kohana::modules(Kohana::$config->load('modules')->as_array());
-
 		// Check system paths exist.
 		self::check_paths();
 

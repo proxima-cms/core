@@ -43,7 +43,7 @@ class Controller_Admin_Modules extends Controller_Admin_Base {
 
 		if ($file_path === FALSE)
 		{
-			$file_path = CORPATH.'core/config/modules.php';
+			$file_path = APPPATH.'config/modules.php';
 		}
 
 		try
