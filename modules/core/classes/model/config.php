@@ -40,4 +40,11 @@ class Model_Config extends Model_Base {
 		return TRUE;
 	}
 
+	public function __get($key)
+	{
+		$val = parent::__get($key);
+
+		return ($key === 'config_value') ? unserialize($val) : $val;
+	}
+
 } // End Model_Config
