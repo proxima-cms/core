@@ -6,66 +6,75 @@
 // Admin media
 Route::set('admin/media', 'admin/media(/<file>)', array('file' => '.+'))
 	->defaults(array(
-		'controller' 	=> 'media',
-		'directory'		=> 'admin',
-		'file'       	=> NULL,
+		'controller'  => 'media',
+		'directory'   => 'admin',
+		'file'        => NULL,
+	));
+
+// Admin config
+Route::set('admin/config', 'admin/config(/<group>)')
+	->defaults(array(
+		'controller' => 'config',
+		'directory'  => 'admin',
+		'action'     => 'index',
+		'group'      => NULL,
 	));
 	
 // Admin Assets - get asset
 Route::set('admin/get-asset', 'admin/assets/get_asset(/<id>)(/<width>)(/<height>)(/<crop>)')
 	->defaults(array(
-		'action' 		=> 'get_asset',
-		'directory' 	=> 'admin',
-		'controller' 	=> 'assets'
+		'action'      => 'get_asset',
+		'directory'   => 'admin',
+		'controller'  => 'assets'
 	));
 	
 // Admin Assets - get image url
 Route::set('admin/get-asset', 'admin/assets/get_image_url/(<id>)(/<width>)(/<height>)')
 	->defaults(array(
-		'action' 		=> 'get_image_url',
-		'directory' 	=> 'admin',
-		'controller' 	=> 'assets'
+		'action'      => 'get_image_url',
+		'directory'   => 'admin',
+		'controller'  => 'assets'
 	));
 
 // Global media assets
 Route::set('media/assets', 'media/assets/resized/(<id>_<width>_<height>_<crop>_<filename>)', array(
-		'id' 			=> '\d+',
-		'width' 		=> '\d+',
-		'height' 		=> '\d+',
-		'crop'			=> '\d+',
-		'filename' 		=> '.+'
+		'id'        => '\d+',
+		'width'     => '\d+',
+		'height'    => '\d+',
+		'crop'      => '\d+',
+		'filename'  => '.+'
 	))
 	->defaults(array(
-		'directory'		=> 'admin',
-		'controller'	=> 'assets',
-		'action'		=> 'get_asset',
-		'id'			=> 0,
-		'width'			=> NULL,
-		'height'		=> NULL,
-		'crop'			=> NULL,	
-		'filename'			=> NULL,
+		'directory'  => 'admin',
+		'controller' => 'assets',
+		'action'     => 'get_asset',
+		'id'         => 0,
+		'width'      => NULL,
+		'height'     => NULL,
+		'crop'       => NULL,	
+		'filename'   => NULL,
 	));
 	
 // Admin popup assets
 Route::set('admin/popup-assets', 'admin/assets/popup(/<action>)(/<id>)')
 	->defaults(array(
-		'controller' 	=> 'assets_popup',
-		'directory' 	=> 'admin',
+		'controller' => 'assets_popup',
+		'directory'  => 'admin',
 	));
 	
 // Admin logs
 Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
 	->defaults(array(
-		'controller' 	=> 'admin_logs',
-		'action'     	=> 'index',	
-		'file'	     	=> NULL
+		'controller' => 'admin_logs',
+		'action'     => 'index',	
+		'file'       => NULL
 	));
 
 // Admin controllers
 Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 	->defaults(array(
-		'action' 			=> 'index',
-		'directory' 	=> 'admin',
-		'controller'	=> 'home'
+		'action'     => 'index',
+		'directory'  => 'admin',
+		'controller' => 'home'
 	));
 	

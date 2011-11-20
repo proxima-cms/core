@@ -15,9 +15,9 @@
 	color: #000;
 	background-image: url(../img/ui-theme/bg_glass.png);
 	background-position: left top;
-    background-repeat: repeat-x;
+	background-repeat: repeat-x;
 	background-color: #D5D5D5;
-    border-color: #B2B2B2;
+	border-color: #ccc;
 }
 .ui-state-hover,
 .ui-widget-content .ui-state-hover,
