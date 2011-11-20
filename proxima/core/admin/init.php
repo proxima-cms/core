@@ -19,6 +19,15 @@ Route::set('admin/config', 'admin/config(/<group>)')
 		'action'     => 'index',
 		'group'      => NULL,
 	));
+
+// Modules config
+Route::set('admin/modules', 'admin/modules(/<action>)(/<module>)')
+	->defaults(array(
+		'controller' => 'modules',
+		'directory'  => 'admin',
+		'action'     => 'index',
+		'module'      => NULL,
+	));
 	
 // Admin Assets - get asset
 Route::set('admin/get-asset', 'admin/assets/get_asset(/<id>)(/<width>)(/<height>)(/<crop>)')

@@ -1,25 +1,25 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-/**
- * Enable modules. Modules are referenced by a relative or absolute path.
+/*
+ * Auto generated on: Sunday 20th of November 2011 07:18:42 PM
  */
+
 return array(
-	'core'        => CORPATH.'core',       // Core module
-	'pages'       => CORPATH.'pages',      // Pages module
-	'admin'       => CORPATH.'admin',      // Admin module
-	'assets'      => CORPATH.'assets',     // Asset manager module
-	'users'       => CORPATH.'users',      // Users module
-	'tags'        => CORPATH.'tags',       // Tags module
-	'site'        => CORPATH.'site',       // Public site module
-	'image'       => CORPATH.'image',      // Image manipulation
-	'pagination'  => CORPATH.'pagination', // Pagination module
-	'compress'    => CORPATH.'compress',   // Assets compressor module
-	'minion'      => CORPATH.'minion',     // CLI module
-	'cache'       => CORPATH.'cache',      // Caching with multiple backends
-	'auth'        => CORPATH.'auth',       // Basic authentication
-	'database'    => CORPATH.'database',   // Database access
-	'orm'         => CORPATH.'orm',        // Object Relationship Mapping
-	'message'     => CORPATH.'message',    // Session message module
-	'blogimport'  => CORPATH.'blogimport', // Blog importer module
-	'redirects'   => CORPATH.'redirects',  // Redirects module
+'core' => CORPATH.'core',
+'pages' => CORPATH.'pages',
+'admin' => CORPATH.'admin',
+'assets' => CORPATH.'assets',
+'users' => CORPATH.'users',
+'tags' => CORPATH.'tags',
+'site' => CORPATH.'site',
+'image' => CORPATH.'image',
+'pagination' => CORPATH.'pagination',
+'compress' => CORPATH.'compress',
+'minion' => CORPATH.'minion',
+'cache' => CORPATH.'cache',
+'auth' => CORPATH.'auth',
+'orm' => CORPATH.'orm',
+'database' => CORPATH.'database',
+'message' => CORPATH.'message',
+'redirects' => CORPATH.'redirects',
 );

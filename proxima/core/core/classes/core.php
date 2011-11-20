@@ -59,7 +59,7 @@ class Core {
 	}
 
 	/** 
-	 * Returns the application path for a theme file.
+	 * Returns the core module path for a given file.
 	 *
 	 * @param		mixed		$file		File name
 	 * @param		bool		$root		Add the root application path?
@@ -84,7 +84,7 @@ class Core {
 		
 		return $root . $file;
 	}
-
+	
 	/**
 	* Set the application routes.
 	*
