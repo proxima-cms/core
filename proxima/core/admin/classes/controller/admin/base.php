@@ -122,16 +122,16 @@ abstract class Controller_Admin_Base extends Controller_Base {
 			}
 		}
 
-    // If this page is secured and the user is not logged in (or doesn't match role), then redirect to the signin page
-    if ($this->auth_required !== FALSE && Auth::instance()->logged_in($this->auth_required) === FALSE)
-    {   
-      Message::set(Message::ERROR, __('You need to be signed in to do that.'));
-    
-      // Set the return path so user is redirect back to this page after successful sign in
-      $uri = 'admin/auth/signin?return_to=' . $this->request->uri();
+		// If this page is secured and the user is not logged in (or doesn't match role), then redirect to the signin page
+		if ($this->auth_required !== FALSE && Auth::instance()->logged_in($this->auth_required) === FALSE)
+		{   
+			Message::set(Message::ERROR, __('You need to be signed in to do that.'));
 
-      $this->request->redirect($uri);
-    }  
+			// Set the return path so user is redirect back to this page after successful sign in
+			$uri = 'admin/auth/signin?return_to=' . $this->request->uri();
+
+			$this->request->redirect($uri);
+		}  
 	}
 	
 	// A generic delete action to delete a model item by ID
