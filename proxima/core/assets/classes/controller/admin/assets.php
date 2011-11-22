@@ -2,17 +2,6 @@
 
 class Controller_Admin_Assets extends Controller_Admin_Base {
 	
-	// Index filter vars
-	protected $_assets;	
-	
-	protected $_pagination;
-	
-	protected $_total;
-	
-	protected $_order_by;
-	
-	protected $_direction;
-
 	public function before()
 	{
 		parent::before();
@@ -26,67 +15,56 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->template->title = __('Assets');
 
 		$this->template->content = View::factory($view)
-			->bind('assets', $this->_assets)
-			->bind('total', $this->_total)
-			->bind('direction', $this->_direction)
-			->bind('reverse_direction', $this->_reverse_direction)
-			->bind('order_by', $this->_order_by)
-			->bind('filter', $this->_filter)
-			->bind('pagination', $this->_pagination);
+			->bind('assets', $assets)
+			->bind('total', $total)
+			->bind('direction', $direction)
+			->bind('reverse_direction', $reverse_direction)
+			->bind('order_by', $order_by)
+			->bind('filter', $filter)
+			->bind('pagination', $pagination);
 
-		$this->_direction = Arr::get($_REQUEST, 'direction', 'asc');
-		$this->_reverse_direction = $this->_direction === 'asc' ? 'desc' : 'asc';
-		$this->_order_by = Arr::get($_REQUEST, 'sort', 'date');
-		$this->_type = Arr::get($_REQUEST, 'type', 'all');
-		$this->_subtype = Arr::get($_REQUEST, 'subtype', 'all');
-		$this->_filter = Arr::get($_REQUEST, 'filter', NULL);
+		$request           = $this->request->query();
+		$direction         = Arr::get($request, 'direction', 'asc');
+		$reverse_direction = $direction === 'asc' ? 'desc' : 'asc';
+		$order_by          = Arr::get($request, 'sort', 'date');
+		$type              = Arr::get($request, 'type', 'all');
+		$subtype           = Arr::get($request, 'subtype', 'all');
+		$filter            = Arr::get($request, 'filter', NULL);
+		$items_per_page    = 18;
 
-		// Get the total amount of items in the table
-		$this->_total = ORM::factory('asset')
+		// Get the total amount of filtered assets.
+		$total = ORM::factory('asset')
 			->join('mimetypes')
-			->on('asset.mimetype_id', '=', 'mimetypes.id');
-		
-		$this->_filter_results($this->_total);
-		$this->_total = $this->_total->count_all();
+			->on('asset.mimetype_id', '=', 'mimetypes.id')
+			->filter_results($filter)
+			->count_all();
 
-		// Generate the pagination values
-		$this->_pagination = Pagination::factory(array(
-			'total_items' => $this->_total,
-			'items_per_page' => 18,
-			'view'	=> 'admin/pagination/asset_links'
+		// Generate the pagination values.
+		$pagination = Pagination::factory(array(
+			'total_items'    => $total,
+			'items_per_page' => $items_per_page,
+			'view'	         => 'admin/pagination/asset_links'
 		));
 
-		switch($this->_order_by)
+		// Adjust the order_by value.
+		switch($order_by)
 		{
 			case 'type':
-				$this->_order_by = 'mimetype_id';
+				$order_by = 'mimetype_id';
 				break;
 			default:
 				break;
 		}
 
-		$this->_assets = ORM::factory('asset')
+		// Get the filtered assets.
+		$assets = ORM::factory('asset')
 			->join('mimetypes')
 			->on('asset.mimetype_id', '=', 'mimetypes.id')
-			->order_by($this->_order_by, $this->_direction)			
-			->limit($this->_pagination->items_per_page)
-			->offset($this->_pagination->offset);
-
-		$this->_filter_results($this->_assets);		
-		$this->_assets = $this->_assets->find_all();
-	}
-	
-	private function _filter_results(& $results)
-	{
-		if ($this->_filter)
-		{
-			list($name, $value) = explode('-', $this->_filter);
-
-			foreach(explode('|', $value) as $value)
-			{
-				$results->or_where($name, '=', $value);
-			}
-		}		
+			->order_by($order_by, $direction)			
+			->limit($items_per_page)
+			->offset($pagination->offset)
+			->filter_results($filter)
+			->find_all();
 	}
 
 	public function action_upload($view_path = 'admin/page/assets/upload', $redirect_to = 'admin/assets')

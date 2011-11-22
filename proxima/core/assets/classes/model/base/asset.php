@@ -21,11 +21,11 @@ class Model_Base_Asset extends Model_Base {
 			array('Model_Base_Asset::validate_mimetype_exists')
 		),
 		'filename' => array(
-	  	array('not_empty'),
+			array('not_empty'),
 			array('max_length', array(':value', array(128))),
 		),
 		'description' => array(
-	  	array('not_empty'),
+			array('not_empty'),
 			array('max_length', array(':value', array(255))),
 		)
 	);
@@ -150,6 +150,35 @@ class Model_Base_Asset extends Model_Base {
 	public function is_archive()
 	{
 		return ($this->mimetype->subtype == 'application' AND ($this->mimetype->type == 'x-tar' OR $this->mimetype->type == 'zip'));
+	}
+
+	public function filter_results($filter = array())
+	{
+		if (!is_array($filter))
+		{
+			if ($filter === NULL)
+			{
+				$filter = array();
+			}
+			else
+			{
+				list($name, $value) = explode('-', $filter);
+
+				$filter = array();
+
+				foreach(explode('|', $value) as $value)
+				{		
+					$filter[$name] = $value;
+				}
+			}
+		}
+	
+		foreach($filter as $name => $value)
+		{		
+			$this->or_where($name, '=', $value);
+		}  
+
+		return $this;
 	}
 		
 	public function __get($key) {
