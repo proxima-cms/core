@@ -15,14 +15,14 @@ class Model_Asset extends Model_Base_Asset {
 
 		$file = Validation::factory($file);
 
-    $validate_fields = array(
+		$validate_fields = array(
 			'upload',
-    );  
+		);	
 
-    foreach($validate_fields as $field)
+		foreach($validate_fields as $field)
 		{
-    	$file->rules($field_name, $rules[$field]);
-    }   
+			$file->rules($field_name, $rules[$field]);
+		}		
 		
 		if (!$file->check())
 		{	
@@ -46,20 +46,20 @@ class Model_Asset extends Model_Base_Asset {
 		$file_name = basename($file_path);
 
 		$extension = Asset::extension($file_name);
-		$description = preg_replace('/\.\w+$/', '', $file_name);    // remove extension
-		$description = preg_replace('/[_-]/', ' ', $description);   // replace special chars
+		$description = preg_replace('/\.\w+$/', '', $file_name);		// remove extension
+		$description = preg_replace('/[_-]/', ' ', $description);		// replace special chars
 
 		$mimetype = ORM::factory('mimetype')
 			->where('extension', '=', $extension)
 			->find();
 
 		$data = array(
-			'user_id'           => Auth::instance()->get_user()->id,
-			'mimetype_id'       => $mimetype->id,
-			'filename'          => $file_name,
+			'user_id'						=> Auth::instance()->get_user()->id,
+			'mimetype_id'				=> $mimetype->id,
+			'filename'					=> $file_name,
 			'friendly_filename' => $file_name,
-			'description'       => $description,
-			'filesize'          => filesize($file_path)
+			'description'				=> $description,
+			'filesize'					=> filesize($file_path)
 		);		
 		$this->values($data);
 		$this->save();
@@ -77,15 +77,15 @@ class Model_Asset extends Model_Base_Asset {
 	{
 		$data = Validation::factory($data);
 
-    $fields = array(
+		$fields = array(
 			'filename',
 			'description',
-    );  
+		);	
 
-    foreach($fields as $field)
+		foreach($fields as $field)
 		{
-      $data->rules($field, $this->_rules[$field]);
-    }   
+			$data->rules($field, $this->_rules[$field]);
+		}		
 		
 		// Add validation callbacks			
 		//foreach($this->_callbacks['update'] as $type => $callbacks)
@@ -106,8 +106,33 @@ class Model_Asset extends Model_Base_Asset {
 		return $this->save();
 	}
 	
-	public function admin_delete($id = NULL, $set_message = TRUE)
+	public function admin_delete()
 	{
-		return parent::delete($id);		
+		// Try delete the asset from the filesystem.
+		try 
+		{		
+			unlink(DOCROOT.Kohana::$config->load('assets.upload_path').'/'.$this->filename);
+		}		
+		catch(Exception $e)
+		{
+			Log::instance()->add(Log::ERROR, $e->getMessage());
+		}		
+
+		foreach($this->sizes->find_all() as $resized)
+		{		
+			// Try delete the resized asset from the filesystem.
+			try
+			{
+				unlink(DOCROOT.Kohana::$config->load('assets.upload_path').'/resized/'.$resized->filename);
+			}
+			catch(Exception $e)
+			{
+				Log::instance()->add(Log::ERROR, $e->getMessage());
+			}
+
+			$resized->delete();
+		}
+	
+		return parent::delete();		
 	}
 } // End Model_Asset

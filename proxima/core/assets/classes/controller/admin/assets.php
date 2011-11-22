@@ -202,54 +202,21 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	
 	public function action_delete($id = NULL, $set_message = TRUE)
 	{	
-		$id = $this->request->param('id');
-
-		$assets = (int) $id ? $id : Arr::get($_GET, 'assets', '');
+		$assets = $this->request->param('id') ?: $this->request->query('assets');
 		
 		foreach($assets = explode(',', $assets) as $id)
 		{
-			$item = ORM::factory( $this->crud_model_singular, (int) $id);
+			$item = ORM::factory('asset', $id);
 
-			if (!$item->loaded()) continue;
-
-			// Delete the asset from db and filesystem
-			$data = array('id' => $id);
-			if ($item->admin_delete(NULL, $data))
+			if (!$item->loaded())
 			{
-				$file = DOCROOT.Kohana::$config->load('assets.upload_path').'/'.$item->filename;
-				try
-				{
-					unlink($file);
-				} 
-				catch(Exception $e)
-				{
-					// Log this
-				}
+				continue;
 			}
-			
-			// Delete the resized image assets from db and filesystem
-			foreach($item->sizes->find_all() as $resized)
-			{
-				$data = array('id' => $resized->id);
 
-				if ($resized->admin_delete(NULL, $data))
-				{
-					$resized_file = DOCROOT.Kohana::$config->load('assets.upload_path').'/resized/'.$resized->filename;
-					try
-					{
-						unlink($resized_file);
-					}
-					catch(Exception $e)
-					{
-						// Log this
-					}
-				}
-			}
+			$item->admin_delete();
 		}		
-		if (count($assets))
-		{
-			Message::set(Message::SUCCESS, ucfirst($this->crud_model).' successfully deleted.');
-		}
+		
+		Message::set(Message::SUCCESS, 'Asset successfully deleted.');
 			
 		$this->request->redirect('admin/assets');
 	}
