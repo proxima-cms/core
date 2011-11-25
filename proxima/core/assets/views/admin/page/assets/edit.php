@@ -77,13 +77,13 @@
 			<div class="field">
 				<?php echo
 					Form::label('filename', 'Filename', NULL, $errors).
-					Form::input('filename', $_POST['filename'], NULL, $errors)
+					Form::input('filename', Request::current()->post('filename') ?: $asset->filename, NULL, $errors)
 				?>
 			</div>
 			<div class="field">
 				<?php echo
 					Form::label('description', 'Description', NULL, $errors).
-					Form::input('description', $_POST['description'], NULL, $errors)
+					Form::input('description', Request::current()->post('description') ?: $asset->description, NULL, $errors)
 				?>
 			</div>
 			

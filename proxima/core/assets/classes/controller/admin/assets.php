@@ -93,21 +93,15 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	{
 		$this->template->title = __('Admin - Upload assets');
 		$this->template->content = View::factory($view_path)
-			->bind('errors', $errors)
-			->bind('allowed_upload_type', $allowed_upload_type)
-			->bind('max_file_uploads', $max_file_uploads)
-			->bind('field_name', $field_name);
+			->set('allowed_upload_type', Kohana::$config->load('admin/assets.allowed_upload_type'))
+			->set('max_file_uploads', Kohana::$config->load('admin/assets.max_file_uploads'))
+			->bind('errors', $errors);
 		
-		$allowed_upload_type = str_replace(',', ', ', Kohana::$config->load('admin/assets.allowed_upload_type'));
-		$max_file_uploads    = Kohana::$config->load('admin/assets.max_file_uploads');
-		$field_name          = 'asset';
-		$uploaded_files			 = $_FILES;
-
 		if ($this->request->method() === 'POST')
 		{
 			try
 			{
-				$uploaded = ORM::factory('asset')->admin_upload($uploaded_files, $field_name);
+				$uploaded = ORM::factory('asset')->admin_upload($_FILES);
 			}
 			// Error validating the uploaded files.
 			catch(Validation_Exception $e)
@@ -146,13 +140,14 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	
 	public function action_edit()	
 	{
-		$id = (int) $this->request->param('id');
+		$id = $this->request->param('id');
 
 		$asset = ORM::factory('asset', $id);
 
 		if (!$asset->loaded())
 		{
 			Message::set(MESSAGE::ERROR, __('Asset not found.'));
+
 			$this->request->redirect('admin/assets');
 		} 
 		
@@ -163,20 +158,20 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->bind('asset', $asset)
 			->bind('errors', $errors);
 
-		if (!$_POST)
+		if ($this->request->method() === 'POST')
 		{
-			$_POST = $asset->as_array();
-		}
-		else
-		{
-			if ($asset->admin_update($_POST))
+			try
 			{
+				$asset->admin_update($this->request->post());
+
 				Message::set(Message::SUCCESS, __('Asset successfully updated.'));			
+
 				$this->request->redirect($this->request->uri());
 			}
-			else
+			catch(ORM_Validation_Exception $e)
 			{
-				$errors = $_POST->errors('admin/assets');
+				$errors = $e->errors('admin/assets');
+
 				Message::set(MESSAGE::ERROR, __('Please correct the errors.'));
 			}
 		}
@@ -184,9 +179,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 	public function action_download()
 	{
-		$id = $this->request->param('id');
-
-		$asset = ORM::factory('asset', (int) $id);
+		$asset = ORM::factory('asset', $this->request->param('id'));
 
 		if (!$asset->loaded())
 		{
@@ -221,18 +214,11 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	{	
 		$this->auto_render = FALSE;
 
-		$id = (int) $this->request->param('id');
-		$width = (int) $this->request->param('width');
-		$height = (int) $this->request->param('height');
-		$crop = (int) $this->request->param('crop');
-		$filename = $this->request->param('filename');
-
-		if (!$id OR !$width OR !$height OR !$filename)
-		{
-			exit;
-		}
-		
-		$filename = "{$id}_$filename";
+		$id       = $this->request->param('id');
+		$width    = $this->request->param('width');
+		$height   = $this->request->param('height');
+		$crop     = $this->request->param('crop');
+		$filename = "{$id}_".$this->request->param('filename');
 
 		$asset = ORM::factory('asset')
 			->where('id', '=', $id)
@@ -285,22 +271,28 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		
 		$asset = ORM::factory('asset', $id);
 
-		if (!$asset->loaded()) exit;
+		if (!$asset->loaded())
+		{
+			exit;
+		}
 		
 		echo $asset->url(TRUE);
 	}
 	
 	public function action_get_image_url()
 	{
-		$id = $this->request->param('id');
-		$width = $this->request->param('width');
+		$id     = $this->request->param('id');
+		$width  = $this->request->param('width');
 		$height = $this->request->param('height');
 
 		$this->auto_render = FALSE;
 		
 		$asset = ORM::factory('asset', $id);
 
-		if (!$asset->loaded() OR $asset->mimetype->subtype != 'image') exit;
+		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
+		{
+			exit;
+		}
 		
 		echo $asset->image_url($width, $height, NULL, TRUE);
 	}
@@ -313,7 +305,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		
 		$asset = ORM::factory('asset', $id);
 
-		if (!$asset->loaded()) exit;
+		if (!$asset->loaded())
+		{
+			exit;
+		}
 		
 		echo View::factory('admin/page/assets/popup/download_html')->set('asset', $asset);
 	}	
@@ -324,11 +319,15 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 		$asset = ORM::factory('asset', (int) $id);
 		
-		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image') exit;
+		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
+		{
+			exit;
+		}
 		
 		$asset->rotate(90);
 		
-		foreach($asset->sizes->find_all() as $asset_size){
+		foreach($asset->sizes->find_all() as $asset_size)
+		{
 			$asset_size->rotate(90);
 		}
 
@@ -341,7 +340,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 		$asset = ORM::factory('asset', (int) $id);
 
-		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image') exit;
+		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
+		{
+			exit;
+		}
 
 		$asset->sharpen(20);
 
@@ -354,7 +356,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 		$asset = ORM::factory('asset', (int) $id);
 
-		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image') exit;
+		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
+		{
+			exit;
+		}
 
 		$asset->flip_horizontal();
 
@@ -367,7 +372,10 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 		$asset = ORM::factory('asset', (int) $id);
 
-		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image') exit;
+		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
+		{
+			exit;
+		}
 		
 		$asset->flip_vertical();
 

@@ -5,8 +5,14 @@
 class Model_Base_Asset extends Model_Base { 
 	
 	protected $_belongs_to = array(
-		'mimetype' => array('model' => 'mimetype', 'foreign_key' => 'mimetype_id'),
-		'user'     => array('model' => 'user', 'foreign_key' => 'user_id'),
+		'mimetype' => array(
+			'model'       => 'mimetype', 
+			'foreign_key' => 'mimetype_id'
+		),
+		'user' => array(
+			'model'       => 'user', 
+			'foreign_key' => 'user_id'
+		),
 	);
 	
 	protected $_has_many = array(
@@ -20,7 +26,7 @@ class Model_Base_Asset extends Model_Base {
 				array('Upload::not_empty', array(':value')),
 				array('Upload::valid'),
 				array('Upload::size', array(':value', '10M')),
-				array('Model_Base_Asset::validate_mimetype_exists'),
+				array(array($this, 'mimetype_exists')),
 				array('Upload::type', array(':value', explode(',', Kohana::$config->load('admin/assets.allowed_upload_type'))))
 			)
 		);
@@ -32,6 +38,7 @@ class Model_Base_Asset extends Model_Base {
 			'filename' => array(
 				array('not_empty'),
 				array('max_length', array(':value', array(128))),
+				array(array($this, 'filename_empty'))
 			),
 			'description' => array(
 				array('not_empty'),
@@ -39,19 +46,9 @@ class Model_Base_Asset extends Model_Base {
 			)
 		);
 	}
-	
-	// Validation callbacks
-	protected $_callbacks = array(
-		'upload' => array(
-			'extension' => array('callback_mimetype_exists'),
-		),
-		'update' => array(
-			'filename' => array('callback_filename_empty'),
-		),
-	);
-	
+
 	// Check mimetype exists by extension
-	public static function validate_mimetype_exists($file)
+	public function mimetype_exists($file)
 	{
 		return ORM::factory('mimetype')
 			->where('extension', '=', Asset::extension($file['name']))
@@ -59,16 +56,10 @@ class Model_Base_Asset extends Model_Base {
 			->loaded();
 	}
 
-	// Check if filename is empty
-	public function callback_filename_empty(Validate $array, $field)
+	// Check if filename is empty (remove the entension)
+	public function filename_empty($filename)
 	{
-		$val = $array[$field];
-
-		// Strip extension
-		if (preg_replace('/\.\w+$/', '', $val) === '')
-		{
-			$array->error($field, 'filename_empty', array($val));
-		}
+		return (preg_replace('/\.\w+$/', '', $filename) === '') ? FALSE : $filename;
 	}
 	
 	public function resize($path, $width = NULL, $height = NULL, $crop = NULL)
@@ -202,7 +193,7 @@ class Model_Base_Asset extends Model_Base {
 		
 	public function __get($key) {
 		
-		if (($key == 'width' OR $key == 'height') AND $this->is_image())
+		if (($key === 'width' OR $key === 'height') AND $this->is_image())
 		{
 			try
 			{
