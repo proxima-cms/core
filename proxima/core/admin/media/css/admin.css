@@ -180,7 +180,7 @@ input[type=email],
 input[type=url], 
 input[type=password], 
 textarea { 
-	padding:.45em .4em .3em .3em;
+	padding:.5em .4em .5em .3em;
 	border: 1px solid #aaa;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;

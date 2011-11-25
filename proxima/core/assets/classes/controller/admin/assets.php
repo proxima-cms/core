@@ -7,7 +7,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		parent::before();
 
 		$this->template->scripts = array_merge($this->template->scripts, Kohana::$config->load('admin/assets/popup.scripts'));
-		$this->template->styles = array_merge($this->template->styles, Kohana::$config->load('admin/assets/popup.styles'));
+		$this->template->styles  = array_merge($this->template->styles, Kohana::$config->load('admin/assets/popup.styles'));
 	}
 
 	public function action_index($view = 'admin/page/assets/index')
@@ -22,18 +22,20 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->bind('order_by', $order_by)
 			->bind('filter', $filter)
 			->bind('search', $search)
+			->bind('links', $filter_links)
 			->bind('pagination', $pagination);
 
 		// Get request vars.
-		$request           = $this->request->query();
-		$direction         = Arr::get($request, 'direction', 'asc');
+		$request					 = $this->request->query();
+		$direction				 = Arr::get($request, 'direction', 'asc');
 		$reverse_direction = $direction === 'asc' ? 'desc' : 'asc';
-		$order_by          = Arr::get($request, 'sort', 'date');
-		$type              = Arr::get($request, 'type', 'all');
-		$subtype           = Arr::get($request, 'subtype', 'all');
-		$filter            = Arr::get($request, 'filter');
-		$search            = $this->request->post('search');
-		$items_per_page    = 18;
+		$order_by					 = Arr::get($request, 'sort', 'date');
+		$type							 = Arr::get($request, 'type', 'all');
+		$subtype					 = Arr::get($request, 'subtype', 'all');
+		$filter						 = Arr::get($request, 'filter');
+		$search						 = $this->request->post('search') OR Arr::get($request, 'search');
+		$items_per_page		 = 18;
+		$filter_links			 = $this->get_filter_links($direction);
 
 		// Get the total amount of filtered assets.
 		$total = ORM::factory('asset')
@@ -45,9 +47,9 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 		// Generate the pagination values.
 		$pagination = Pagination::factory(array(
-			'total_items'    => $total,
+			'total_items'		 => $total,
 			'items_per_page' => $items_per_page,
-			'view'	         => 'admin/pagination/asset_links'
+			'view'					 => 'admin/pagination/asset_links'
 		));
 
 		// Adjust the order_by value.
@@ -70,6 +72,21 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->filter($filter)
 			->search($search)
 			->find_all();
+	}
+
+	private function get_filter_links($direction = NULL)
+	{
+		$link = 'admin/assets?direction='.$direction;
+
+		return array(
+			'links' => array(
+				'all' => $link,
+				'img' => $link.'&filter=subtype-image',
+				'doc' => $link.'&filter=type-pdf|doc|txt',
+				'arc' => $link.'&filter=type-tar|zip|rar'
+			),	
+			'cur_url' => urldecode(Request::current()->uri() . URL::query())
+		);
 	}
 
 	public function action_upload($view_path = 'admin/page/assets/upload', $redirect_to = 'admin/assets')
@@ -169,6 +186,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$this->template->title = __('Admin - Edit asset');
 		$this->template->content = View::factory('admin/page/assets/edit')
 			->set('resized', $asset->sizes->where('resized', '=', 1)->find_all())
+			->set('links', $this->get_filter_links())
 			->bind('asset', $asset)
 			->bind('errors', $errors);
 
