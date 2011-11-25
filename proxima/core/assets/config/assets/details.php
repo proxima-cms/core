@@ -2,7 +2,8 @@
 
 return array(
 	'name'        => 'Assets',
-	'description' => 'Assets for your site!',
+	'description' => 'Asset manager',
 	'author'      => 'Richard Willis',
-	'admin_nav'   => 'Assets'
+	'admin_nav'   => 'Assets',
+	'load_order'  => 3
 );

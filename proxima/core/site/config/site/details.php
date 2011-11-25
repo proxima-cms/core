@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 return array(
-	'name'        => 'Tags',
-	'description' => 'Tags for your site!',
+	'name'        => 'Site',
+	'description' => 'Core site',
 	'author'      => 'Richard Willis',
-	'admin_nav'   => 'Tags',
-	'load_order'  => 5
+	'admin_nav'   => 'Site',
+	'load_order'  => 6
 );

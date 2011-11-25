@@ -113,6 +113,7 @@ class Model_Asset extends Model_Base_Asset {
 			catch(Exception $e)
 			{
 				Log::instance()->add(Log::ERROR, $e->getMessage());
+				throw $e;
 			}
 
 			$resized->delete();

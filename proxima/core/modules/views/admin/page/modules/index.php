@@ -2,7 +2,7 @@
 	<div class="action-menu helper-right">
 		<button>Actions</button>
 		<ul>
-			<li> <?php echo HTML::anchor('admin/cache/purge', 'Purge cache', array('id' => 'purge-cache'))?></li>
+			<li><?php echo HTML::anchor('admin/modules/generate_config', 'Re-generate module data')?></li>
 		</ul>
 	</div>
 	

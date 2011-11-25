@@ -1,16 +1,18 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Sunday 20th of November 2011 09:06:07 PM
+ * Auto generated on: Friday 25th of November 2011 11:54:20 PM
  */
 
 return array(
 	'links' => array(
-		'admin/pages' => __('Pages'),
-		'admin/assets' => __('Assets'),
-		'admin/users' => __('Users'),
-		'admin/tags' => __('Tags'),
 		'admin/blogimport' => __('Blog import'),
+		'admin/assets' => __('Assets'),
+		'admin' => __('Admin'),
 		'admin/modules' => __('Modules'),
+		'admin/pages' => __('Pages'),
+		'admin/site' => __('Site'),
+		'admin/tags' => __('Tags'),
+		'admin/users' => __('Users'),
 	)
 );
