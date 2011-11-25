@@ -105,22 +105,30 @@ class Model_Base_Page extends Model_Base {
 		return $this;
 	}
 
-  public function update_tags(& $tags)
-  {
-    foreach(ORM::factory('tag')->find_all() as $tag) {
+	public function update_tags(& $tags)
+	{
+		foreach(ORM::factory('tag')->find_all() as $tag) {
 
-      if (in_array($tag->id, $tags)) {
+			if (in_array($tag->id, $tags)) {
 
-        try {
-          $this->add('tags', new Model_Tag(array('id' => $tag->id)));
+				try {
+					$this->add('tags', new Model_Tag(array('id' => $tag->id)));
 
-        } catch(Exception $e){}
+				} catch(Exception $e){}
 
-      } else {
-        $this->remove('tags', new Model_Tag(array('id' => $tag->id)));
-      }   
-    }   
-  }
-	
+			} else {
+				$this->remove('tags', new Model_Tag(array('id' => $tag->id)));
+			}		
+		}		
+	}
+
+	public function search($query)
+	{
+		return $this->where(
+			DB::expr('MATCH(page.title, page.description, page.body)'), 
+			'', 
+			DB::expr('AGAINST(' . Database::instance()->escape($query) . ')')
+		);	
+	}
 	
 } // End Model_Base_Page

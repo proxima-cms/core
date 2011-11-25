@@ -17,11 +17,7 @@ class Component_Driver_Search_Results extends Component_Component {
 
 		// Perform a fulltext search.
 		$pages = ORM::factory('page')
-			->where(
-				DB::expr('MATCH(page.title, page.description, page.body)'), 
-				'', 
-				DB::expr('AGAINST(' . Database::instance()->escape($query) . ')')
-			)
+			->search($query)
 			->limit($this->_config['amount'])
 			->find_all();
 
