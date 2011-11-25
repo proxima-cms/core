@@ -113,12 +113,6 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			catch(Validation_Exception $e)
 			{
 				$errors = $e->array->errors('admin/assets');
-
-				$message = (count($errors) > 1) 
-					? __(':errors_count assets were not uploaded.')
-					: __(':errors_count asset was not uploaded.');
-				
-				Message::set(Message::ERROR, __($message, array(':errors_count' => count($errors))));
 			}
 			// Error processing the uploaded files.
 			catch(Exception $e)
@@ -129,12 +123,6 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			catch(ORM_Validation_Exception $e)
 			{
 				$errors = $e->errors('admin/assets');
-
-				$message = (count($errors) > 1) 
-					? __(':errors_count assets were not uploaded.')
-					: __(':errors_count asset was not uploaded.');
-				
-				Message::set(Message::ERROR, __($message, array(':errors_count' => count($errors))));
 			}
 
 			if ($errors === NULL)
@@ -146,6 +134,12 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 				Message::set(Message::SUCCESS, __($message, array(':assets_count' => $uploaded)));
 
 				$this->request->redirect($redirect_to);
+			}
+			else
+			{
+				$message = __('Error uploading files.');
+
+				Message::set(Message::ERROR, __($message, array(':errors_count' => count($errors))));
 			}
 		}
 	}
