@@ -11,11 +11,13 @@
 			<?php if (isset($errors[$field_name])){?>
 				<strong>Errors:</strong><br />
 				<ul>
+					<?php /*
 					<?php foreach($errors[$field_name] as $field_errors){
 						foreach($field_errors as $error){?>
 							<li><?php echo $error?></li>
 						<?php }
-					}?>					
+					}?>			
+					*/ ?>
 				</ul>
 			<?php }?>
 			<div class="field">	

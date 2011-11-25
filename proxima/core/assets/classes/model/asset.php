@@ -2,50 +2,61 @@
 
 class Model_Asset extends Model_Base_Asset {
 	
-	public function admin_upload(& $file = array(), $field_name = 'asset')
+	public function admin_upload($files = array(), $field_name = 'asset')
 	{
-		$file_data = $file;
-		$filename = strtolower($file[$field_name]['name']);
+		// Have files been uploaded?
+		if (isset($files[$field_name]) AND is_array($files[$field_name]))
+		{		
+			// Loop through uploaded files
+			foreach($files[$field_name]['name'] as $c => $v) 
+			{					
+				// Create the file upload array
+				$file = array(
+					"{$field_name}" => array(
+						'name'     => $files[$field_name]['name'][$c],
+						'type'     => $files[$field_name]['type'][$c],
+						'tmp_name' => $files[$field_name]['tmp_name'][$c],
+						'error'    => $files[$field_name]['error'][$c],
+						'size'     => $files[$field_name]['size'][$c]
+					)
+				);
 
-		$rules = $this->_rules;
-		
-		$rules['upload'][] = array('Upload::type', 
-			array(':value', explode(',', Kohana::$config->load('admin/assets.allowed_upload_type')))
-		);
+				$file = Validation::factory($file);
+			
+				foreach($this->upload_rules() as $field => $rules)
+				{   
+					$file->rules($field, $rules);
+				}
+				
+				if ($file->check() === FALSE)
+				{
+					throw new Validation_Exception($file);
+				}
 
-		$file = Validation::factory($file);
+				$file = $file[$field_name];
+				$name = strtolower($file['name']);
+				$path = DOCROOT.Kohana::$config->load('assets.upload_path');
 
-		$validate_fields = array(
-			'upload',
-		);	
+				$file_path = Upload::save($file, $name, $path);
 
-		foreach($validate_fields as $field)
-		{
-			$file->rules($field_name, $rules[$field]);
-		}		
-		
-		if (!$file->check())
-		{	
-			return $this;
+				if ($file_path === FALSE)
+				{
+					throw new Exception(__('Unable to move the uploaded file.'));
+				}
+
+				$this->admin_add_uploaded($file_path);
+			}	
 		}
-
-		try
+		else
 		{
-			$filepath = Upload::save($file_data[$field_name], $filename, DOCROOT.Kohana::$config->load('assets.upload_path'));
-		
-			$this->admin_add($filepath);
-		}
-		catch(Exception $e)
-		{
-			throw new Kohana_Exception($e);
+			throw new Exception(__('No files were uploaded.'));
 		}
 	}
 
-	public function admin_add($file_path)
+	public function admin_add_uploaded($file_path)
 	{
-		$file_name = basename($file_path);
-
-		$extension = Asset::extension($file_name);
+		$file_name   = basename($file_path);
+		$extension   = Asset::extension($file_name);
 		$description = preg_replace('/\.\w+$/', '', $file_name);		// remove extension
 		$description = preg_replace('/[_-]/', ' ', $description);		// replace special chars
 
@@ -54,18 +65,18 @@ class Model_Asset extends Model_Base_Asset {
 			->find();
 
 		$data = array(
-			'user_id'						=> Auth::instance()->get_user()->id,
-			'mimetype_id'				=> $mimetype->id,
-			'filename'					=> $file_name,
+			'user_id'           => Auth::instance()->get_user()->id,
+			'mimetype_id'       => $mimetype->id,
+			'filename'          => $file_name,
 			'friendly_filename' => $file_name,
-			'description'				=> $description,
-			'filesize'					=> filesize($file_path)
+			'description'       => $description,
+			'filesize'          => filesize($file_path)
 		);		
 		$this->values($data);
 		$this->save();
 
 		// Create a new filename with id prefixed
-		$new_filename = str_replace($this->filename, $this->id.'_'.$this->filename, $file_path);
+		$new_filename   = str_replace($this->filename, $this->id.'_'.$this->filename, $file_path);
 		$this->filename = basename($new_filename);
 		$this->save();
 

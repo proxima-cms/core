@@ -6,29 +6,39 @@ class Model_Base_Asset extends Model_Base {
 	
 	protected $_belongs_to = array(
 		'mimetype' => array('model' => 'mimetype', 'foreign_key' => 'mimetype_id'),
-		'user' => array('model' => 'user', 'foreign_key' => 'user_id'),
+		'user'     => array('model' => 'user', 'foreign_key' => 'user_id'),
 	);
 	
 	protected $_has_many = array(
 		'sizes' => array('model' => 'asset_size', 'foreign_key' => 'asset_id'),
 	);
 
-	protected $_rules = array(
-		'upload' => array(
-			array('Upload::not_empty'),
-			array('Upload::valid'),
-			array('Upload::size', array(':value', '10M')),
-			array('Model_Base_Asset::validate_mimetype_exists')
-		),
-		'filename' => array(
-			array('not_empty'),
-			array('max_length', array(':value', array(128))),
-		),
-		'description' => array(
-			array('not_empty'),
-			array('max_length', array(':value', array(255))),
-		)
-	);
+	public function upload_rules()
+	{
+		return array(
+			'asset' => array(
+				array('Upload::not_empty', array(':value')),
+				array('Upload::valid'),
+				array('Upload::size', array(':value', '10M')),
+				array('Model_Base_Asset::validate_mimetype_exists'),
+				array('Upload::type', array(':value', explode(',', Kohana::$config->load('admin/assets.allowed_upload_type'))))
+			)
+		);
+	}
+
+	public function rules()
+	{
+		return array(
+			'filename' => array(
+				array('not_empty'),
+				array('max_length', array(':value', array(128))),
+			),
+			'description' => array(
+				array('not_empty'),
+				array('max_length', array(':value', array(255))),
+			)
+		);
+	}
 	
 	// Validation callbacks
 	protected $_callbacks = array(
@@ -43,7 +53,7 @@ class Model_Base_Asset extends Model_Base {
 	// Check mimetype exists by extension
 	public static function validate_mimetype_exists($file)
 	{
-		return $mimetype = ORM::factory('mimetype')
+		return ORM::factory('mimetype')
 			->where('extension', '=', Asset::extension($file['name']))
 			->find()
 			->loaded();
