@@ -31,3 +31,6 @@
 [submodule "proxima/core/minion"]
 	path = proxima/core/minion
 	url = git://github.com/kohana-minion/core.git
+[submodule "proxima/core/viewmodel"]
+	path = proxima/core/viewmodel
+	url = git://github.com/zombor/View-Model.git
