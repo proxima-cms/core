@@ -26,16 +26,16 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->bind('pagination', $pagination);
 
 		// Get request vars.
-		$request					 = $this->request->query();
-		$direction				 = Arr::get($request, 'direction', 'asc');
+		$request           = $this->request->query();
+		$direction         = Arr::get($request, 'direction', 'asc');
 		$reverse_direction = $direction === 'asc' ? 'desc' : 'asc';
-		$order_by					 = Arr::get($request, 'sort', 'date');
-		$type							 = Arr::get($request, 'type', 'all');
-		$subtype					 = Arr::get($request, 'subtype', 'all');
-		$filter						 = Arr::get($request, 'filter');
-		$search						 = $this->request->post('search') OR Arr::get($request, 'search');
-		$items_per_page		 = 18;
-		$filter_links			 = $this->get_filter_links($direction);
+		$order_by          = Arr::get($request, 'sort', 'date');
+		$type              = Arr::get($request, 'type', 'all');
+		$subtype           = Arr::get($request, 'subtype', 'all');
+		$filter            = Arr::get($request, 'filter');
+		$search            = $this->request->post('search') OR Arr::get($request, 'search');
+		$items_per_page    = 18;
+		$filter_links      = $this->get_filter_links($direction);
 
 		// Get the total amount of filtered assets.
 		$total = ORM::factory('asset')
@@ -47,9 +47,9 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 		// Generate the pagination values.
 		$pagination = Pagination::factory(array(
-			'total_items'		 => $total,
+			'total_items'    => $total,
 			'items_per_page' => $items_per_page,
-			'view'					 => 'admin/pagination/asset_links'
+			'view'           => 'admin/pagination/asset_links'
 		));
 
 		// Adjust the order_by value.
@@ -98,77 +98,56 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->bind('max_file_uploads', $max_file_uploads)
 			->bind('field_name', $field_name);
 		
-		//array_push($this->template->scripts, 'modules/admin/media/js/jquery.uploadify.min.js');
-		//array_push($this->template->scripts, 'modules/admin/media/js/jquery.multifile.pack.js');
-		
 		$allowed_upload_type = str_replace(',', ', ', Kohana::$config->load('admin/assets.allowed_upload_type'));
-		$max_file_uploads = Kohana::$config->load('admin/assets.max_file_uploads');
+		$max_file_uploads    = Kohana::$config->load('admin/assets.max_file_uploads');
+		$field_name          = 'asset';
+		$uploaded_files			 = $_FILES;
 
-		$field_name = 'asset';
-		$assets = array();
-		$errors = array();
-
-		// Have files been uploaded?
-		if ($_FILES AND isset($_FILES[$field_name]) AND is_array($_FILES[$field_name]))
+		if ($this->request->method() === 'POST')
 		{
-			// Loop through uploaded files
-			foreach($_FILES[$field_name]['name'] as $c => $v)
-			{			
-				// Create the file upload array
-				$file = array(
-					$field_name => array(
-						'name'			=> $_FILES[$field_name]['name'][$c],
-						'type'			=> $_FILES[$field_name]['type'][$c],
-						'tmp_name'	=> $_FILES[$field_name]['tmp_name'][$c],
-						'error'			=> $_FILES[$field_name]['error'][$c],
-						'size'			=> $_FILES[$field_name]['size'][$c]
-					)
-				);
-
-				// Process the uploaded file and save data to db
-				$asset = ORM::factory('asset')->admin_upload($file, $field_name);
-				
-				// Store the validation errors
-				if ($error = $file->errors('admin/assets'))
-				{
-					$errors[$field_name][] = $error;	
-				}
-				// Else store the asset
-				else
-				{
-					$assets[] = $asset;
-				}
-			}
-		}
-		// Upload fail!
-		if ($errors)
-		{
-			if (isset($errors[$field_name]) and count($errors[$field_name]))
+			try
 			{
-				$c = count($errors[$field_name]);
-			
-				$message = ($c > 1) 
+				$uploaded = ORM::factory('asset')->admin_upload($uploaded_files, $field_name);
+			}
+			// Error validating the uploaded files.
+			catch(Validation_Exception $e)
+			{
+				$errors = $e->array->errors('admin/assets');
+
+				$message = (count($errors) > 1) 
 					? __(':errors_count assets were not uploaded.')
 					: __(':errors_count asset was not uploaded.');
+				
+				Message::set(Message::ERROR, __($message, array(':errors_count' => count($errors))));
+			}
+			// Error processing the uploaded files.
+			catch(Exception $e)
+			{
+				throw $e;
+			}
+			// Error saving the file data to the db.
+			catch(ORM_Validation_Exception $e)
+			{
+				$errors = $e->errors('admin/assets');
+
+				$message = (count($errors) > 1) 
+					? __(':errors_count assets were not uploaded.')
+					: __(':errors_count asset was not uploaded.');
+				
+				Message::set(Message::ERROR, __($message, array(':errors_count' => count($errors))));
+			}
+
+			if ($errors === NULL)
+			{
+				$message = ($uploaded > 1)
+					? __(':assets_count assets successfully uploaded.')
+					: __(':assets_count asset successfully uploaded.');
 			
-				Message::set(Message::ERROR, __($message, array(':errors_count' => $c)));
+				Message::set(Message::SUCCESS, __($message, array(':assets_count' => $uploaded)));
+
+				$this->request->redirect($redirect_to);
 			}
 		}
-		// Upload success!
-		else if ($_FILES AND $assets)
-		{
-			$c = count($assets);
-
-			$message = ($c > 1)
-				? __(':assets_count assets successfully uploaded.')
-				: __(':assets_count asset successfully uploaded.');
-
-			Message::set(Message::SUCCESS, __($message, array(':assets_count' => $c)));
-	
-			$this->request->redirect($redirect_to);
-		}
-		
-		//$_POST = $_POST->as_array();
 	}
 	
 	public function action_edit()	
