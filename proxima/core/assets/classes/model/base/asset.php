@@ -152,7 +152,7 @@ class Model_Base_Asset extends Model_Base {
 		return ($this->mimetype->subtype == 'application' AND ($this->mimetype->type == 'x-tar' OR $this->mimetype->type == 'zip'));
 	}
 
-	public function filter_results($filter = array())
+	public function filter($filter = array())
 	{
 		if (!is_array($filter))
 		{
@@ -179,6 +179,15 @@ class Model_Base_Asset extends Model_Base {
 		}  
 
 		return $this;
+	}
+
+	public function search($query)
+	{
+		return $query === NULL ? $this : $this->where(
+			DB::expr('MATCH(asset.description, asset.filename)'), 
+			'', 
+			DB::expr('AGAINST(' . Database::instance()->escape($query) . ')')
+		);	
 	}
 		
 	public function __get($key) {

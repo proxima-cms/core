@@ -18,7 +18,7 @@
 
 	$filters_link = 'admin/assets?direction='.$direction;
 
-	$c = array(
+	$links = array(
 		'links' => array(
 			'all' => $filters_link,
 			'img' => $filters_link.'&filter=subtype-image',
@@ -36,9 +36,9 @@
 		return urldecode($url);
 	}
 
-	function selected($c, $group, $val = 'selected')
+	function selected($links, $group, $val = 'selected')
 	{
-		echo (clean($c['cur_url']) === clean($c['links'][$group])) ? $val : NULL;
+		echo (clean($links['cur_url']) === clean($links['links'][$group])) ? $val : NULL;
 	}
 
 ?>
@@ -50,26 +50,26 @@
 		<div class="section first clear">
 			<h3>Filters</h3>
 			<ul class="folder-list">
-				<li class="<?php selected($c, 'all', 'ui-state-default ui-corner-all');?>">
-					<a href="<?php echo URL::site($c['links']['all']);?>" class="<?php selected($c, 'all');?>">
+				<li class="<?php selected($links, 'all', 'ui-state-default ui-corner-all');?>">
+					<a href="<?php echo URL::site($links['links']['all']);?>" class="<?php selected($links, 'all');?>">
 						<span class="ui-icon ui-icon-folder-collapsed"></span>
 						All files
 					</a>
 				</li>
-				<li class="<?php selected($c, 'img', 'ui-state-default ui-corner-all');?>">
-					<a href="<?php echo URL::site($c['links']['img']);?>" class="<?php selected($c, 'img');?>">
+				<li class="<?php selected($links, 'img', 'ui-state-default ui-corner-all');?>">
+					<a href="<?php echo URL::site($links['links']['img']);?>" class="<?php selected($links, 'img');?>">
 						<span class="ui-icon ui-icon-folder-collapsed"></span>
 						Images
 					</a>
 				</li>
-				<li class="<?php selected($c, 'doc', 'ui-state-default ui-corner-all');?>">
-					<a href="<?php echo URL::site($c['links']['doc']);?>" class="<?php selected($c, 'doc');?>">
+				<li class="<?php selected($links, 'doc', 'ui-state-default ui-corner-all');?>">
+					<a href="<?php echo URL::site($links['links']['doc']);?>" class="<?php selected($links, 'doc');?>">
 						<span class="ui-icon ui-icon-folder-collapsed"></span>
 						Documents
 					</a>
 				</li>
-				<li class="<?php selected($c, 'arc', 'ui-state-default ui-corner-all');?>">
-					<a href="<?php echo URL::site($c['links']['arc']);?>" class="<?php selected($c, 'arc');?>">
+				<li class="<?php selected($links, 'arc', 'ui-state-default ui-corner-all');?>">
+					<a href="<?php echo URL::site($links['links']['arc']);?>" class="<?php selected($links, 'arc');?>">
 						<span class="ui-icon ui-icon-folder-collapsed"></span>
 						Archives
 					</a>
@@ -86,8 +86,8 @@
 		<div class="section clear">
 			<h3>Search</h3>
 			<?php echo Form::open()?>
-				<?php echo Form::input('search', '', array('class' => 'helper-left', 'style' => 'width: 124px'))?>
-				<?php echo Form::button('search', 'Go', array('class' => 'helper-left ui-button default'))?>
+				<?php echo Form::input('search', $search, array('class' => 'helper-left', 'style' => 'width: 124px'))?>
+				<?php echo Form::button('search-submit', 'Go', array('class' => 'helper-left ui-button default'))?>
 			<?php echo Form::close()?>
 		</div>
 	</div>

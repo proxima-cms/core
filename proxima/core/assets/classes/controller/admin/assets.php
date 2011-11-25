@@ -21,22 +21,26 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->bind('reverse_direction', $reverse_direction)
 			->bind('order_by', $order_by)
 			->bind('filter', $filter)
+			->bind('search', $search)
 			->bind('pagination', $pagination);
 
+		// Get request vars.
 		$request           = $this->request->query();
 		$direction         = Arr::get($request, 'direction', 'asc');
 		$reverse_direction = $direction === 'asc' ? 'desc' : 'asc';
 		$order_by          = Arr::get($request, 'sort', 'date');
 		$type              = Arr::get($request, 'type', 'all');
 		$subtype           = Arr::get($request, 'subtype', 'all');
-		$filter            = Arr::get($request, 'filter', NULL);
+		$filter            = Arr::get($request, 'filter');
+		$search            = $this->request->post('search');
 		$items_per_page    = 18;
 
 		// Get the total amount of filtered assets.
 		$total = ORM::factory('asset')
 			->join('mimetypes')
 			->on('asset.mimetype_id', '=', 'mimetypes.id')
-			->filter_results($filter)
+			->filter($filter)
+			->search($search)
 			->count_all();
 
 		// Generate the pagination values.
@@ -63,7 +67,8 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			->order_by($order_by, $direction)			
 			->limit($items_per_page)
 			->offset($pagination->offset)
-			->filter_results($filter)
+			->filter($filter)
+			->search($search)
 			->find_all();
 	}
 
