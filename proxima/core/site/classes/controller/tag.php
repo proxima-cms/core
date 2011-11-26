@@ -6,10 +6,10 @@ class Controller_Tag extends Controller_Page {
 	{
     $tag_slug = Request::current()->param('param');
   
-    if ($tag_slug === NULL)
-    {   
-      $tag_slug = Request::current()->query('name');
-    }  
+		if ($tag_slug === NULL)
+		{   
+			$tag_slug = Request::current()->query('name');
+		}  
 
 		$pages = Component::factory('Tag_Listing', array(
 			'tag_slug'	=> $tag_slug

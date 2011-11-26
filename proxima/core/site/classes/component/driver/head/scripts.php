@@ -10,10 +10,10 @@ class Component_Driver_Head_Scripts extends Component_Component {
 			$styles[] = Theme::style_path($style);
 		}
 
-    if (Kohana::$environment !== Kohana::DEVELOPMENT)
-    {   
-      $styles = array(Compress::instance()->styles($styles));
-    } 
+		if (Kohana::$environment !== Kohana::DEVELOPMENT)
+		{   
+			$styles = array(Compress::instance()->styles($styles));
+		} 
 
 		return View::factory(Theme::path('components/head/scripts'))
 			->set('styles', $styles)
