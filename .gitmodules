@@ -34,3 +34,6 @@
 [submodule "proxima/core/viewmodel"]
 	path = proxima/core/viewmodel
 	url = git://github.com/zombor/View-Model.git
+[submodule "proxima/core/kostache"]
+	path = proxima/core/kostache
+	url = git://github.com/zombor/KOstache.git
