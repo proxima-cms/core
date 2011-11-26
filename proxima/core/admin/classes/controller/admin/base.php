@@ -36,9 +36,7 @@ abstract class Controller_Admin_Base extends Controller_Base {
 	{
 		if ($this->auto_render)
 		{
-
 			// Merge in the generic admin config with the controller config.
-
 			$styles = array_merge(
 				(array) Kohana::$config->load('admin/media.styles'), 
 				(array) Kohana::$config->load('admin/'.$this->request->controller().'.styles'),
@@ -57,10 +55,10 @@ abstract class Controller_Admin_Base extends Controller_Base {
 				(array) $this->template->paths
 			);
 			
-			$this->template->styles = $styles;
+			$this->template->styles  = $styles;
 			$this->template->scripts = $scripts; 
-			$this->template->paths = $paths;
-			$this->template->param = $this->request->param();
+			$this->template->paths   = $paths;
+			$this->template->param   = $this->request->param();
 			$this->template->set_global('breadcrumbs', $this->get_breadcrumbs());
 		}
 				

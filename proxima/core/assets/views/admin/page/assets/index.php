@@ -9,8 +9,7 @@
 			</ul>
 		</div>
 	</div>	
-
-	<?php echo $breadcrumbs?>
+	<?php echo $breadcrumbs ?>
 </div>
 
 <br/>

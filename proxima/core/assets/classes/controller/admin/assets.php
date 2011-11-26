@@ -12,81 +12,11 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 	public function action_index($view = 'admin/page/assets/index')
 	{
+		$this->template->content = View_Model::factory($view)
+			->set('search',  $this->request->post('search') OR $this->request->query('search'))
+			->set('request', $this->request->query());
+
 		$this->template->title = __('Assets');
-
-		$this->template->content = View::factory($view)
-			->bind('assets', $assets)
-			->bind('total', $total)
-			->bind('direction', $direction)
-			->bind('reverse_direction', $reverse_direction)
-			->bind('order_by', $order_by)
-			->bind('filter', $filter)
-			->bind('search', $search)
-			->bind('links', $filter_links)
-			->bind('pagination', $pagination);
-
-		// Get request vars.
-		$request           = $this->request->query();
-		$direction         = Arr::get($request, 'direction', 'asc');
-		$reverse_direction = $direction === 'asc' ? 'desc' : 'asc';
-		$order_by          = Arr::get($request, 'sort', 'date');
-		$type              = Arr::get($request, 'type', 'all');
-		$subtype           = Arr::get($request, 'subtype', 'all');
-		$filter            = Arr::get($request, 'filter');
-		$search            = $this->request->post('search') OR Arr::get($request, 'search');
-		$items_per_page    = 18;
-		$filter_links      = $this->get_filter_links($direction);
-
-		// Get the total amount of filtered assets.
-		$total = ORM::factory('asset')
-			->join('mimetypes')
-			->on('asset.mimetype_id', '=', 'mimetypes.id')
-			->filter($filter)
-			->search($search)
-			->count_all();
-
-		// Generate the pagination values.
-		$pagination = Pagination::factory(array(
-			'total_items'    => $total,
-			'items_per_page' => $items_per_page,
-			'view'           => 'admin/pagination/asset_links'
-		));
-
-		// Adjust the order_by value.
-		switch($order_by)
-		{
-			case 'type':
-				$order_by = 'mimetype_id';
-				break;
-			default:
-				break;
-		}
-
-		// Get the filtered assets.
-		$assets = ORM::factory('asset')
-			->join('mimetypes')
-			->on('asset.mimetype_id', '=', 'mimetypes.id')
-			->order_by($order_by, $direction)			
-			->limit($items_per_page)
-			->offset($pagination->offset)
-			->filter($filter)
-			->search($search)
-			->find_all();
-	}
-
-	private function get_filter_links($direction = NULL)
-	{
-		$link = 'admin/assets?direction='.$direction;
-
-		return array(
-			'links' => array(
-				'all' => $link,
-				'img' => $link.'&filter=subtype-image',
-				'doc' => $link.'&filter=type-pdf|doc|txt',
-				'arc' => $link.'&filter=type-tar|zip|rar'
-			),	
-			'cur_url' => urldecode(Request::current()->uri() . URL::query())
-		);
 	}
 
 	public function action_upload($view_path = 'admin/page/assets/upload', $redirect_to = 'admin/assets')
@@ -142,27 +72,17 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	{
 		$id = $this->request->param('id');
 
-		$asset = ORM::factory('asset', $id);
-
-		if (!$asset->loaded())
-		{
-			Message::set(MESSAGE::ERROR, __('Asset not found.'));
-
-			$this->request->redirect('admin/assets');
-		} 
-		
 		$this->template->title = __('Admin - Edit asset');
-		$this->template->content = View::factory('admin/page/assets/edit')
-			->set('resized', $asset->sizes->where('resized', '=', 1)->find_all())
-			->set('links', $this->get_filter_links())
-			->bind('asset', $asset)
+
+		$this->template->content = View_Model::factory('admin/page/assets/edit')
+			->set('id', $id)
 			->bind('errors', $errors);
 
 		if ($this->request->method() === 'POST')
 		{
 			try
 			{
-				$asset->admin_update($this->request->post());
+				ORM::factory('asset', $id)->admin_update($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Asset successfully updated.'));			
 

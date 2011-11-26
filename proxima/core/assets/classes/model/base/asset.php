@@ -184,7 +184,7 @@ class Model_Base_Asset extends Model_Base {
 
 	public function search($query)
 	{
-		return $query === NULL ? $this : $this->where(
+		return ($query === NULL OR $query === FALSE) ? $this : $this->where(
 			DB::expr('MATCH(asset.description, asset.filename)'), 
 			'', 
 			DB::expr('AGAINST(' . Database::instance()->escape($query) . ')')

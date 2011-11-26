@@ -25,15 +25,12 @@
 [submodule "proxima/core/minion"]
 	path = proxima/core/minion
 	url = git://github.com/kohana-minion/core.git
-[submodule "proxima/core/viewmodel"]
-	path = proxima/core/viewmodel
-	url = git://github.com/zombor/View-Model.git
-[submodule "proxima/core/kostache"]
-	path = proxima/core/kostache
-	url = git://github.com/zombor/KOstache.git
 [submodule "proxima/core/core/vendor/swiftmailer"]
 	path = proxima/core/core/vendor/swiftmailer
 	url = git://github.com/swiftmailer/swiftmailer.git
 [submodule "proxima/core/compress"]
 	path = proxima/core/compress
 	url = git://github.com/azampagl/kohana-compress.git
+[submodule "proxima/core/beautifulview"]
+	path = proxima/core/beautifulview
+	url = git://github.com/beautiful/view.git
