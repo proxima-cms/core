@@ -31,6 +31,3 @@
 [submodule "proxima/core/compress"]
 	path = proxima/core/compress
 	url = git://github.com/azampagl/kohana-compress.git
-[submodule "proxima/core/beautifulview"]
-	path = proxima/core/beautifulview
-	url = git://github.com/beautiful/view.git
