@@ -19,9 +19,6 @@
 [submodule "proxima/core/image"]
 	path = proxima/core/image
 	url = https://github.com/kohana/image.git
-[submodule "proxima/core/compress"]
-	path = proxima/core/compress
-	url = git://github.com/azampagl/kohana-compress.git
 [submodule "proxima/core/pagination"]
 	path = proxima/core/pagination
 	url = git://github.com/kloopko/kohana-pagination.git
@@ -37,3 +34,6 @@
 [submodule "proxima/core/core/vendor/swiftmailer"]
 	path = proxima/core/core/vendor/swiftmailer
 	url = git://github.com/swiftmailer/swiftmailer.git
+[submodule "proxima/core/compress"]
+	path = proxima/core/compress
+	url = git://github.com/azampagl/kohana-compress.git
