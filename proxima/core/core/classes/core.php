@@ -89,11 +89,38 @@ class Core {
 	*/
 	public static function set_routes()
 	{
-		// Set the error page route.
+		/**
+		* Set the routes. Each route must have a minimum of a name, a URI and a set of
+		* defaults for the URI.
+		*/
+		Route::set('default', '(<controller>(/<action>(/<id>)))')
+			->defaults(array(
+				'controller' => 'welcome',
+				'action'     => 'index',
+			));
+
+		// Error page
 		Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
 			->defaults(array(
 				'controller' => 'error'
 			)); 
+		
+		// Admin config
+		Route::set('admin/config', 'admin/config(/<group>)')
+			->defaults(array(
+				'controller' => 'config',
+				'directory'  => 'admin',
+				'action'		 => 'index',
+				'group'			 => NULL,
+			));
+
+		// Admin logs
+		Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
+			->defaults(array(
+				'controller' => 'admin_logs',
+				'action'		 => 'index',	
+				'file'			 => NULL
+			));
 
 		// Find all pages that require routing to specific controllers.
 		$route_pages = ORM::factory('site_page')
@@ -111,23 +138,6 @@ class Core {
 					'uri'				 => $page->uri,
 				));
 		}
-
-		// Admin config
-		Route::set('admin/config', 'admin/config(/<group>)')
-			->defaults(array(
-				'controller' => 'config',
-				'directory'  => 'admin',
-				'action'		 => 'index',
-				'group'			 => NULL,
-			));
-
-		// Admin logs
-		Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
-			->defaults(array(
-				'controller' => 'admin_logs',
-				'action'		 => 'index',	
-				'file'			 => NULL
-			));
 			
 		// Set the 'catch all' route.
 		Route::set('page', '<uri>', array('uri' => '.*'))

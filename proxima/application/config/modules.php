@@ -1,17 +1,18 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Sunday 20th of November 2011 09:06:07 PM
+ * Auto generated on: Friday 25th of November 2011 08:52:52 PM
  */
 
 return array(
-	'core' => CORPATH.'core',
+	'modules' => CORPATH.'modules',
 	'pages' => CORPATH.'pages',
 	'admin' => CORPATH.'admin',
 	'assets' => CORPATH.'assets',
 	'users' => CORPATH.'users',
 	'tags' => CORPATH.'tags',
 	'site' => CORPATH.'site',
+	'core' => CORPATH.'core',
 	'image' => CORPATH.'image',
 	'pagination' => CORPATH.'pagination',
 	'compress' => CORPATH.'compress',
@@ -19,9 +20,9 @@ return array(
 	'cache' => CORPATH.'cache',
 	'auth' => CORPATH.'auth',
 	'orm' => CORPATH.'orm',
+	'orm' => CORPATH.'orm',
 	'database' => CORPATH.'database',
 	'message' => CORPATH.'message',
 	'blogimport' => CORPATH.'blogimport',
 	'redirects' => CORPATH.'redirects',
-	'modules' => CORPATH.'modules',
 );
