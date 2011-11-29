@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class View_Admin_Page_Assets_Index extends View_Model {
-	
+
 	public function __construct($file = NULL, array $data = NULL)
 	{
 		parent::__construct($file, $data);
@@ -48,7 +48,7 @@ class View_Admin_Page_Assets_Index extends View_Model {
 		);
 	}
 	
-	// Get the total amount of filtered assets.
+	// Return the total amount of filtered assets.
 	public function var_total()
 	{
 		return ORM::factory('asset')
@@ -59,7 +59,7 @@ class View_Admin_Page_Assets_Index extends View_Model {
 			->count_all();
 	}
 
-	// Generate the pagination.
+	// Return the pagination.
 	public function var_pagination()
 	{
 		return Pagination::factory(array(
