@@ -12,11 +12,14 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 
 	public function action_index($view = 'admin/page/assets/index')
 	{
-		$this->template->content = View_Model::factory($view)
-			->set('search',  $this->request->post('search') OR $this->request->query('search'))
-			->set('request', $this->request->query());
+		$request_data = array(
+			'search'  => $this->request->post('search') OR $this->request->query('search'),
+			'request' => $this->request->query()
+		);
 
 		$this->template->title = __('Assets');
+
+		$this->template->content = View_Model::factory($view, $request_data); 
 	}
 
 	public function action_upload($view_path = 'admin/page/assets/upload', $redirect_to = 'admin/assets')
