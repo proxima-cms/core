@@ -29,7 +29,7 @@ class Modules {
 	}
 	
 	// Get module config from the database and return 
-  // the module config string.
+	// the module config string.
 	private static function get_module_config()
 	{
 		$modules_db = ORM::factory('module')
@@ -90,7 +90,7 @@ class Modules {
 		return $config;
 	}
 
-	// Get the navigation config form the db and 
+	// Get the admin navigation config form the db and 
 	// return the navigation config file string.
 	private static function get_nav_config()
 	{
@@ -102,22 +102,25 @@ class Modules {
 
 		foreach($modules as $module)
 		{
-			$details = array('admin_nav' => FALSE);
-	
-			$mod_config = Modules::config($module->name) ?: array('admin_nav' => FALSE);
+			$mod_config = Modules::config($module->name);
 
-			if ($mod_config['admin_nav'] === NULL OR $mod_config['admin_nav'] === FALSE)
+			// FIXME
+			if ($mod_config === NULL OR ! Arr::get($mod_config, 'admin_nav'))
 			{
 				continue;
 			}
-			
-			$admin_url = Arr::get($mod_config, 'admin_url') ?: "admin/{$module->name}";
 
-			$config .= "\t\t'{$admin_url}' => __('{$mod_config['admin_nav']}'),\n";
+			$nav_name = $module->nav_name;
+			$nav_controller = $module->nav_controller;
+
+			$admin_url  = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
+			$admin_name = $module->nav_name ?: Arr::get($mod_config, 'name');
+
+			$config .= "\t\t'{$admin_url}' => '{$admin_name}',\n";
 		}		
 
 		$config .= "\t)\n);";
-		
+
 		// Get the admin module config file path.
 		$file_path = current(Kohana::find_file('config', 'admin/nav'));
 
@@ -130,7 +133,7 @@ class Modules {
 	}
 
 	// Re-generate the modules init config file and the 
-	// admin navi config file.
+	// admin nav config files.
 	public static function generate_config()
 	{
 		$module_config = self::get_module_config();
@@ -147,20 +150,24 @@ class Modules {
 			
 		foreach($modules as $name => $module)
 		{
-			$config     = Modules::config($name);
-			$enabled    = Arr::get($config, 'enabled', TRUE);
-			$order      = Arr::get($config, 'load_order', -1);
+			$config         = Modules::config($name);
+			$enabled        = Arr::get($config, 'enabled', TRUE);
+			$order          = Arr::get($config, 'load_order', -1);
+			$admin_nav      = Arr::get($config, 'admin_nav', array());
+			$nav_controller = Arr::get($admin_nav, 'controller');
+			$nav_name       = Arr::get($admin_nav, 'name') ?: Arr::get($config, 'name');
 
 			ORM::factory('module')
 				->where('name', '=', $name)
 				->find()
 				->values(array(
-					'name'    => $name,
+					'name' => $name,
+					'nav_controller' => $nav_controller,
+					'nav_name' => $nav_name,
 					'enabled' => $enabled,
-					'order'   => $order
-				))
+					'order' => $order
+				))  
 				->save();
 		}
 	}
-
 }

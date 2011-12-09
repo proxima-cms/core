@@ -4,6 +4,6 @@ return array(
 	'name'        => 'Assets',
 	'description' => 'Asset manager',
 	'author'      => 'Richard Willis',
-	'admin_nav'   => 'Assets',
+	'admin_nav'   => array('controller' => NULL, 'name' => NULL),
 	'load_order'  => 3
 );

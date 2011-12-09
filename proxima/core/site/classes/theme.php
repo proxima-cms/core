@@ -4,6 +4,8 @@ abstract class Theme {
 
 	public static $config = array();
 
+	public static $theme_name = 'badsyntax';
+
 	public static $view_path;
 
 	/**
@@ -13,9 +15,14 @@ abstract class Theme {
 	 * @param   bool    $root		Add the root application path?
 	 * @return	string  $path   The file path
 	 */
-	public static function path($file = NULL, $root = FALSE)
+	public static function path($file = NULL, $root = FALSE, $theme = NULL)
 	{
-		$path = 'themes/badsyntax/'.$file;
+		if ($theme === NULL)
+		{
+			$theme = self::$theme_name;
+		}
+
+		$path = "themes/{$theme}/{$file}";
 
 		if ($root !== FALSE)
 		{
@@ -23,6 +30,18 @@ abstract class Theme {
 		}
 
 		return $path;
+	}
+	
+	/**
+	 * Returns a theme view.
+	 *
+	 * @param   mixed   $file   File name
+	 * @param   bool    $root		Add the root application path?
+	 * @return	string  $path   The file path
+	 */
+	public static function view($file = NULL, $root = FALSE, $theme = NULL)
+	{
+		return View::factory(self::path($file, $root, $theme));
 	}
 
 	/**

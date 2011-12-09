@@ -1,5 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-  
+	
 abstract class Controller_Admin_Base extends Controller_Base {
  
 	// Set the admin master page
@@ -60,6 +60,12 @@ abstract class Controller_Admin_Base extends Controller_Base {
 			$this->template->paths   = $paths;
 			$this->template->param   = $this->request->param();
 			$this->template->set_global('breadcrumbs', $this->get_breadcrumbs());
+
+			if ($this->template->content === NULL)
+			{
+				// $class_name = get_class($this);
+				// TODO: set the view from the class name & method
+			}
 		}
 				
 		parent::after();

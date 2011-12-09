@@ -90,7 +90,7 @@ class Core {
 	public static function set_routes()
 	{
 		/**
-		* Set the routes. Each route must have a minimum of a name, a URI and a set of
+		* Set the default route. Each route must have a minimum of a name, a URI and a set of
 		* defaults for the URI.
 		*/
 		Route::set('default', '(<controller>(/<action>(/<id>)))')
@@ -122,7 +122,7 @@ class Core {
 				'file'			 => NULL
 			));
 
-		// Find all pages that require routing to specific controllers.
+		// Find all pages that require routing to specific controllers
 		$route_pages = ORM::factory('site_page')
 			->where('pagetype_controller', '<>', 'page')
 			->and_where('pagetype_controller', 'IS NOT', NULL)
@@ -130,7 +130,7 @@ class Core {
 
 		foreach($route_pages as $page)
 		{
-			// Set the page route.
+			// Set the page route
 			Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
 				->defaults(array(
 					'controller' => $page->pagetype_controller,
@@ -139,7 +139,7 @@ class Core {
 				));
 		}
 			
-		// Set the 'catch all' route.
+		// Set the 'catch all' route
 		Route::set('page', '<uri>', array('uri' => '.*'))
 			->defaults(array(
 				'controller' => 'page',

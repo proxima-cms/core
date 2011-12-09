@@ -4,6 +4,6 @@ return array(
 	'name'        => 'Modules',
 	'description' => 'Modules for your site!',
 	'author'      => 'Richard Willis',
-	'admin_nav'   => 'Modules',
+	'admin_nav'   => array('controller' => NULL, 'name' => NULL),
 	'load_order'  => 0,
 );
