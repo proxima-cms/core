@@ -35,12 +35,16 @@ class View_Model {
 
 	public function bind($key, & $value)
 	{
-		return $this->view->bind($key, $value);
+		$this->view->bind($key, $value);
+
+		return $this;
 	}
 	
 	public static function bind_global($key, & $value)
 	{
 		$this->view->bind_global($key, $value);
+
+		return $this;
 	}
 	
 	public function render()
@@ -62,17 +66,23 @@ class View_Model {
 
 	public function set($key, $value = NULL)
 	{
-		return $this->view->set($key, $value);
+		$this->view->set($key, $value);
+		
+		return $this;
 	}
 
 	public function set_filename($file)
 	{
-		return $this->view->set_filename($file);
+		$this->view->set_filename($file);
+
+		return $this;
 	}
 
 	public static function set_global($key, $value = NULL)
 	{
 		$this->view->set_global($key, $value);
+
+		return $this;
 	}
 
 	public function & __get($key)
