@@ -18,14 +18,14 @@
 		<div class="field">
 			<?php echo 
 				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', Arr::GET($_POST, 'name'), NULL, $errors)
+				Form::input('name', Request::current()->post('name') ?: $tag->name, NULL, $errors)
 			?>
 		</div>
 		
 		<div class="field">
 			<?php echo 
 				Form::label('slug', __('Slug'), NULL, $errors),
-				Form::input('slug', Arr::GET($_POST, 'slug'), NULL, $errors)
+				Form::input('slug', Request::current()->post('slug') ?: $tag->slug, NULL, $errors)
 			?>
 		</div>
 

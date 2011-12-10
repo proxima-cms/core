@@ -12,32 +12,32 @@
 </div>
 
 <table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach($users as $user){?>
-    <tr>
-      <td><?php echo $user->id;?></td>
-      <td>
-        <?php echo HTML::anchor('admin/users/edit/'.$user->id, $user->username)?>
-      </td>
-      <td><?php echo $user->date?></td>
-    </tr>
-    <?php }?> 
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="4">
-        <div style="float:right"><?php /* echo $user_links*/?></div>
-        Showing <?php echo $users->count()?> of <?php echo $total?> tags
-      </td> 
-    </tr>   
-  </tfoot>   
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($items as $user){?>
+		<tr>
+			<td><?php echo $user->id;?></td>
+			<td>
+				<?php echo HTML::anchor('admin/users/edit/'.$user->id, $user->username)?>
+			</td>
+			<td><?php echo $user->date?></td>
+		</tr>
+		<?php }?> 
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="4">
+				<div style="float:right"></div>
+				Showing <?php echo $items->count()?> of <?php echo $total?> tags
+			</td> 
+		</tr>   
+	</tfoot>   
 </table>
 
 <fieldset id="users-information" class="users-information ui-helper-hidden last">

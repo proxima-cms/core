@@ -2,6 +2,17 @@
 
 class Controller_Admin_Tags extends Controller_Admin_Base {
 
+	public function action_index()
+	{
+		$request_data = array(
+			'request' => $this->request->query()
+		);  
+
+		$this->template->title = __('Tags');
+
+		$this->template->content = View_Model::factory('admin/page/tags/index', $request_data); 
+	}
+
 	public function action_add()
 	{
 		$this->template->title = __('Add tag');
@@ -9,19 +20,22 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 		$this->template->content = View::factory('admin/page/tags/add')
 			->bind('errors', $errors);
 
-		if ($this->request->method() === 'POST')
+		if ($this->request->method() === Request::POST)
 		{
-			if (ORM::factory('tag')->admin_add($_POST))
-			{		
+			try
+			{
+				ORM::factory('tag')->admin_add($this->request->post());
+
 				Message::set(Message::SUCCESS, __('Tag successfully saved.'));		 
-			}	
 
-			if ($errors = $_POST->errors('admin/tags'))
-			{		
-				 Message::set(Message::ERROR, __('Please correct the errors.'));
+				$this->request->redirect('admin/tags');
 			}
+			catch(ORM_Validation_Exception $e)
+			{
+				$errors = $e->errors('admin/tags');
 
-			$_POST = $_POST->as_array();
+				Message::set(Message::ERROR, __('Please correct the errors.'));
+			}
 		}
 	}
 
@@ -38,33 +52,26 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 
 		$this->template->title = __('Edit tag');
 
-		// If POST is empty then set the default form data
-		if (!$_POST)
-		{		
-			$default_data = $tag->as_array();
-		}		
-
 		$this->template->content = View::factory('admin/page/tags/edit')
 			->bind('tag', $tag)
 			->bind('errors', $errors);
-		
-		if ($_POST)
-		{		
-			if ($tag->admin_update($_POST))
-			{		
+
+		if ($this->request->method() === Request::POST)
+		{
+			try
+			{
+				$tag->admin_update($this->request->post());
+				
 				Message::set(Message::SUCCESS, __('Tag successfully updated.'));		 
+				
 				$this->request->redirect($this->request->uri());
 			}		
+			catch(ORM_Validation_Exception $e)
+			{
+				$errors = $e->errors('admin/tags');
 
-			if ($errors = $_POST->errors('admin/tags'))
-			{		
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}		
-		}
-		else
-		{
-			// If POST is empty, then add the default data to POST
-			$_POST = array_merge($_POST, $default_data);
 		}		
 	}
 
@@ -77,7 +84,8 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 			parent::action_delete($id, false);
 		}
 
-  	$message = __('Tag'.(count($ids) > 1?'s':'').' successfully deleted.');
+		$message = __('Tag'.(count($ids) > 1?'s':'').' successfully deleted.');
+
 		Message::set(Message::SUCCESS, $message);
 
 		$this->request->redirect('admin/tags');

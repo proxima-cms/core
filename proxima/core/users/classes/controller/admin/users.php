@@ -6,6 +6,17 @@
 
 class Controller_Admin_Users extends Controller_Admin_Base {
 
+	public function action_index()
+	{
+		$request_data = array(
+			'request' => $this->request->query()
+		);  
+
+		$this->template->title = __('Users');
+
+		$this->template->content = View_Model::factory('admin/page/users/index', $request_data); 
+	}
+
 	public function action_add()
 	{
 		$this->template->title = __('Add user');
