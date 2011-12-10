@@ -13,24 +13,26 @@
 </div>
 
 <?php echo Form::open()?>
-	<fieldset class="last">
+	<fieldset>
+
+		<legend>Page type</legend>
 		
 		<div class="field">
 			<?php echo 
 				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', Request::current()->post('name') ?: $page_type->name, NULL, $errors)
+				Form::input('name', $page_type->name, NULL, $errors)
 			?>
 		</div>
 		<div class="field">
 			<?php echo 
 				Form::label('description', __('Descripton'), NULL, $errors),
-				Form::input('description', Request::current()->post('description') ?: $page_type->description, NULL, $errors)
+				Form::input('description', $page_type->description, NULL, $errors)
 			?>
 		</div>
 		<div class="field">
 			<?php echo 
 				Form::label('template', __('Template'), NULL, $errors),
-				Form::select('template', $templates, Request::current()->post('template') ?: $page_type->template, NULL, $errors)
+				Form::select('template', $templates, $page_type->template, NULL, $errors)
 			?>	
 		</div>
 		<div class="field">
@@ -40,11 +42,59 @@
 				'&nbsp;&nbsp;&nbsp;',
 				HTML::anchor('admin/pages/types/generate_controller?name=default&page_type_id'.$page_type->id, '[Default]', array('id' => 'generate-controller')).'<br/>',
 
-				Form::input('controller', Request::current()->post('controller') ?: $page_type->controller, NULL, $errors)
+				Form::input('controller', $page_type->controller, NULL, $errors)
 			?>	
 		</div>
 
-		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
+		<?php echo Form::button('save-type', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
 
 	</fieldset>
+
+<?php echo Form::close()?>
+
+
+<?php echo Form::open()?>
+	<fieldset class="last">
+		<legend>Components</legend>
+		<?if (count($components)){?>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($components as $component){?>
+				<tr>
+					<td><?php echo $component->id;?></td>
+					<td>
+						<?php echo HTML::anchor('admin/components/edit/'.$component->id, $component->name)?>
+					</td>
+				</tr>
+				<?php }?> 
+			</tbody>
+		</table>
+		<br />
+		<?php } else {?>
+		<?php }?>
+
+		<fieldset>
+			<legend>Add a new component</legend>
+				<div class="field">
+					<?php echo 
+						Form::label('component_name', __('Name'), NULL, $errors),
+						Form::input('component_name', $component_type->name, NULL, $errors)
+					?>
+				</div>
+				<div class="field">
+					<?php echo 
+						Form::label('component_type', __('Component'), NULL, $errors),
+						Form::select('component_type', $component_types, $component_type->component_type_id, NULL, $errors)
+					?>
+				</div>
+				<?php echo Form::button('save-component', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
+		</fieldset>
+	</fieldset>
+
 <?php echo Form::close()?>

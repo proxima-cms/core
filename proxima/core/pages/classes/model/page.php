@@ -4,43 +4,29 @@ class Model_Page extends Model_Base_Page {
 
 	public function admin_add($data)
 	{
-		$validation = Validation::factory($data);
-
-		foreach($this->create_rules() as $field => $rules)
-		{
-			$validation->rules($field, $rules);
-		}
-
 		$this->values($data);
 		$this->user_id = Auth::instance()->get_user()->id;
-		$this->save($validation);
-
+		$this->save();
 		$this->generate_uri();
+		$this->save();
 
-		return $this->save();
+		return $this;
 	}
 
 	public function admin_update($data)
 	{
 		$tags = Arr::get($data, 'tags', array());
 		
-		$validation = Validation::factory($data);
-
-		foreach($this->update_rules() as $field => $rules)
-		{
-			$validation->rules($field, $rules);
-		}
-
 		if (Arr::get($data, 'visible_to_forever', FALSE) !== FALSE)
 		{
 			$data['visible_to'] = NULL;
 		}
 
 		$this->values($data);
-		$this->save($validation);
+		$this->save();
 		$this->update_tags($tags);
 				
-		return $data;
+		return $this;
 	}
 	
 	public function admin_check_parent_id(Validation $array, $field)

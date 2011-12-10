@@ -1,19 +1,29 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Model_Component extends Model_Base {
+class Model_Component_Type extends Model_Base {
 
 	protected $_belongs_to = array(
 		'user' => array('model' => 'user', 'foreign_key' => 'user_id'),
 	);  
+
+	protected $_has_many = array(
+		'components'      => array('model' => 'component', 'foreign_key' => 'type_id'),
+	); 
 	
 	public function rules()
 	{
 		return array(
-			'data' => array(
+			'name' => array(
 				array('not_empty'),
 				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 128)),
 			),  
-		);
+			'description' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 4)),
+				array('max_length', array(':value', 255)),
+			),  
+		);  
 	}
 
 	public function admin_add($data)

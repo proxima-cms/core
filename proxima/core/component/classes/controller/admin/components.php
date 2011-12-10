@@ -10,7 +10,7 @@ class Controller_Admin_Components extends Controller_Admin_Base {
 
 		$this->template->title = __('Components');
 
-		$this->template->content = View_Model::factory('admin/page/components/index', $request_data); 
+		$this->template->content = View_Model::factory('admin/page/component/types/index', $request_data); 
 	}
 
 	public function action_add()
@@ -21,11 +21,11 @@ class Controller_Admin_Components extends Controller_Admin_Base {
 
 		$this->template->title = __('Add component');
 
-		$this->template->content = View_Model::factory('admin/page/components/add', $request_data)
+		$this->template->content = View_Model::factory('admin/page/component/types/add', $request_data)
 			->bind('errors', $errors)
 			->bind('component', $component);
 
-		$component = ORM::factory('component');
+		$component = ORM::factory('component_type');
 
 		if ($this->request->method() === Request::POST)
 		{
@@ -54,13 +54,13 @@ class Controller_Admin_Components extends Controller_Admin_Base {
 
 		$this->template->title = __('Edit page');
 
-		$this->template->content = View_Model::factory('admin/page/components/edit', $request_data)
+		$this->template->content = View_Model::factory('admin/page/component/types/edit', $request_data)
 			->bind('errors', $errors)
 			->bind('component', $component);
 
 		$id = Request::current()->param('id');
 
-		$component = ORM::factory('component', $id);
+		$component = ORM::factory('component_type', $id);
 
 		if (!$component->loaded())
 		{
@@ -84,5 +84,23 @@ class Controller_Admin_Components extends Controller_Admin_Base {
  				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 		}
+	}
+
+	public function action_delete()
+	{
+		$id = $this->request->param('id');
+	
+		$component = ORM::factory('component', $id);
+
+		if (!$component->loaded())
+		{
+			throw new Exception('Component not found');
+		}
+
+		$component->delete();
+
+		Message::set(Message::SUCCESS, __('Component successfully deleted.'));
+
+		$this->request->redirect('admin/components');
 	}
 } // End Controller_Admin_Components
