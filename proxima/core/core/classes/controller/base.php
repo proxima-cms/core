@@ -1,81 +1,44 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 	
-abstract class Controller_Base extends Controller_Template {
+abstract class Controller_Base extends Controller {
  
-	public $template = 'page/master_page';
-	
 	public $auto_render = TRUE;
+
+	public $master_template = NULL;
 
 	protected $auth_required = FALSE;
 
 	public function before()
 	{
-		$this->authenticate();
+		// The user may be logged in but not have the correct permissions to view this controller and/or action, 
+		// so instead of redirecting to signin page we redirect to 403 Forbidden
+		if ( Auth::instance()->logged_in() AND Auth::instance()->logged_in($this->auth_required) === FALSE)
+		{   
+			$this->request->redirect('403');
+		}   
 
-		parent::before();
+		// If this page is secured and the user is not logged in (or doesn't match role), then redirect to the signin page
+		if ($this->auth_required !== FALSE && Auth::instance()->logged_in($this->auth_required) === FALSE)
+		{   
+			Message::set(Message::ERROR, __('You need to be signed in to do that.'));
 
-		if ($this->auto_render === TRUE)
-		{
-			$this->template->title = NULL;
-			$this->template->content = NULL;
-			$this->template->environment = Kohana::$environment == Kohana::DEVELOPMENT ? 'development' : 'production';
-		}
+			// Set the return path so user is redirect back to this page after successful sign in
+			$uri = 'admin/auth/signin?return_to=' . $this->request->uri();
+
+			$this->request->redirect($uri);
+		}   
+
+		// Create the front-end page
+		Page_View::instance(array(
+			'view'   => $this->master_template,
+			'render' => $this->auto_render
+		));
 	}
 
 	public function after()
 	{
-		if (Request::current()->is_ajax() OR $this->request !== Request::current())
-		{
-			$this->response->body($this->template->content);
-		} 
-		else 
-		{
-			if ($this->auto_render === TRUE AND $this->template->content === NULL)
-			{
-				// Try auto-load a view
-				try
-				{
-					$this->template->content = View::factory('page/'.$this->request->controller().'/'.$this->request->action());
-				}
-				catch(VIEW_EXCEPTION $e) { }
-			}
-
-			parent::after();
-
-			// Add profiler information to template content
-			$this->response->body( $this->profiler( $this->request->response() ) );
-		}
-	}
-
-	public function authenticate()
-	{
-		// If this page is secured and the user is not logged in (or doesn't match role), then redirect to the signin page
-		if ($this->auth_required !== FALSE && Auth::instance()->logged_in($this->auth_required) === FALSE)
-		{
-			Message::set(Message::ERROR, __('You need to be signed in to do that.'));
-			
-			// Set the return path so user is redirect back to this page after successful sign in
-			$uri = 'user/signin?return_to=' . $this->request->uri();
-
-			$this->request->redirect($uri);
-		}
-	}
-
-	private function profiler($content)
-	{
-		$profiler = Profiler::application();
-
-		list($time, $memory) = array_values( $profiler['current'] );
-
-		// Prep the data
-		$data = array(
-			'{memory_usage}' => Text::bytes($memory),
-			'{execution_time}' => round($time, 3).'s',
-			'{profiler}' => Kohana::$environment === Kohana::DEVELOPMENT ? View::factory('profiler/stats') : ''
-		);
-
-		// Replace the placeholders with data
-		return strtr( (string) $content, $data);
+		// Render the front-end page
+		Page_View::instance()->render();
 	}
 
 } // End Controller_Base

@@ -4,26 +4,26 @@ class Controller_Admin_Components extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$request_data = array(
-			'request' => $this->request->query()
-		);  
+		$request_data = array('request' => $this->request->query());  
 
-		$this->template->title = __('Components');
-
-		$this->template->content = View_Model::factory('admin/page/component/types/index', $request_data); 
+		Page_View::instance()
+			->title('title', __('Components'))
+			->content(
+				View_Model::factory('admin/page/component/types/index', $request_data)
+			);
 	}
 
 	public function action_add()
 	{
-		$request_data = array(
-			'request' => $this->request->post()
-		);  
+		$request_data = array('request' => $this->request->post());  
 
-		$this->template->title = __('Add component');
-
-		$this->template->content = View_Model::factory('admin/page/component/types/add', $request_data)
-			->bind('errors', $errors)
-			->bind('component', $component);
+		Page_View::instance()
+			->title(__('Add component'))
+			->content(
+				View_Model::factory('admin/page/component/types/add', $request_data)
+				->bind('errors', $errors)
+				->bind('component', $component)
+			);
 
 		$component = ORM::factory('component_type');
 
@@ -48,15 +48,15 @@ class Controller_Admin_Components extends Controller_Admin_Base {
 	
 	public function action_edit()
 	{
-		$request_data = array(
-			'request' => $this->request->post()
-		);  
+		$request_data = array('request' => $this->request->post());  
 
-		$this->template->title = __('Edit page');
-
-		$this->template->content = View_Model::factory('admin/page/component/types/edit', $request_data)
-			->bind('errors', $errors)
-			->bind('component', $component);
+		Page_View::instance()
+			->title(__('Edit page'))
+			->content(
+				View_Model::factory('admin/page/component/types/edit', $request_data)
+				->bind('errors', $errors)
+				->bind('component', $component)
+			);
 
 		$id = Request::current()->param('id');
 
@@ -103,4 +103,5 @@ class Controller_Admin_Components extends Controller_Admin_Base {
 
 		$this->request->redirect('admin/components');
 	}
+
 } // End Controller_Admin_Components

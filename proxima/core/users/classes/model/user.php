@@ -51,25 +51,16 @@ class Model_User extends Model_Auth_User {
 		}
 	}
 
-	public function login(array & $data, $redirect = FALSE)
+	public function login($data)
 	{
-		if (Auth::instance()->login(Arr::get($data, 'username'), Arr::get($data, 'password')))
+		if (!Auth::instance()->login(Arr::get($data, 'username'), Arr::get($data, 'password'), Arr::get($data, 'remember')))
 		{
-			return TRUE;
-		}
-		else
-		{
-			$data = Validation::factory($data)
+			$validation = Validation::factory($data)
 				->rule('username','trim')
 				->rule('username','not_empty')
 				->rule('password','not_empty');
 
-			if ($data->check())
-			{
-				$data->error('password', 'invalid');
-			}
-			
-			return FALSE;
+			throw new Validation_Exception($validation, 'Incorrect username or password');
 		}
 	}
 
@@ -206,16 +197,16 @@ class Model_User extends Model_Auth_User {
 			throw new Exception(__('Invalid auth token.'));
 		}
 
-    $rules = array_merge(
+		$rules = array_merge(
 			$this->rules(),
-      array('password_confirm' =>  
-        array(
-          array('matches', 
-            array(':validation', ':field', 'password')
-          )   
-        )   
-      )
-    );  
+			array('password_confirm' =>  
+				array(
+					array('matches', 
+						array(':validation', ':field', 'password')
+					)   
+				)   
+			)
+		);  
 
 		$data = Validation::factory($data)
 			->rules('password', $rules['password'])
@@ -234,7 +225,7 @@ class Model_User extends Model_Auth_User {
 		/* Change users password. The password will be auto-hashed on save.*/
 		$this->password = $data['password'];
 
-    $this->save();
+		$this->save();
 
 		return TRUE;
 	}

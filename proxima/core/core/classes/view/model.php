@@ -85,7 +85,7 @@ class View_Model {
 		return $this;
 	}
 
-	public function & __get($key)
+	public function __get($key)
 	{
 		return $this->view->{$key};
 	}

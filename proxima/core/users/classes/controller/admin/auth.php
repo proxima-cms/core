@@ -2,7 +2,7 @@
 
 class Controller_Admin_Auth extends Controller_Admin_Base {
 
-	public $template = 'admin/page/auth/master_page';
+	public $master_template = 'admin/page/auth/master_page';
 
 	public $auth_required = FALSE;
 
@@ -14,26 +14,35 @@ class Controller_Admin_Auth extends Controller_Admin_Base {
 			$this->request->redirect('admin');
 		}
 
-		$this->template->title = __('Sign in');
-		$this->template->content = View::factory('admin/page/auth/signin')
-			->bind('errors', $errors);
+		Page_View::instance()
+			->title(__('Sign in'))
+			->content(
+				View_Model::factory('admin/page/auth/signin')
+				->bind('errors', $errors)
+				->bind('user', $user)
+			);
+
+		$user = ORM::factory('user');
 	
-		if ($_POST)
+		if ($this->request->method() == Request::POST)
 		{
-			// If successfull login then redirect
-			if (ORM::factory('user')->login($_POST))
+			try
 			{
-				$message = $_POST['username'].' successfully signed in.';
+				$data = $this->request->post();
+				
+				$user->login($data);
 
-				Message::set(Message::SUCCESS, __($message));
+				Message::set(Message::SUCCESS, __(':username successfully signed in.', array(':username' => $user->username)));
 
-				$return = Arr::get($_POST, 'return_to', 'admin');
+				$return = Arr::get($this->request->post(), 'return_to', 'admin');
 
 				$this->request->redirect( $return );
 			}
-			else
+			catch(Validation_Exception $e)
 			{
-				$errors = $_POST->errors('signin');
+				$errors = $e->array->errors('signin');
+
+				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 		}
 	}

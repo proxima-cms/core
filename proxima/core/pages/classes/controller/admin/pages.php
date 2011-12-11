@@ -4,11 +4,10 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$this->template->title = __('Pages');
-		$this->template->content = View::factory('admin/page/pages/index');
-		
-		array_push($this->template->scripts, 
-			Core::path('pages/media/js/admin/pages.js')
+		Page_View::instance()
+		->title(__('Pages'))
+		->content(
+			View_Model::factory('admin/page/pages/index')
 		);
 	}
 
@@ -37,7 +36,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			$page_types[$page_type->id] = $page_type->name;
 		}
 
-		if ($this->request->method() === 'POST')
+		if ($this->request->method() === Request::POST)
 		{
 			try
 			{
@@ -58,15 +57,17 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 	
 	public function action_edit()
 	{
-		$this->template->title = __('Edit page');
-
-		array_push($this->template->styles, Kohana::$config->load('admin/media.paths.tinymce_skin'));
-
-		array_push($this->template->scripts, 
-			Kohana::$config->load('admin/media.paths.tinymce_jquery'),
-			kohana::$config->load('admin/media.paths.tinymce_config'),
-			Core::path('pages/media/js/admin/pages.js')
-		);
+		$this->template = View_Model::factory('admin/page/pages/edit')
+			->bind('page', $page)
+			->bind('page_tags', $page_tags)
+			->bind('errors', $errors)
+			->set('title', __('Edit page'))
+			->styles(Kohana::$config->load('admin/media.paths.tinymce_skin'))
+			->scripts(array(
+				Kohana::$config->load('admin/media.paths.tinymce_jquery'),
+				kohana::$config->load('admin/media.paths.tinymce_config'),
+				Core::path('pages/media/js/admin/pages.js')
+			));
 
 		$id = Request::current()->param('id');
 
@@ -77,47 +78,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			throw new Kohana_Request_Exception('Page not found.');
 		}
 
-		$this->template->content = View::factory('admin/page/pages/edit')
-			->bind('page', $page)
-			->bind('page_published', $page_published)
-			->bind('pages', $pages)
-			->bind('page_types', $page_types)
-			->bind('tags', $tags)
-			->bind('statuses', $statuses)
-			->bind('page_tags', $page_tags)
-			->bind('errors', $errors);
-
-		$pages = ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title');
-			
-		$tags = ORM::factory('tag')->order_by('name', 'asc')->find_all();
-
-		$page_tags = array();
-		foreach($page->tags->find_all() as $tag)
-		{
-			$page_tags[] = $tag->id;
-		}
-		
-		$page_types = array('' => 'None');
-		foreach(ORM::factory('page_type')->find_all() as $page_type)
-		{
-			$page_types[$page_type->id] = $page_type->name;
-		}
-
-		$statuses = array(
-			'' => __('Live'),
-			'1' => __('Draft')
-		);
-	
-		// Check if the page is published.
-		$page_published = FALSE;
-		$site_page = ORM::factory('site_page', $page->id);
-
-		if ($site_page->loaded())
-		{
-			$page_published = TRUE;
-		}
-
-		if ($this->request->method() === 'POST')
+		if ($this->request->method() === Request::POST)
 		{
 			try
 			{
@@ -138,14 +99,12 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 	
 	public function action_tree()
 	{
-		$open_pages = Arr::get($_COOKIE, 'pages/index', array());
+		$open_pages = explode(',', Arr::get($_COOKIE, 'pages/index'));
 		
-		if ($open_pages)
-		{
-			$open_pages = explode(',', $open_pages);
-		}
-
-		$this->template->content = ORM::factory('page')->tree_list_html('admin/page/pages/tree', 0, $open_pages);
+		Page_View::instance()
+			->content(
+				ORM::factory('page')->tree_list_html('admin/page/pages/tree', 0, $open_pages)
+			);
 	}
 
 	public function action_generate_uri()

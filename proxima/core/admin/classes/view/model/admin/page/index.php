@@ -1,9 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class View_Model_Admin_Page_Index extends View_Model {
+class View_Model_Admin_Page_Index extends View_Model_Admin {
 	
-	protected $model = NULL;
-
 	protected $order_by = 'name';
 
 	public function __construct($file = NULL, array $data = NULL)
@@ -28,8 +26,8 @@ class View_Model_Admin_Page_Index extends View_Model {
 	public function var_pagination()
 	{
 		return Pagination::factory(array(
-			'total_items'		 => $this->view->total,
-			'items_per_page' => $this->view->items_per_page,
+			'total_items'		 => $this->total,
+			'items_per_page' => $this->items_per_page,
 			'view'					 => 'admin/pagination/links'
 		));
 	}
@@ -38,9 +36,9 @@ class View_Model_Admin_Page_Index extends View_Model {
 	public function var_items()
 	{
 		return ORM::factory($this->model)
-			->order_by($this->view->order_by, $this->view->direction)
-			->limit($this->view->pagination->items_per_page)
-			->offset($this->view->pagination->offset)
+			->order_by($this->order_by, $this->direction)
+			->limit($this->pagination->items_per_page)
+			->offset($this->pagination->offset)
 			->find_all();
 	}
 }
