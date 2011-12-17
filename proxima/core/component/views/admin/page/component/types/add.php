@@ -13,7 +13,7 @@
 		<div class="field">
 			<?php echo 
 				Form::label('description', __('Description'), NULL, $errors).
-				Form::textarea('description', $component->description, NULL, $errors)
+				Form::textarea('description', $component->description, NULL, TRUE, $errors)
 			?>
 		</div>
 	</fieldset>

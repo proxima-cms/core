@@ -4,7 +4,7 @@ abstract class Controller_Base extends Controller {
  
 	public $auto_render = TRUE;
 
-	public $master_template = NULL;
+	public $view_model = NULL;
 
 	protected $auth_required = FALSE;
 
@@ -30,8 +30,8 @@ abstract class Controller_Base extends Controller {
 
 		// Create the front-end page
 		Page_View::instance(array(
-			'view'   => $this->master_template,
-			'render' => $this->auto_render
+			'view_model'  => $this->view_model,
+			'auto_render' => $this->auto_render
 		));
 	}
 

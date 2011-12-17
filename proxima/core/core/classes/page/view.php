@@ -1,10 +1,12 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
 /**
- * Page View library. Handles page view logic through view models.
+ * Page View library. Handles request view model rendering
  *
  */
 class Page_View {
+
+	protected static $auto_render = TRUE;
 
 	// Page_View instances
 	protected static $_instance;
@@ -14,128 +16,35 @@ class Page_View {
 	 *
 	 * @return Auth
 	 */
-	public static function instance($config = array())
+	public static function instance($data = array())
 	{
-		if ( ! isset(Page_View::$_instance))
+		if ( ! isset(static::$_instance))
 		{
-			Page_View::$_instance = new Page_View($config);
+
+			static::$_instance = new static($data);
 		}
 
-		return Page_View::$_instance;
+		return static::$_instance;
 	}
 
 	/**
-	 * Loads configuration options and creates the page view template
+	 * Loads datauration options and creates the page view template
 	 *
 	 * @return  void
 	 */
-	public function __construct($config)
+	public function __construct($data)
 	{
-		$this->_config = $config;
-		
-		$this->template = View_Model::factory($this->_config['view']);
-	}
-
-	protected $_config;
-
-	/**
-	 * Sets the page title
-	 *
-	 * @return  Page_View
-	 */
-	public function title($title = NULL)
-	{
-		$this->template->set('title', $title);
-
-		return $this;
-	}
-	
-	/**
-	 * Sets the page content
-	 *
-	 * @return  Page_View
-	 */
-	public function content($content = NULL)
-	{
-		$this->template->set('content', $content);
-
-		return $this;
-	}
-	
-	/**
-	 * Sets a page config group
-	 *
-	 * @return  Page_View
-	 */
-	private function config($key, $initial, $items)
-	{
-		
-		if (!isset($this->_config[$key]))
+		if ( ! isset($data['view_model']))
 		{
-			$this->_config[$key] = $initial;
-		}
-	
-		foreach($items as $item)
-		{
-			if (!is_array($item))
-			{
-				array_push($this->_config[$key], $item);
-			}
-			else
-			{
-				$this->_config[$key] = array_merge($item, $this->_config[$key]);
-			}
+			throw new Exception('A page view model needs to be specified.');
 		}
 
-		return $this;
-	}
-	
-	/**
-	 * Sets the page styles
-	 *
-	 * @return  Page_View
-	 */
-	public function styles($styles = array())
-	{
-		$this->config('styles', array(), $styles);
+		if ( isset($data['auto_render'])) 
+		{
+			static::$auto_render = $data['auto_render'];
+		}
 
-		return $this;
-	}
-	
-	/**
-	 * Sets the page scripts
-	 *
-	 * @return  Page_View
-	 */
-	public function scripts($scripts = array())
-	{
-		$this->config('scripts', array(), $scripts);
-
-		return $this;
-	}
-	
-	/**
-	 * Sets the page paths
-	 *
-	 * @return  Page_View
-	 */
-	public function paths($paths = array())
-	{
-		$this->config('paths', array(), $paths);
-
-		return $this;
-	}
-
-	/**
-	 * Sets the page parameters
-	 *
-	 * @return  Page_View
-	 */
-	public function param($param = array())
-	{
-		$this->config('param', array(), $param);
-
-		return $this;
+		$this->template = View_Model::factory($data['view_model']);
 	}
 
 	/**
@@ -169,33 +78,27 @@ class Page_View {
 	{
 		$request = Request::current();
 
-		// If it's an AJAX or HMVC request then only render the inner template
+		// If it's an AJAX or HMVC request then only render the INNER template
 		if ($request->is_ajax() OR Request::initial() !== $request)
 		{
-			// Only render the inner page content
 			$request->response()->body($this->template->content);
 		}
 		// Else render the master template
-		else if ($this->_config['render'] === TRUE && isset($this->template))
+		else if (static::$auto_render === TRUE && isset($this->template))
 		{
-			// Set the master page template data
-			(isset($this->_config['styles']))
-				AND $this->template->set('styles', $this->_config['styles']);
-
-			(isset($this->_config['scripts']))
-				AND $this->template->set('scripts', $this->_config['scripts']);
-
-			(isset($this->_config['paths']))
-				AND $this->template->set('paths', $this->_config['paths']);
-
-			(isset($this->_config['param']))
-				AND $this->template->set('param', $this->_config['param']);
-
-			$this->template->set('environment', Kohana::$environment == Kohana::DEVELOPMENT ? 'development' : 'production');
-
 			// Render the master template
 			$request->response()->body($this->profiler($this->template));
 		}  
 	}
 
+	public function __call($name, $arguments)
+	{
+		$func = !method_exists($this, $name)
+			? array($this->template, $name) 
+			: array($this, $name);
+
+		call_user_func_array($func, $arguments);
+
+		return $this;
+	}
 } // End Page_View
