@@ -6,6 +6,8 @@ abstract class Controller_Base extends Controller {
 
 	public $view_model = NULL;
 
+	public $page_view = NULL;
+
 	protected $auth_required = FALSE;
 
 	public function before()
@@ -28,17 +30,25 @@ abstract class Controller_Base extends Controller {
 			$this->request->redirect($uri);
 		}   
 
-		// Create the front-end page
-		Page_View::instance(array(
-			'view_model'  => $this->view_model,
-			'auto_render' => $this->auto_render
+		// Create the global page_view view-model
+		$this->page_view = Page_View::instance(array(
+			'view_model'  => $this->view_model
 		));
 	}
 
 	public function after()
 	{
-		// Render the front-end page
-		Page_View::instance()->render();
+		// If it's an AJAX or HMVC request then only render the INNER template
+		if ($this->request->is_ajax() OR Request::initial() !== $this->request)
+		{
+			$this->request->response()->body($this->page_view->content);
+		}
+		// Else render the master template
+		else if ($this->auto_render === TRUE)
+		{
+			// Render the master template
+			$this->request->response()->body($this->page_view);
+		}
 	}
 
 } // End Controller_Base

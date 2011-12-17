@@ -27,30 +27,6 @@ class View_Admin_Page_Master_Page extends View_Model {
 				$request->param()
 			);  
 	}
-
-	/**
-	 * Sets the page title
-	 *
-	 * @return  Page_View
-	 */
-	public function title($title = NULL)
-	{
-		$this->set('title', $title);
-
-		return $this;
-	}
-	
-	/**
-	 * Sets the page content
-	 *
-	 * @return  Page_View
-	 */
-	public function content($content = NULL)
-	{
-		$this->set('content', $content);
-
-		return $this;
-	}
 	
 	/**
 	 * Sets a page data group
@@ -155,4 +131,28 @@ class View_Admin_Page_Master_Page extends View_Model {
 		return strtr( (string) $content, $data);
 	}
 
+	/**
+	 * Adds profiler data to the view string
+	 *
+	 * @return  string
+	 */
+	public function __toString()
+	{
+		return $this->profiler(parent::__toString());
+	}
+
+	/**
+	 * Allow methods to be used for setting view variables
+	 *
+	 * @return  View_Admin_Page_Master_Page
+	 */
+	public function __call($name, $arguments)
+	{
+		if ( !method_exists($this, $name))
+		{
+			$this->set($name, current($arguments));
+
+			return $this;
+		}
+	}
 }

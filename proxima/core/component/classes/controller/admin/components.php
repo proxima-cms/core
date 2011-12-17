@@ -7,7 +7,7 @@ class Controller_Admin_Components extends Controller_Admin_Base {
 		$request_data = array('request' => $this->request->query());  
 
 		Page_View::instance()
-			->title('title', __('Components'))
+			->title(__('Components'))
 			->content(
 				View_Model::factory('admin/page/component/types/index', $request_data)
 			);
