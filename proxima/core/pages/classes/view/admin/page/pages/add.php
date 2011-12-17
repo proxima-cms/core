@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class View_Admin_Page_Pages_Edit extends View_Model_Admin {
+class View_Admin_Page_Pages_Add extends View_Model_Admin {
 
 	public function __construct($file = NULL, array $data = NULL)
 	{
@@ -8,11 +8,11 @@ class View_Admin_Page_Pages_Edit extends View_Model_Admin {
 
 		Page_View::instance()
 			->styles(array(Kohana::$config->load('admin/media.paths.tinymce_skin')))
-			->scripts(array(
+			->scripts(array( 
 				Kohana::$config->load('admin/media.paths.tinymce_jquery'),
 				kohana::$config->load('admin/media.paths.tinymce_config'),
 				Core::path('pages/media/js/admin/pages.js')
-			));
+			)); 
 	}
 
 	public function var_pages()
@@ -26,16 +26,12 @@ class View_Admin_Page_Pages_Edit extends View_Model_Admin {
 		return ORM::factory('tag')->order_by('name', 'asc')->find_all();
 	}
 
-	public function var_page_tags()
+	public function var_statuses()
 	{
-		$page_tags = array();
-
-		foreach($this->view->page->tags->find_all() as $tag)
-		{   
-			$page_tags[] = $tag->id;
-		}
-
-		return $page_tags;
+		return array(
+			'' => __('Live'),
+			'1' => __('Draft')
+		);  
 	}
 
 	public function var_page_types()
@@ -45,22 +41,9 @@ class View_Admin_Page_Pages_Edit extends View_Model_Admin {
 		foreach(ORM::factory('page_type')->find_all() as $page_type)
 		{   
 			$page_types[$page_type->id] = $page_type->name;
-		} 
+		}
 
-		return $page_types;
-	}
-
-	public function var_statuses()
-	{
-		return array(
-			'' => __('Live'),
-			'1' => __('Draft')
-		);  
-	}
-
-	public function var_page_published()
-	{
-		return ORM::factory('site_page', $this->view->page->id)->loaded();
+		return $page_types; 
 	}
 
 }

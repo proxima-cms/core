@@ -2,11 +2,18 @@
 
 class Model_Page extends Model_Base_Page {
 
-	public function admin_add($data)
+	public function admin_create($data)
 	{
+		$validation = Validation::factory($data);
+
+		foreach ($this->create_rules() as $field => $rules)
+		{
+				$validation->rules($field, $rules);
+		}
+
 		$this->values($data);
 		$this->user_id = Auth::instance()->get_user()->id;
-		$this->save();
+		$this->save($validation);
 		$this->generate_uri();
 		$this->save();
 
@@ -22,8 +29,15 @@ class Model_Page extends Model_Base_Page {
 			$data['visible_to'] = NULL;
 		}
 
+		$validation = Validation::factory($data);
+
+		foreach ($this->update_rules() as $field => $rules)
+		{
+				$validation->rules($field, $rules);
+		}
+
 		$this->values($data);
-		$this->save();
+		$this->save($validation);
 		$this->update_tags($tags);
 				
 		return $this;

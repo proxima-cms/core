@@ -5,7 +5,7 @@
 class Model_Base_Page extends Model_Base {
 	
 	protected $_belongs_to = array(
-		'parent' => array('model' => 'page', 'foreign_key' => 'parent_id'),
+		'parent'    => array('model' => 'page', 'foreign_key' => 'parent_id'),
 		'page_type'	=> array('model' => 'page_type', 'foreign_ley' => 'pagetype_id'),
 	);	
 	
@@ -14,12 +14,6 @@ class Model_Base_Page extends Model_Base {
 		'tags'			=> array('model' => 'tag', 'through' => 'tags_pages'),
 	);
 	
-
-	public function rules()
-	{
-		return array();
-	}
-
 	public function create_rules()
 	{
 		return array(

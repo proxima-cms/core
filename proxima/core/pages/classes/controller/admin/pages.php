@@ -13,34 +13,18 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 	public function action_add()
 	{
-		$this->template->title = __('Add page');
-
-		array_push($this->template->styles, Kohana::$config->load('admin/media.paths.tinymce_skin'));
-
-		array_push($this->template->scripts, 
-			Kohana::$config->load('admin/media.paths.tinymce_jquery'),
-			kohana::$config->load('admin/media.paths.tinymce_config'),
-			Core::path('pages/media/js/admin/pages.js')
+		Page_View::instance()
+		->title(__('Add page'))
+		->content(
+			View_Model::factory('admin/page/pages/add')
+				->bind('errors', $errors)
 		);
 		
-		$this->template->content = View::factory('admin/page/pages/add')
-			->set('pages', ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title'))
-			->set('set', ORM::factory('tag')->find_all())
-			->bind('page_types', $page_types)
-			->bind('errors', $errors);
-
-		$page_types = array('' => 'None');
-
-		foreach(ORM::factory('page_type')->find_all() as $page_type)
-		{
-			$page_types[$page_type->id] = $page_type->name;
-		}
-
 		if ($this->request->method() === Request::POST)
 		{
 			try
 			{
-				$page = ORM::factory('page')->admin_add($_POST);
+				$page = ORM::factory('page')->admin_create($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Page successfully saved.'));
 				
@@ -57,25 +41,19 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 	
 	public function action_edit()
 	{
-		$this->template = View_Model::factory('admin/page/pages/edit')
-			->bind('page', $page)
-			->bind('page_tags', $page_tags)
-			->bind('errors', $errors)
-			->set('title', __('Edit page'))
-			->styles(Kohana::$config->load('admin/media.paths.tinymce_skin'))
-			->scripts(array(
-				Kohana::$config->load('admin/media.paths.tinymce_jquery'),
-				kohana::$config->load('admin/media.paths.tinymce_config'),
-				Core::path('pages/media/js/admin/pages.js')
-			));
+		Page_View::instance()
+		->title(__('Edit page'))
+		->content(
+			View_Model::factory('admin/page/pages/edit')
+				->bind('page', $page)
+				->bind('errors', $errors)
+		);
 
-		$id = Request::current()->param('id');
-
-		$page = ORM::factory('page', (int) $id);
+		$page = ORM::factory('page', $this->request->param('id'));
 
 		if (!$page->loaded())
 		{
-			throw new Kohana_Request_Exception('Page not found.');
+			throw new Request_Exception('Page not found.');
 		}
 
 		if ($this->request->method() === Request::POST)
@@ -109,14 +87,14 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 	public function action_generate_uri()
 	{
-		$id = Arr::get($_GET, 'page_id');
+		$id    = Arr::get($_GET, 'page_id');
 		$title = Arr::get($_GET, 'title', NULL);
 
 		$page = ORM::factory('page', $id);
 
 		if (!$page->loaded())
 		{
-			throw new Kohana_Request_Exception('Page not found.');
+			throw new Request_Exception('Page not found.');
 		}
 
 		if ($title !== NULL)
@@ -124,7 +102,10 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			$page->title = $title;
 		}
 
-		$this->template->content = $page->generate_uri();
+		Page_View::instance()
+			->content(
+				$page->generate_uri()
+			);
 	}
 
 } // End Controller_Admin_Pages
