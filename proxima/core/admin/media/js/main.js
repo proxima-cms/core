@@ -15,6 +15,6 @@ require([
 ], function($, _, Backbone, App){
 
 	$(function(){
-			App.initialize();
+		App.initialize();
 	});
 });

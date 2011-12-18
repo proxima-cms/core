@@ -2,7 +2,7 @@
 
 return array(
 	'styles' => Core::path(array(
-		'admin/media/js/libs/jquery-ui/build/dist/jquery-ui-1.9pre/themes/base/jquery-ui.css',
+		'admin/media/js/libs/jquery-ui/css/smoothness/jquery-ui-1.8.16.custom.css',
 		'admin/media/css/jquery.ui.theme.admin.css',
 		'admin/media/css/admin.css',
 	)),
