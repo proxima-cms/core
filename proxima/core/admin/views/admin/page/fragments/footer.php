@@ -16,14 +16,15 @@
 
 <script type="text/javascript">
 (function(){
+	/*
 	Admin.init({
 		environment: '<?php echo Kohana::$environment?>',
 		paths: <?php echo json_encode(array_map('URL::site', $paths))?>,
-		<?php /* if ($param){?>param: <?php echo $param?>,<?php }*/?>
 		route: {
 			controller: '<?php echo Request::current()->controller()?>',
 			action: '<?php echo Request::current()->action()?>'
 		}
 	});
+	*/
 })(this.jQuery);
 </script>

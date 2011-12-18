@@ -4,8 +4,9 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title><?php echo $title ?></title>
-	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n";?>
-	<?php echo implode("\n\t", array_map('HTML::script', $scripts)), "\n" ?>
+	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n"; ?>
+	<?php echo HTML::script(Core::path('admin/media/js/libs/require/require-jquery-min.js'), array('data-main' => URL::site(Core::path('admin/media/js/main')))), "\n"; ?>
+	<?php echo implode("\n\t", array_map('HTML::script', $scripts)); ?>
 </head>
 	<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
 	<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->

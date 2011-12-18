@@ -5,7 +5,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	public function before()
 	{
 		parent::before();
-
+	
 		Page_View::instance()
 			->scripts(array(Kohana::$config->load('admin/assets/popup.scripts')))
 			->styles(array(Kohana::$config->load('admin/assets/popup.styles')));

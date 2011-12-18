@@ -2,18 +2,9 @@
 
 return array(
 	'styles' => Core::path(array(
-		'admin/media/js/jquery-ui/build/dist/jquery-ui-1.9pre/themes/base/jquery-ui.css',
+		'admin/media/js/libs/jquery-ui/build/dist/jquery-ui-1.9pre/themes/base/jquery-ui.css',
 		'admin/media/css/jquery.ui.theme.admin.css',
 		'admin/media/css/admin.css',
-	)),
-	'scripts' => Core::path(array(
-		'admin/media/js/jquery.min.js',
-		'admin/media/js/jquery-ui/build/dist/jquery-ui-1.9pre/ui/jquery-ui.js',
-		'admin/media/js/jquery.ui.selectmenu.js',
-		'admin/media/js/jquery-tree/js/jquery.tree.js',
-		'admin/media/js/require.js',
-		'admin/media/js/admin.js',
-		'admin/media/js/admin.util.js',
 	)),
 	'paths' => array(
 		'base'             => 'admin',

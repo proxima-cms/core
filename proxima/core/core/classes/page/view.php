@@ -21,7 +21,7 @@ class Page_View {
 
 			if ( ! isset($data['view_model']))
 			{
-				throw new Exception('A page view model needs to be specified.');
+				throw new HTTP_Exception_404('Not found.');
 			}
 
 			static::$_instance = View_Model::factory($data['view_model']);
