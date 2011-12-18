@@ -4,36 +4,13 @@ class Controller_Admin_Modules extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$this->template->title = __('Admin - Modules');
+		$request_data = array('request' => $this->request->query());  
 
-		$this->template->content = View::factory('admin/page/modules/index')
-			->bind('modules', $file_modules)
-			->bind('enabled_modules', $enabled_modules);
-		
-		$enabled_db_modules = ORM::factory('module')
-			->where('enabled', '=', 1)
-			->find_all();
-		
-		$enabled_file_modules = array_keys(Kohana::modules());
-
-		$enabled_modules = array();
-
-		foreach($enabled_db_modules as $module)
-		{
-			if (in_array($module->name, $enabled_file_modules))
-			{
-				$enabled_modules[] = $module->name;
-			}
-		}
-
-		$file_modules = array();
-
-		$files = Kohana::list_files(NULL, array(CORPATH, MODPATH));
-
-		foreach($files as $name => $module)
-		{   
-			$file_modules[str_replace(CORPATH, '', $name)] = $name;
-		}
+		Page_View::instance()
+			->title(__('Admin - Modules'))
+			->content(
+				View_Model::factory('admin/page/modules/index', $request_data)
+			); 
 	}
 
 	private function save($enabled = FALSE)
