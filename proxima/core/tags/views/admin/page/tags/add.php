@@ -1,19 +1,19 @@
 <?php echo $breadcrumbs?>
 
-<?php echo Form::open(NULL)?>
+<?php echo Form::open()?>
 	<fieldset class="last">
 		
 		<div class="field">
 			<?php echo 
 				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', Arr::GET($_POST, 'name'), NULL, $errors)
+				Form::input('name', $tag->name, NULL, $errors)
 			?>
 		</div>
 		
 		<div class="field">
 			<?php echo 
 				Form::label('slug', __('Slug'), NULL, $errors),
-				Form::input('slug', Arr::GET($_POST, 'slug'), NULL, $errors)
+				Form::input('slug', $tag->slug, NULL, $errors)
 			?>
 		</div>
 

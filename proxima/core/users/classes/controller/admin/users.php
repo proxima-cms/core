@@ -8,33 +8,34 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$request_data = array(
-			'request' => $this->request->query()
-		);  
+		$request_data = array('request' => $this->request->query());  
 
-		$this->template->title = __('Users');
-
-		$this->template->content = View_Model::factory('admin/page/users/index', $request_data); 
+		Page_View::instance()
+			->title(__('Admin - Users'))
+			->content(
+				View_Model::factory('admin/page/users/index', $request_data)
+			);
 	}
 
 	public function action_add()
 	{
-		$this->template->title = __('Add user');
+		$request_data = array('request' => $this->request->query());  
 
-		$this->template->content = View::factory('admin/page/users/add')
-			->bind('roles', $roles)
-			->bind('users', $users)
-			->bind('groups', $groups)
-			->bind('errors', $errors);
+		Page_View::instance()
+			->title(__('Admin - Add user'))
+			->content(
+				View_Model::factory('admin/page/users/add', $request_data)
+				->bind('errors', $errors)
+				->bind('user', $user)
+			);
 
-		$roles = ORM::factory('role')->find_all();
-		$groups = ORM::factory('group')->find_all();
+		$user = ORM::factory('user');
 
 		if ($this->request->method() === 'POST')
 		{
 			try
 			{
-				ORM::factory('user')->admin_add($this->request->post());
+				$user->admin_add($this->request->post());
 
 				Message::set(Message::SUCCESS, __('User successfully saved.'));
 
@@ -51,48 +52,23 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 
 	public function action_edit()
 	{
-		$id = (int) $this->request->param('id');
-
-		$user = ORM::factory('user', $id);
+		$user = ORM::factory('user', $this->request->param('id'));
 
 		if (!$user->loaded())
 		{
-			throw new HTTP_Exception_500('User not found.');
-		}
-
-		$this->template->title = __('Edit user').' '.$user->username;
-
-		// Bind user data to template
-		$this->template->content = View::factory('admin/page/users/edit')
-			->bind('roles', $roles)
-			->bind('groups', $groups)
-			->bind('user', $user)
-			->bind('user_roles', $user_roles)
-			->bind('user_groups', $user_groups)
-			->bind('errors', $errors);
-
-		// Find all roles
-		$roles = ORM::factory('role')->find_all();
-				
-		// Create array of user role ids
-		$user_roles = array();
-
-		foreach($user->roles->find_all() as $role)
-		{
-			$user_roles[] = $role->id;
-		}
-
-		// Find all groups
-		$groups = ORM::factory('group')->find_all();
-				
-		// Create array of user group ids
-		$user_groups = array();
-
-		foreach($user->groups->find_all() as $group)
-		{
-			$user_groups[] = $group->id;
+			throw new Exception('User not found.');
 		}
 		
+		$request_data = array('request' => $this->request->query());  
+
+		Page_View::instance()
+			->title(__('Admin - Edit user'))
+			->content(
+				View_Model::factory('admin/page/users/edit', $request_data)
+				->bind('errors', $errors)
+				->set('user', $user)
+			);
+
 		if ($this->request->method() === 'POST')
 		{
 			try
@@ -112,14 +88,13 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 		}
 	}
 
-	public function action_delete($id = NULL, $set_message = TRUE)
+	public function action_delete()
 	{
 		$id = (int) $this->request->param('id');
 
 		// Don't delete user 1
 		$id === 1 AND $this->request->redirect('403');
 
-		// Try load the user
 		$user = ORM::factory('user', $id);
 
 		if (!$user->loaded())
@@ -149,8 +124,12 @@ class Controller_Admin_Users extends Controller_Admin_Base {
 		{
 			$open_groups = explode(',', $open_groups);
 		}
-
-		$this->template->content = ORM::factory('group')->tree_list_html('admin/page/users/tree', 0, $open_groups);
+		
+		Page_View::instance()
+			->content(
+				ORM::factory('group')
+				->tree_list_html('admin/page/users/tree', 0, $open_groups)
+			);
 	}
 
 } // End Controller_Admin_users

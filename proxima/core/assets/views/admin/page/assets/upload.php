@@ -1,6 +1,7 @@
 <?php echo $breadcrumbs?>
 
 <?php echo Form::open(NULL, array('enctype' => 'multipart/form-data'))?>
+
 	<fieldset class="last">
 		<legend>Select file</legend>
 		
@@ -8,32 +9,29 @@
 		<p>Max uploads: <?php echo $max_file_uploads?></p>
 		
 		<div class="field">
-			<?php if (isset($errors[$field_name])){?>
+			<?php if (isset($errors)){?>
 				<strong>Errors:</strong><br />
 				<ul>
-					<?php /*
-					<?php foreach($errors[$field_name] as $field_errors){
-						foreach($field_errors as $error){?>
-							<li><?php echo $error?></li>
-						<?php }
-					}?>			
-					*/ ?>
+					<?php foreach($errors as $error){?>
+						<li><?php echo $error?></li>
+					<?php }?>			
 				</ul>
 			<?php }?>
 			<div class="field">	
-				<?php echo Form::file($field_name.'[]', array(
+				<?php echo Form::file('assets[]', array(
 					'id' => '', 
 					'maxlength' => $max_file_uploads,
-					'accept' => preg_replace('/,\s*/', '|', $allowed_upload_type)
+					'accept'    => $accept_type
 				), $errors)?>
 			</div>
 		</div>
 		
 		<?php echo Form::button('save', 'Upload', array(
-			'type' => 'submit', 
+			'type'  => 'submit', 
 			'class' => 'ui-button save ui-helper-hiddens', 
-			'id' => 'upload-asset'
+			'id'    => 'upload-asset'
 		))?>		
 		
 	</fieldset>
+
 <?php echo Form::close()?>

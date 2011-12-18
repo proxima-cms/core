@@ -6,8 +6,9 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	{
 		parent::before();
 
-		$this->template->scripts = array_merge($this->template->scripts, Kohana::$config->load('admin/assets/popup.scripts'));
-		$this->template->styles  = array_merge($this->template->styles, Kohana::$config->load('admin/assets/popup.styles'));
+		Page_View::instance()
+			->scripts(array(Kohana::$config->load('admin/assets/popup.scripts')))
+			->styles(array(Kohana::$config->load('admin/assets/popup.styles')));
 	}
 
 	public function action_index($view = 'admin/page/assets/index')
@@ -17,20 +18,23 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			'request' => $this->request->query()
 		);
 
-		$this->template->title = __('Assets');
-
-		$this->template->content = View_Model::factory($view, $request_data); 
+		Page_View::instance()
+			->title(__('Admin - Assets'))
+			->content(
+				View_Model::factory($view, $request_data)
+			); 
 	}
 
-	public function action_upload($view_path = 'admin/page/assets/upload', $redirect_to = 'admin/assets')
+	public function action_upload($view = 'admin/page/assets/upload', $redirect_to = 'admin/assets')
 	{
-		$this->template->title = __('Admin - Upload assets');
-		$this->template->content = View::factory($view_path)
-			->set('allowed_upload_type', Kohana::$config->load('admin/assets.allowed_upload_type'))
-			->set('max_file_uploads', Kohana::$config->load('admin/assets.max_file_uploads'))
-			->bind('errors', $errors);
+		Page_View::instance()
+			->title(__('Admin - Upload assets'))
+			->content(
+				View_Model::factory($view)
+				->bind('errors', $errors)
+			); 
 		
-		if ($this->request->method() === 'POST')
+		if ($this->request->method() === Request::POST)
 		{
 			try
 			{
@@ -73,19 +77,28 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	
 	public function action_edit()	
 	{
-		$id = $this->request->param('id');
+		$asset = ORM::factory('asset', $this->request->param('id'));
 
-		$this->template->title = __('Admin - Edit asset');
+		if (!$asset->loaded())
+		{
+			throw new Exception('Asset not found');
+		}
 
-		$this->template->content = View_Model::factory('admin/page/assets/edit')
-			->set('id', $id)
-			->bind('errors', $errors);
+		$request_data = array('request' => $this->request->query());
 
-		if ($this->request->method() === 'POST')
+		Page_View::instance()
+			->title(__('Admin - Edit asset'))
+			->content(
+				View_Model::factory('admin/page/assets/edit', $request_data)
+				->set('asset', $asset)
+				->bind('errors', $errors)
+			); 
+
+		if ($this->request->method() === Request::POST)
 		{
 			try
 			{
-				ORM::factory('asset', $id)->admin_update($this->request->post());
+				$asset->admin_update($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Asset successfully updated.'));			
 
@@ -118,14 +131,14 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		
 		foreach($assets = explode(',', $assets) as $id)
 		{
-			$item = ORM::factory('asset', $id);
+			$asset = ORM::factory('asset', $id);
 
-			if (!$item->loaded())
+			if (!$asset->loaded())
 			{
 				continue;
 			}
 
-			$item->admin_delete();
+			$asset->admin_delete();
 		}		
 		
 		Message::set(Message::SUCCESS, 'Asset successfully deleted.');

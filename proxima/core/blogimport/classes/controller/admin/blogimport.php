@@ -9,27 +9,21 @@ class Controller_Admin_BlogImport extends Controller_Admin_Base {
 	 */
 	public function action_index()
 	{
-		$this->template->title = __('Blog import');
-		$this->template->content = View::factory('admin/page/blogimport/index')
-			->bind('pages', $pages)
-			->bind('page_types', $page_types)
-			->bind('errors', $errors);
-
-		$pages = ORM::factory('page')->tree_select(4, 0, array(__('None')), 0, 'title');
-
-		$page_types = array();
-		foreach($types = ORM::factory('page_type')->find_all() as $type)
-		{
-			$page_types[$type->id] = $type->name;
-		}
+		Page_View::instance()
+			->title(__('Admin - Blog import'))
+			->content(
+				View_Model::factory('admin/page/blogimport/index')
+				->bind('errors', $errors)
+			); 
 
 		$data = Validation::factory($_POST)
 			->rule('blog_url', 'not_empty')
 			->rule('blog_url', 'url');
 
-		if ($_POST AND $data->check())
+		if ($this->request->method() === Request::POST AND $data->check())
 		{
-			$result = Importer::factory($_POST['service'], $_POST)->import_posts();
+			$result = Importer::factory($this->request->post('service'), $this->request->post())
+				->import_posts();
 	
 			if ($result === FALSE)
 			{

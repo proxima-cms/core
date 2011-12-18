@@ -1,14 +1,15 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class View_Admin_Page_Assets_Edit extends View_Model {
+class View_Admin_Page_Assets_Edit extends View_Model_Admin {
 
-	public function render($file = NULL)
+	public function var_resized()
 	{
-		$this->asset   = ORM::factory('asset', $this->id);
-		$this->resized = $this->asset->sizes->where('resized', '=', 1)->find_all();
-		$assets_index  = new View_Admin_Page_Assets_Index;
-		$this->links   = $assets_index->get_filter_links();
-
-		return parent::render($file);	
+		return $this->asset->sizes->where('resized', '=', 1)->find_all();
+	}
+		
+	public function var_links()
+	{
+		return View_Model::factory('admin/page/assets/index', array('request' => $this->request))
+			->get_filter_links();
 	}
 }

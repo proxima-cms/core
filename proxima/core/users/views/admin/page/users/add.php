@@ -6,13 +6,13 @@
 		<div class="field">
 			<?php echo 
 				Form::label('username', __('Username'), NULL, $errors),
-				Form::input('username',	Arr::get($_POST, 'username'), NULL, $errors)
+				Form::input('username',	$user->username, NULL, $errors)
 			?>
 		</div>
 		<div class="field">
 			<?php echo 
 				Form::label('email', __('Email'), NULL, $errors),
-				Form::input('email', Arr::get($_POST, 'email'), array('type' => 'email'), $errors)
+				Form::input('email', $user->email, array('type' => 'email'), $errors)
 			?>
 		</div>
 		<div class="field">

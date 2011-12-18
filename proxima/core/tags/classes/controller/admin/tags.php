@@ -4,27 +4,34 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$request_data = array(
-			'request' => $this->request->query()
-		);  
+		$request_data = array('request' => $this->request->query());  
 
-		$this->template->title = __('Tags');
-
-		$this->template->content = View_Model::factory('admin/page/tags/index', $request_data); 
+		Page_View::instance()
+			->title(__('Admin - Tags'))
+			->content(
+				View_Model::factory('admin/page/tags/index', $request_data)
+			); 
 	}
 
 	public function action_add()
 	{
-		$this->template->title = __('Add tag');
+		$request_data = array('request' => $this->request->query());  
 
-		$this->template->content = View::factory('admin/page/tags/add')
-			->bind('errors', $errors);
+		Page_View::instance()
+			->title(__('Admin - Add tag'))
+			->content(
+				View_Model::factory('admin/page/tags/add', $request_data)
+				->bind('errors', $errors)
+				->bind('tag', $tag)
+			);
+
+		$tag = ORM::factory('tag');
 
 		if ($this->request->method() === Request::POST)
 		{
 			try
 			{
-				ORM::factory('tag')->admin_add($this->request->post());
+				$tag->admin_add($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Tag successfully saved.'));		 
 
@@ -41,20 +48,22 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 
 	public function action_edit()
 	{
-		$id = (int) $this->request->param('id');
-
-		$tag = ORM::factory('tag', $id);
+		$tag = ORM::factory('tag', $this->request->param('id'));
 
 		if (!$tag->loaded())
 		{		
-			throw new Kohana_Exception('Tag not found.');
+			throw new Exception('Tag not found.');
 		}		
+		
+		$request_data = array('request' => $this->request->query());  
 
-		$this->template->title = __('Edit tag');
-
-		$this->template->content = View::factory('admin/page/tags/edit')
-			->bind('tag', $tag)
-			->bind('errors', $errors);
+		Page_View::instance()
+			->title(__('Admin - Edit tag'))
+			->content(
+				View_Model::factory('admin/page/tags/edit', $request_data)
+				->bind('errors', $errors)
+				->set('tag', $tag)
+			);
 
 		if ($this->request->method() === Request::POST)
 		{
@@ -81,7 +90,7 @@ class Controller_Admin_Tags extends Controller_Admin_Base {
 
 		foreach($ids as $id)
 		{
-			parent::action_delete($id, false);
+			ORM::factory('tag', $id)->delete();
 		}
 
 		$message = __('Tag'.(count($ids) > 1?'s':'').' successfully deleted.');
