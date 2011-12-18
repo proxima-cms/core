@@ -9,9 +9,6 @@ define([
 		events: {
 			'click #delete-assets': 'deleteAssets'
 		},
-		initialize: function(){
-
-		},
 		deleteAssets: function(){
 			
 			var ids = [];

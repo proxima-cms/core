@@ -2,11 +2,11 @@ define([
 	'order!jquery',
 	'order!underscore',
 	'order!backbone',
-	'order!ui',
+	'order!ui'
 ], function($, _, Backbone){
 
 	var initialize = function(){
-		// Load in the controller router script
+		$('body').ui();
 	}
 
 	return {
@@ -16,8 +16,6 @@ define([
 			var router = new Router;
 
 			Backbone.history.start({ pushState: true });
-
-			$('body').ui();
 		}
 	};
 });
