@@ -4,6 +4,7 @@ class Core {
 
 	/**
 	* Core init: enable system modules, check paths exist and set the database config reader.
+	* This function is called once within bootstrap.php
 	*
 	* @return  void
 	*/
@@ -84,66 +85,62 @@ class Core {
 	
 	/**
 	* Set the application routes.
+	* This method is called once within core/site/init.php
 	*
 	* @return  void
 	*/
 	public static function set_routes()
 	{
-		/**
-		* Set the default route. Each route must have a minimum of a name, a URI and a set of
-		* defaults for the URI.
-		*/
-		Route::set('default', '(<controller>(/<action>(/<id>)))')
-			->defaults(array(
-				'controller' => 'welcome',
-				'action'     => 'index',
-			));
-
-		// Error page
-		Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
-			->defaults(array(
-				'controller' => 'error'
-			)); 
-		
-		// Admin config
-		Route::set('admin/config', 'admin/config(/<group>)')
-			->defaults(array(
-				'controller' => 'config',
-				'directory'  => 'admin',
-				'action'		 => 'index',
-				'group'			 => NULL,
-			));
-
-		// Admin logs
-		Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
-			->defaults(array(
-				'controller' => 'admin_logs',
-				'action'		 => 'index',	
-				'file'			 => NULL
-			));
-
-		// Find all pages that require routing to specific controllers
-		$route_pages = ORM::factory('site_page')
-			->where('pagetype_controller', '<>', 'page')
-			->and_where('pagetype_controller', 'IS NOT', NULL)
-			->find_all();
-
-		foreach($route_pages as $page)
+		if ( ! Route::cache())
 		{
-			// Set the page route
-			Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
+			// Error page
+			Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
 				->defaults(array(
-					'controller' => $page->pagetype_controller,
-					'action'		 => 'index',
-					'uri'				 => $page->uri,
-				));
-		}
+					'controller' => 'error'
+				)); 
 			
-		// Set the 'catch all' route
-		Route::set('page', '<uri>', array('uri' => '.*'))
-			->defaults(array(
-				'controller' => 'page',
-				'action'		 => 'index'
-			));
+			// Admin config
+			Route::set('admin/config', 'admin/config(/<group>)')
+				->defaults(array(
+					'controller' => 'config',
+					'directory'  => 'admin',
+					'action'		 => 'index',
+					'group'			 => NULL,
+				));
+
+			// Admin logs
+			Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
+				->defaults(array(
+					'controller' => 'admin_logs',
+					'action'		 => 'index',	
+					'file'			 => NULL
+				));
+
+			// Find all pages that require routing to specific controllers
+			$route_pages = ORM::factory('site_page')
+				->where('pagetype_controller', '<>', 'page')
+				->and_where('pagetype_controller', 'IS NOT', NULL)
+				->find_all();
+
+			foreach($route_pages as $page)
+			{
+				// Set the page route
+				Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
+					->defaults(array(
+						'controller' => $page->pagetype_controller,
+						'action'		 => 'index',
+						'uri'				 => $page->uri,
+					));
+			}
+				
+			// Set the 'catch all' route
+			Route::set('page', '<uri>', array('uri' => '.*'))
+				->defaults(array(
+					'controller' => 'page',
+					'action'		 => 'index'
+				));
+
+			Route::cache(TRUE);
+		}
 	}
 }

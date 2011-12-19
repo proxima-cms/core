@@ -7,7 +7,7 @@ class Controller_Page extends Controller_Base {
 	public function before()
 	{
 		parent::before();
-		
+
 		$page = Page::factory($this->request->param('uri'));
 
 		// Get the page template from the page type.

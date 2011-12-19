@@ -28,7 +28,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 				Message::set(Message::SUCCESS, __('Page successfully saved.'));
 				
-				Request::current()->redirect('admin/pages/edit/'.$page->id);
+				$this->request->redirect('admin/pages/edit/'.$page->id);
 			} 
 			catch(ORM_Validation_Exception $e)
 			{
@@ -64,7 +64,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 				Message::set(Message::SUCCESS, __('Page successfully updated.'));
 			
-				Request::current()->redirect('admin/pages/edit/'.$id);
+				$this->request->redirect('admin/pages/edit/' . $page->id);
 			}
 			catch(ORM_Validation_Exception $e)
 			{

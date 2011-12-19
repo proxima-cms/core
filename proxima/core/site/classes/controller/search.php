@@ -4,11 +4,11 @@ class Controller_Search extends Controller_Page {
 
 	public function action_index()
 	{
-		$query = Request::current()->param('query');
+		$query = $this->request->param('query');
 	
 		if ($query === NULL)
 		{		
-			$query = Request::current()->query('query');
+			$query = $this->request->query('query');
 		}
 
 		// Ensure a query value has been supplied.
@@ -27,7 +27,7 @@ class Controller_Search extends Controller_Page {
 		$search_results = Component::factory('Search_Results', $search_config)->render();
 
 		// Pass the search results into the template.
-		$this->template->set_global('search_results', $search_results);
+		Page_view::instance()->content->set('search_results', $search_results);
 	}
 	
 } // End Controller_Search
