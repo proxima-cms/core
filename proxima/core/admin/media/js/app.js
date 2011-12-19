@@ -1,9 +1,8 @@
 define([
-	'jquery', 
 	'underscore',
 	'backbone', 
 	'ui'
-], function($, _, Backbone){
+], function(_, Backbone){
 
 	var App = function(){
 

@@ -9,7 +9,6 @@
 	<script>
 		this.AppData = {
 			scripts: [
-				'order!jquery',
 				'order!underscore',
 				'order!backbone',
 				'order!app'

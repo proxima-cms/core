@@ -1,17 +1,12 @@
-require.config({
-	baseUrl: "/proxima/core/admin/media/js",
-	paths: {
-		'jquery':     'libs/jquery/jquery-min',
-		'underscore': 'libs/underscore/underscore-min', 
-		'backbone':   'libs/backbone/backbone',
-		'app': 'app'
-	}
-});
+(function(data){
 
-require([
-	'jquery',
-	'underscore',
-	'backbone',
-], function($, _, Backbone){
+	require.config({
+		baseUrl: data.CORPATH + "admin/media/js",
+		paths: {
+			'underscore': 'libs/underscore/underscore-min', 
+			'backbone': 'libs/backbone/backbone-min',
+			'app': 'app'
+		}
+	});
 
-});
+})(this.AppData);

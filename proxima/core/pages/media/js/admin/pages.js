@@ -1,57 +1,35 @@
-/*
- *
- * @filename : admin.js
- * @developer : badsyntax.co
- *
- */
-(function(window, $, Admin){
-	
-	Admin.controller.pages = {
-		
-		action_index: function(){
+(function(data){
 
-			Admin.model.page.getTree('#page-tree');
-		},
-		
-		action_add: function(){
+	var path = data.CORPATH + 'pages/media/js/admin/views/';
 
-		},
-		
-		action_edit: function(){
+	data.scripts.push(
+		path + 'index.js',
+		path + 'edit.js',
+		path + 'add.js'
+	);
 
-			var $visible_to = $('#visible_to');
+	require(data.scripts, function(_, Backbone, App, IndexView, EditView, AddView){
 
-			$('#visible_to_forever').change(function(){
-				if (this.checked) {
-					$visible_to.val('');
-				} else {
-					$visible_to.datepicker('setDate', new Date());
-				}
-			});
-
-			$('#update-uri').click(function(e){
-				e.preventDefault();
-
-				$.ajax({
-					'method': 'GET',
-					'url': this.href + '&title=' + $('#title').val(),
-					'success': function(data){
-						$('#uri').val(data);
-					}
-				});
-			});
-			
-			if ($.trim($('#body').html()) === '') {
-				$('#body').append('<p>(<em>No data</em>)</p>').one('click', function(){
-					$('#body').html('');
-				});
+		var Pages = Backbone.Router.extend({
+			routes: {
+				'admin/pages': 'index',
+				'admin/pages/edit/:id': 'edit',
+				'admin/pages/add': 'add',
+			},
+			index: function(){
+				new IndexView;
+			},
+			edit: function(id){
+				new EditView;
+			},
+			add: function(id){
+				new AddView;
 			}
+		});
 
-			$('#body').click(function(){
-				console.debug(window.tinymce_config);
-				$(this).tinymce(window.tinymce_config);
-			});
-		}
-	};
-	
-})(this, this.jQuery, this.Admin);
+		$(function(){
+			(new App).route(Pages);
+		});
+	});
+
+})(this.AppData);

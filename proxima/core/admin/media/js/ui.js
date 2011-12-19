@@ -1,9 +1,8 @@
 define([
-	'order!jquery',
 	'order!libs/jquery-ui/js/jquery-ui-1.8.16.custom.min',
 	'order!libs/jquery-ui-selectmenu/jquery.ui.selectmenu',
 	'order!libs/jquery-tree/js/jquery.tree'
-], function($, _, Backbone){
+], function(_, Backbone){
 
 	var ui = function(selector){
 	
