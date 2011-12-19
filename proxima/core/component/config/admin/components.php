@@ -2,6 +2,6 @@
 
 return array(
 	'scripts'	=> array(
-		Core::path('tags/media/js/admin/tags.js')
+		Core::path('component/media/js/admin/components.js')
 	)
 );

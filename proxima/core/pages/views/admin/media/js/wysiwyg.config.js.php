@@ -10,7 +10,7 @@
 		theme : "advanced",
 		skin : "cirkuit",
 		debug : true,
-		plugins : 'safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,koassets',
+		plugins : 'safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,proxima_assets',
 		
 		// Theme options
 		theme_advanced_buttons1 : 'formatselect,|,bold,italic,strikethrough,|,bullist,numlist,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,image,koassets,media,|,removeformat,cleanup,code',
@@ -24,7 +24,7 @@
 		theme_advanced_resizing : true,
 		
 		// File browser
-		file_browser_callback : 'tinymce_koassets',
+		file_browser_callback : 'tinymce_assets',
 		file_browser_url : '<?php echo URL::site('admin/assets/popup', TRUE)?>',
 	
 		// Custom vars
@@ -32,7 +32,7 @@
 		admin_base_url: '<?php echo URL::site('admin', TRUE)?>'
 	};
 	
-	window.tinymce_koassets = function(field_name, url, type, win) {
+	window.tinymce_assets = function(field_name, url, type, win) {
 
 		if (type) {
 			config.file_browser_url += '?filter=subtype:image';

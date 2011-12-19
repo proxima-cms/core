@@ -15,9 +15,7 @@
 			},
 			initialize: function(){
 				if ($.trim($('#body').html()) === '') {
-					$('#body').append('<p>(<em>No data</em>)</p>').one('click', function(){
-						$('#body').html('');
-					}); 
+					$('#body').append('<p>(<em>Click here to enter content.</em>)</p>');
 				}   
 			},
 			visibleTo: function(e){
@@ -39,7 +37,7 @@
 				}); 
 			},
 			initWysiwyg: function(e){ 
-				$(e.target).tinymce(window.tinymce_config);
+				$(e.currentTarget).tinymce(window.tinymce_config);
 			}
 		});
 

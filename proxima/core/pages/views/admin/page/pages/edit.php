@@ -35,7 +35,7 @@
 				<div class="field">
 					<?php echo 
 						Form::label('title', __('Title'), NULL, $errors).
-						Form::input('title', Request::current()->post('title') ?: $page->title, NULL, $errors)
+						Form::input('title', $page->title, NULL, $errors)
 					?>
 				</div>
 				<div class="field">
@@ -48,13 +48,13 @@
 						'<br/>';
 					
 						echo
-						Form::input('uri', Request::current()->post('uri') ?: $page->uri, NULL, $errors)
+						Form::input('uri', $page->uri, NULL, $errors)
 					?>
 				</div>
 				<div class="field">
 					<?php echo 
 						Form::label('description', __('Description'), NULL, $errors).
-						Form::input('description', Request::current()->post('description') ?: $page->description, NULL, $errors)
+						Form::input('description', $page->description, NULL, $errors)
 					?>
 				</div>
 			</fieldset>
@@ -83,7 +83,7 @@
 							Form::select('visible_in_nav', array(
 								0 => 'No',
 								1 => 'Yes'
-							), Request::current()->post('visible_in_nav') ?: $page->visible_in_nav, NULL, $errors);
+							), $page->visible_in_nav, NULL, $errors);
 						?>
 					</div>
 				</div>
@@ -95,7 +95,7 @@
 					</div>
 					<div>
 						<?php echo
-							Form::select('draft', $statuses, Request::current()->post('draft') ?: $page->draft, NULL, $errors);
+							Form::select('draft', $statuses, $page->draft, NULL, $errors);
 						?>
 					</div>
 				</div>
@@ -107,7 +107,7 @@
 					</div>
 					<div>
 						<?php echo
-							Form::input('visible_from', Request::current()->post('visible_from') ?: $page->visible_from, array('class' => 'datepicker'), $errors);
+							Form::input('visible_from', $page->visible_from, array('class' => 'datepicker'), $errors);
 						?>
 					</div>
 				</div>
@@ -117,7 +117,7 @@
 							Form::label('visible_to', __('Visible to'), NULL, $errors)
 						?>
 						<?php 
-							$visible_to = Request::current()->post('title') ?: $page->visible_to;
+							$visible_to = $page->visible_to;
 							$visible_to_forever = ((bool) Arr::get(Request::current()->post(), 'visible_to_forever') OR !$visible_to);
 							echo 
 								Form::checkbox('visible_to_forever', 1, $visible_to_forever, array('style' => 'display:inline'), $errors);
@@ -127,7 +127,7 @@
 					</div>
 					<div>
 						<?php echo 
-							Form::input('visible_to', Request::current()->post('visible_to') ?: $page->visible_to, array('class' => 'datepicker'), $errors);
+							Form::input('visible_to', $page->visible_to, array('class' => 'datepicker'), $errors);
 						?>
 					</div>
 				</div>
@@ -146,10 +146,7 @@
 						?>
 					</div>
 					<div id="body" class="wysiwyg">
-						<?php 
-							$body = trim(Request::current()->post('body') ?: $page->body);
-							echo $body;
-						?>
+						<?php echo $page->body; ?>
 					</div>
 				</div>		
 			</fieldset>
@@ -162,13 +159,13 @@
 				<div class="field">
 					<?php echo 
 						Form::label('parent_id', __('Parent page'), NULL, $errors, 'admin/messages/label_error').
-						Form::select('parent_id', $pages, Request::current()->post('parent_id') ?: $page->parent_id, NULL, $errors)
+						Form::select('parent_id', $pages, $page->parent_id, NULL, $errors)
 					?>
 				</div>
 				<div class="field">
 					<?php echo 
 						Form::label('pagetype_id', __('Page type'), NULL, $errors).
-						Form::select('pagetype_id', $page_types, Request::current()->post('pagetype_id') ?: $page->pagetype_id, NULL, $errors)
+						Form::select('pagetype_id', $page_types, $page->pagetype_id, NULL, $errors);
 					?>	
 				</div>	
 			</fieldset>

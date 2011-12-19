@@ -1,20 +1,20 @@
 (function(data){
 
-	var viewPath = data.CORPATH + 'tags/media/js/admin/views/';
+	var path = data.CORPATH + 'users/media/js/admin/views/';
 
 	data.scripts.push(
-		viewPath + 'index.js',
-		viewPath + 'edit.js',
-		viewPath + 'add.js'
+		path + 'index.js',
+		path + 'edit.js',
+		path + 'add.js'
 	);
 
 	require(data.scripts, function(_, Backbone, App, IndexView, EditView, AddView){
 
-		var Tags = Backbone.Router.extend({
+		var Users = Backbone.Router.extend({
 			routes: {
-				'admin/tags': 'index',
-				'admin/tags/edit/:id': 'edit',
-				'admin/tags/add': 'add',
+				'admin/users': 'index',
+				'admin/users/edit/:id': 'edit',
+				'admin/users/add': 'add',
 			},
 			index: function(){
 				new IndexView;
@@ -28,7 +28,7 @@
 		});
 
 		$(function(){
-			(new App).route(Tags);
+			(new App).route(Users);
 		});
 	});
 
