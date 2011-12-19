@@ -74,6 +74,22 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 			}
 		}
 	}
+
+	public function action_delete()
+	{
+		$page = ORM::factory('page', $this->request->param('id'));
+
+		if (!$page->loaded())
+		{
+			throw new Exception('Page not found');
+		}
+
+		$page->delete();
+
+		Message::set(Message::SUCCESS, __('Page successully deleted.'));
+
+		$this->request->redirect('admin/pages');
+	}
 	
 	public function action_tree()
 	{
@@ -87,10 +103,10 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 
 	public function action_generate_uri()
 	{
-		$id    = Arr::get($_GET, 'page_id');
-		$title = Arr::get($_GET, 'title', NULL);
+		$page_id = $this->request->query('page_id');
+		$title   = $this->request->query('title');
 
-		$page = ORM::factory('page', $id);
+		$page = ORM::factory('page', $page_id);
 
 		if (!$page->loaded())
 		{
@@ -103,6 +119,7 @@ class Controller_Admin_Pages extends Controller_Admin_Base {
 		}
 
 		Page_View::instance()
+			->title(__('Page URI generation'))
 			->content(
 				$page->generate_uri()
 			);

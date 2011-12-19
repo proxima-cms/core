@@ -2,30 +2,26 @@
 
 class Controller_Page extends Controller_Base {
 
-	protected $page;
+	public $view_model = 'themes/badsyntax/page/master';
 
 	public function before()
 	{
-		// Set the master template.
-		$this->template = Theme::path('page');
-
-		// Set the controller template (along with other controller based stuff).
 		parent::before();
+		
+		$page = Page::factory($this->request->param('uri'));
 
-		// Get the page.
-		$this->page = Page::factory($this->request->param('uri'));
-	
 		// Get the page template from the page type.
-		$template = Theme::path('templates/'.str_replace(EXT, '', $this->page->pagetype_template));
+		$template = Theme::path('templates/' . str_replace(EXT, '', $page->pagetype_template));
 
-		// Set the page template & content. (Content is set via page components in the template.)
-		$this->template->content = View::factory($template);
+		// Generate the page title.
+		$page->title = Kohana::$config->load('site.title') . ' - ' . $page->title;
 
-		// Set some generic page vars.
-		$this->template->set_global(array(
-			'title' => Kohana::$config->load('site.title') . ' - ' . $this->page->title,
-			'page'  => $this->page
-		));
+		Page_view::instance()
+			->page($page)
+			->content(
+				View::factory($template)
+				->set('page', $page)
+			);
 	}
 
 	public function action_index()

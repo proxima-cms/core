@@ -2,11 +2,10 @@
 
 /**
  * Page View library. Singleton abstracted view-model
- *
  */
 class Page_View {
 
-	// Page_View instances
+	// Page_View view-model instance
 	protected static $_instance;
 
 	/**
@@ -26,6 +25,7 @@ class Page_View {
 
 			static::$_instance = View_Model::factory($data['view_model']);
 		}
+
 
 		return static::$_instance;
 	}
