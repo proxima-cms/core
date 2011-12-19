@@ -4,6 +4,7 @@ require.config({
 		'jquery':     'libs/jquery/jquery-min',
 		'underscore': 'libs/underscore/underscore-min', 
 		'backbone':   'libs/backbone/backbone',
+		'app': 'app'
 	}
 });
 
@@ -11,10 +12,6 @@ require([
 	'jquery',
 	'underscore',
 	'backbone',
-	'app'
-], function($, _, Backbone, App){
+], function($, _, Backbone){
 
-	$(function(){
-		App.initialize();
-	});
 });

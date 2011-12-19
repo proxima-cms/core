@@ -1,16 +1,18 @@
 define([
-	'order!jquery',
-	'order!underscore',
-	'order!backbone',
-	'order!ui'
+	'jquery', 
+	'underscore',
+	'backbone', 
+	'ui'
 ], function($, _, Backbone){
 
-	var initialize = function(){
-		$('body').ui();
-	}
+	var App = function(){
 
-	return {
-		initialize: initialize,
+		$('body').ui();
+
+		return this;
+	};
+
+	App.prototype = {
 		route: function(Router){
 
 			var router = new Router;
@@ -18,4 +20,6 @@ define([
 			Backbone.history.start({ pushState: true });
 		}
 	};
+
+	return App;
 });

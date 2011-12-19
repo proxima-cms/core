@@ -29,7 +29,7 @@ class Controller_Admin_BlogImport extends Controller_Admin_Base {
 			{
 				Message::set(Message::ERROR, __('Error loading the XML feed.'));
 
-				Request::current()->redirect('admin/blogimport');
+				$this->request->redirect('admin/blogimport');
 			} 
 			
 			$message = sprintf('Saved %s of %s posts.', 
@@ -39,7 +39,7 @@ class Controller_Admin_BlogImport extends Controller_Admin_Base {
 				
 			Message::set($result > 0 ? Message::SUCCESS : Message::NOTICE, $message);
 
-			Request::current()->redirect('admin/blogimport');
+			$this->request->redirect('admin/blogimport');
 		}
 		else
 		{

@@ -1,12 +1,10 @@
-define([
-	'order!jquery',
-	'order!underscore',
-	'order!backbone',
-	'order!app',
-	'order!views/assets/index',
-	'order!views/assets/edit',
-	'order!views/assets/upload'
-], function($, _, Backbone, App, IndexView, EditView, UploadView){
+this.AppData.scripts.push(
+	this.AppData.CORPATH + 'assets/media/js/admin/views/assets/index.js',
+	this.AppData.CORPATH + 'assets/media/js/admin/views/assets/edit.js',
+	this.AppData.CORPATH + 'assets/media/js/admin/views/assets/upload.js'
+);
+
+require(this.AppData.scripts, function($, _, Backbone, App, IndexView, EditView, UploadView){
 
 	var assets = Backbone.Router.extend({
 		routes: {
@@ -25,5 +23,7 @@ define([
 		}
 	});
 
-	App.route(assets);
+	$(function(){
+		(new App).route(assets);
+	});
 });
