@@ -65,7 +65,6 @@ class Core {
 	 */
 	public static function path($file = NULL, $root = TRUE)
 	{
-		
 		$root = $root === TRUE ? str_replace(DOCROOT, '', CORPATH) : '';
 
 		if (is_array($file))
@@ -104,16 +103,16 @@ class Core {
 				->defaults(array(
 					'controller' => 'config',
 					'directory'  => 'admin',
-					'action'		 => 'index',
-					'group'			 => NULL,
+					'action'     => 'index',
+					'group'      => NULL,
 				));
 
 			// Admin logs
 			Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
 				->defaults(array(
 					'controller' => 'admin_logs',
-					'action'		 => 'index',	
-					'file'			 => NULL
+					'action'     => 'index',	
+					'file'       => NULL
 				));
 
 			// Find all pages that require routing to specific controllers
@@ -128,8 +127,8 @@ class Core {
 				Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
 					->defaults(array(
 						'controller' => $page->pagetype_controller,
-						'action'		 => 'index',
-						'uri'				 => $page->uri,
+						'action'     => 'index',
+						'uri'        => $page->uri,
 					));
 			}
 				
@@ -137,7 +136,7 @@ class Core {
 			Route::set('page', '<uri>', array('uri' => '.*'))
 				->defaults(array(
 					'controller' => 'page',
-					'action'		 => 'index'
+					'action'     => 'index'
 				));
 
 			Route::cache(TRUE);
