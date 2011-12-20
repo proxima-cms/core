@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /*
- * Admin routes 
+ * Asset routes 
  */
 
 // Admin media
@@ -44,6 +44,13 @@ Route::set('media/assets', 'media/assets/resized/(<id>_<width>_<height>_<crop>_<
 		'crop'		=> NULL,	
 		'filename'	=> NULL,
 	));
+
+// Admin Assets - folders
+Route::set('admin/assets-folders', 'admin/assets/folders(/<action>)(/<id>)')
+	->defaults(array(
+		'controller'  => 'assets_folders',
+		'directory'   => 'admin',
+	)); 
 	
 // Admin popup assets
 Route::set('admin/popup-assets', 'admin/assets/popup(/<action>)(/<id>)')
@@ -51,3 +58,4 @@ Route::set('admin/popup-assets', 'admin/assets/popup(/<action>)(/<id>)')
 		'controller' 	=> 'assets_popup',
 		'directory' 	=> 'admin',
 	));
+

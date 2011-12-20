@@ -7,7 +7,7 @@ class View_Admin_Page_Master_Page extends View_Model_Master {
 		parent::__construct();
 
 		$request = Request::current();
-		
+
 		$this
 			->styles(array(
 				(array) Kohana::$config->load('admin/media.styles'), 

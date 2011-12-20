@@ -20,10 +20,12 @@ define([
 				.trigger('show');
 
 		// Selectmenu
+		/*
 		elem.find('select')
 			.selectmenu({
 				transferClasses: true
 			});
+		*/
 
 		// Save Button
 		elem.find('.ui-button.save')

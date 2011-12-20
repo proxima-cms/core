@@ -36,13 +36,13 @@ class Model_Base extends ORM {
 	 * @param	string		key name
 	 * @return  array
 	 */
-	public function tree_select($indent = 4, $start_id = 0, $items = array(), $depth = 0, $key = 'name')
+	public function tree_select($indent = 4, $start_id = 0, $items = array(), $depth = 0, $text_column = 'name', $key_column = 'id')
 	{
 		$start = $this
 			->where('parent_id', '=', $start_id)
 			->find_all();
 
-		$this->recurse_tree_select($start, $items, $indent, $depth, $key);
+		$this->recurse_tree_select($start, $items, $indent, $depth, $text_column, $key_column);
 
 		return $items;
 	}
@@ -76,11 +76,20 @@ class Model_Base extends ORM {
 	 * @param   integer		the recursion depth
 	 * @param	string		key name
 	 */
-	private function recurse_tree_select($items, & $array = array(), $indent = 4, & $depth = 0, $key = 'name')
+	private function recurse_tree_select($items, & $array = array(), $indent = 4, & $depth = 0, $text_column = 'name', $key_column = 'id')
 	{
 		foreach($items as $item)
 		{
-			$array[$item->id] = str_repeat('&nbsp;', ($depth * $indent)).$item->$key;
+			if (is_callable($key_column))
+			{
+				$key = $key_column($item);
+			}
+			else
+			{
+				$key = $item->$key_column;
+			}
+
+			$array[$key] = str_repeat('&nbsp;', ($depth * $indent)) . $item->$text_column;
 
 			$children = $item->children->find_all();
 			
@@ -88,7 +97,7 @@ class Model_Base extends ORM {
 			{
 				$child_depth = $depth + 1;
 				
-				$this->recurse_tree_select($children, $array, $indent, $child_depth, $key);
+				$this->recurse_tree_select($children, $array, $indent, $child_depth, $text_column, $key_column);
 			}
 		}		
 	}
@@ -132,9 +141,9 @@ class Model_Base extends ORM {
 		}
 	}
 
-  /** 
-   * Overload the save method to delete ALL cache entries on model save.
-   */
+	/** 
+	 * Overload the save method to delete ALL cache entries on model save.
+	 */
 	public function save(Validation $validation = NULL)
 	{
 		Cache::instance()->delete_all();

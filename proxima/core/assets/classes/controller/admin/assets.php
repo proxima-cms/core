@@ -38,7 +38,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		{
 			try
 			{
-				$uploaded = ORM::factory('asset')->admin_upload($_FILES);
+				$uploaded = ORM::factory('asset')->admin_upload($_FILES, $this->request->post());
 			}
 			// Error validating the uploaded files.
 			catch(Validation_Exception $e)

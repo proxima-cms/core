@@ -17,4 +17,8 @@ class View_Admin_Page_Assets_Upload extends View_Model_Admin {
 		return preg_replace('/,\s*/', '|', $this->allowed_upload_type);
 	}
 
+	public function var_folders()
+	{
+		return ORM::factory('asset_folder')->tree_select(4, 0, array(__('None')), 0, 'name');
+	}
 }

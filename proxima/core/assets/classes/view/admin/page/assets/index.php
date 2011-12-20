@@ -11,6 +11,7 @@ class View_Admin_Page_Assets_Index extends View_Model_Admin {
 		$this->view
 			->set(array(
 				'direction'      => Arr::get($data, 'direction', 'asc'),
+				'folder'         => Arr::get($data, 'folder'),
 				'order_by'       => Arr::get($data, 'sort', 'date'),
 				'type'           => Arr::get($data, 'type', 'all'),
 				'subtype'        => Arr::get($data, 'subtype', 'all'),
@@ -35,7 +36,13 @@ class View_Admin_Page_Assets_Index extends View_Model_Admin {
 	
 	public function get_filter_links($direction = NULL)
 	{
-		$link = 'admin/assets?direction='.$direction;
+		$link = Request::current()->uri();
+
+		$query = Request::current()->query();
+
+		$query['direction'] = $direction;
+
+		$link .= '?' . http_build_query($query);
 
 		return array(
 			'links' => array(
@@ -44,7 +51,7 @@ class View_Admin_Page_Assets_Index extends View_Model_Admin {
 				'doc' => $link.'&filter=type-pdf|doc|txt',
 				'arc' => $link.'&filter=type-tar|zip|rar'
 			),	
-			'cur_url' => urldecode(Request::current()->uri() . URL::query())
+			'cur_url' => $link
 		);
 	}
 	
@@ -81,5 +88,18 @@ class View_Admin_Page_Assets_Index extends View_Model_Admin {
 			->filter($this->view->filter)
 			->search($this->view->search)
 			->find_all();
+	}
+
+	// Return a folder tree select.
+	public function var_folders()
+	{
+		$links = $this->links;
+
+		return ORM::factory('asset_folder')->tree_select(4, 0, array(__('None')), 0, 'name', 
+			function($folder) use ($links)
+			{
+				return URL::site(rtrim($links['cur_url'], '&') . '&folder='.$folder->id);
+			}
+		);
 	}
 }

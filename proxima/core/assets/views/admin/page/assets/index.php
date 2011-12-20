@@ -6,6 +6,7 @@
 				<li><?php echo HTML::anchor('admin/assets/upload', __('Upload assets'))?></li>
 				<li><?php echo HTML::anchor('admin/config/asset', __('Edit config'), array('id' => 'edit-config'))?></li>
 				<li><?php echo HTML::anchor('admin/assets/delete', __('Delete assets'), array('id' => 'delete-assets'))?></li>
+				<li><?php echo HTML::anchor('admin/assets/folders/add', __('Add folder'))?></li>
 			</ul>
 		</div>
 	</div>	
@@ -19,7 +20,8 @@
 	<div class="sidepane" style="width:25%">
 		<?php echo View::factory('admin/page/assets/sidebar', array(
 			'links' => $links,
-			'search' => $search
+			'search' => $search,
+			'folders' => $folders
 			));?>
 	</div>
 

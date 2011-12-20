@@ -2,7 +2,7 @@
 
 class Model_Asset extends Model_Base_Asset {
 	
-	public function admin_upload($files = array(), $field_name = 'asset')
+	public function admin_upload($files = array(), $data = array(), $field_name = 'assets')
 	{
 		// Have files been uploaded?
 		if (isset($files[$field_name]) AND is_array($files[$field_name]))
@@ -23,7 +23,7 @@ class Model_Asset extends Model_Base_Asset {
 
 				$file = Validation::factory($file);
 			
-				foreach($this->upload_rules() as $field => $rules)
+				foreach($this->upload_rules($field_name) as $field => $rules)
 				{   
 					$file->rules($field, $rules);
 				}
@@ -44,7 +44,9 @@ class Model_Asset extends Model_Base_Asset {
 					throw new Exception(__('Unable to move the uploaded file.'));
 				}
 
-				$this->admin_add_uploaded($file_path);
+				$data['file_path'] = $file_path;
+
+				$this->admin_add_uploaded($data);
 			}	
 		}
 		else
@@ -53,8 +55,9 @@ class Model_Asset extends Model_Base_Asset {
 		}
 	}
 
-	public function admin_add_uploaded($file_path)
+	public function admin_add_uploaded($data = array())
 	{
+		$file_path   = $data['file_path'];
 		$file_name   = basename($file_path);
 		$extension   = Asset::extension($file_name);
 		$description = preg_replace('/\.\w+$/', '', $file_name);		// remove extension
@@ -67,11 +70,13 @@ class Model_Asset extends Model_Base_Asset {
 		$data = array(
 			'user_id'           => Auth::instance()->get_user()->id,
 			'mimetype_id'       => $mimetype->id,
+			'folder_id'         => $data['folder_id'],
 			'filename'          => $file_name,
 			'friendly_filename' => $file_name,
 			'description'       => $description,
 			'filesize'          => filesize($file_path)
-		);		
+		);
+
 		$this->values($data);
 		$this->save();
 

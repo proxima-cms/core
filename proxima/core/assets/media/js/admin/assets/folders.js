@@ -1,20 +1,20 @@
 (function(data){
 
-	var path = data.CORPATH + 'assets/media/js/admin/views/';
+	var path = data.CORPATH + 'assets/media/js/admin/views/folders/';
 
 	data.scripts.push(
 		path + 'index.js',
 		path + 'edit.js',
-		path + 'upload.js'
+		path + 'add.js'
 	);
 
-	require(data.scripts, function(_, Backbone, App, IndexView, EditView, UploadView){
+	require(data.scripts, function(_, Backbone, App, IndexView, EditView, AddView){
 
 		var Routes = Backbone.Router.extend({
 			routes: {
-				'admin/assets': 'index',
-				'admin/assets/edit/:id': 'edit',
-				'admin/assets/upload': 'upload',
+				'admin/assets/folders': 'index',
+				'admin/assets/folders/:id': 'edit',
+				'admin/assets/folders': 'add',
 			},
 			index: function(){
 				new IndexView;
@@ -22,8 +22,8 @@
 			edit: function(id){
 				new EditView;
 			},
-			upload: function(){
-				new UploadView;
+			add: function(){
+				new AddView;
 			}
 		});
 

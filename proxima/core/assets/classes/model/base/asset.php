@@ -6,23 +6,27 @@ class Model_Base_Asset extends Model_Base {
 	
 	protected $_belongs_to = array(
 		'mimetype' => array(
-			'model'       => 'mimetype', 
+			'model' => 'mimetype', 
 			'foreign_key' => 'mimetype_id'
 		),
 		'user' => array(
-			'model'       => 'user', 
+			'model' => 'user', 
 			'foreign_key' => 'user_id'
 		),
+		'asset_folder' => array(
+			'model' => 'asset_folder',
+			'foreign_key' => 'folder_id'
+		)
 	);
 	
 	protected $_has_many = array(
 		'sizes' => array('model' => 'asset_size', 'foreign_key' => 'asset_id'),
 	);
 
-	public function upload_rules()
+	public function upload_rules($fieldname = 'assets')
 	{
 		return array(
-			'asset' => array(
+			"{$fieldname}" => array(
 				array('Upload::not_empty', array(':value')),
 				array('Upload::valid'),
 				array('Upload::size', array(':value', '10M')),
@@ -201,9 +205,7 @@ class Model_Base_Asset extends Model_Base {
 				
 				if ($image_size)
 				{
-					return ($key == 'width')
-						? $image_size[0]
-						: $image_size[1];
+					return ($key == 'width') ? $image_size[0] : $image_size[1];
 				}				
 			}
 			catch(Exception $e){}

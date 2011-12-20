@@ -5,6 +5,7 @@
 	}
 ?>
 
+<!-- FILTERS -->
 <div class="section first clear">
 	<h3>Filters</h3>
 	<ul class="folder-list">
@@ -34,13 +35,21 @@
 		</li>
 	</ul>
 </div>
+
+<!-- FOLDERS -->
 <div class="section clear">
-	<h3>Folders</h3>
-	<select id="folders">
-		<option value="">Root</option>
-		<option value="test">--Test</option>
-	</select>
+	<h3>
+		<span style="float:right;font-weight:normal;">
+			<?php echo HTML::anchor('admin/assets/folders/add', __('Add +'), array('style' => 'font-weight:normal'));?>
+			|
+			<?php echo HTML::anchor('admin/assets/folders', __('Manage'), array('style' => 'font-weight:normal'));?>
+		</span>
+		Folders
+	</h3>
+	<?php echo Form::select('folders', $folders, NULL, NULL);?>
 </div>
+
+<!-- SEARCH -->
 <div class="section clear">
 	<h3>Search</h3>
 	<?php echo Form::open('admin/assets', array('class' => 'ui-helper-clearfix', 'style' => 'padding-bottom:6px'))?>

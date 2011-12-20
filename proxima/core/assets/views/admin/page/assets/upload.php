@@ -24,6 +24,11 @@
 					'accept'    => $accept_type
 				), $errors)?>
 			</div>
+			<div class="field">	
+				<?php echo 
+				Form::label('folder_id', 'Folder', NULL, $errors).
+				Form::select('folder_id', $folders, 0, NULL, $errors);?>
+			</div>
 		</div>
 		
 		<?php echo Form::button('save', 'Upload', array(

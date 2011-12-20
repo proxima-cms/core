@@ -16,13 +16,14 @@
 	<div class="sidepane" style="width:25%">
 		<?php echo View::factory('admin/page/assets/sidebar', array(
 			'links' => $links,
-			'search' => NULL
+			'search' => NULL,
+			'folders' => $folders
 			));?>
 	</div>
 
-	<div class="ui-grid assets-list view-list clear" style="width:73%">
+	<?php echo Form::open(NULL, array('class' => 'assets-edit ajax-validate'))?>
 
-		<?php echo Form::open(NULL, array('class' => 'assets-edit ajax-validate'))?>
+		<div class="ui-grid assets-list view-list clear" style="width:73%">
 
 			<?php echo Form::hidden('id', $asset->id)?>
 
@@ -86,9 +87,14 @@
 					Form::input('description', Request::current()->post('description') ?: $asset->description, NULL, $errors)
 				?>
 			</div>
-			
-			<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
-
+			<div class="field">
+				<?php echo
+					Form::label('folder_id', 'Folder', NULL, $errors).
+					Form::select('folder_id', $folders, $asset->asset_folder->id, NULL, $errors);
+				?>
+			</div>
+		</fieldset>
+		<br />
+		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
 		<?php echo Form::close()?>
-	</div>
 </div>

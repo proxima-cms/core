@@ -8,7 +8,8 @@
 		var IndexView = Backbone.View.extend({
 			el: $('body'),
 			events: {
-				'click #delete-assets': 'deleteAssets'
+				'click #delete-assets': 'deleteAssets',
+				'change #folders': 'changeFolder'
 			},
 			deleteAssets: function(){
 				
@@ -26,6 +27,9 @@
 				}
 
 				return false;
+			},
+			changeFolder: function(e){
+				window.location = e.target.value;
 			}
 		});
 
