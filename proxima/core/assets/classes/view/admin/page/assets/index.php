@@ -88,7 +88,7 @@ class View_Admin_Page_Assets_Index extends View_Model_Admin {
 			->offset($this->pagination->offset)
 			->filter($this->filter)
 			->search($this->search);
-	
+
 		if ($this->folder !== NULL)
 		{
 			$assets->where('folder_id', '=', $this->folder);

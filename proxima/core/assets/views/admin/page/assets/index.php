@@ -96,5 +96,8 @@
 				<?php }?>
 			</tbody>
 		</table>
+		<?php if (count($assets) === 0){?>
+			<p style="margin-top:10px"><em>No results.</em></p>
+		<?php }?>
 	</div>	
 </div>

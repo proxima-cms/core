@@ -14,7 +14,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	public function action_index($view = 'admin/page/assets/index')
 	{
 		$request_data = array(
-			'search'  => $this->request->post('search') OR $this->request->query('search'),
+			'search'  => $this->request->post('search'),
 			'request' => $this->request->query()
 		);
 

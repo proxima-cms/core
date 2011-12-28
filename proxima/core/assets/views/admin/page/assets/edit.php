@@ -17,7 +17,9 @@
 		<?php echo View::factory('admin/page/assets/sidebar', array(
 			'links' => $links,
 			'search' => NULL,
-			'folders' => $folders
+			'folders' => $folders,
+			'cur_folder'  => $cur_folder,
+			'folder_uri_template'  => $folder_uri_template
 			));?>
 	</div>
 

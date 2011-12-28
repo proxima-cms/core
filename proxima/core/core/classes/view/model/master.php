@@ -43,7 +43,7 @@ class View_Model_Master extends View_Model {
 			}
 			else
 			{
-				$data = array_merge($item, $data);
+				$data = array_merge($data, $item);
 			}
 		}
 

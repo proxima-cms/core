@@ -5,26 +5,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title><?php echo $title ?></title>
 	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n"; ?>
-
-	<script>
-		this.AppData = {
-			scripts: [
-				'order!underscore',
-				'order!backbone',
-				'order!app'
-			],
-			environment: '<?php echo Kohana::$environment?>',
-			route: {
-				controller: '<?php echo Request::current()->controller()?>',
-				directory:  '<?php echo Request::current()->directory()?>',
-				action:     '<?php echo Request::current()->action()?>'
-			},
-			CORPATH: '<?php echo '/', str_replace(DOCROOT, '', CORPATH); ?>',
-			MODPATH: '<?php echo '/', str_replace(DOCROOT, '', MODPATH); ?>'
-		};
-	</script>
-
-	<?php echo HTML::script(Core::path('admin/media/js/libs/require/require-jquery-min.js'), array('data-main' => URL::site(Core::path('admin/media/js/main')))), "\n"; ?>
 	<?php echo implode("\n\t", array_map('HTML::script', $scripts)); ?>
 </head>
 	<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
@@ -59,5 +39,26 @@
 	</div> <!-- /#content -->
 
 	<?php echo View::factory('admin/page/fragments/footer') ?>
+
+	<script type="text/javascript">
+		(function($){
+
+			var AppConfig = {
+				environment: '<?php echo Kohana::$environment === Kohana::DEVELOPMENT ? 'development' : 'production'; ?>',
+				route: {
+					controller: '<?php echo Request::current()->controller(); ?>',
+					directory:  '<?php echo Request::current()->directory(); ?>',
+					action:     '<?php echo Request::current()->action(); ?>'
+				},
+				CORPATH: '<?php echo '/', str_replace(DOCROOT, '', CORPATH); ?>',
+				MODPATH: '<?php echo '/', str_replace(DOCROOT, '', MODPATH); ?>'
+			};
+	
+			$(function(){
+				new App(AppConfig).route(window.AppRoutes);
+			});
+
+		})(this.jQuery);
+	</script>
 </body>
 </html>

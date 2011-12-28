@@ -1,14 +1,71 @@
-(function(data){
+(function($){
 
-	var path = data.CORPATH + 'assets/media/js/admin/views/';
+	$(function(){
+	
+		var IndexView = Backbone.View.extend({
+			el: $('body'),
+			events: {
+				'click #delete-assets': 'deleteAssets',
+				'change #folders': 'changeFolder'
+			},
+			deleteAssets: function(){
+				
+				var ids = [];
+				$('input[name^=asset-]:checked').each(function(){
+					ids.push(this.value);
+				});
 
-	data.scripts.push(
-		path + 'index.js',
-		path + 'edit.js',
-		path + 'upload.js'
-	);
+				if (ids.length) {
+					if (confirm('Are you sure you want to delete the selected ' + ids.length + ' assets?')){
+						window.location = this.href + '?assets=' + ids.join(',');
+					}
+				} else {
+					alert('Please select some assets');
+				}
 
-	require(data.scripts, function(_, Backbone, App, IndexView, EditView, UploadView){
+				return false;
+			},
+			changeFolder: function(e){
+
+				var uri = _.template($('#folder-uri-template').html(), { folder: e.target.value });
+
+				window.location = uri;
+			}
+		});
+
+		var EditView = Backbone.View.extend({
+			el: $('body'),
+			events: {
+				'focusin #filename':  'focusFilename',
+				'focusout #filename': 'blurFilename'
+			},
+			initialize: function(){
+			},
+			focusFilename: function(e){
+				if (!$.data(e.target, 'extension')){
+
+					$.data(e.target, 'extension', e.target.value.replace(/^.*(\..*?)$/, '$1'));
+				}           
+				e.target.value = e.target.value.replace(new RegExp($.data(e.target, 'extension') + '$'), '');
+			},
+			blurFilename: function(e){
+				e.target.value += $.data(e.target, 'extension');    
+			}
+		});
+
+		var UploadView = Backbone.View.extend({
+			initialize: function(){
+				return;
+				$('#asset').uploadify({
+					uploade: '/modules/admin/media/flash/uploadify.swf',
+					script: '/admin/assets/upload',
+					cancelImg: '/modules/admin/media/img/uploadify-cancel.png',
+					auto: true,
+					debug: true,
+					fileDataName: 'asset'
+				});  	
+			}
+		});
 
 		var Routes = Backbone.Router.extend({
 			routes: {
@@ -28,9 +85,8 @@
 			}
 		});
 
-		$(function(){
-			(new App).route(Routes);
-		});
+		window.AppRoutes = Routes;
+
 	});
 
-})(this.AppData);
+})(this.jQuery);

@@ -1,4 +1,8 @@
-(function($){
+define([
+	'underscore',
+	'backbone', 
+	'ui'
+], function(_, Backbone){
 
 	var App = function(){
 
@@ -16,6 +20,5 @@
 		}
 	};
 
-	window.App = App;
-
-})(this.jQuery);
+	return App;
+});

@@ -19,4 +19,22 @@ class View_Admin_Page_Assets_Edit extends View_Model_Admin {
 		return ORM::factory('asset_folder')
 			->tree_select(4, 0, array(__('None')), 0, 'name');
 	}
+
+	// Return the current folder.
+	public function var_cur_folder()
+	{
+		return 0;
+	}
+
+	// Returns the current url with the 'folder' query string param as an underscore.js template.
+	public function var_folder_uri_template()
+	{
+		$links = $this->links;
+		
+		$query = Request::current()->query();
+		
+		$query['folder'] = '<%= folder %>';
+
+		return urldecode(URL::site('admin/assets' . '?' . http_build_query($query)));
+	}
 }

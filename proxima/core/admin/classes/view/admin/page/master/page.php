@@ -14,6 +14,7 @@ class View_Admin_Page_Master_Page extends View_Model_Master {
 				(array) Kohana::$config->load('admin/'.$request->controller().'.styles')
 			))  
 			->scripts(array(
+				(array) Kohana::$config->load('admin/media.scripts'),
 				(array) Kohana::$config->load('admin/'.$request->controller().'.scripts'),
 			))  
 			->paths(array(
