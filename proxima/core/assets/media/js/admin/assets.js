@@ -13,6 +13,7 @@
 		var Routes = Backbone.Router.extend({
 			routes: {
 				'admin/assets': 'index',
+				'admin/assets?*params': 'index',
 				'admin/assets/edit/:id': 'edit',
 				'admin/assets/upload': 'upload',
 			},

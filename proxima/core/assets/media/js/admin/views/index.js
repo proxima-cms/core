@@ -29,7 +29,10 @@
 				return false;
 			},
 			changeFolder: function(e){
-				window.location = e.target.value;
+
+				var uri = _.template($('#folder-uri-template').html(), { folder: e.target.value });
+
+				window.location = uri;
 			}
 		});
 

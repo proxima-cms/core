@@ -19,9 +19,11 @@
 
 	<div class="sidepane" style="width:25%">
 		<?php echo View::factory('admin/page/assets/sidebar', array(
-			'links' => $links,
-			'search' => $search,
-			'folders' => $folders
+			'links'   => $links,
+			'search'  => $search,
+			'folders' => $folders,
+			'cur_folder'  => $cur_folder,
+			'folder_uri_template'  => $folder_uri_template
 			));?>
 	</div>
 

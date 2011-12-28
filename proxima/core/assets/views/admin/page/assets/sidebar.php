@@ -46,7 +46,11 @@
 		</span>
 		Folders
 	</h3>
-	<?php echo Form::select('folders', $folders, NULL, NULL);?>
+	<?php echo Form::select('folders', $folders, $cur_folder);?>
+
+	<script type="text/html" id="folder-uri-template">
+		<?php echo $folder_uri_template, "\n" ?>
+	</script>
 </div>
 
 <!-- SEARCH -->
