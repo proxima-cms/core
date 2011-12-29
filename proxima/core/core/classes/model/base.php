@@ -141,6 +141,11 @@ class Model_Base extends ORM {
 		}
 	}
 
+	public function friendly_date()
+	{
+		return $this->date;
+	}
+
 	/** 
 	 * Overload the save method to delete ALL cache entries on model save.
 	 */

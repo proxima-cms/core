@@ -10,7 +10,7 @@ class View_Admin_Page_Assets_Edit extends View_Model_Admin {
 	public function var_links()
 	{
 		return View_Model::factory('admin/page/assets/index', array('request' => $this->request))
-			->get_filter_links();
+			->get_filter_links(NULL, 'admin/assets');
 	}
 
 	// Return a folder tree select.

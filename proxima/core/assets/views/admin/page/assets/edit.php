@@ -14,7 +14,7 @@
 <div class="clear assetmanager popup">
 
 	<div class="sidepane" style="width:25%">
-		<?php echo View::factory('admin/page/assets/sidebar', array(
+		<?php echo View::factory('admin/page/assets/sidebar_edit', array(
 			'links' => $links,
 			'search' => NULL,
 			'folders' => $folders,

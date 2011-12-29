@@ -10,6 +10,10 @@
 	App.prototype = {
 		route: function(Router){
 
+			if (Router === undefined) {
+				throw new Error('App error: router not defined.');
+			}
+
 			var router = new Router;
 
 			Backbone.history.start({ pushState: true });

@@ -35,24 +35,24 @@ class View_Admin_Page_Assets_Index extends View_Model_Admin {
 		}
 	}
 	
-	public function get_filter_links($direction = NULL)
+	public function get_filter_links($direction = NULL, $link = NULL)
 	{
-		$link = Request::current()->uri();
+		$link = $link ?: Request::current()->uri();
 
 		$query = Request::current()->query();
 
 		$query['direction'] = $direction;
 
-		$link .= '?' . http_build_query($query);
+		$link .= '?' ;
 
 		return array(
 			'links' => array(
-				'all' => $link,
-				'img' => $link.'&filter=subtype-image',
-				'doc' => $link.'&filter=type-pdf|doc|txt',
-				'arc' => $link.'&filter=type-tar|zip|rar'
+				'all' => $link . http_build_query(array('direction' => $query['direction'])),
+				'img' => $link . http_build_query(array_merge($query, array('filter' => 'subtype-image'))),
+				'doc' => $link . http_build_query(array_merge($query, array('filter' => 'type-pdf|doc|txt'))),
+				'arc' => $link . http_build_query(array_merge($query, array('filter' => 'type-tar|zip|rar')))
 			),	
-			'cur_url' => $link
+			'cur_url' => $link . http_build_query($query)
 		);
 	}
 	

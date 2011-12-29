@@ -6,5 +6,6 @@ return array(
 	),
 	'scripts'	=> array(
 		Core::path('assets/media/js/admin/assets/popup/assets.js'),
+		Core::path('admin/media/js/libs/jquery-tablescroll/jquery.tablescroll.js')
 	)
 );

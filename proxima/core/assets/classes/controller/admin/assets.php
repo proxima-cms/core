@@ -1,16 +1,15 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Controller_Admin_Assets extends Controller_Admin_Base {
-	
+
 	public function before()
 	{
 		parent::before();
-	
+
 		Page_View::instance()
-			->scripts(array(Kohana::$config->load('admin/assets/popup.scripts')))
 			->styles(array(Kohana::$config->load('admin/assets/popup.styles')));
 	}
-
+	
 	public function action_index($view = 'admin/page/assets/index')
 	{
 		$request_data = array(
@@ -155,10 +154,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 		$height   = $this->request->param('height');
 		$crop     = $this->request->param('crop');
 		$filename = "{$id}_".$this->request->param('filename');
-
-		$asset = ORM::factory('asset')
-			->where('id', '=', $id)
-			->find();
+		$asset    = ORM::factory('asset', $id);
 
 		if (!$asset->loaded() OR !file_exists($asset->image_path(NULL, NULL, NULL, TRUE)))
 		{
@@ -212,7 +208,8 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			exit;
 		}
 		
-		echo $asset->url(TRUE);
+		Page_View::instance()
+			->content($asset->url(TRUE));
 	}
 	
 	public function action_get_image_url()
@@ -230,7 +227,8 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 			exit;
 		}
 		
-		echo $asset->image_url($width, $height, NULL, TRUE);
+		Page_View::instance()
+			->content($asset->image_url($width, $height, NULL, TRUE));
 	}
 	
 	public function action_get_download_html()
@@ -253,7 +251,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	{
 		$id = $this->request->param('id');
 
-		$asset = ORM::factory('asset', (int) $id);
+		$asset = ORM::factory('asset', $id);
 		
 		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
 		{
@@ -274,7 +272,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	{
 		$id = $this->request->param('id');
 
-		$asset = ORM::factory('asset', (int) $id);
+		$asset = ORM::factory('asset', $id);
 
 		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
 		{
@@ -290,7 +288,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	{
 		$id = $this->request->param('id');
 
-		$asset = ORM::factory('asset', (int) $id);
+		$asset = ORM::factory('asset', $id);
 
 		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
 		{
@@ -306,7 +304,7 @@ class Controller_Admin_Assets extends Controller_Admin_Base {
 	{
 		$id = $this->request->param('id');
 
-		$asset = ORM::factory('asset', (int) $id);
+		$asset = ORM::factory('asset', $id);
 
 		if (!$asset->loaded() OR $asset->mimetype->subtype !== 'image')
 		{

@@ -18,12 +18,12 @@ class Controller_Admin_Media extends Controller_Admin_Base {
 		}
 		else
 		{
-			// Return a 404 status
-			$this->request->status = 404;
+			// Return a 404 Not Found status
+			$this->response->status(404);
 		}
 
 		// Set the content type for this extension
-		$this->request->headers['Content-Type'] = File::mime_by_ext($ext);
+		$this->response->headers('Content-Type', File::mime_by_ext($ext));
 	}
 	
 } // End Controller_Admin_Media

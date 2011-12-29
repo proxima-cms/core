@@ -158,7 +158,7 @@ class Asset {
 		 return ($full) ? DOCROOT.$path : $path;
 	}
 	
-	public function url($asset, $full = FALSE)
+	public static function url($asset, $full = FALSE)
 	{
 		$url = URL::site('media/assets/'.$asset->filename);
 		
