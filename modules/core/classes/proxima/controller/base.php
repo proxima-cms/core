@@ -6,7 +6,7 @@ abstract class Proxima_Controller_Base extends Controller {
 
 	public $view_model = NULL;
 
-	public $page_view = NULL;
+	public $template = NULL;
 
 	protected $auth_required = FALSE;
 
@@ -28,12 +28,10 @@ abstract class Proxima_Controller_Base extends Controller {
 			$uri = 'admin/auth/signin?return_to=' . $this->request->uri();
 
 			$this->request->redirect($uri);
-		}   
+		}
 
-		// Create the global page_view view-model
-		$this->page_view = Page_View::instance(array(
-			'view_model'  => $this->view_model
-		));
+		// Create the global template view-model
+		$this->template = View_Model::factory($this->view_model);
 	}
 
 	public function after()
@@ -41,13 +39,13 @@ abstract class Proxima_Controller_Base extends Controller {
 		// If it's an AJAX or HMVC request then only render the INNER template
 		if ($this->request->is_ajax() OR Request::initial() !== $this->request)
 		{
-			$this->request->response()->body($this->page_view->content);
+			$this->request->response()->body($this->template->content);
 		}
 		// Else render the master template
 		else if ($this->auto_render === TRUE)
 		{
 			// Render the master template
-			$this->request->response()->body($this->page_view);
+			$this->request->response()->body($this->template);
 		}
 	}
 

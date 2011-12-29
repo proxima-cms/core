@@ -4,21 +4,21 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		Page_View::instance()
-		->title(__('Pages'))
-		->content(
-			View_Model::factory('admin/page/pages/index')
-		);
+		$this->template
+			->title(__('Pages'))
+			->content(
+				View_Model::factory('admin/page/pages/index')
+			);
 	}
 
 	public function action_add()
 	{
-		Page_View::instance()
-		->title(__('Add page'))
-		->content(
-			View_Model::factory('admin/page/pages/add')
-				->bind('errors', $errors)
-		);
+		$this->template
+			->title(__('Add page'))
+			->content(
+				View_Model::factory('admin/page/pages/add', array('template' => $this->template))
+					->bind('errors', $errors)
+			);
 		
 		if ($this->request->method() === Request::POST)
 		{
@@ -41,13 +41,13 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 	
 	public function action_edit()
 	{
-		Page_View::instance()
-		->title(__('Edit page'))
-		->content(
-			View_Model::factory('admin/page/pages/edit')
-				->bind('page', $page)
-				->bind('errors', $errors)
-		);
+		$this->template
+			->title(__('Edit page'))
+			->content(
+				View_Model::factory('admin/page/pages/edit', array('template' => $this->template))
+					->bind('page', $page)
+					->bind('errors', $errors)
+			);
 
 		$page = ORM::factory('page', $this->request->param('id'));
 
@@ -95,7 +95,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 	{
 		$open_pages = explode(',', Arr::get($_COOKIE, 'pages/index'));
 		
-		Page_View::instance()
+		$this->template
 			->content(
 				ORM::factory('page')->tree_list_html('admin/page/pages/tree', 0, $open_pages)
 			);
@@ -118,7 +118,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 			$page->title = $title;
 		}
 
-		Page_View::instance()
+		$this->template
 			->title(__('Page URI generation'))
 			->content(
 				$page->generate_uri()

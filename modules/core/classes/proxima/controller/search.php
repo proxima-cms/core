@@ -27,7 +27,7 @@ class Proxima_Controller_Search extends Controller_Page {
 		$search_results = Component::factory('Search_Results', $search_config)->render();
 
 		// Pass the search results into the template.
-		Page_view::instance()->content->set('search_results', $search_results);
+		$this->template->content->set('search_results', $search_results);
 	}
 	
 } // End Controller_Search

@@ -6,7 +6,7 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Modules'))
 			->content(
 				View_Model::factory('admin/page/modules/index', $request_data)

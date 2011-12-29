@@ -97,18 +97,8 @@ class Proxima_Core {
 	*/
 	public static function set_routes()
 	{
-		if ( ! Route::cache())
+		if ( TRUE OR ! Route::cache())
 		{
-			/*
-			 * Admin routes 
-			 */
-			// Admin controllers
-			Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
-				->defaults(array(
-					'action'     => 'index',
-					'directory'  => 'admin',
-					'controller' => 'home'
-				)); 
 
 			/*
 			 * Asset routes 
@@ -158,15 +148,16 @@ class Proxima_Core {
 			// Admin Assets - folders
 			Route::set('admin/assets-folders', 'admin/assets/folders(/<action>)(/<id>)')
 				->defaults(array(
-					'controller'  => 'assets_folders',
-					'directory'   => 'admin',
+					'controller'  => 'folders',
+					'directory'   => 'admin/assets',
 				)); 
 				
 			// Admin popup assets
 			Route::set('admin/popup-assets', 'admin/assets/popup(/<action>)(/<id>)')
 				->defaults(array(
-					'controller' 	=> 'assets_popup',
-					'directory' 	=> 'admin',
+					'controller' 	=> 'popup',
+					'directory' 	=> 'admin/assets',
+					'action'      => 'index',
 				));
 
 			/*
@@ -222,6 +213,16 @@ class Proxima_Core {
 					'file'       => NULL
 				));
 
+			/*
+			 * Admin routes 
+			 */
+			// Admin controllers
+			Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
+				->defaults(array(
+					'action'     => 'index',
+					'directory'  => 'admin',
+					'controller' => 'home'
+				)); 
 			// Find all pages that require routing to specific controllers
 			$route_pages = ORM::factory('site_page')
 				->where('pagetype_controller', '<>', 'page')

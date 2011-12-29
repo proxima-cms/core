@@ -8,7 +8,7 @@ class Proxima_Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 	{
 		parent::before();
 		
-		Page_View::instance()
+		$this->template
 			->scripts(array(Kohana::$config->load('admin/assets/popup.scripts')))
 			->styles(array(Kohana::$config->load('admin/assets.styles')));
 	}
@@ -17,9 +17,7 @@ class Proxima_Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 	{
 		parent::action_index('admin/page/assets/popup/index');
 
-		Page_View::instance()->scripts(array(
-				Kohana::$config->load('admin/media.paths.tinymce_popup')
-			));
+		$this->template->scripts(array(Kohana::$config->load('admin/media.paths.tinymce_popup')));
 	}
 	
 	public function action_upload($view_path = 'admin/page/assets/popup/upload', $redirect_to = 'admin/assets/popup#browse')
@@ -36,7 +34,7 @@ class Proxima_Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 			throw new Exception('Asset not found.');
 		}
 		
-		Page_View::instance()
+		$this->template
 			->title(__('Resize Asset'))
 			->content(
 				View::factory('admin/page/assets/popup/resize')
@@ -53,7 +51,7 @@ class Proxima_Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 			throw new Exception('Asset not found.');
 		}
 
-		Page_View::instance()
+		$this->template
 			->title(__('View Asset'))
 			->content(
 				View_Model::factory('admin/page/assets/popup/view')

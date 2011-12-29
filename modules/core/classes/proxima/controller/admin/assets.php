@@ -6,8 +6,7 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 	{
 		parent::before();
 
-		Page_View::instance()
-			->styles(array(Kohana::$config->load('admin/assets/popup.styles')));
+		$this->template->styles(array(Kohana::$config->load('admin/assets/popup.styles')));
 	}
 	
 	public function action_index($view = 'admin/page/assets/index')
@@ -17,7 +16,7 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 			'request' => $this->request->query()
 		);
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Assets'))
 			->content(
 				View_Model::factory($view, $request_data)
@@ -26,7 +25,7 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 
 	public function action_upload($view = 'admin/page/assets/upload', $redirect_to = 'admin/assets')
 	{
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Upload assets'))
 			->content(
 				View_Model::factory($view)
@@ -85,7 +84,7 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 
 		$request_data = array('request' => $this->request->query());
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Edit asset'))
 			->content(
 				View_Model::factory('admin/page/assets/edit', $request_data)
@@ -208,8 +207,7 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 			exit;
 		}
 		
-		Page_View::instance()
-			->content($asset->url(TRUE));
+		$this->template->content($asset->url(TRUE));
 	}
 	
 	public function action_get_image_url()
@@ -227,8 +225,7 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 			exit;
 		}
 		
-		Page_View::instance()
-			->content($asset->image_url($width, $height, NULL, TRUE));
+		$this->template->content($asset->image_url($width, $height, NULL, TRUE));
 	}
 	
 	public function action_get_download_html()

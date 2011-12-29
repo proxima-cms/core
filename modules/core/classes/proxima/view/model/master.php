@@ -22,7 +22,6 @@ class Proxima_View_Model_Master extends View_Model {
 	/**
 	 * Sets a page data group
 	 *
-	 * @return  Page_View
 	 */
 	private function data($key, $items)
 	{

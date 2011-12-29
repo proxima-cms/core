@@ -6,7 +6,7 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Components'))
 			->content(
 				View_Model::factory('admin/page/component/types/index', $request_data)
@@ -17,7 +17,7 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->post());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Add component'))
 			->content(
 				View_Model::factory('admin/page/component/types/add', $request_data)
@@ -50,7 +50,7 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->post());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Edit page'))
 			->content(
 				View_Model::factory('admin/page/component/types/edit', $request_data)

@@ -4,8 +4,7 @@ class Proxima_Controller_Admin_Wysiwyg extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Wysiwyg'))
 			->content(
 				View::factory('admin/page/wysiwyg/index')

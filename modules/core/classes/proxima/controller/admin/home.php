@@ -4,7 +4,7 @@ class Proxima_Controller_Admin_Home extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		Page_View::instance()
+		$this->template
 			->title(__('Admin'))
 			->content(
 				View::factory('admin/page/home/index')

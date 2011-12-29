@@ -6,7 +6,7 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Assets - Folders'))
 			->content(
 				View_Model::factory('admin/page/assets/folders/index', $request_data)
@@ -17,7 +17,7 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->query());
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Assets - Add folder'))
 			->content(
 				View_Model::factory('admin/page/assets/folders/add', $request_data)
@@ -57,7 +57,7 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 
 		$request_data = array('request' => $this->request->query());
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Assets - Edit folder'))
 			->content(
 				View_Model::factory('admin/page/assets/folders/edit', $request_data)

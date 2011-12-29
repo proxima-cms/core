@@ -16,7 +16,7 @@ class Proxima_Controller_Page extends Controller_Base {
 		// Generate the page title.
 		$page->title = Kohana::$config->load('site.title') . ' - ' . $page->title;
 
-		Page_view::instance()
+		$this->template
 			->page($page)
 			->content(
 				View::factory($template)

@@ -10,7 +10,7 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Users'))
 			->content(
 				View_Model::factory('admin/page/users/index', $request_data)
@@ -21,7 +21,7 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Add user'))
 			->content(
 				View_Model::factory('admin/page/users/add', $request_data)
@@ -61,7 +61,7 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 		
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Edit user'))
 			->content(
 				View_Model::factory('admin/page/users/edit', $request_data)
@@ -125,7 +125,7 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 			$open_groups = explode(',', $open_groups);
 		}
 		
-		Page_View::instance()
+		$this->template
 			->content(
 				ORM::factory('group')
 				->tree_list_html('admin/page/users/tree', 0, $open_groups)

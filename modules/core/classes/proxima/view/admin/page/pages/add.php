@@ -6,7 +6,7 @@ class Proxima_View_Admin_Page_Pages_Add extends View_Model_Admin {
 	{
 		parent::__construct($file, $data);
 
-		Page_View::instance()
+		$this->template
 			->styles(array(Kohana::$config->load('admin/media.paths.tinymce_skin')))
 			->scripts(array( 
 				Kohana::$config->load('admin/media.paths.tinymce_jquery'),

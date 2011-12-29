@@ -4,6 +4,6 @@ class Proxima_View_Admin_Page_Assets_Popup_Index extends View_Admin_Page_Assets_
 	
 	public function var_upload_html()
 	{
-		return View_Model::factory('admin/page/assets/popup/upload')->set('errors', array());
+		return Request::factory('admin/assets/popup/upload')->execute();
 	}
 }

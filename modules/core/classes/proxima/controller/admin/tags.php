@@ -6,7 +6,7 @@ class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Tags'))
 			->content(
 				View_Model::factory('admin/page/tags/index', $request_data)
@@ -17,7 +17,7 @@ class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 	{
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Add tag'))
 			->content(
 				View_Model::factory('admin/page/tags/add', $request_data)
@@ -57,7 +57,7 @@ class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 		
 		$request_data = array('request' => $this->request->query());  
 
-		Page_View::instance()
+		$this->template
 			->title(__('Admin - Edit tag'))
 			->content(
 				View_Model::factory('admin/page/tags/edit', $request_data)

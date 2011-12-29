@@ -14,7 +14,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			$this->request->redirect('admin');
 		}
 
-		Page_View::instance()
+		$this->template
 			->title(__('Sign in'))
 			->content(
 				View_Model::factory('admin/page/auth/signin')
