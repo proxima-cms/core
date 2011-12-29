@@ -200,7 +200,7 @@ textarea.error-field {
 }
 .label-error { 
 	color: #BB0000; 
-	background: url(../img/error.gif) no-repeat 5px 2px;
+	background: url(../../img/admin/error.gif) no-repeat 5px 2px;
 	padding-left: 20px;
 }
 .checkbox input { 
@@ -293,10 +293,10 @@ td, th {
 	min-height: 16px;
 }
 #messages .success { 
-	background: url(/modules/admin/media/img/tick-circle-frame.png) no-repeat 0 0;
+	background: url(../../img/admin/tick-circle-frame.png) no-repeat 0 0;
 }
 #messages .error { 
-	background: url(/modules/admin/media/img/exclamation-red-frame.png) no-repeat 0 0;
+	background: url(../../img/admin/exclamation-red-frame.png) no-repeat 0 0;
 }
 
 #page-links p {

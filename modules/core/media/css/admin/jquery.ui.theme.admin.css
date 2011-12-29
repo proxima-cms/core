@@ -186,10 +186,10 @@
 	min-height: 16px;
 }
 .tree li a.tree-parent { 
-	background: url(../img/ui-theme/icon_toggle_open.gif) 5px 50% no-repeat;
+	background: url(../../img/admin/ui-theme/icon_toggle_open.gif) 5px 50% no-repeat;
 }
 .tree li a.tree-parent-collapsed { 
-	background: url(../img/ui-theme/icon_toggle_closed.gif) 8px 50% no-repeat;
+	background: url(../../img/admin/ui-theme/icon_toggle_closed.gif) 8px 50% no-repeat;
 }
 .tree li a:hover,
 .tree li a.tree-parent:hover,
@@ -233,7 +233,7 @@
 }
 /* Default icon */
 .tree li .tree-icon-item {
-	background: url(../img/ui-theme/icon_file.gif) 0px 50% no-repeat;
+	background: url(../../img/admin/ui-theme/icon_file.gif) 0px 50% no-repeat;
 }
 
 .tree,.tree ul,.tree li { list-style:none; margin:0; padding:0; zoom: 1; }
@@ -246,10 +246,10 @@
 /* Groups */
 .groups .tree li a .tree-icon-item,
 .users .tree li a .tree-icon-item {
-	background-image: url(../img/ui-theme/icon_users.png);
+	background-image: url(../../img/admin/ui-theme/icon_users.png);
 }
 .users li a.user .tree-icon-item {
-	background-image: url(../img/ui-theme/icon_user.png);
+	background-image: url(../../img/admin/ui-theme/icon_user.png);
 }
 
 /* Selectmenu default

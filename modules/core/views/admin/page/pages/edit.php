@@ -63,12 +63,14 @@
 				<div class="field">
 					<?php if ($page_published === TRUE){?>
 						<p>
-						<img src="/modules/admin/media/img/tick-circle-frame.png" style="float:left;margin-right:4px;" />
-						This page is published!</p>
+							<?php echo HTML::image(Core::path('media/img/admin/tick-circle-frame.png'), array('style' => 'float:left;margin-right:4px;')); ?>
+							This page is published!
+						</p>
 					<?php } else {?>
 						<p>
-						<img src="/modules/admin/media/img/exclamation-red-frame.png" style="float:left;margin-right:4px;" />
-						This page is not published!</p>
+							<?php echo HTML::image(Core::path('media/img/admin/exclamation-red-frame.png'), array('style' => 'float:left;margin-right:4px;')); ?>
+							This page is not published!
+						</p>
 					<?php }?>
 				</div>
 				<div class="field clear">
