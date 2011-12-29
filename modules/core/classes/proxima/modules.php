@@ -32,31 +32,26 @@ class Proxima_Modules {
 	// the module config string.
 	private static function get_module_config()
 	{
-		$modules_db = ORM::factory('module')
+		// Get the enabled addon modules.
+		$modules = ORM::factory('module')
 			->where('enabled', '=', TRUE)
 			->order_by('order', 'ASC')
 			->find_all();
 
-		// The following logic moves modules with order of -1 
-		// to the end of an array.
-		$modules = array(
-			'sorted'   => array(),
-			'unsorted' => array()
-		);
-		foreach($modules_db as $module)
-		{		
-			$key = ((int) $module->order === -1) ? 'unsorted' : 'sorted';
-
-			$modules[$key][] = $module;
-		}		
-		$modules = array_merge($modules['sorted'], $modules['unsorted']);
-
 		// Now build a string with the config array.
 		$config = '';
+		
 		foreach($modules as $module)
 		{
-			$config .= "\t'{$module->name}' => CORPATH.'{$module->name}',\n";
+			$config .= "\t'{$module->name}' => MODPATH.'{$module->name}',\n";
 		}
+		
+		// Add the default modules.
+		foreach(Kohana::$config->load('default.modules') as $module)
+		{
+			$config .= "\t'{$module}' => MODPATH.'{$module}',\n";
+	  }
+
 		$config .= ');';
 
 		// Find the modules config file path
@@ -73,7 +68,7 @@ class Proxima_Modules {
 	// Return the module config.
 	public static function config($module = '')
 	{
-		$file = CORPATH.join(DIRECTORY_SEPARATOR, array(
+		$file = MODPATH.join(DIRECTORY_SEPARATOR, array(
 			$module,
 			'config',
 			$module,
@@ -99,22 +94,19 @@ class Proxima_Modules {
 			->find_all();
 
 		$config = "\t'links' => array(\n";
+		
+		foreach(Kohana::$config->load('admin/default.nav.links') as $url => $module)
+		{
+			$config .= "\t\t'{$url}' => '{$module}',\n";
+		}
 
 		foreach($modules as $module)
 		{
-			$mod_config = Modules::config($module->name);
-
-			// FIXME
-			if ($mod_config === NULL OR ! Arr::get($mod_config, 'admin_nav'))
-			{
-				continue;
-			}
-
-			$nav_name = $module->nav_name;
+			$mod_config     = Modules::config($module->name);
+			$nav_name       = $module->nav_name;
 			$nav_controller = $module->nav_controller;
-
-			$admin_url  = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
-			$admin_name = $module->nav_name ?: Arr::get($mod_config, 'name');
+			$admin_url      = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
+			$admin_name     = $module->nav_name ?: Arr::get($mod_config, 'name');
 
 			$config .= "\t\t'{$admin_url}' => '{$admin_name}',\n";
 		}		
@@ -146,20 +138,32 @@ class Proxima_Modules {
 	// Save all module file data to the database.
 	public static function save_all()
 	{
-		$modules = Kohana::list_files(NULL, array(CORPATH, MODPATH));
+		$modules = Kohana::list_files(NULL, array(MODPATH));
 			
 		foreach($modules as $name => $module)
 		{
-			$config         = Modules::config($name);
-			$enabled        = Arr::get($config, 'enabled', TRUE);
-			$order          = Arr::get($config, 'load_order', -1);
+			$config = Modules::config($name);
+
+			$module_db = ORM::factory('module')
+				->where('name', '=', $name)
+				->find();
+
+			if ($config === NULL)
+			{
+				if ($module_db->loaded())
+				{
+					$module_db->delete();
+				}
+				continue;
+			}
+			
+			$enabled        = $module_db->loaded() ? $module_db->enabled : Arr::get($config, 'enabled', TRUE);
+			$order          = Arr::get($config, 'load_order', 0);
 			$admin_nav      = Arr::get($config, 'admin_nav', array());
 			$nav_controller = Arr::get($admin_nav, 'controller');
 			$nav_name       = Arr::get($admin_nav, 'name') ?: Arr::get($config, 'name');
-
-			ORM::factory('module')
-				->where('name', '=', $name)
-				->find()
+		
+			$module_db
 				->values(array(
 					'name' => $name,
 					'nav_controller' => $nav_controller,

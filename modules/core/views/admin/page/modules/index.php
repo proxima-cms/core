@@ -9,7 +9,14 @@
 	<?php echo $breadcrumbs?>
 </div>
 
-<h2>Modules</h2>
+<h2>Enabled Modules</h2>
+<ul>
+	<?php foreach($kohana_modules as $name => $path) {?>
+		<li><?php echo $name; ?></li>
+	<?php } ?>
+</ul>
+
+<h2>Addon modules</h2>
 
 <ul>
 	<?php foreach($modules as $name => $path){?>

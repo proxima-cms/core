@@ -1,18 +1,19 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Monday 19th of December 2011 09:26:32 PM
+ * Auto generated on: Thursday 29th of December 2011 10:06:33 PM
  */
 
 return array(
 	'links' => array(
-		'admin/blogimport' => 'Blog import',
-		'admin/assets' => 'Assets',
-		'admin/admin' => 'Admin',
-		'admin/modules' => 'Modules',
-		'admin/components' => 'Components',
+		'admin' => 'Dashboard',
 		'admin/pages' => 'Pages',
-		'admin/tags' => 'Tags',
 		'admin/users' => 'Users',
+		'admin/assets' => 'Assets',
+		'admin/tags' => 'Tags',
+		'admin/config' => 'Config',
+		'admin/cache' => 'Cache',
+		'admin/redirects' => 'Redirects',
+		'admin/modules' => 'Modules',
 	)
 );

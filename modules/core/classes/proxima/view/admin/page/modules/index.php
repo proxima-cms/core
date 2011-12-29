@@ -26,18 +26,30 @@ class Proxima_View_Admin_Page_Modules_Index extends View_Model_Admin_Page_Index 
 		return $enabled_modules;
 	}
 
-	// Return an array of all modules found on filesystem.
+	// Return an array of all enabled Kohana modules.
+	public function var_kohana_modules()
+	{
+		return Kohana::modules();
+	}
+
+	// Return an array of all addon modules found on filesystem.
+	// Addon modules are those not found in the default modules load list.
 	public function var_modules()
 	{
-		$modules = array();
+		$modules_file = Kohana::list_files(NULL, array(MODPATH));
 
-		$files = Kohana::list_files(NULL, array(CORPATH, MODPATH));
+		$default_modules = Kohana::$config->load('default.modules');
+		
+		$addon_modules = array();
 
-		foreach($files as $name => $module)
-		{   
-			$modules[str_replace(CORPATH, '', $name)] = $name;
-		}   
+		foreach($modules_file as $name => $module)
+		{
+			if (!in_array($name, $default_modules))
+			{
+				$addon_modules[$name] = $name; 
+			}
+		}
 
-		return $modules;
+		return $addon_modules;
 	}
 }

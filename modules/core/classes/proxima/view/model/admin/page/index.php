@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class View_Model_Admin_Page_Index extends View_Model_Admin {
+class Proxima_View_Model_Admin_Page_Index extends View_Model_Admin {
 	
 	protected $order_by = 'name';
 
