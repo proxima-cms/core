@@ -13,6 +13,11 @@ class Core {
 		// Check system paths exist.
 		self::check_paths();
 
+		// Set module default config.
+		Cache::$default = 'apc';
+		Image::$default_driver = 'imagick';
+		Cookie::$salt = 'proxima-cms';
+
 		// Attach the database config reader.
 		Kohana::$config->attach(new Config_Database);
 	}
