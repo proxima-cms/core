@@ -6,7 +6,7 @@ return array(
 			'admin'              => __('Dashboard'),
 			'admin/pages'        => __('Pages'),
 			'admin/users'        => __('Users'),
-			//'admin/groups'     => __('Groups'),
+			'admin/groups'       => __('Groups'),
 			//'admin/roles'      => __('Roles'),
 			'admin/assets'       => __('Assets'),
 			'admin/tags'         => __('Tags'),

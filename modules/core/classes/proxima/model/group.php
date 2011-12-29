@@ -2,37 +2,24 @@
 
 class Proxima_Model_Group extends Model_Base_Group {
 
-	public function admin_create(& $data)
+	public function admin_add($data)
 	{
-		$data = Validate::factory($data)
-			->rules('parent_id', $this->_rules['parent_id'])
-			->rules('name', $this->_rules['name']);
-			
-		foreach($this->_callbacks['name'] as $callback)
-				{
-			$data->callback('name', array($this, $callback));
-		}            
-		
-		if (!$data->check()) return FALSE;
-
 		$this->values($data);
-		$this->save();
 
-		return $data;
+		return $this->save();
 	}
 
-	public function admin_update(& $data)
+	public function admin_update($data)
 	{
-		$data = Validate::factory($data)
-			->rules('parent_id', $this->_rules['parent_id'])
-			->rules('name', $this->_rules['name']);
 
-		if (!$data->check()) return FALSE;
+		if (!$this->loaded())
+		{
+			throw new Exception('Group is not loaded.');
+		}
 
 		$this->values($data);
-		$this->save();
 
-		return $data;
+		return $this->save();
 	}
 	
 	public function admin_delete($id = NULL, & $data)

@@ -15,13 +15,13 @@
 		<div class="field">
 			<?php echo 
 				Form::label('parent_id', __('Parent group'), NULL, $errors),
-				Form::select('parent_id', $groups, $_POST['parent_id'], NULL, $errors)
+				Form::select('parent_id', $groups, $group->parent_id, NULL, $errors)
 			?>
 		</div>
 		<div class="field">
 			<?php echo 
 				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', $_POST['name'], NULL, $errors)
+				Form::input('name', $group->name, NULL, $errors)
 			?>
 		</div>
 

@@ -9,14 +9,35 @@
 	<?php echo $breadcrumbs?>
 </div>
 
-<fieldset>
-	
-	<div id="groups-tree" class="ui-tree">
-		loading tree...
-	</div>
-	
-</fieldset>
+<table>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($items as $group){?>
+		<tr>
+			<td><?php echo $group->id;?></td>
+			<td>
+				<?php echo HTML::anchor('admin/groups/edit/'.$group->id, $group->name)?>
+			</td>
+			<td><?php echo $group->friendly_date()?></td>
+		</tr>
+		<?php }?> 
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="4">
+				<div style="float:right"></div>
+				Showing <?php echo $items->count()?> of <?php echo $total?> groups
+			</td> 
+		</tr>   
+	</tfoot>   
+</table>
 
-<fieldset id="groups-information" class="groups-information ui-helper-hidden last">
-	Showing <span id="total-groups"></span> groups
+<fieldset id="users-information" class="users-information ui-helper-hidden last">
+	Showing <span id="total-users"></span> users and groups
 </fieldset>
