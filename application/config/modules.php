@@ -5,7 +5,7 @@
  */
 
 return array(
-	'proxima' => MODPATH.'proxima',
+	'core' => MODPATH.'core',
 	'message' => MODPATH.'message',
 	'image' => MODPATH.'image',
 	'database' => MODPATH.'database',
