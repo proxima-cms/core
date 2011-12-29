@@ -1,14 +1,14 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Monday 19th of December 2011 01:36:43 PM
+ * Auto generated on: Monday 19th of December 2011 09:26:32 PM
  */
 
 return array(
 	'modules' => CORPATH.'modules',
+	'assets' => CORPATH.'assets',
 	'pages' => CORPATH.'pages',
 	'admin' => CORPATH.'admin',
-	'assets' => CORPATH.'assets',
 	'users' => CORPATH.'users',
 	'tags' => CORPATH.'tags',
 	'site' => CORPATH.'site',

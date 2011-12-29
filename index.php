@@ -6,19 +6,19 @@
  *
  * @see  http://kohanaframework.org/guide/about.install#application
  */
-$application = 'proxima/application';
+$application = 'application';
 
 /**
  * The directory in which your modules are located.
  *
  * @see  http://kohanaframework.org/guide/about.install#modules
  */
-$modules = 'proxima/modules';
+$modules = 'modules';
 
 /**
  * The directory in which the proxima core file are located.
  */
-$core = 'proxima/core';
+$core = 'proxima';
 
 /**
  * The directory in which the Kohana resources are located. The system
