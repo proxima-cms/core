@@ -18,7 +18,7 @@ $modules = 'modules';
 /**
  * The directory in which the proxima core file are located.
  */
-$core = 'proxima';
+$core = 'modules/proxima';
 
 /**
  * The directory in which the Kohana resources are located. The system
