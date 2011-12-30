@@ -35,7 +35,16 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 
 				Message::set(Message::SUCCESS, __('Folder successfully added.'));			
 
-				$this->request->redirect('admin/assets/folders');
+				$return_to = $this->request->post('return_to');
+
+				if ($return_to)
+				{
+					$this->request->redirect($return_to);
+				}
+				else
+				{
+					$this->request->redirect('admin/assets/folders');
+				}
 			}
 			catch(ORM_Validation_Exception $e)
 			{

@@ -40,7 +40,7 @@
 <div class="section clear">
 	<h3>
 		<span style="float:right;font-weight:normal;">
-			<?php echo HTML::anchor('admin/assets/folders/add', __('Add +'), array('style' => 'font-weight:normal'));?>
+			<?php echo HTML::anchor('admin/assets/folders/add?return_to='.Request::current()->uri(), __('Add +'), array('style' => 'font-weight:normal'));?>
 			|
 			<?php echo HTML::anchor('admin/assets/folders', __('Manage'), array('style' => 'font-weight:normal'));?>
 		</span>

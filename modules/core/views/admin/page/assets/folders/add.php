@@ -2,6 +2,8 @@
 
 <?php echo Form::open()?>
 
+	<?php echo Form::hidden('return_to', $return_to); ?>
+
 	<fieldset>
 		<legend>New folder</legend>
 		<div class="field">
