@@ -6,8 +6,6 @@ abstract class Proxima_Date extends Kohana_Date {
 	{
 		$time = strtotime($date);
 
-		$date_format = Kohana::$config->load('listing.date_format');
-
 		// If not less than 5 min then return formatted date, else return fuzzy span date.
 		if (time() - $time > (60 * 5)) 
 		{   
