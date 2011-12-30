@@ -34,7 +34,7 @@
 		<tr>
 			<td colspan="4">
 				<div style="float:right"></div>
-				Showing <?php echo $items->count()?> of <?php echo $total?> tags
+				Showing <?php echo $items->count()?> of <?php echo $total?> users
 			</td> 
 		</tr>   
 	</tfoot>   

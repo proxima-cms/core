@@ -34,7 +34,7 @@
 			<?php foreach($roles as $role){?>
 			<div class="checkbox">
 				<?php echo 
-					Form::checkbox('roles[]', $role->id, FALSE, array('id' => 'role-'.$role->id)),
+					Form::checkbox('roles[]', $role->id, in_array($role, $user_roles), array('id' => 'role-'.$role->id)),
 					Form::label('role-'.$role->id, $role->name)
 				?>
 			</div>
@@ -44,8 +44,19 @@
 	<fieldset>
 		<legend>Groups</legend>
 		<div class="field">
-			<div id="groups-tree">Loading tree...</div>
+			<?php echo
+				Form::label('groups', __('Groups'))
+			?>
+			<?php foreach($groups as $group){?>
+			<div class="checkbox">
+				<?php echo 
+					Form::checkbox('groups[]', $group->id, in_array($group, $user_groups), array('id' => 'group-'.$group->id)),
+					Form::label('group-'.$group->id, $group->name)
+				?>
+			</div>
+			<?php }?>
 		</div>
-	</fieldset>	
+	</fieldset>
 	<?php echo Form::button('save', 'Save', array('class' => 'ui-button save'))?>			
 <?php echo Form::close()?>
+

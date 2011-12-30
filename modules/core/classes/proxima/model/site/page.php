@@ -1,9 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-/*
- * This model represent a MySQL VIEW
- */
-
 class Proxima_Model_Site_Page extends Model_Base {
 
 	protected $_belongs_to = array(
@@ -12,7 +8,7 @@ class Proxima_Model_Site_Page extends Model_Base {
 	);  
 
 	protected $_has_many = array(
-		'children'      => array('model' => 'site_page', 'foreign_key' => 'parent_id'),
+		'children'    => array('model' => 'site_page', 'foreign_key' => 'parent_id'),
 	); 
 
 	protected $_table_columns = array(

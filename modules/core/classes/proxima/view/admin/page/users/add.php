@@ -13,5 +13,14 @@ class Proxima_View_Admin_Page_Users_Add extends View_Model_Admin {
 	{
 		return ORM::factory('group')->find_all();
 	}
+	
+	public function var_user_roles()
+	{
+		return (array) Request::current()->post('roles');
+	}
 
+	public function var_user_groups()
+	{
+		return (array) Request::current()->post('groups');
+	}
 }

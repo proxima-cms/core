@@ -11,6 +11,7 @@
 
 <?php echo Form::open(NULL, array('class' => 'ajax-validate'))?>
 	<fieldset>
+		<legend>User Group</legend>
 
 		<div class="field">
 			<?php echo 
@@ -28,3 +29,9 @@
 		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
 	</fieldset>
 <?php echo Form::close()?>
+
+<fieldset>
+	<legend>Users in this group</legend>
+
+	<?php echo $users; ?>
+</fieldset>

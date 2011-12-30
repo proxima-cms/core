@@ -93,17 +93,20 @@ class Proxima_Model_User extends Model_Auth_User {
 
 	public function update_roles($roles)
 	{
-		foreach(ORM::factory('role')->find_all() as $role) {
-
-			if (in_array($role->id, $roles)) {
-
-				try {
+		foreach(ORM::factory('role')->find_all() as $role)
+		{
+			if (in_array($role->id, $roles)) 
+			{
+				try 
+				{
 					// Add roles relationship
 					$this->add('roles', new Model_Role(array('id' => $role->id)));
+				}
+				catch(Exception $e){}
 
-				} catch(Exception $e){}
-
-			} else {
+			}
+			else
+			{
 				// Remove roles relationship
 				$this->remove('roles', new Model_Role(array('id' => $role->id)));
 			}
@@ -112,17 +115,19 @@ class Proxima_Model_User extends Model_Auth_User {
 	
 	public function update_groups($groups)
 	{
-		foreach(ORM::factory('group')->find_all() as $group) {
-
-			if (in_array($group->id, $groups)) {
-
-				try {
-					// Add roles relationship
+		foreach(ORM::factory('group')->find_all() as $group)
+		{
+			if (in_array($group->id, $groups))
+			{
+				try
+				{
+					// Add groups relationship
 					$this->add('groups', new Model_Group(array('id' => $group->id)));
-
-				} catch(Exception $e){}
-
-			} else {
+				} 
+				catch(Exception $e){}
+			} 
+			else 
+			{
 				// Remove roles relationship
 				$this->remove('groups', new Model_Group(array('id' => $group->id)));
 			}

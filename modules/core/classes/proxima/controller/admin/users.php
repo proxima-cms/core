@@ -17,6 +17,20 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 			);
 	}
 
+	public function action_list()
+	{
+		$request_data = array(
+			'request' => $this->request->query(),
+			'group_id' => $this->request->param('id')
+		);
+
+		$this->template
+			->title(__('Admin - Users'))
+			->content(
+				View_Model::factory('admin/page/users/list', $request_data)
+			);
+	}
+
 	public function action_add()
 	{
 		$request_data = array('request' => $this->request->query());  
