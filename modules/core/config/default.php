@@ -2,6 +2,7 @@
 
 return array(
 	'modules' => array(
+		'minion',
 		'core',
 		'message',
 		'image',
@@ -9,8 +10,7 @@ return array(
 		'compress',
 		'cache',
 		'auth',
-		'minion',
 		'orm',
-		'pagination'
+		'pagination',
 	)
 );
