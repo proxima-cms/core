@@ -18,8 +18,11 @@ class Proxima_Core {
 		Image::$default_driver = 'imagick';
 		Cookie::$salt = 'proxima-cms';
 
-		// Attach the database config reader.
-		Kohana::$config->attach(new Config_Database);
+		if ( ! Kohana::$is_cli)
+		{
+			// Attach the database config reader.
+			Kohana::$config->attach(new Config_Database);
+		}
 
 		// Set the application routes.
 		self::set_routes();
@@ -91,13 +94,13 @@ class Proxima_Core {
 	}
 	
 	/**
-	* Set the application routes.
+	* Set the site application routes.
 	*
 	* @return  void
 	*/
 	public static function set_routes()
 	{
-		if ( TRUE OR ! Route::cache())
+		if ( ! Route::cache() AND ! Kohana::$is_cli)
 		{
 			/*
 			 * Asset routes 
