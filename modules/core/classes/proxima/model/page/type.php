@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Proxima_Model_Page_Type extends Model_Base
-{ 
+class Proxima_Model_Page_Type extends Model_Base { 
+
 	protected $_has_many = array(
 		'component_type'      => array('model' => 'component_type', 'through' => 'page_type_component_types'),
 	);

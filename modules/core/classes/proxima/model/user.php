@@ -2,13 +2,12 @@
 
 class Proxima_Model_User extends Model_Auth_User {
 	
-	// Relationships (TODO: check these relationsips aren't already set in auth)
 	protected $_has_many = array(
-		'user_tokens'		=> array('model' => 'user_token'),
-		'assets'				=> array('model' => 'asset'),
-		'pages'					=> array('model' => 'pages'),
-		'roles'					=> array('model' => 'role', 'through' => 'roles_users'),
-		'groups'				=> array('model' => 'group', 'through' => 'groups_users')
+		'user_tokens'	=> array('model' => 'user_token'),
+		'assets'			=> array('model' => 'asset'),
+		'pages'				=> array('model' => 'pages'),
+		'roles'				=> array('model' => 'role', 'through' => 'roles_users'),
+		'groups'			=> array('model' => 'group', 'through' => 'groups_users')
 	);
 
 	public function admin_add($data = array())
@@ -17,8 +16,8 @@ class Proxima_Model_User extends Model_Auth_User {
 		$this->values($data);
 		$this->save();
 		
-		$this->update_roles((array) Arr::get($data, 'roles'));
-		$this->update_groups((array) Arr::get($data, 'groups'));
+		$this->update_roles( (array) Arr::get($data, 'roles'));
+		$this->update_groups( (array) Arr::get($data, 'groups'));
 	}
 
 	public function admin_update($data = array())
@@ -27,8 +26,8 @@ class Proxima_Model_User extends Model_Auth_User {
 		$this->values($data);
 		$this->save();
 
-		$this->update_roles((array) Arr::get($data, 'roles'));
-		$this->update_groups((array) Arr::get($data, 'groups'));
+		$this->update_roles( (array) Arr::get($data, 'roles'));
+		$this->update_groups( (array) Arr::get($data, 'groups'));
 	}
 
 	private function check_passwords($data)
@@ -40,7 +39,8 @@ class Proxima_Model_User extends Model_Auth_User {
 					array('matches', 
 						array(':validation', ':field', 'password')
 					)
-				));
+				)
+			);
 
 		if (!$validation->check())
 		{
