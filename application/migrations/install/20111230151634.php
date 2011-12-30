@@ -821,368 +821,368 @@
 				(478, 'x-world', 'x-vrml', 'vrm'),
 				(479, 'x-world', 'x-vrml', 'vrml'),
 				(480, 'x-world', 'x-vrml', 'wrl');"
-			);
-		}
+		);
+	}
 
-		private function create_migrations($db)
+	private function create_migrations($db)
+	{
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `minion_migrations` (
+				`timestamp` varchar(14) NOT NULL,
+				`description` varchar(100) NOT NULL,
+				`group` varchar(100) NOT NULL,
+				`applied` tinyint(1) DEFAULT '0',
+				PRIMARY KEY (`timestamp`,`group`),
+				UNIQUE KEY `MIGRATION_ID` (`timestamp`,`description`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+		);
+	}
+
+	private function create_modules($db)
+	{
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `modules` (
+				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`enabled` tinyint(4) NOT NULL DEFAULT '0',
+				`order` int(11) NOT NULL DEFAULT '-1',
+				`name` varchar(255) NOT NULL,
+				`nav_name` varchar(64) NOT NULL,
+				`nav_controller` varchar(64) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "CREATE TRIGGER modules_date_updated_update BEFORE UPDATE ON modules FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER modules_date_updated_insert BEFORE INSERT ON modules FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+	}
+
+	private function create_pages($db)
+	{
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `pages` (
+				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`user_id` int(11) NOT NULL,
+				`pagetype_id` int(11) NOT NULL,
+				`parent_id` int(11) NOT NULL,
+				`is_homepage` tinyint(1) DEFAULT '0',
+				`draft` tinyint(1) NOT NULL DEFAULT '1',
+				`visible_in_nav` tinyint(1) NOT NULL DEFAULT '1',
+				`title` varchar(128) NOT NULL,
+				`uri` varchar(255) DEFAULT NULL,
+				`description` varchar(255) NOT NULL,
+				`body` text NOT NULL,
+				`visible_from` timestamp NULL DEFAULT NULL,
+				`visible_to` timestamp NULL DEFAULT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `uri` (`uri`),
+				KEY `fk_user_id` (`user_id`),
+				KEY `fk_page_id` (`parent_id`),
+				KEY `fk_pagetype_id` (`pagetype_id`),
+				FULLTEXT KEY `title` (`title`,`description`,`body`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "CREATE TRIGGER pages_date_updated_update BEFORE UPDATE ON pages FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER pages_date_updated_insert BEFORE INSERT ON pages FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `page_types` (
+				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`controller` varchar(155) DEFAULT NULL,
+				`template` varchar(32) NOT NULL,
+				`name` varchar(32) NOT NULL,
+				`description` text NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				KEY `controller` (`controller`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "CREATE TRIGGER page_types_date_updated_update BEFORE UPDATE ON page_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER page_types_date_updated_insert BEFORE INSERT ON page_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
+		$db->query(NULL, "
+			INSERT INTO `page_types` (`controller`, `template`, `name`, `description`) VALUES
+			(NULL, 'listing.php', 'Listing page', 'A listing template.'),
+			(NULL, 'page.php', 'Generic Page', 'Displays a single page'),
+			('tag', 'listing_by_tags.php', 'Listing by tags', 'Displays a filtered list by tags'),
+			('search', 'search_results.php', 'Search', 'Search results'),
+			('contact', 'contact.php', 'Contact page', 'Contact page with contact form');"
+		);
+
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `page_type_component_types` (
+				`component_type_id` int(11) NOT NULL DEFAULT '0',
+				`page_type_id` int(11) NOT NULL DEFAULT '0',
+				`name` varchar(255) NOT NULL,
+				KEY `component_type_id` (`component_type_id`,`page_type_id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+		);
+
+		$db->query(NULL, "
+			CREATE VIEW `site_pages` AS
+				select
+					`page`.`id` AS `id`
+					,`page`.`user_id` AS `user_id`
+					,`page`.`pagetype_id` AS `pagetype_id`
+					,`page`.`parent_id` AS `parent_id`
+					,`page`.`is_homepage` AS `is_homepage`
+					,`page`.`visible_in_nav` AS `visible_in_nav`
+					,`page`.`draft` AS `draft`
+					,`page`.`title` AS `title`
+					,`page`.`uri` AS `uri`
+					,`page`.`description` AS `description`
+					,`page`.`body` AS `body`
+					,`page`.`visible_from` AS `visible_from`
+					,`page`.`visible_to` AS `visible_to`
+					,`page`.`date_updated` AS `date_updated`
+					,`page`.`date` AS `date`
+					,`pagetype`.`controller` AS `pagetype_controller`
+					,`pagetype`.`template` AS `pagetype_template`
+					,`pagetype`.`name` AS `pagetype_name`
+					,`pagetype`.`description` AS `pagetype_description`
+					,`user`.`email` AS `user_email`
+					,`user`.`username` AS `user_username`,
+					group_concat(cast(`tags`.`id` as char charset utf8),'|',cast(`tags`.`user_id` as char charset utf8),'|',`tags`.`name`,'|',`tags`.`slug`,'|',cast(`tags`.`date` as char charset utf8) separator ',') AS `tags`
+				from ((((`pages` `page` join `page_types` `pagetype` on((`page`.`pagetype_id` = `pagetype`.`id`)))
+				join `users` `user` on((`page`.`user_id` = `user`.`id`)))
+				left join `tags_pages` on((`page`.`id` = `tags_pages`.`page_id`)))
+				left join `tags` on((`tags_pages`.`tag_id` = `tags`.`id`)))
+				where ((`page`.`visible_from` <= now()) and (isnull(`page`.`visible_to`) or (`page`.`visible_to` >= now())) and (`page`.`draft` = 0))
+				group by `page`.`id`"
+			);
+
+		$db->query(NULL, "
+			INSERT INTO `pages`
+				(`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES
+				(1, 1, 0, 1, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', NULL, NULL)"
+		);
+
+	}
+
+	private function create_redirects($db)
+	{
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `redirects` (
+				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`uri` varchar(255) NOT NULL,
+				`target` varchar(255) NOT NULL,
+				`target_id` int(11) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `uri` (`uri`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "CREATE TRIGGER redirects_date_updated_update BEFORE UPDATE ON redirects FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER redirects_date_updated_insert BEFORE INSERT ON redirects FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+	}
+
+	private function create_roles($db)
+	{
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `roles` (
+				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`name` varchar(32) NOT NULL,
+				`description` varchar(255) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `uniq_name` (`name`)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "CREATE TRIGGER roles_date_updated_update BEFORE UPDATE ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER roles_date_updated_insert BEFORE INSERT ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
+		$db->query(NULL, "
+			INSERT INTO `roles` (`id`, `name`, `description`) VALUES
+			(1, 'login', 'Login privileges, granted after account confirmation'),
+			(2, 'admin', 'Administrative user, has access to everything.')"
+		);
+
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `roles_users` (
+				`user_id` int(10) unsigned NOT NULL,
+				`role_id` int(10) unsigned NOT NULL,
+				PRIMARY KEY (`user_id`,`role_id`),
+				KEY `fk_role_id` (`role_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+		);
+
+		$db->query(NULL, "
+			ALTER TABLE `roles_users`
+				ADD CONSTRAINT `roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+				ADD CONSTRAINT `roles_users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE"
+		);
+	}
+
+	private function create_tags($db)
+	{
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `tags` (
+				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`user_id` int(11) NOT NULL,
+				`name` varchar(32) NOT NULL,
+				`slug` varchar(128) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "CREATE TRIGGER tags_date_updated_update BEFORE UPDATE ON tags FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER tags_date_updated_insert BEFORE INSERT ON tags FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `tags_pages` (
+				`page_id` int(10) unsigned NOT NULL,
+				`tag_id` int(10) unsigned NOT NULL,
+				PRIMARY KEY (`page_id`,`tag_id`),
+				KEY `roles_pages_ibfk_2` (`tag_id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+		);
+	}
+
+	private function create_users($db)
+	{
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `users` (
+				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`email` varchar(254) NOT NULL,
+				`username` varchar(32) NOT NULL DEFAULT '',
+				`password` varchar(64) NOT NULL,
+				`logins` int(10) unsigned NOT NULL DEFAULT '0',
+				`last_login` int(10) unsigned DEFAULT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `uniq_username` (`username`),
+				UNIQUE KEY `uniq_email` (`email`)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "CREATE TRIGGER users_date_updated_update BEFORE UPDATE ON users FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER users_date_updated_insert BEFORE INSERT ON users FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
+		$db->query(NULL, "
+			INSERT INTO `users` (`id`, `email`, `username`, `password`, `logins`, `last_login`)
+			VALUES (1, 'demo@example.com', 'demo', '7e3d63f', 0, 0)"
+		);
+
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `user_tokens` (
+				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`user_id` int(11) unsigned NOT NULL,
+				`user_agent` varchar(40) NOT NULL,
+				`token` varchar(40) NOT NULL,
+				`type` varchar(100) NOT NULL,
+				`created` int(10) unsigned NOT NULL,
+				`expires` int(10) unsigned NOT NULL,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `uniq_token` (`token`),
+				KEY `fk_user_id` (`user_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "ALTER TABLE `user_tokens` ADD CONSTRAINT `user_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE");
+	}
+
+	/**
+	 * Run queries needed to remove this migration
+	 *
+	 * @param Kohana_Database Database connection
+	 */
+	public function down(Kohana_Database $db)
+	{
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS activities_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS activities_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_folders_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_folders_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_sizes_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_sizes_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS components_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS components_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS component_types_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS component_types_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS config_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS config_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS groups_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS groups_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS mimetypes_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS mimetypes_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS modules_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS modules_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS pages_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS pages_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS page_types_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS page_types_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS redirects_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS redirects_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS roles_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS roles_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS tags_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS tags_date_updated_insert');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS users_date_updated_update');
+		$db->query(NULL, 'DROP TRIGGER IF EXISTS users_date_updated_insert');
+
+		try
 		{
 			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `minion_migrations` (
-					`timestamp` varchar(14) NOT NULL,
-					`description` varchar(100) NOT NULL,
-					`group` varchar(100) NOT NULL,
-					`applied` tinyint(1) DEFAULT '0',
-					PRIMARY KEY (`timestamp`,`group`),
-					UNIQUE KEY `MIGRATION_ID` (`timestamp`,`description`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+				ALTER TABLE `groups_users`
+					DROP FOREIGN KEY `groups_users_ibfk_1`,
+					DROP FOREIGN KEY `groups_users_ibfk_2`"
 			);
 		}
-
-		private function create_modules($db)
+		catch(Database_Exception $e) {}
+		try
 		{
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `modules` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
-					`enabled` tinyint(4) NOT NULL DEFAULT '0',
-					`order` int(11) NOT NULL DEFAULT '-1',
-					`name` varchar(255) NOT NULL,
-					`nav_name` varchar(64) NOT NULL,
-					`nav_controller` varchar(64) NOT NULL,
-					`date_updated` timestamp NULL DEFAULT NULL,
-					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-					PRIMARY KEY (`id`)
-				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-			);
-
-			$db->query(NULL, "CREATE TRIGGER modules_date_updated_update BEFORE UPDATE ON modules FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-			$db->query(NULL, "CREATE TRIGGER modules_date_updated_insert BEFORE INSERT ON modules FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-		}
-
-		private function create_pages($db)
-		{
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `pages` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
-					`user_id` int(11) NOT NULL,
-					`pagetype_id` int(11) NOT NULL,
-					`parent_id` int(11) NOT NULL,
-					`is_homepage` tinyint(1) DEFAULT '0',
-					`draft` tinyint(1) NOT NULL DEFAULT '1',
-					`visible_in_nav` tinyint(1) NOT NULL DEFAULT '1',
-					`title` varchar(128) NOT NULL,
-					`uri` varchar(255) DEFAULT NULL,
-					`description` varchar(255) NOT NULL,
-					`body` text NOT NULL,
-					`visible_from` timestamp NULL DEFAULT NULL,
-					`visible_to` timestamp NULL DEFAULT NULL,
-					`date_updated` timestamp NULL DEFAULT NULL,
-					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-					PRIMARY KEY (`id`),
-					UNIQUE KEY `uri` (`uri`),
-					KEY `fk_user_id` (`user_id`),
-					KEY `fk_page_id` (`parent_id`),
-					KEY `fk_pagetype_id` (`pagetype_id`),
-					FULLTEXT KEY `title` (`title`,`description`,`body`)
-				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-			);
-
-			$db->query(NULL, "CREATE TRIGGER pages_date_updated_update BEFORE UPDATE ON pages FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-			$db->query(NULL, "CREATE TRIGGER pages_date_updated_insert BEFORE INSERT ON pages FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `page_types` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
-					`controller` varchar(155) DEFAULT NULL,
-					`template` varchar(32) NOT NULL,
-					`name` varchar(32) NOT NULL,
-					`description` text NOT NULL,
-					`date_updated` timestamp NULL DEFAULT NULL,
-					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-					PRIMARY KEY (`id`),
-					KEY `controller` (`controller`)
-				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-			);
-
-			$db->query(NULL, "CREATE TRIGGER page_types_date_updated_update BEFORE UPDATE ON page_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-			$db->query(NULL, "CREATE TRIGGER page_types_date_updated_insert BEFORE INSERT ON page_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-
-			$db->query(NULL, "
-				INSERT INTO `page_types` (`controller`, `template`, `name`, `description`) VALUES
-				(NULL, 'listing.php', 'Listing page', 'A listing template.'),
-				(NULL, 'page.php', 'Generic Page', 'Displays a single page'),
-				('tag', 'listing_by_tags.php', 'Listing by tags', 'Displays a filtered list by tags'),
-				('search', 'search_results.php', 'Search', 'Search results'),
-				('contact', 'contact.php', 'Contact page', 'Contact page with contact form');"
-			);
-
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `page_type_component_types` (
-					`component_type_id` int(11) NOT NULL DEFAULT '0',
-					`page_type_id` int(11) NOT NULL DEFAULT '0',
-					`name` varchar(255) NOT NULL,
-					KEY `component_type_id` (`component_type_id`,`page_type_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
-			);
-
-			$db->query(NULL, "
-				CREATE VIEW `site_pages` AS
-					select
-						`page`.`id` AS `id`
-						,`page`.`user_id` AS `user_id`
-						,`page`.`pagetype_id` AS `pagetype_id`
-						,`page`.`parent_id` AS `parent_id`
-						,`page`.`is_homepage` AS `is_homepage`
-						,`page`.`visible_in_nav` AS `visible_in_nav`
-						,`page`.`draft` AS `draft`
-						,`page`.`title` AS `title`
-						,`page`.`uri` AS `uri`
-						,`page`.`description` AS `description`
-						,`page`.`body` AS `body`
-						,`page`.`visible_from` AS `visible_from`
-						,`page`.`visible_to` AS `visible_to`
-						,`page`.`date_updated` AS `date_updated`
-						,`page`.`date` AS `date`
-						,`pagetype`.`controller` AS `pagetype_controller`
-						,`pagetype`.`template` AS `pagetype_template`
-						,`pagetype`.`name` AS `pagetype_name`
-						,`pagetype`.`description` AS `pagetype_description`
-						,`user`.`email` AS `user_email`
-						,`user`.`username` AS `user_username`,
-						group_concat(cast(`tags`.`id` as char charset utf8),'|',cast(`tags`.`user_id` as char charset utf8),'|',`tags`.`name`,'|',`tags`.`slug`,'|',cast(`tags`.`date` as char charset utf8) separator ',') AS `tags`
-					from ((((`pages` `page` join `page_types` `pagetype` on((`page`.`pagetype_id` = `pagetype`.`id`)))
-					join `users` `user` on((`page`.`user_id` = `user`.`id`)))
-					left join `tags_pages` on((`page`.`id` = `tags_pages`.`page_id`)))
-					left join `tags` on((`tags_pages`.`tag_id` = `tags`.`id`)))
-					where ((`page`.`visible_from` <= now()) and (isnull(`page`.`visible_to`) or (`page`.`visible_to` >= now())) and (`page`.`draft` = 0))
-					group by `page`.`id`"
-				);
-
-			$db->query(NULL, "
-				INSERT INTO `pages`
-					(`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
-				VALUES
-					(1, 1, 0, 1, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', NULL, NULL)"
-			);
-
-		}
-
-		private function create_redirects($db)
-		{
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `redirects` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
-					`uri` varchar(255) NOT NULL,
-					`target` varchar(255) NOT NULL,
-					`target_id` int(11) NOT NULL,
-					`date_updated` timestamp NULL DEFAULT NULL,
-					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-					PRIMARY KEY (`id`),
-					UNIQUE KEY `uri` (`uri`)
-				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-			);
-
-			$db->query(NULL, "CREATE TRIGGER redirects_date_updated_update BEFORE UPDATE ON redirects FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-			$db->query(NULL, "CREATE TRIGGER redirects_date_updated_insert BEFORE INSERT ON redirects FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-		}
-
-		private function create_roles($db)
-		{
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `roles` (
-					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					`name` varchar(32) NOT NULL,
-					`description` varchar(255) NOT NULL,
-					`date_updated` timestamp NULL DEFAULT NULL,
-					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-					PRIMARY KEY (`id`),
-					UNIQUE KEY `uniq_name` (`name`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-			);
-
-			$db->query(NULL, "CREATE TRIGGER roles_date_updated_update BEFORE UPDATE ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-			$db->query(NULL, "CREATE TRIGGER roles_date_updated_insert BEFORE INSERT ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-
-			$db->query(NULL, "
-				INSERT INTO `roles` (`id`, `name`, `description`) VALUES
-				(1, 'login', 'Login privileges, granted after account confirmation'),
-				(2, 'admin', 'Administrative user, has access to everything.')"
-			);
-
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `roles_users` (
-					`user_id` int(10) unsigned NOT NULL,
-					`role_id` int(10) unsigned NOT NULL,
-					PRIMARY KEY (`user_id`,`role_id`),
-					KEY `fk_role_id` (`role_id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8"
-			);
-
 			$db->query(NULL, "
 				ALTER TABLE `roles_users`
-					ADD CONSTRAINT `roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-					ADD CONSTRAINT `roles_users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE"
+					DROP FOREIGN KEY `roles_users_ibfk_1`,
+					DROP FOREIGN KEY `roles_users_ibfk_2`"
 			);
 		}
-
-		private function create_tags($db)
+		catch(Database_Exception $e) {}
+		try
 		{
 			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `tags` (
-					`id` int(11) NOT NULL AUTO_INCREMENT,
-					`user_id` int(11) NOT NULL,
-					`name` varchar(32) NOT NULL,
-					`slug` varchar(128) NOT NULL,
-					`date_updated` timestamp NULL DEFAULT NULL,
-					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-					PRIMARY KEY (`id`)
-				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-			);
-
-			$db->query(NULL, "CREATE TRIGGER tags_date_updated_update BEFORE UPDATE ON tags FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-			$db->query(NULL, "CREATE TRIGGER tags_date_updated_insert BEFORE INSERT ON tags FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `tags_pages` (
-					`page_id` int(10) unsigned NOT NULL,
-					`tag_id` int(10) unsigned NOT NULL,
-					PRIMARY KEY (`page_id`,`tag_id`),
-					KEY `roles_pages_ibfk_2` (`tag_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+				ALTER TABLE `user_tokens`
+					DROP FOREIGN KEY `user_tokens_ibfk_1``"
 			);
 		}
+		catch(Database_Exception $e) {}
 
-		private function create_users($db)
-		{
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `users` (
-					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					`email` varchar(254) NOT NULL,
-					`username` varchar(32) NOT NULL DEFAULT '',
-					`password` varchar(64) NOT NULL,
-					`logins` int(10) unsigned NOT NULL DEFAULT '0',
-					`last_login` int(10) unsigned DEFAULT NULL,
-					`date_updated` timestamp NULL DEFAULT NULL,
-					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-					PRIMARY KEY (`id`),
-					UNIQUE KEY `uniq_username` (`username`),
-					UNIQUE KEY `uniq_email` (`email`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-			);
-
-			$db->query(NULL, "CREATE TRIGGER users_date_updated_update BEFORE UPDATE ON users FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-			$db->query(NULL, "CREATE TRIGGER users_date_updated_insert BEFORE INSERT ON users FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-
-			$db->query(NULL, "
-				INSERT INTO `users` (`id`, `email`, `username`, `password`, `logins`, `last_login`)
-				VALUES (1, 'demo@example.com', 'demo', '7e3d63f', 0, 0)"
-			);
-
-			$db->query(NULL, "
-				CREATE TABLE IF NOT EXISTS `user_tokens` (
-					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					`user_id` int(11) unsigned NOT NULL,
-					`user_agent` varchar(40) NOT NULL,
-					`token` varchar(40) NOT NULL,
-					`type` varchar(100) NOT NULL,
-					`created` int(10) unsigned NOT NULL,
-					`expires` int(10) unsigned NOT NULL,
-					PRIMARY KEY (`id`),
-					UNIQUE KEY `uniq_token` (`token`),
-					KEY `fk_user_id` (`user_id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-			);
-
-			$db->query(NULL, "ALTER TABLE `user_tokens` ADD CONSTRAINT `user_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE");
-		}
-
-		/**
-		 * Run queries needed to remove this migration
-		 *
-		 * @param Kohana_Database Database connection
-		 */
-		public function down(Kohana_Database $db)
-		{
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS activities_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS activities_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_folders_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_folders_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_sizes_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_sizes_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS components_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS components_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS component_types_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS component_types_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS config_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS config_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS groups_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS groups_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS mimetypes_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS mimetypes_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS modules_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS modules_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS pages_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS pages_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS page_types_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS page_types_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS redirects_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS redirects_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS roles_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS roles_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS tags_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS tags_date_updated_insert');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS users_date_updated_update');
-			$db->query(NULL, 'DROP TRIGGER IF EXISTS users_date_updated_insert');
-
-			try
-			{
-				$db->query(NULL, "
-					ALTER TABLE `groups_users`
-						DROP FOREIGN KEY `groups_users_ibfk_1`,
-						DROP FOREIGN KEY `groups_users_ibfk_2`"
-				);
-			}
-			catch(Database_Exception $e) {}
-			try
-			{
-				$db->query(NULL, "
-					ALTER TABLE `roles_users`
-						DROP FOREIGN KEY `roles_users_ibfk_1`,
-						DROP FOREIGN KEY `roles_users_ibfk_2`"
-				);
-			}
-			catch(Database_Exception $e) {}
-			try
-			{
-				$db->query(NULL, "
-					ALTER TABLE `user_tokens`
-						DROP FOREIGN KEY `user_tokens_ibfk_1``"
-				);
-			}
-			catch(Database_Exception $e) {}
-
-			$db->query(NULL, 'DROP TABLE IF EXISTS activities');
-			$db->query(NULL, 'DROP TABLE IF EXISTS assets');
-			$db->query(NULL, 'DROP TABLE IF EXISTS assets_folders');
-			$db->query(NULL, 'DROP TABLE IF EXISTS assets_sizes');
-			$db->query(NULL, 'DROP TABLE IF EXISTS components');
-			$db->query(NULL, 'DROP TABLE IF EXISTS component_types');
-			$db->query(NULL, 'DROP TABLE IF EXISTS config');
-			$db->query(NULL, 'DROP TABLE IF EXISTS groups_users');
-			$db->query(NULL, 'DROP TABLE IF EXISTS groups');
-			$db->query(NULL, 'DROP TABLE IF EXISTS mimetypes');
-			$db->query(NULL, 'DROP TABLE IF EXISTS modules');
-			$db->query(NULL, 'DROP TABLE IF EXISTS pages');
-			$db->query(NULL, 'DROP TABLE IF EXISTS page_types');
-			$db->query(NULL, 'DROP TABLE IF EXISTS page_type_component_types');
-			$db->query(NULL, 'DROP TABLE IF EXISTS redirects');
-			$db->query(NULL, 'DROP TABLE IF EXISTS roles');
-			$db->query(NULL, 'DROP TABLE IF EXISTS roles_users');
-			$db->query(NULL, 'DROP VIEW IF EXISTS site_pages');
-			$db->query(NULL, 'DROP TABLE IF EXISTS tags');
-			$db->query(NULL, 'DROP TABLE IF EXISTS tags_pages');
-			$db->query(NULL, 'DROP TABLE IF EXISTS user_tokens');
-			$db->query(NULL, 'DROP TABLE IF EXISTS users');
-		}
+		$db->query(NULL, 'DROP TABLE IF EXISTS activities');
+		$db->query(NULL, 'DROP TABLE IF EXISTS assets');
+		$db->query(NULL, 'DROP TABLE IF EXISTS assets_folders');
+		$db->query(NULL, 'DROP TABLE IF EXISTS assets_sizes');
+		$db->query(NULL, 'DROP TABLE IF EXISTS components');
+		$db->query(NULL, 'DROP TABLE IF EXISTS component_types');
+		$db->query(NULL, 'DROP TABLE IF EXISTS config');
+		$db->query(NULL, 'DROP TABLE IF EXISTS groups_users');
+		$db->query(NULL, 'DROP TABLE IF EXISTS groups');
+		$db->query(NULL, 'DROP TABLE IF EXISTS mimetypes');
+		$db->query(NULL, 'DROP TABLE IF EXISTS modules');
+		$db->query(NULL, 'DROP TABLE IF EXISTS pages');
+		$db->query(NULL, 'DROP TABLE IF EXISTS page_types');
+		$db->query(NULL, 'DROP TABLE IF EXISTS page_type_component_types');
+		$db->query(NULL, 'DROP TABLE IF EXISTS redirects');
+		$db->query(NULL, 'DROP TABLE IF EXISTS roles');
+		$db->query(NULL, 'DROP TABLE IF EXISTS roles_users');
+		$db->query(NULL, 'DROP VIEW IF EXISTS site_pages');
+		$db->query(NULL, 'DROP TABLE IF EXISTS tags');
+		$db->query(NULL, 'DROP TABLE IF EXISTS tags_pages');
+		$db->query(NULL, 'DROP TABLE IF EXISTS user_tokens');
+		$db->query(NULL, 'DROP TABLE IF EXISTS users');
+	}
 	}
