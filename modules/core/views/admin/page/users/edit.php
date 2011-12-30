@@ -42,8 +42,20 @@
 			?>
 		</div>
 	</fieldset>
+
+	<!-- ROLES -->
 	<fieldset>
-		<legend>Roles</legend>
+		<legend>
+			<?php echo __('Roles'); ?>
+			<span>[
+			<?php echo HTML::anchor(
+				Route::get('admin')
+					->uri(array(
+						'controller' => 'roles'
+					)), __('Manage'));
+			?>]
+			</span>
+		</legend>
 		<div class="field">
 			<?php foreach($roles as $role){?>
 			<div class="checkbox">
@@ -55,8 +67,20 @@
 			<?php }?>
 		</div>
 	</fieldset>
+
+	<!-- GROUPS -->
 	<fieldset>
-		<legend>Groups</legend>
+		<legend>
+			<?php echo __('Groups'); ?>
+			<span>[
+			<?php echo HTML::anchor(
+				Route::get('admin')
+					->uri(array(
+						'controller' => 'groups'
+					)), __('Manage'));
+			?>]
+			</span>
+		</legend>
 		<div class="field">
 			<?php echo
 				Form::label('groups', __('Groups'))
@@ -71,5 +95,30 @@
 			<?php }?>
 		</div>
 	</fieldset>
-			<?php echo Form::button('save', 'Update', array('class' => 'ui-button save'))?>
+	
+	<!-- PERMISSIONS -->
+	<fieldset>
+		<legend>
+			<?php echo __('Permissions'); ?>
+			<span>[
+			<?php echo HTML::anchor(
+				Route::get('admin')
+					->uri(array(
+						'controller' => 'permissions',
+						'action' => 'add'
+					)), __('Add'));
+			?> | 
+			<?php echo HTML::anchor(
+				Route::get('admin')
+					->uri(array(
+						'controller' => 'permissions'
+					)), __('Manage'));
+			?>]
+			</span>
+		</legend>
+		<p>No overriding permissions are saved for this user.</p>
+	</fieldset>
+	
+	<?php echo Form::button('save', 'Update', array('class' => 'ui-button save'))?>
+
 <?php echo Form::close()?>

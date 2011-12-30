@@ -9,7 +9,8 @@
 	<?php echo $breadcrumbs?>
 </div>
 
-<?php echo Form::open(NULL, array('class' => 'ajax-validate'))?>
+<!-- GROUP -->
+<?php echo Form::open()?>
 	<fieldset>
 		<legend>User Group</legend>
 
@@ -30,8 +31,29 @@
 	</fieldset>
 <?php echo Form::close()?>
 
+<!-- USERS IN THIS GROUP -->
 <fieldset>
 	<legend>Users in this group</legend>
-
 	<?php echo $users; ?>
 </fieldset>
+
+<!-- ADD USER TO THIS GROUP -->
+<?php echo Form::open(
+	Route::get('admin')
+	->uri(array(
+		'controller' => 'groups',
+		'action' => 'adduser'
+	)) . '?return_to=' . Request::current()->uri() );
+?>
+<?php echo Form::hidden('group_id', $group->id);?>
+<fieldset>
+	<legend><?php echo __('Add new user to this group'); ?></legend>
+	<div class="field">
+		<?php echo 
+			Form::label('user_id', __('User'), NULL, $errors),
+			Form::select('user_id', $users_select, 0, NULL, $errors)
+		?>
+	</div>
+	<?php echo Form::button('save-newuser', __('Add user'), array('type' => 'submit', 'class' => 'ui-button save'))?>
+</fieldset>
+<?php echo Form::close(); ?>

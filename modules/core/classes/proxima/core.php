@@ -99,7 +99,6 @@ class Proxima_Core {
 	{
 		if ( TRUE OR ! Route::cache())
 		{
-
 			/*
 			 * Asset routes 
 			 */

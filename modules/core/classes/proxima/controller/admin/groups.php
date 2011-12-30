@@ -43,6 +43,45 @@ class Proxima_Controller_Admin_Groups extends Controller_Admin_Base {
 			}
 		}
 	}
+
+	public function action_adduser()
+	{
+		if ($this->request->method() !== Request::POST)
+		{
+			throw new Request_Exception('This request can only be executed by '.Request::POST);
+		}
+
+		$return_to = $this->request->query('return_to');
+		$group_id  = $this->request->post('group_id');
+		$user_id   = $this->request->post('user_id');
+
+		if ($return_to === NULL OR $group_id === NULL OR $user_id === NULL)
+		{
+			throw new Request_Exception('Invalid request parameters.');
+		}
+
+		$user  = ORM::factory('user', $user_id);
+		$group = ORM::factory('group', $group_id);
+
+		if ( !$user->loaded())
+		{
+			throw new Request_Exception('User not found.');
+		}
+		if ( !$group->loaded())
+		{
+			throw new Request_Exception('Group not found.');
+		}
+
+		if ( ! $user->has('groups', $group))
+		{
+			$user->add('groups', $group);
+		}
+
+		Message::set(Message::SUCCESS, __('Successfully added user to group.'));
+
+		$this->request->redirect($return_to);
+	}
+
 	
 	public function action_edit()
 	{
