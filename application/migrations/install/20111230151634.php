@@ -18,7 +18,6 @@
 		$this->create_tags($db);
 		$this->create_pages($db);
 		$this->create_redirects($db);
-		$this->create_roles($db);
 		$this->create_groups($db);
 	}
 
@@ -961,7 +960,7 @@
 			INSERT INTO `pages`
 				(`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
 			VALUES
-				(1, 1, 0, 1, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', NULL, NULL)"
+				(1, 1, 0, 1, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', CURRENT_TIMESTAMP, NULL)"
 		);
 
 	}
@@ -987,41 +986,6 @@
 
 	private function create_roles($db)
 	{
-		$db->query(NULL, "
-			CREATE TABLE IF NOT EXISTS `roles` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`name` varchar(32) NOT NULL,
-				`description` varchar(255) NOT NULL,
-				`date_updated` timestamp NULL DEFAULT NULL,
-				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `uniq_name` (`name`)
-			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-		);
-
-		$db->query(NULL, "CREATE TRIGGER roles_date_updated_update BEFORE UPDATE ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-		$db->query(NULL, "CREATE TRIGGER roles_date_updated_insert BEFORE INSERT ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-
-		$db->query(NULL, "
-			INSERT INTO `roles` (`id`, `name`, `description`) VALUES
-			(1, 'login', 'Login privileges, granted after account confirmation'),
-			(2, 'admin', 'Administrative user, has access to everything.')"
-		);
-
-		$db->query(NULL, "
-			CREATE TABLE IF NOT EXISTS `roles_users` (
-				`user_id` int(10) unsigned NOT NULL,
-				`role_id` int(10) unsigned NOT NULL,
-				PRIMARY KEY (`user_id`,`role_id`),
-				KEY `fk_role_id` (`role_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8"
-		);
-
-		$db->query(NULL, "
-			ALTER TABLE `roles_users`
-				ADD CONSTRAINT `roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-				ADD CONSTRAINT `roles_users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE"
-		);
 	}
 
 	private function create_tags($db)
@@ -1054,6 +1018,36 @@
 	private function create_users($db)
 	{
 		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `roles` (
+				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+				`name` varchar(32) NOT NULL,
+				`description` varchar(255) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `uniq_name` (`name`)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "CREATE TRIGGER roles_date_updated_update BEFORE UPDATE ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER roles_date_updated_insert BEFORE INSERT ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
+		$db->query(NULL, "
+			INSERT INTO `roles` (`id`, `name`, `description`) VALUES
+			(1, 'login', 'Login privileges, granted after account confirmation'),
+			(2, 'admin', 'Administrative user, has access to everything.')"
+		);
+
+		$db->query(NULL, "
+			CREATE TABLE IF NOT EXISTS `roles_users` (
+				`user_id` int(10) unsigned NOT NULL,
+				`role_id` int(10) unsigned NOT NULL,
+				PRIMARY KEY (`user_id`,`role_id`),
+				KEY `fk_role_id` (`role_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+		);
+
+		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `users` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`email` varchar(254) NOT NULL,
@@ -1074,8 +1068,10 @@
 
 		$db->query(NULL, "
 			INSERT INTO `users` (`id`, `email`, `username`, `password`, `logins`, `last_login`)
-			VALUES (1, 'demo@example.com', 'demo', '7e3d63f', 0, 0)"
+			VALUES (1, 'admin@example.com', 'admin', 'b9314be4ac625671d4048b5e6a5e8c178c9c0c910e7ef2a629a6b2afc40804c5', 0, 0)"
 		);
+		$db->query(NULL, "INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES (1, 1)"); // login role
+		$db->query(NULL, "INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES (1, 2)"); // admin role
 
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `user_tokens` (
@@ -1090,6 +1086,12 @@
 				UNIQUE KEY `uniq_token` (`token`),
 				KEY `fk_user_id` (`user_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+		);
+
+		$db->query(NULL, "
+			ALTER TABLE `roles_users`
+				ADD CONSTRAINT `roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+				ADD CONSTRAINT `roles_users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE"
 		);
 
 		$db->query(NULL, "ALTER TABLE `user_tokens` ADD CONSTRAINT `user_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE");
