@@ -31,3 +31,6 @@
 [submodule "modules/pagination"]
 	path = modules/pagination
 	url = git://github.com/shadowhand/pagination.git
+[submodule "modules/minion-tasks-migrations"]
+	path = modules/minion-tasks-migrations
+	url = git://github.com/kohana-minion/tasks-migrations.git
