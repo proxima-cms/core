@@ -32,11 +32,15 @@
 				`text` text NOT NULL,
 				`uri` varchar(255) DEFAULT NULL,
 				`request_data` text,
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`),
 				KEY `fk_user_id` (`user_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
+
+		$db->query(NULL, "CREATE TRIGGER activities_date_updated_update BEFORE UPDATE ON activities FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER activities_date_updated_insert BEFORE INSERT ON activities FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 	}
 
 	private function create_assets($db)
@@ -52,6 +56,7 @@
 				`filesize` int(11) NOT NULL,
 				`filename` varchar(255) NOT NULL,
 				`friendly_filename` varchar(255) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`),
 				KEY `fk_user_id` (`user_id`),
@@ -60,15 +65,22 @@
 			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
 
+		$db->query(NULL, "CREATE TRIGGER assets_date_updated_update BEFORE UPDATE ON assets FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER assets_date_updated_insert BEFORE INSERT ON assets FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `assets_folders` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`parent_id` int(11) NOT NULL DEFAULT '0',
 				`name` varchar(255) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
+
+		$db->query(NULL, "CREATE TRIGGER assets_folders_date_updated_update BEFORE UPDATE ON assets_folders FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER assets_folders_date_updated_insert BEFORE INSERT ON assets_folders FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `assets_sizes` (
@@ -80,10 +92,14 @@
 				`filesize` int(11) NOT NULL,
 				`filename` varchar(255) NOT NULL,
 				`resized` int(1) NOT NULL DEFAULT '0',
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
+
+		$db->query(NULL, "CREATE TRIGGER assets_sizes_date_updated_update BEFORE UPDATE ON assets_sizes FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER assets_sizes_date_updated_insert BEFORE INSERT ON assets_sizes FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 	}
 
 	private function create_components($db)
@@ -95,10 +111,14 @@
 				`page_id` int(11) NOT NULL DEFAULT '0',
 				`user_id` int(11) NOT NULL,
 				`data` text NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
+
+		$db->query(NULL, "CREATE TRIGGER components_date_updated_update BEFORE UPDATE ON components FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER components_date_updated_insert BEFORE INSERT ON components FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `component_types` (
@@ -106,10 +126,14 @@
 				`user_id` int(11) NOT NULL DEFAULT '0',
 				`name` varchar(128) NOT NULL,
 				`description` varchar(255) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
+
+		$db->query(NULL, "CREATE TRIGGER component_types_date_updated_update BEFORE UPDATE ON component_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER component_types_date_updated_insert BEFORE INSERT ON component_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 	}
 
 	private function create_config($db)
@@ -124,11 +148,15 @@
 				`default` text,
 				`rules` text,
 				`field_type` varchar(255) NOT NULL DEFAULT 'text',
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `group` (`group_name`,`config_key`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
+
+		$db->query(NULL, "CREATE TRIGGER config_date_updated_update BEFORE UPDATE ON config FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER config_date_updated_insert BEFORE INSERT ON config FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 		// Site - title
 		$config = ORM::factory('config');
@@ -183,7 +211,7 @@
 			$config->save();
 		}
 		catch(Database_Exception $e) {}
-		
+
 		// Theming
 		$config = ORM::factory('config');
 		$config->values(array(
@@ -201,55 +229,55 @@
 			$config->save();
 		}
 		catch(Database_Exception $e) {}
-		
+
 		// TinyMCE Plugins
 		$config = ORM::factory('config');
-		$config->group_name = 'tinymce';
-		$config->config_key = 'plugins';
-		$config->label = 'TinyMCE Plugins';
-		$config->config_value = serialize('safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,koassets');
-		$config->default = serialize('safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,koassets');
-		$config->rules = serialize(array
-			(
+		$config->values(array(
+			'group_name' => 'tinymce',
+			'config_key' => 'plugins',
+			'label' => 'TinyMCE Plugins',
+			'config_value' => serialize('safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,koassets'),
+			'default' => serialize('safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,koassets'),
+			'rules' => serialize(array(
 				array('not_empty'),
 				array('max_length', array(':value', 255)),
-			));
+			))));
 		try
 		{
 			$config->save();
 		}
 		catch(Database_Exception $e) {}
-		
+
 		// TinyMCE Toolbar1
 		$config = ORM::factory('config');
-		$config->group_name = 'tinymce';
-		$config->config_key = 'toolbar1';
-		$config->label = 'TinyMCE Toolbar 1';
-		$config->config_value = serialize('formatselect,|,bold,italic,strikethrough,|,bullist,numlist,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,image,koassets,media,|,removeformat,cleanup,code');
-		$config->default = serialize('formatselect,|,bold,italic,strikethrough,|,bullist,numlist,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,image,koassets,media,|,removeformat,cleanup,code');
-		$config->rules = serialize(array
-			(
+		$config->values(array(
+			'group_name' => 'tinymce',
+			'config_key' => 'toolbar1',
+			'label' => 'TinyMCE Toolbar 1',
+			'config_value' => serialize('formatselect,|,bold,italic,strikethrough,|,bullist,numlist,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,image,koassets,media,|,removeformat,cleanup,code'),
+			'default' => serialize('formatselect,|,bold,italic,strikethrough,|,bullist,numlist,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,image,koassets,media,|,removeformat,cleanup,code'),
+			'rules' => serialize(array(
 				array('not_empty'),
 				array('max_length', array(':value', 255)),
-			));
+			))));
 		try
 		{
 			$config->save();
 		}
 		catch(Database_Exception $e) {}
-		
+
 		// Assets
 		$config = ORM::factory('config');
-		$config->group_name = 'asset';
-		$config->config_key = 'allowed_upload_type';
-		$config->label = 'Allowed upload types';
-		$config->config_value = serialize('jpg,png,gif,pdf,txt,zip,tar');
-		$config->default = serialize('jpg,png,gif,pdf,txt,zip,tar');
-		$config->rules = serialize(array
-			(
+		$config->values(array(
+			'group_name' => 'asset',
+			'config_key' => 'allowed_upload_type',
+			'label' => 'Allowed upload types',
+			'config_value' => serialize('jpg,png,gif,pdf,txt,zip,tar'),
+			'default' => serialize('jpg,png,gif,pdf,txt,zip,tar'),
+			'rules' => serialize(array(
 				array('not_empty'),
 				array('max_length', array(':value', 255)),
-			));
+			))));
 		try
 		{
 			$config->save();
@@ -265,11 +293,15 @@
 				`parent_id` int(11) NOT NULL,
 				`name` varchar(32) NOT NULL,
 				`description` varchar(255) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `uniq_name` (`name`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-		);	
+		);
+
+		$db->query(NULL, "CREATE TRIGGER groups_date_updated_update BEFORE UPDATE ON groups FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER groups_date_updated_insert BEFORE INSERT ON groups FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `groups_users` (
@@ -279,12 +311,13 @@
 				KEY `fk_group_id` (`group_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
 		);
-		
+
 		$db->query(NULL, "
 			ALTER TABLE `groups_users`
 				ADD CONSTRAINT `groups_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
 				ADD CONSTRAINT `groups_users_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE"
 		);
+
 	}
 
 	public function create_mimetypes($db)
@@ -295,14 +328,18 @@
 				`subtype` varchar(120) NOT NULL,
 				`type` varchar(120) NOT NULL,
 				`extension` varchar(6) NOT NULL,
+				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `type` (`subtype`,`type`,`extension`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
 
+		$db->query(NULL, "CREATE TRIGGER mimetypes_date_updated_update BEFORE UPDATE ON mimetypes FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		$db->query(NULL, "CREATE TRIGGER mimetypes_date_updated_insert BEFORE INSERT ON mimetypes FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
 		$db->query(NULL, "
-			INSERT INTO `mimetypes` (`id`, `subtype`, `type`, `extension`) 
+			INSERT INTO `mimetypes` (`id`, `subtype`, `type`, `extension`)
 			VALUES
 				(1, 'application', 'andrew-inset', 'ez'),
 				(2, 'application', 'annodex', 'anx'),
@@ -811,10 +848,14 @@
 					`name` varchar(255) NOT NULL,
 					`nav_name` varchar(64) NOT NULL,
 					`nav_controller` varchar(64) NOT NULL,
+					`date_updated` timestamp NULL DEFAULT NULL,
 					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 					PRIMARY KEY (`id`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 			);
+
+			$db->query(NULL, "CREATE TRIGGER modules_date_updated_update BEFORE UPDATE ON modules FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+			$db->query(NULL, "CREATE TRIGGER modules_date_updated_insert BEFORE INSERT ON modules FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 		}
 
 		private function create_pages($db)
@@ -834,6 +875,7 @@
 					`body` text NOT NULL,
 					`visible_from` timestamp NULL DEFAULT NULL,
 					`visible_to` timestamp NULL DEFAULT NULL,
+					`date_updated` timestamp NULL DEFAULT NULL,
 					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 					PRIMARY KEY (`id`),
 					UNIQUE KEY `uri` (`uri`),
@@ -843,7 +885,10 @@
 					FULLTEXT KEY `title` (`title`,`description`,`body`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 			);
-			
+
+			$db->query(NULL, "CREATE TRIGGER pages_date_updated_update BEFORE UPDATE ON pages FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+			$db->query(NULL, "CREATE TRIGGER pages_date_updated_insert BEFORE INSERT ON pages FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
 			$db->query(NULL, "
 				CREATE TABLE IF NOT EXISTS `page_types` (
 					`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -851,11 +896,15 @@
 					`template` varchar(32) NOT NULL,
 					`name` varchar(32) NOT NULL,
 					`description` text NOT NULL,
-					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+					`date_updated` timestamp NULL DEFAULT NULL,
+					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 					PRIMARY KEY (`id`),
 					KEY `controller` (`controller`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 			);
+
+			$db->query(NULL, "CREATE TRIGGER page_types_date_updated_update BEFORE UPDATE ON page_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+			$db->query(NULL, "CREATE TRIGGER page_types_date_updated_insert BEFORE INSERT ON page_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 			$db->query(NULL, "
 				INSERT INTO `page_types` (`controller`, `template`, `name`, `description`) VALUES
@@ -865,7 +914,7 @@
 				('search', 'search_results.php', 'Search', 'Search results'),
 				('contact', 'contact.php', 'Contact page', 'Contact page with contact form');"
 			);
-			
+
 			$db->query(NULL, "
 				CREATE TABLE IF NOT EXISTS `page_type_component_types` (
 					`component_type_id` int(11) NOT NULL DEFAULT '0',
@@ -876,8 +925,8 @@
 			);
 
 			$db->query(NULL, "
-				CREATE VIEW `site_pages` AS 
-					select 
+				CREATE VIEW `site_pages` AS
+					select
 						`page`.`id` AS `id`
 						,`page`.`user_id` AS `user_id`
 						,`page`.`pagetype_id` AS `pagetype_id`
@@ -891,6 +940,7 @@
 						,`page`.`body` AS `body`
 						,`page`.`visible_from` AS `visible_from`
 						,`page`.`visible_to` AS `visible_to`
+						,`page`.`date_updated` AS `date_updated`
 						,`page`.`date` AS `date`
 						,`pagetype`.`controller` AS `pagetype_controller`
 						,`pagetype`.`template` AS `pagetype_template`
@@ -898,19 +948,19 @@
 						,`pagetype`.`description` AS `pagetype_description`
 						,`user`.`email` AS `user_email`
 						,`user`.`username` AS `user_username`,
-						group_concat(cast(`tags`.`id` as char charset utf8),'|',cast(`tags`.`user_id` as char charset utf8),'|',`tags`.`name`,'|',`tags`.`slug`,'|',cast(`tags`.`date` as char charset utf8) separator ',') AS `tags` 
-					from ((((`pages` `page` join `page_types` `pagetype` on((`page`.`pagetype_id` = `pagetype`.`id`))) 
-					join `users` `user` on((`page`.`user_id` = `user`.`id`))) 
-					left join `tags_pages` on((`page`.`id` = `tags_pages`.`page_id`))) 
-					left join `tags` on((`tags_pages`.`tag_id` = `tags`.`id`))) 
-					where ((`page`.`visible_from` <= now()) and (isnull(`page`.`visible_to`) or (`page`.`visible_to` >= now())) and (`page`.`draft` = 0)) 
+						group_concat(cast(`tags`.`id` as char charset utf8),'|',cast(`tags`.`user_id` as char charset utf8),'|',`tags`.`name`,'|',`tags`.`slug`,'|',cast(`tags`.`date` as char charset utf8) separator ',') AS `tags`
+					from ((((`pages` `page` join `page_types` `pagetype` on((`page`.`pagetype_id` = `pagetype`.`id`)))
+					join `users` `user` on((`page`.`user_id` = `user`.`id`)))
+					left join `tags_pages` on((`page`.`id` = `tags_pages`.`page_id`)))
+					left join `tags` on((`tags_pages`.`tag_id` = `tags`.`id`)))
+					where ((`page`.`visible_from` <= now()) and (isnull(`page`.`visible_to`) or (`page`.`visible_to` >= now())) and (`page`.`draft` = 0))
 					group by `page`.`id`"
 				);
-			
+
 			$db->query(NULL, "
-				INSERT INTO `pages` 
-					(`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`) 
-				VALUES 
+				INSERT INTO `pages`
+					(`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+				VALUES
 					(1, 1, 0, 1, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', NULL, NULL)"
 			);
 
@@ -924,11 +974,15 @@
 					`uri` varchar(255) NOT NULL,
 					`target` varchar(255) NOT NULL,
 					`target_id` int(11) NOT NULL,
+					`date_updated` timestamp NULL DEFAULT NULL,
 					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 					PRIMARY KEY (`id`),
 					UNIQUE KEY `uri` (`uri`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 			);
+
+			$db->query(NULL, "CREATE TRIGGER redirects_date_updated_update BEFORE UPDATE ON redirects FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+			$db->query(NULL, "CREATE TRIGGER redirects_date_updated_insert BEFORE INSERT ON redirects FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 		}
 
 		private function create_roles($db)
@@ -938,11 +992,15 @@
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`name` varchar(32) NOT NULL,
 					`description` varchar(255) NOT NULL,
+					`date_updated` timestamp NULL DEFAULT NULL,
 					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 					PRIMARY KEY (`id`),
 					UNIQUE KEY `uniq_name` (`name`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 			);
+
+			$db->query(NULL, "CREATE TRIGGER roles_date_updated_update BEFORE UPDATE ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+			$db->query(NULL, "CREATE TRIGGER roles_date_updated_insert BEFORE INSERT ON roles FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 			$db->query(NULL, "
 				INSERT INTO `roles` (`id`, `name`, `description`) VALUES
@@ -958,7 +1016,7 @@
 					KEY `fk_role_id` (`role_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8"
 			);
-			
+
 			$db->query(NULL, "
 				ALTER TABLE `roles_users`
 					ADD CONSTRAINT `roles_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
@@ -974,10 +1032,14 @@
 					`user_id` int(11) NOT NULL,
 					`name` varchar(32) NOT NULL,
 					`slug` varchar(128) NOT NULL,
+					`date_updated` timestamp NULL DEFAULT NULL,
 					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 					PRIMARY KEY (`id`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 			);
+
+			$db->query(NULL, "CREATE TRIGGER tags_date_updated_update BEFORE UPDATE ON tags FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+			$db->query(NULL, "CREATE TRIGGER tags_date_updated_insert BEFORE INSERT ON tags FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 			$db->query(NULL, "
 				CREATE TABLE IF NOT EXISTS `tags_pages` (
@@ -999,6 +1061,7 @@
 					`password` varchar(64) NOT NULL,
 					`logins` int(10) unsigned NOT NULL DEFAULT '0',
 					`last_login` int(10) unsigned DEFAULT NULL,
+					`date_updated` timestamp NULL DEFAULT NULL,
 					`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 					PRIMARY KEY (`id`),
 					UNIQUE KEY `uniq_username` (`username`),
@@ -1006,11 +1069,14 @@
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 			);
 
+			$db->query(NULL, "CREATE TRIGGER users_date_updated_update BEFORE UPDATE ON users FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+			$db->query(NULL, "CREATE TRIGGER users_date_updated_insert BEFORE INSERT ON users FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+
 			$db->query(NULL, "
 				INSERT INTO `users` (`id`, `email`, `username`, `password`, `logins`, `last_login`)
 				VALUES (1, 'demo@example.com', 'demo', '7e3d63f', 0, 0)"
 			);
-			
+
 			$db->query(NULL, "
 				CREATE TABLE IF NOT EXISTS `user_tokens` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1036,6 +1102,66 @@
 		 */
 		public function down(Kohana_Database $db)
 		{
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS activities_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS activities_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_folders_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_folders_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_sizes_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS assets_sizes_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS components_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS components_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS component_types_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS component_types_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS config_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS config_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS groups_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS groups_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS mimetypes_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS mimetypes_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS modules_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS modules_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS pages_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS pages_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS page_types_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS page_types_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS redirects_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS redirects_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS roles_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS roles_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS tags_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS tags_date_updated_insert');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS users_date_updated_update');
+			$db->query(NULL, 'DROP TRIGGER IF EXISTS users_date_updated_insert');
+
+			try
+			{
+				$db->query(NULL, "
+					ALTER TABLE `groups_users`
+						DROP FOREIGN KEY `groups_users_ibfk_1`,
+						DROP FOREIGN KEY `groups_users_ibfk_2`"
+				);
+			}
+			catch(Database_Exception $e) {}
+			try
+			{
+				$db->query(NULL, "
+					ALTER TABLE `roles_users`
+						DROP FOREIGN KEY `roles_users_ibfk_1`,
+						DROP FOREIGN KEY `roles_users_ibfk_2`"
+				);
+			}
+			catch(Database_Exception $e) {}
+			try
+			{
+				$db->query(NULL, "
+					ALTER TABLE `user_tokens`
+						DROP FOREIGN KEY `user_tokens_ibfk_1``"
+				);
+			}
+			catch(Database_Exception $e) {}
+
 			$db->query(NULL, 'DROP TABLE IF EXISTS activities');
 			$db->query(NULL, 'DROP TABLE IF EXISTS assets');
 			$db->query(NULL, 'DROP TABLE IF EXISTS assets_folders');
