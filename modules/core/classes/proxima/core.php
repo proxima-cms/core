@@ -10,9 +10,6 @@ class Proxima_Core {
 	*/
 	public static function init()
 	{
-		// Check system paths exist.
-		self::check_paths();
-
 		// Set module default config.
 		Cache::$default = 'apc';
 		Image::$default_driver = 'imagick';
@@ -29,45 +26,6 @@ class Proxima_Core {
 	}
 
 	/**
-	* Check system paths exist.
-	*
-	* @return  void
-	*/
-	public static function check_paths()
-	{
-		if (!is_dir(DOCROOT . 'media'))
-		{
-			throw new Kohana_Exception('Directory :dir does not exist',
-				array(':dir' => Debug::path('media')));
-		}
-		if (!is_dir(DOCROOT . 'media/assets'))
-		{
-			throw new Kohana_Exception('Directory :dir does not exist',
-				array(':dir' => Debug::path('media/assets')));
-		}
-		if (!is_dir(DOCROOT . 'media/assets/resized'))
-		{
-			throw new Kohana_Exception('Directory :dir does not exist',
-				array(':dir' => Debug::path('media/assets/resized')));
-		}
-		if (!is_dir(DOCROOT . 'media/cache'))
-		{
-			throw new Kohana_Exception('Directory :dir does not exist',
-				array(':dir' => Debug::path('media/cache')));
-		}
-		if (! is_writable(DOCROOT . 'media/cache'))
-		{
-			throw new Kohana_Exception('Directory :dir must be writable',
-				array(':dir' => Debug::path('../media/cache')));
-		}
-		if (! is_writable(DOCROOT . 'media/assets/resized'))
-		{
-			throw new Kohana_Exception('Directory :dir must be writable',
-				array(':dir' => Debug::path('../media/assets/resized')));
-		}
-	}
-
-	/** 
 	 * Returns the core module path for a given file.
 	 *
 	 * @param		mixed		$file		File name
@@ -89,10 +47,10 @@ class Proxima_Core {
 
 			return $files;
 		}
-		
+
 		return $root . $file;
 	}
-	
+
 	/**
 	* Set the site application routes.
 	*
@@ -103,7 +61,7 @@ class Proxima_Core {
 		if ( ! Route::cache() AND ! Kohana::$is_cli)
 		{
 			/*
-			 * Asset routes 
+			 * Asset routes
 			 */
 			// Admin media
 			Route::set('admin/media', 'admin/media(/<file>)', array('file' => '.+'))
@@ -112,7 +70,7 @@ class Proxima_Core {
 					'directory'	=> 'admin',
 					'file'       	=> NULL,
 				));
-				
+
 			// Admin Assets - get asset
 			Route::set('admin/get-asset', 'admin/assets/get_asset(/<id>)(/<width>)(/<height>)(/<crop>)')
 				->defaults(array(
@@ -120,7 +78,7 @@ class Proxima_Core {
 					'directory' 	=> 'admin',
 					'controller' 	=> 'assets'
 				));
-				
+
 			// Admin Assets - get image url
 			Route::set('admin/get-asset', 'admin/assets/get_image_url/(<id>)(/<width>)(/<height>)')
 				->defaults(array(
@@ -143,7 +101,7 @@ class Proxima_Core {
 					'action'	=> 'get_asset',
 					'id'		=> 0,
 					'height'	=> NULL,
-					'crop'		=> NULL,	
+					'crop'		=> NULL,
 					'filename'	=> NULL,
 				));
 
@@ -152,8 +110,8 @@ class Proxima_Core {
 				->defaults(array(
 					'controller'  => 'folders',
 					'directory'   => 'admin/assets',
-				)); 
-				
+				));
+
 			// Admin popup assets
 			Route::set('admin/popup-assets', 'admin/assets/popup(/<action>)(/<id>)')
 				->defaults(array(
@@ -163,7 +121,7 @@ class Proxima_Core {
 				));
 
 			/*
-			 * Modules routes 
+			 * Modules routes
 			 */
 			Route::set('admin/modules', 'admin/modules(/<action>)(/<module>)')
 				->defaults(array(
@@ -174,30 +132,30 @@ class Proxima_Core {
 				));
 
 			/*
-			 * Pages routes 
+			 * Pages routes
 			 */
 			Route::set('admin/pages-types', 'admin/pages/types(/<action>)(/<id>)')
 				->defaults(array(
 					'controller'  => 'pages_types',
 					'directory'   => 'admin',
-				)); 
+				));
 
 			/*
-			 * Tags routes 
+			 * Tags routes
 			 */
 			Route::set('admin/tag-delete', 'admin/tags/delete/<id>', array('id' => '.*'))
 				->defaults(array(
 					'action'    => 'delete',
 					'directory'   => 'admin',
 					'controller'  => 'tags'
-				)); 
+				));
 
 			// Error page
 			Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
 				->defaults(array(
 					'controller' => 'error'
-				)); 
-			
+				));
+
 			// Admin config
 			Route::set('admin/config', 'admin/config(/<group>)')
 				->defaults(array(
@@ -211,12 +169,12 @@ class Proxima_Core {
 			Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
 				->defaults(array(
 					'controller' => 'admin_logs',
-					'action'     => 'index',	
+					'action'     => 'index',
 					'file'       => NULL
 				));
 
 			/*
-			 * Admin routes 
+			 * Admin routes
 			 */
 			// Admin controllers
 			Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
@@ -224,7 +182,7 @@ class Proxima_Core {
 					'action'     => 'index',
 					'directory'  => 'admin',
 					'controller' => 'home'
-				)); 
+				));
 
 			// Find all pages that require routing to specific controllers
 			$route_pages = ORM::factory('site_page')
@@ -242,7 +200,7 @@ class Proxima_Core {
 						'uri'        => $page->uri,
 					));
 			}
-				
+
 			// Set the 'catch all' route
 			Route::set('page', '<uri>', array('uri' => '.*'))
 				->defaults(array(
