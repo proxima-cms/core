@@ -2,8 +2,19 @@
 	<div class="action-menu helper-right">
 		<button>Actions</button>
 		<ul>
-			<li><?php echo HTML::anchor('admin/tags/add', __('Add tag'))?></li>
-			<li><?php echo HTML::anchor('admin/tags', __('Delete tags'), array('id' => 'delete-tags'))?></li>
+			<li><?php echo HTML::anchor(
+					Route::get('admin')
+						->uri(array(
+							'controller' => 'tags', 
+							'action' => 'add'
+						)), __('Add tag'));?>
+			<li><?php echo HTML::anchor(
+					Route::get('admin')
+						->uri(array(
+							'controller' => 'tags', 
+							'action' => 'delete'
+						)), __('Delete tags'), array('id' => 'delete-tags'))?>
+			</li>
 		</ul>
 	</div>
 	<?php echo $breadcrumbs?>
@@ -26,7 +37,13 @@
 		<tr>
 			<td>
 				<?php echo Form::checkbox('tag-'.$tag->id, '1', FALSE); ?>
-				<?php echo HTML::anchor('admin/tags/edit/'.$tag->id, $tag->name)?>
+				<?php echo HTML::anchor(
+					Route::get('admin')
+						->uri(array(
+							'controller' => 'tags', 
+							'action' => 'edit',
+							'id' => $tag->id
+						)), $tag->name)?>
 			</td>
 			<td><?php echo $tag->friendly_date; ?></td>
 		</tr>

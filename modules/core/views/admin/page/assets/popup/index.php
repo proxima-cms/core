@@ -20,8 +20,11 @@
 					));?>
 			</div>
 
-			<?php $header_link = URL::site('admin/assets?filter='.$filter.'&direction='.$reverse_direction.'&page='.$pagination->current_page
-			)?>
+			<?php 
+				$header_link = URL::site(
+					Route::get('admin/popup-assets')->uri() . '?filter='.$filter.'&direction='.$reverse_direction.'&page='.$pagination->current_page	
+				);
+			?>  
 
 			<div class="ui-grid assets-list view-list clear">
 				<table>

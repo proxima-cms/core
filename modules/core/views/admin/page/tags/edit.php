@@ -3,9 +3,14 @@
 		<button>Actions</button>
 		<ul>
 			<li>
-				<a href="<?php echo URL::site('admin/tags/delete/'.$tag->id)?>" id="delete-tag" class="button delete small">
-					<span>Delete tag</span>
-				</a>
+				<?php echo HTML::anchor(
+					Route::get('admin')
+						->uri(array(
+							'controller' => 'tags',
+							'action' => 'delete',
+							'id' => $tag->id
+						)), __('Delete tag'), array('id' => "delete-tag", 'class' => "button delete small"));
+				?>
 			</li>
 		</ul>
 	</div>

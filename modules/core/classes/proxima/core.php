@@ -128,7 +128,7 @@ class Proxima_Core {
 				));
 
 			// Global media assets
-			Route::set('media/assets', 'media/assets/resized/(<id>_<width>_<height>_<crop>_<filename>)', array(
+			Route::set('media/assets', 'media/assets/resized/<id>_<width>_<height>_<crop>_<filename>', array(
 					'id' 		=> '\d+',
 					'width' 	=> '\d+',
 					'height'	=> '\d+',
@@ -223,6 +223,7 @@ class Proxima_Core {
 					'directory'  => 'admin',
 					'controller' => 'home'
 				)); 
+
 			// Find all pages that require routing to specific controllers
 			$route_pages = ORM::factory('site_page')
 				->where('pagetype_controller', '<>', 'page')

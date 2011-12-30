@@ -4,6 +4,7 @@ class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 
 	public function action_index()
 	{
+
 		$request_data = array('request' => $this->request->query());  
 
 		$this->template

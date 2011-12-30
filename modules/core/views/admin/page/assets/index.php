@@ -3,10 +3,40 @@
 		<div class="action-menu helper-right">
 			<button>Actions</button>
 			<ul>
-				<li><?php echo HTML::anchor('admin/assets/upload', __('Upload assets'))?></li>
-				<li><?php echo HTML::anchor('admin/config/asset', __('Edit config'), array('id' => 'edit-config'))?></li>
-				<li><?php echo HTML::anchor('admin/assets/delete', __('Delete assets'), array('id' => 'delete-assets'))?></li>
-				<li><?php echo HTML::anchor('admin/assets/folders/add', __('Add folder'))?></li>
+				<li>
+					<?php echo HTML::anchor(
+						Route::get('admin')
+							->uri(array(
+								'controller' => 'assets',
+								'action' => 'upload'
+							)), __('Upload assets'));
+					?>
+				</li>
+				<li>
+					<?php echo HTML::anchor(
+						Route::get('admin')
+							->uri(array(
+								'controller' => 'assets',
+								'action' => 'delete'
+							)), __('Delete assets'), array('id' => 'delete-assets'));
+					?>
+				</li>
+				<li>
+					<?php echo HTML::anchor(
+						Route::get('admin/config')
+							->uri(array(
+								'group' => 'asset'
+							)), __('Assets config'), array('id' => 'edit-config'));
+					?>
+				</li>
+				<li>
+					<?php echo HTML::anchor(
+						Route::get('admin/assets-folders')
+							->uri(array(
+								'action' => 'add'
+							)), __('Add folder'));
+					?>
+				</li>
 			</ul>
 		</div>
 	</div>	
@@ -27,7 +57,12 @@
 			));?>
 	</div>
 
-	<?php $header_link = URL::site('admin/assets?filter='.$filter.'&direction='.$reverse_direction.'&page='.$pagination->current_page)?>
+	<?php 
+		$header_link = URL::site(
+			Route::get('admin')->uri(array(
+				'controller' => 'assets'
+			)) . '?filter='.$filter.'&direction='.$reverse_direction.'&page='.$pagination->current_page);
+	?>
 
 	<div class="ui-grid assets-list view-list clear" style="width:73%">
 		<table>

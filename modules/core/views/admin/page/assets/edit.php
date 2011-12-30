@@ -2,8 +2,22 @@
 	<div class="action-menu helper-right">
 		<button>Actions</button>
 		<ul>
-			<li><?php echo HTML::anchor('admin/assets/download/'.$asset->id, __('Download asset'))?></li>
-			<li><?php echo HTML::anchor('admin/assets/delete/'.$asset->id, __('Delete asset'))?></li>
+			<li><?php echo HTML::anchor(
+				Route::get('admin')
+					->uri(array(
+						'controller' => 'assets',
+						'action' => 'download',
+						'id' => $asset->id
+					)), __('Download asset'));?>
+			</li>	
+			<li><?php echo HTML::anchor(
+				Route::get('admin')
+					->uri(array(
+						'controller' => 'assets',
+						'action' => 'delete',
+						'id' => $asset->id
+					)), __('Delete asset'));?>
+			</li>
 		</ul>
 	</div>
 	<?php echo $breadcrumbs?>
@@ -40,19 +54,60 @@
 
 			<fieldset>
 				<legend>Information</legend>
-				<strong>Uploaded by:</strong> <?php echo HTML::anchor('admin/users/view/'.$asset->user->id, $asset->user->username).' on '.$asset->friendly_date?> <br />
-				<strong>Mimetype:</strong> <?php echo $asset->mimetype->subtype.'/'.$asset->mimetype->type?> <br />
-				<strong>Filesize:</strong> <?php echo Text::bytes($asset->filesize)?><br />
+				
+				<strong>Uploaded by:</strong> 
+				<?php echo HTML::anchor(
+					Route::get('admin')
+					->uri(array(
+						'controller' => 'users',
+						'action' => 'view',
+						'id' => $asset->user->id
+					)), $asset->user->username . ' '. __('on') . ' ' .$asset->friendly_date)
+				?> <br />
+				
+				<strong>Mimetype:</strong> 
+				<?php echo $asset->mimetype->subtype.'/'.$asset->mimetype->type?> <br />
+				
+				<strong>Filesize:</strong> 
+				<?php echo Text::bytes($asset->filesize)?><br />
 			</fieldset>
 			
 			<?php if ($asset->mimetype->subtype == 'image'){?>
 				<fieldset>
 					<legend>Image actions</legend>
 					<ul>
-						<li><?php echo HTML::anchor('admin/assets/rotate/'.$asset->id, 'Rotate 90deg')?></li>
-						<li><?php echo HTML::anchor('admin/assets/sharpen/'.$asset->id, 'Sharpen')?></li>
-						<li><?php echo HTML::anchor('admin/assets/flip_horizontal/'.$asset->id, 'Flip horizontal')?></li>
-						<li><?php echo HTML::anchor('admin/assets/flip_vertical/'.$asset->id, 'Flip vertical')?></li>						
+						<li><?php echo HTML::anchor(
+							Route::get('admin')
+							->uri(array(
+								'controller' => 'assets',
+								'action' => 'rotate',
+								'id' => $asset->id
+							)), __('Rotate 90deg'))
+						?></li>
+						<li><?php echo HTML::anchor(
+							Route::get('admin')
+							->uri(array(
+								'controller' => 'assets',
+								'action' => 'sharpen',
+								'id' => $asset->id
+							)), __('Sharpen'))
+						?></li>
+						<li><?php echo HTML::anchor(
+							Route::get('admin')
+							->uri(array(
+								'controller' => 'assets',
+								'action' => 'flip_horizontal',
+								'id' => $asset->id
+							)), __('Flip horizontal'))
+						?></li>
+						<li><?php echo HTML::anchor(
+							Route::get('admin')
+							->uri(array(
+								'controller' => 'assets',
+								'action' => 'flip_vertical',
+								'id' => $asset->id
+							)), __('Flip vertical'))
+						?></li>
 					</ul>
 				</fieldset>
 				<?php if (count($resized)){?>
@@ -61,7 +116,15 @@
 						<ul>
 							<?php foreach($resized as $size){?>
 							<li>
-								<a 	href="<?php echo URL::site('media/assets/resized/'.$size->filename)?>" 
+								<a 	href="<?php echo URL::site(
+									Route::get('media/assets')
+									->uri(array(
+										'id' => $size->asset->id,
+										'width' => $size->width,
+										'height' => $size->height,
+										'crop' => 0,
+										'filename' => preg_replace('/^'.$size->asset->id.'_/', '', $size->asset->filename)
+									))); ?>"
 									data-type="image" 
 									class="ui-lightbox" 
 									title="<?php echo $size->filename?>">
