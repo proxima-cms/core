@@ -28,7 +28,7 @@
 				<?php echo Form::checkbox('tag-'.$tag->id, '1', FALSE); ?>
 				<?php echo HTML::anchor('admin/tags/edit/'.$tag->id, $tag->name)?>
 			</td>
-			<td><?php echo $tag->date?></td>
+			<td><?php echo $tag->friendly_date; ?></td>
 		</tr>
 		<?php }?> 
 	</tbody>

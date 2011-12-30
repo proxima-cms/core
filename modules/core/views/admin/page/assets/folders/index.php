@@ -28,7 +28,7 @@
 				<?php echo Form::checkbox('folder-'.$folder->id, '1', FALSE); ?>
 				<?php echo HTML::anchor('admin/assets/folders/edit/'.$folder->id, $folder->name)?>
 			</td>
-			<td><?php echo $folder->date?></td>
+			<td><?php echo $folder->friendly_date?></td>
 		</tr>
 		<?php }?> 
 	</tbody>

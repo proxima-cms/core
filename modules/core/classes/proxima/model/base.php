@@ -144,7 +144,7 @@ class Proxima_Model_Base extends ORM {
 
 	public function friendly_date()
 	{
-		return $this->date;
+		return Date::friendly($this->date);
 	}
 
 	/** 
@@ -155,5 +155,15 @@ class Proxima_Model_Base extends ORM {
 		Cache::instance()->delete_all();
 
 		return parent::save($validation);
+	}
+
+	public function __get($key)
+	{
+		if ($key === 'friendly_date')
+		{
+			return $this->friendly_date();
+		}
+
+		return parent::__get($key);
 	}
 }

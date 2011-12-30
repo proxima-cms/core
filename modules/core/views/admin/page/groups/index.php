@@ -24,7 +24,7 @@
 			<td>
 				<?php echo HTML::anchor('admin/groups/edit/'.$group->id, $group->name)?>
 			</td>
-			<td><?php echo $group->friendly_date()?></td>
+			<td><?php echo $group->friendly_date?></td>
 		</tr>
 		<?php }?> 
 	</tbody>

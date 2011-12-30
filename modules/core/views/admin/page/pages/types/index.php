@@ -25,7 +25,7 @@
 				<?php echo HTML::anchor('admin/pages/types/edit/'.$page_type->id, $page_type->name)?>
 			</td>
 			<td><?php echo $page_type->template?></td>
-			<td><?php echo $page_type->date?></td>
+			<td><?php echo $page_type->friendly_date?></td>
 		</tr>
 		<?php }?> 
 	</tbody>

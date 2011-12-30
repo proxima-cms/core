@@ -232,4 +232,19 @@ class Proxima_Model_User extends Model_Auth_User {
 		return TRUE;
 	}
 
+	public function friendly_date()
+	{
+		return Date::friendly($this->date);
+	}
+
+	public function __get($key)
+	{
+		if ($key === 'friendly_date')
+		{   
+			return $this->friendly_date();
+		}   
+
+		return parent::__get($key);
+	}
+
 } // End Model_User

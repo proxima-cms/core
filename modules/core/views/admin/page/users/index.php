@@ -26,7 +26,7 @@
 			<td>
 				<?php echo HTML::anchor('admin/users/edit/'.$user->id, $user->username)?>
 			</td>
-			<td><?php echo $user->date?></td>
+			<td><?php echo $user->friendly_date?></td>
 		</tr>
 		<?php }?> 
 	</tbody>

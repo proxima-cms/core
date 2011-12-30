@@ -59,7 +59,7 @@ class Proxima_Controller_Admin_Migrations extends Controller_Admin_Base {
 	
 	public function action_save_config()
 	{
-		// Site title
+		// Site - title
 		$config = ORM::factory('config');
 		$config->group_name = 'site';
 		$config->config_key = 'title';
@@ -73,7 +73,7 @@ class Proxima_Controller_Admin_Migrations extends Controller_Admin_Base {
 			));
 		$config->save();
 
-		// Site description
+		// Site - description
 		$config = ORM::factory('config');
 		$config->group_name = 'site';
 		$config->config_key = 'description';
@@ -86,8 +86,22 @@ class Proxima_Controller_Admin_Migrations extends Controller_Admin_Base {
 				array('max_length', array(':value', 255)),
 			));
 		$config->save();
+
+		// Listing - date format
+		$config = ORM::factory('config');
+		$config->group_name = 'listing';
+		$config->config_key = 'date_format';
+		$config->label = 'Date format';
+		$config->config_value = serialize('jS F Y');
+		$config->default = serialize('jS F Y');
+		$config->rules = serialize(array
+			(
+				array('not_empty'),
+				array('max_length', array(':value', 255)),
+			));
+		$config->save();
 		
-		// Site description
+		// Theming
 		$config = ORM::factory('config');
 		$config->group_name = 'theming';
 		$config->config_key = 'theme';

@@ -40,7 +40,7 @@
 
 			<fieldset>
 				<legend>Information</legend>
-				<strong>Uploaded by:</strong> <?php echo HTML::anchor('admin/users/view/'.$asset->user->id, $asset->user->username).' on '.$asset->date?> <br />
+				<strong>Uploaded by:</strong> <?php echo HTML::anchor('admin/users/view/'.$asset->user->id, $asset->user->username).' on '.$asset->friendly_date?> <br />
 				<strong>Mimetype:</strong> <?php echo $asset->mimetype->subtype.'/'.$asset->mimetype->type?> <br />
 				<strong>Filesize:</strong> <?php echo Text::bytes($asset->filesize)?><br />
 			</fieldset>

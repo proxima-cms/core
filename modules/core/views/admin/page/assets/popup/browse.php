@@ -118,7 +118,7 @@
 							<?php echo $asset->friendly_filename?>
 						</a>
 						<div style="color:#888;padding-top:.5em">
-						<?php echo $asset->date?>
+						<?php echo $asset->friendly_date?>
 						</div>
 						</div>
 					</td>

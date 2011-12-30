@@ -20,23 +20,35 @@
 	</div>
 	<div class="asset-preview">
 		<p>
-			<strong><?php echo __('Filename')?>:</strong> <?php echo $asset->friendly_filename?>
+			<strong><?php echo __('Filename')?>:</strong> 
+			<?php echo $asset->friendly_filename; ?>
 		</p>
 		<p>
-			<strong><?php echo __('Description:')?></strong> <?php echo $asset->description?>
+			<strong><?php echo __('Description:')?></strong> 
+			<?php echo $asset->description; ?>
 		</p>
 		<p>
-			<strong><?php echo __('Uploaded:')?></strong> <?php echo $asset->friendly_date()?>
+			<strong><?php echo __('Uploaded:')?></strong> 
+			<?php echo $asset->friendly_date; ?>
 		<p>
-			<strong><?php echo __('Mimetype:')?></strong> <?php echo $asset->mimetype->subtype.'/'.$asset->mimetype->type?> 
+			<strong><?php echo __('Mimetype:')?></strong> 
+			<?php echo $asset->mimetype->subtype.'/'.$asset->mimetype->type; ?> 
 		</p>
 		<?php if ($asset->is_image()){?>
 		<p>
-			<strong>Dimensions:</strong> <span class="asset-width"><?php echo $asset->width?></span> x <span class="asset-height"><?php echo $asset->height?></span> px
+			<strong>Dimensions:</strong> 
+			<span class="asset-width">
+				<?php echo $asset->width; ?>
+			</span> 
+			x 
+			<span class="asset-height">
+				<?php echo $asset->height?>
+			</span> px
 		</p>
 		<?php }?>
 		<p>
-			<strong>Filesize:</strong> <?php echo Text::bytes($asset->filesize)?>
+			<strong>Filesize:</strong> 
+			<?php echo Text::bytes($asset->filesize); ?>
 		</p>
 		<p>
 			<?php if ($asset->is_image()){?>

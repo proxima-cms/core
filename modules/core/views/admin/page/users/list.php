@@ -7,19 +7,15 @@
 	<table>
 		<thead>
 			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Date</th>
+				<th>Username</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach($items as $user){?>
 			<tr>
-				<td><?php echo $user->id;?></td>
 				<td>
 					<?php echo HTML::anchor('admin/users/edit/'.$user->id, $user->username)?>
 				</td>
-				<td><?php echo $user->date?></td>
 			</tr>
 			<?php }?> 
 		</tbody>
