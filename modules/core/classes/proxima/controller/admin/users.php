@@ -1,8 +1,4 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-/*
-* User model
-* some concepts and code taken from https://github.com/GeertDD/kohanajobs/blob/master/application/classes/model/user.php
-*/
 
 class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 

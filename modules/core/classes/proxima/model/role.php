@@ -34,47 +34,38 @@ class Proxima_Model_Role extends Model_Auth_Role {
 	}
 	*/
 
-	public function admin_create(& $data)
+	public function admin_create($data)
 	{
-		$data = Validate::factory($data)
-				->rules('name', $this->_rules['name'])
-				->rules('description', $this->_rules['description']);
-				
-		foreach($this->_callbacks['name'] as $callback)
-				{
-			$data->callback('name', array($this, $callback));
-		}
-
-		if (!$data->check()) return FALSE;
-
 		$this->values($data);
-		$this->save();
 
-		return $data;
+		return $this->save();
 	}
 
-	public function admin_update(& $data)
+	public function admin_update($data)
 	{
-		$data = Validate::factory($data)
-				->rules('name', $this->_rules['name'])
-				->rules('description', $this->_rules['description']);
-				
-		foreach($this->_callbacks['name'] as $callback)
-	    {
-			$data->callback('name', array($this, $callback));
-		}
-
-		if (!$data->check()) return FALSE;
-
 		$this->values($data);
-		$this->save();
 
-		return $data;
+		return $this->save();
 	}
 	
 	public function admin_delete()
 	{
 		return parent::delete();
+	}
+
+	public function friendly_date()
+	{
+		return Date::friendly($this->date);
+	}
+
+	public function __get($key)
+	{
+		if ($key === 'friendly_date')
+		{   
+			return $this->friendly_date();
+		}   
+
+		return parent::__get($key);
 	}
 
 } // End Model_Role

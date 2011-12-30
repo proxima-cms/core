@@ -63,25 +63,25 @@ class Proxima_Controller_Admin_Groups extends Controller_Admin_Base {
 		$user  = ORM::factory('user', $user_id);
 		$group = ORM::factory('group', $group_id);
 
-		if ( !$user->loaded())
+		if ( ! $user->loaded())
 		{
-			throw new Request_Exception('User not found.');
+			Message::set(Message::ERROR, __('User not found.'));
 		}
-		if ( !$group->loaded())
+		else if ( ! $group->loaded())
 		{
-			throw new Request_Exception('Group not found.');
+			Message::set(Message::ERROR, __('Group not found.'));
 		}
-
-		if ( ! $user->has('groups', $group))
+		else
 		{
-			$user->add('groups', $group);
+			if ( ! $user->has('groups', $group))
+			{
+				$user->add('groups', $group);
+			}
+			Message::set(Message::SUCCESS, __('Successfully added user to group.'));
 		}
-
-		Message::set(Message::SUCCESS, __('Successfully added user to group.'));
 
 		$this->request->redirect($return_to);
 	}
-
 	
 	public function action_edit()
 	{
