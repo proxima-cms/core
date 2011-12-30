@@ -16,8 +16,17 @@ class Proxima_Model_User extends Model_Auth_User {
 		$this->values($data);
 		$this->save();
 		
-		$this->update_roles( (array) Arr::get($data, 'roles'));
-		$this->update_groups( (array) Arr::get($data, 'groups'));
+		$roles  = Arr::get($data, 'roles');
+		$groups = Arr::get($data, 'groups');
+
+		if ($roles !== NULL)
+		{
+			$this->update_roles( (array) $roles);
+		}
+		if ($groups !== NULL)
+		{
+			$this->update_groups( (array) $groups);
+		}
 	}
 
 	public function admin_update($data = array())
@@ -26,8 +35,17 @@ class Proxima_Model_User extends Model_Auth_User {
 		$this->values($data);
 		$this->save();
 
-		$this->update_roles( (array) Arr::get($data, 'roles'));
-		$this->update_groups( (array) Arr::get($data, 'groups'));
+		$roles  = Arr::get($data, 'roles');
+		$groups = Arr::get($data, 'groups');
+
+		if ($roles !== NULL)
+		{
+			$this->update_roles( (array) $roles);
+		}
+		if ($groups !== NULL)
+		{
+			$this->update_groups( (array) $groups);
+		}
 	}
 
 	private function check_passwords($data)
@@ -50,45 +68,58 @@ class Proxima_Model_User extends Model_Auth_User {
 
 	public function login($data)
 	{
-		if (!Auth::instance()->login(Arr::get($data, 'username'), Arr::get($data, 'password'), Arr::get($data, 'remember')))
+		if (!Auth::instance()->login(
+			$data['username'],
+			$data['password'],
+			$data['remember']
+		))
 		{
 			$validation = Validation::factory($data)
-				->rule('username','trim')
-				->rule('username','not_empty')
-				->rule('password','not_empty');
-
-			throw new Validation_Exception($validation, 'Incorrect username or password');
+				->rules('username', array(
+					array('not_empty'),
+				))
+				->rules('password', array(
+					array('not_empty'),
+				));
+		
+			if ( ! $validation->check())
+			{
+				throw new Validation_Exception($validation);
+			}
+		}
+		else
+		{
+			$this->where('id', '=', Auth::instance()->get_user()->id)->find();
 		}
 	}
 
-	public function signup(& $data)
+	public function signup($data)
 	{
-		$data = Validation::factory($data)
-			->rules('password', $this->_rules['password'])
-			->rules('username', $this->_rules['username'])
-			->rules('email', $this->_rules['email'])
-			->rules('password_confirm', $this->_rules['password_confirm']);
- 
-		// Add validate callbacks
-		foreach($this->_callbacks['username'] as $callback)
-		{
-			$data->callback('username', array($this, $callback));
-		} 
-		foreach($this->_callbacks['email'] as $callback)
-		{
-			$data->callback('email', array($this, $callback));
-		}		
- 
-		// Check the validation
-		if (!$data->check()) return FALSE;
-
 		$this->values($data);
 		$this->save();
 		$this->add('roles', new Model_Role(array('name' =>'login')));
+		
+		$message_body = View::factory('admin/page/auth/email/signup')
+			->set('user', $this);
 
-		Auth::instance()->login($data['username'], $data['password']);
+		$swift_loader = Kohana::find_file('vendor', 'swiftmailer/lib/swift_required');
 
-		return $data;
+		if ($swift_loader === FALSE)
+		{		
+			throw new Exception('Swiftmailer library not found.');
+		}		
+
+		require_once $swift_loader;
+
+		$message = Swift_Message::newInstance()
+			->setSubject('New account created')
+			->setFrom(array('your_website@domain'))
+			->setTo(array($this->email => $this->username))
+			->addPart($message_body, 'text/plain');
+
+		$transport = Swift_MailTransport::newInstance();
+		
+		Swift_Mailer::newInstance($transport)->send($message);
 	}
 
 	public function update_roles($roles)
@@ -103,7 +134,6 @@ class Proxima_Model_User extends Model_Auth_User {
 					$this->add('roles', new Model_Role(array('id' => $role->id)));
 				}
 				catch(Exception $e){}
-
 			}
 			else
 			{
@@ -128,13 +158,13 @@ class Proxima_Model_User extends Model_Auth_User {
 			} 
 			else 
 			{
-				// Remove roles relationship
+				// Remove groups relationship
 				$this->remove('groups', new Model_Group(array('id' => $group->id)));
 			}
 		}
 	}
 
-	public function reset_password(& $data)
+	public function reset_password($data)
 	{
 		$rules = $this->rules();
 

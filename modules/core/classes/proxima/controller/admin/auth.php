@@ -2,7 +2,7 @@
 
 class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 
-	public $master_template = 'admin/page/auth/master_page';
+	public $view_model = 'admin/page/auth/master/page';
 
 	public $auth_required = FALSE;
 
@@ -11,7 +11,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 		// Redirect if user is logged in
 		if (Auth::instance()->logged_in())
 		{
-			$this->request->redirect('admin');
+			$this->request->redirect(Route::get('admin')->uri());
 		}
 
 		$this->template
@@ -28,13 +28,11 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 		{
 			try
 			{
-				$data = $this->request->post();
-				
-				$user->login($data);
+				$user->login($this->request->post());
 
 				Message::set(Message::SUCCESS, __(':username successfully signed in.', array(':username' => $user->username)));
 
-				$return = Arr::get($this->request->post(), 'return_to', 'admin');
+				$return = $this->request->post('return_to') ?: Route::get('admin')->uri();
 
 				$this->request->redirect( $return );
 			}
@@ -49,63 +47,102 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 	
 	public function action_signup()
 	{
-		// Redirect if user is logged in
-		Auth::instance()->logged_in() AND $this->request->redirect('');		
-
-		// Set template vars
-		$this->template->title = __('Sign up'); 
-		$this->template->content = View::factory('page/auth/signup')
-			->bind('errors', $errors);
-
-		// If successful signup then redirect to login page
-		if (ORM::factory('user')->signup($_POST)){
-			
-			$message = $_POST['username'].' successfully registerd.';
-			Message::set(Message::SUCCESS, __($message));
-			
-			$this->request->redirect('');			
-		}
-		
-		if ($errors = $_POST->errors('signup'))
+		if (Auth::instance()->logged_in())
 		{
-			 Message::set(Message::ERROR, __('Please correct the errors.'));
+			$this->request->redirect();
 		}
 
-		$_POST = $_POST->as_array();
+		$this->template
+			->title(__('Sign up'))
+			->content(
+				View_Model::factory('admin/page/auth/signup')
+				->bind('errors', $errors)
+				->bind('user', $user)
+			);
+
+		$user = ORM::factory('user');
+
+		if ($this->request->method() === Request::POST)
+		{
+			try
+			{
+				$user->signup($this->request->post());
+			
+				Message::set(Message::SUCCESS, __(':username successully registered.', array('username' => $this->request->post('username'))));
+
+				Auth::instance()->login($this->request->post('username'), $this->request->post('password'));
+
+				$this->request->redirect();
+			}
+			catch(ORM_Validation_Exception $e)
+			{
+				$errors = $e->errors('signup');
+
+				Message::set(Message::ERROR, __('Please correct the errors.'));
+			}
+		}
 	}
 
 	public function action_profile()
 	{
-		// Redirect if user is logged in
-		!Auth::instance()->logged_in() AND $this->request->redirect('user/signin');
+		if ( ! Auth::instance()->logged_in())
+		{
+			$this->request->redirect(
+				Route::get('admin')
+				->uri(array(
+					'controller' => 'auth',
+					'action' => 'signin'
+				))
+			);
+		}
 		
-		$this->template->title = __('Profile');
-		$this->template->content = View::factory('page/auth/profile')
-			->bind('errors', $errors);
+		$this->template
+			->title(__('Profile'))
+			->content(
+				View_Model::factory('admin/page/auth/profile')
+				->bind('errors', $errors)
+				->bind('user', $user)
+			);
 			
 		$user = Auth::instance()->get_user();
 
-		// Update logged in user details, if successfull then redirect to profile page
-		if ($user->update($_POST)){
-			
-			$message = $user->username.' profile updated.';
-			Message::set(Message::SUCCESS, __($message));
-				
-			$this->request->redirect('user/profile');
-		}
-		
-		if ($errors = $_POST->errors('profile'))
+		if ($this->request->method() === Request::POST)
 		{
-			 Message::set(Message::ERROR, __('Please correct the errors.'));
+			try
+			{
+				$user->admin_update($this->request->post());
+			
+				Message::set(Message::SUCCESS, __(':username profile updated.', array(':username' => $user->username)));
+					
+				$this->request->redirect(
+					Route::get('admin')
+					->uri(array(
+						'controller' => 'auth',
+						'action' => 'profile'
+					))
+				);
+			}
+			catch(ORM_Validation_Exception $e)
+			{
+				$errors = $e->errors('admin/auth/profile');
+
+				Message::set(Message::ERROR, __('Please correct the errors.'));
+			}
 		}
 	}
 
 	public function action_reset()
 	{
-		$this->template->title = __('Reset password');
-		$this->template->content = View::factory('admin/page/auth/reset_password')
-			->bind('errors', $errors)
-			->bind('message_sent', $message_sent);
+		$this->template
+			->title(__('Reset password'))
+			->content(
+				View_Model::factory('admin/page/auth/resetpassword')
+				->bind('errors', $errors)
+				->bind('user', $user)
+				->bind('message_sent', $message_sent)
+			);
+
+		$user = ORM::factory('user');
 
 		// Get and delete the message_sent status from session
 		if ($message_sent = Session::instance()->get('message_sent', FALSE))
@@ -113,23 +150,25 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			Session::instance()->delete('message_sent');
 		}
 
-		if ($_POST)
+		if ($this->request->method() === Request::POST)
 		{
-			// Try send reset passwork link in email
-			if ( ORM::factory('user')->reset_password($_POST))
+			try
 			{
+				// Try send reset passwork link in email
+				$user->reset_password($this->request->post());
+				
 				// Store the result in session FIXME use messages class
 				Session::instance()->set('message_sent', TRUE);
 
 				// Redirect user to prevent refresh on POST request
 				$this->request->redirect(URL::site($this->request->uri(array('action' => 'reset_password'))));
 			}
-			else
+			catch(Validation_Exeption $e)
 			{
-					$errors = $_POST->errors('reset_password');
+					$errors = $e->array->errors('reset_password');
+
 					Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
-
 		}
 	}
 

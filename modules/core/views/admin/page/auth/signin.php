@@ -24,8 +24,13 @@
 				</div>
 
 				<?php echo Form::submit('signin', 'Sign in', array('class' => 'ui-button default', 'style' => 'float:left;margin-right:1em'))?>
+
+				<span style="float: left;margin-top:.2em;font-size:.8em">
 					
-				<?php echo HTML::anchor('/admin/auth/reset', 'Forgot username or password?', array('style' => 'float: left;margin-top:.8em;font-size:.8em'));?>
+				<?php echo HTML::anchor('/admin/auth/reset', __('Forgot username or password?'));?>
+				|
+				<?php echo HTML::anchor('/admin/auth/signup', __('Sign up'));?>
+				</span>
 
 			</fieldset> 
 		<?php echo Form::close()?>
