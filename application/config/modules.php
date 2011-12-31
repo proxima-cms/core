@@ -1,10 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Friday 30th of December 2011 03:07:39 PM
+ * Auto generated on: Saturday 31st of December 2011 12:30:35 AM
  */
 
 return array(
+	'blogimport' => MODPATH.'blogimport',
 	'minion' => MODPATH.'minion',
 	'minion-tasks-migrations' => MODPATH.'minion-tasks-migrations',
 	'core' => MODPATH.'core',

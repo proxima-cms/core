@@ -7,6 +7,7 @@
 	 */
 	public function up(Kohana_Database $db)
 	{
+		// Create all required tables, views & triggers
 		$this->create_users($db);
 		$this->create_activities($db);
 		$this->create_assets($db);
@@ -19,6 +20,10 @@
 		$this->create_pages($db);
 		$this->create_redirects($db);
 		$this->create_groups($db);
+
+		// Save modules to DB, and update file configs
+		Modules::save_all();
+		Modules::generate_config();
 	}
 
 	private function create_activities($db)

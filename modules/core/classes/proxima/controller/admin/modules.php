@@ -4,13 +4,13 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$request_data = array('request' => $this->request->query());  
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - Modules'))
 			->content(
 				View_Model::factory('admin/page/modules/index', $request_data)
-			); 
+			);
 	}
 
 	private function save($enabled = FALSE)
@@ -46,7 +46,7 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 		Modules::generate_config();
 
 		Message::set(
-			Message::SUCCESS, 
+			Message::SUCCESS,
 			__('Module successfully :state.', array(
 				':state' => $enabled ? __('enabled') : __('disabled')
 			))
@@ -59,7 +59,7 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 	{
 		$this->save(TRUE);
 	}
-	
+
 	public function action_disable()
 	{
 		$this->save(FALSE);
