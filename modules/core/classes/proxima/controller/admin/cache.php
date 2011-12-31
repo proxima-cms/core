@@ -4,15 +4,9 @@ class Proxima_Controller_Admin_Cache extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$this->template->title = __('Admin - Cache');
-		$this->template->content = View::factory('admin/page/cache/index')
-			->bind('cache_dir', $cache_dir)
-			->bind('total_size', $total_size)
-			->bind('total_files', $total_files);
-
-		$cache_dir = Kohana::$cache_dir;
-		$total_size = Text::bytes( (int) `du -sb {$cache_dir} | sed 's/\s.*$//g'`);
-		$total_files = `find {$cache_dir} -type f | wc -l`;
+		$this->template
+			->title( __('Admin - Cache') )
+			->content( View_Model::factory('admin/page/cache/index') );
 	}
 
 	public function action_purge()
@@ -24,4 +18,4 @@ class Proxima_Controller_Admin_Cache extends Controller_Admin_Base {
 		$this->request->redirect('admin/cache');
 	}
 
-} // End Controller_Admin_Cache
+}

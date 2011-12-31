@@ -2,30 +2,22 @@
 
 class Proxima_Controller_Admin_Logs extends Controller_Admin_Base {
 
-	public function action_index($file = NULL)
+	public function action_index()
 	{
-		$this->template->title = __('Admin - Logs');
-		$this->template->content = View::factory('admin/page/logs/index')
-			->bind('directories', $directories)
-			->bind('entries', $entries)
-			->bind('total_files', $total_files);
+		$file = $this->request->param('file');
 
-		$cur_month = $cur_year = NULL;
-
-		$total_files = 0;
-
-		$entries = Admin_Log::get_entries($file, $cur_year, $cur_month);
-
-		if ($entries !== NULL)
-		{
-			$entries = Admin_Log::format_entries($entries);
-		}
-
-		$directories = Admin_Log::get_directories_html($cur_year, $cur_month, $total_files);
+		$this->template
+			->title(__('Admin - Logs'))
+			->content(
+				View_Model::factory('admin/page/logs/index')
+					->set('filename', $file)
+			);
 	}
 
-	public function action_download($format = 'tar')
+	public function action_download()
 	{
+		$format = $this->request->param('format');
+
 		if ($format === 'tar')
 		{
 			$dir = APPPATH . 'logs';
@@ -39,8 +31,12 @@ class Proxima_Controller_Admin_Logs extends Controller_Admin_Base {
 			`mkdir -p /tmp/{$time} && cp -r {$dir} /tmp/{$time} && cd /tmp/{$time} && tar cfvz {$file} logs`;
 
 			// Send the file for download and delete from filesystem
-			$this->request->send_file($file, NULL, array('delete' => TRUE));
+			$this->response->send_file($file, NULL, array('delete' => TRUE));
+		}
+		else
+		{
+			throw new Request_Exception('Unsupported download archive format.');
 		}
 	}
 
-} // End Controller_Admin_Logs
+}

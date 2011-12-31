@@ -166,9 +166,18 @@ class Proxima_Core {
 				));
 
 			// Admin logs
+			Route::set('admin/logs/download', 'admin/logs/download(/<format>)')
+				->defaults(array(
+					'controller' => 'logs',
+					'directory'  => 'admin',
+					'action'     => 'download',
+					'format'     => NULL
+				));
+
 			Route::set('admin/logs', 'admin/logs(/<file>)', array('file' => '.+'))
 				->defaults(array(
-					'controller' => 'admin_logs',
+					'controller' => 'logs',
+					'directory'  => 'admin',
 					'action'     => 'index',
 					'file'       => NULL
 				));

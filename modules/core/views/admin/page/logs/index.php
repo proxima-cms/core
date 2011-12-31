@@ -10,7 +10,7 @@
 
 <div class="clear">
 	<div class="logs-directories">
-	<?php echo $directories ?>
+	<?php echo $directories_and_files ?>
 	</div>
 
 	<script type="text/javascript">
