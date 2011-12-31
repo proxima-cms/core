@@ -25,10 +25,13 @@ class Proxima_View_Admin_Page_Logs_Index extends View_Model_Admin {
 
 				foreach($day as $log)
 				{
+					// Convert month name to number. EG: 'September' => 09
+					$month_num = str_pad(Arr::get(date_parse($month), 'month'), '2', '0', STR_PAD_LEFT);
+
 					$html .= View::factory('admin/page/logs/filelist/day', array(
 						'log'      => $log,
 						'log_name' => preg_replace('/.*?(\d+)'.EXT.'$/', '$1', $log),
-						'month'    => $month,
+						'month'    => $month_num,
 						'year'     => $year
 					));
 				}
