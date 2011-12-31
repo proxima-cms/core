@@ -4,7 +4,7 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$request_data = array('request' => $this->request->query());  
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - Users'))
@@ -17,7 +17,8 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 	{
 		$request_data = array(
 			'request' => $this->request->query(),
-			'group_id' => $this->request->param('id')
+			'by' => $this->request->query('by'),
+			'id' => $this->request->query('id')
 		);
 
 		$this->template
@@ -29,7 +30,7 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 
 	public function action_add()
 	{
-		$request_data = array('request' => $this->request->query());  
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - Add user'))
@@ -54,7 +55,7 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 			catch(ORM_Validation_Exception $e)
 			{
 				$errors = $e->errors('admin/users');
-				 
+
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 		}
@@ -68,8 +69,8 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 		{
 			throw new Exception('User not found.');
 		}
-		
-		$request_data = array('request' => $this->request->query());  
+
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - Edit user'))
@@ -92,7 +93,7 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 			catch(ORM_Validation_Exception $e)
 			{
 				$errors = $e->errors('admin/users');
-				 
+
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 		}
@@ -125,16 +126,16 @@ class Proxima_Controller_Admin_Users extends Controller_Admin_Base {
 
 		$this->request->redirect('admin/users');
 	}
-	
+
 	public function action_tree()
 	{
 		$open_groups = Arr::get($_COOKIE, 'users/index', array());
-		
+
 		if ($open_groups)
 		{
 			$open_groups = explode(',', $open_groups);
 		}
-		
+
 		$this->template
 			->content(
 				ORM::factory('group')

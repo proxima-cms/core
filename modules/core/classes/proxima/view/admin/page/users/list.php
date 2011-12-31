@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Proxima_View_Admin_Page_Users_List extends View_Model_Admin {
-	
+
 	protected $order_by = 'username';
 
 	protected $model = 'user';
@@ -17,7 +17,7 @@ class Proxima_View_Admin_Page_Users_List extends View_Model_Admin {
 				'items_per_page' => 18,
 			));
 	}
-	
+
 	// Return the total amount of filtered items
 	public function var_total()
 	{
@@ -37,15 +37,17 @@ class Proxima_View_Admin_Page_Users_List extends View_Model_Admin {
 	// Return the filtered items
 	public function var_items()
 	{
+		$plural = Inflector::plural($this->by);
+
 		return ORM::factory($this->model)
 			->order_by($this->order_by, $this->direction)
 			->limit($this->pagination->items_per_page)
 			->offset($this->pagination->offset)
-			->join('groups_users')
-			->on('groups_users.user_id', '=', 'user.id')
-			->join('groups')
-			->on('groups_users.group_id', '=', 'groups.id')
-			->where('groups_users.group_id', '=', $this->group_id)
+			->join($plural.'_users')
+			->on($plural.'_users.user_id', '=', 'user.id')
+			->join($plural)
+			->on($plural.'_users.'.$this->by.'_id', '=',  $plural.'.id')
+			->where($plural.'_users.'.$this->by.'_id', '=', $this->id)
 			->find_all();
 	}
 }
