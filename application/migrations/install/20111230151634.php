@@ -906,12 +906,12 @@
 		$db->query(NULL, "CREATE TRIGGER page_types_date_updated_insert BEFORE INSERT ON page_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 		$db->query(NULL, "
-			INSERT INTO `page_types` (`controller`, `template`, `name`, `description`) VALUES
-			(NULL, 'listing.php', 'Listing page', 'A listing template.'),
-			(NULL, 'page.php', 'Generic Page', 'Displays a single page'),
-			('tag', 'listing_by_tags.php', 'Listing by tags', 'Displays a filtered list by tags'),
-			('search', 'search_results.php', 'Search', 'Search results'),
-			('contact', 'contact.php', 'Contact page', 'Contact page with contact form');"
+			INSERT INTO `page_types` (`id`, `controller`, `template`, `name`, `description`) VALUES
+			(1, NULL, 'listing.php', 'Listing page', 'A listing template.'),
+			(2, NULL, 'page.php', 'Generic Page', 'Displays a single page'),
+			(3, 'tag', 'listing_by_tags.php', 'Listing by tags', 'Displays a filtered list by tags'),
+			(4, 'search', 'search_results.php', 'Search', 'Search results'),
+			(5, 'contact', 'contact.php', 'Contact page', 'Contact page with contact form');"
 		);
 
 		$db->query(NULL, "
@@ -956,13 +956,26 @@
 				group by `page`.`id`"
 			);
 
+		// Home page
 		$db->query(NULL, "
-			INSERT INTO `pages`
-				(`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
-			VALUES
-				(1, 1, 0, 1, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', CURRENT_TIMESTAMP, NULL)"
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 0, 1, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', CURRENT_TIMESTAMP, NULL)"
 		);
-
+		// Error 404 page
+		$db->query(NULL, "
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 0, 0, 0, 0, 'Error 404', '404', 'Error 404', '<p>Error 404 - Not found</p>', CURRENT_TIMESTAMP, NULL)"
+		);
+		// Error 403 page
+		$db->query(NULL, "
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 0, 0, 0, 0, 'Error 403', '403', 'Error 403', '<p>Error 403 - No permission</p>', CURRENT_TIMESTAMP, NULL)"
+		);
+		// Error 500 page
+		$db->query(NULL, "
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 0, 0, 0, 0, 'Error 500', '500', 'Error 500', '<p>Error 500 - Internal server error</p>', CURRENT_TIMESTAMP, NULL)"
+		);
 	}
 
 	private function create_redirects($db)
@@ -982,10 +995,6 @@
 
 		$db->query(NULL, "CREATE TRIGGER redirects_date_updated_update BEFORE UPDATE ON redirects FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 		$db->query(NULL, "CREATE TRIGGER redirects_date_updated_insert BEFORE INSERT ON redirects FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
-	}
-
-	private function create_roles($db)
-	{
 	}
 
 	private function create_tags($db)
