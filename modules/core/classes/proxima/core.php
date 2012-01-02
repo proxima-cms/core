@@ -3,21 +3,21 @@
 class Proxima_Core {
 
 	/**
-	* Core init: enable system modules, check paths exist and set the database config reader.
 	* This function is called once within bootstrap.php
 	*
 	* @return  void
 	*/
 	public static function init()
 	{
-		// Set module default config.
+		// Set default config.
+		I18n::lang('en-gb');
 		Cache::$default = 'apc';
 		Image::$default_driver = 'imagick';
 		Cookie::$salt = 'proxima-cms';
 
+		// Attach the database config reader.
 		if ( ! Kohana::$is_cli)
 		{
-			// Attach the database config reader.
 			Kohana::$config->attach(new Config_Database);
 		}
 

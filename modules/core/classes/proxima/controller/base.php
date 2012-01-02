@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-	
+
 abstract class Proxima_Controller_Base extends Controller {
- 
+
 	public $auto_render = TRUE;
 
 	public $view_model = NULL;
@@ -12,16 +12,16 @@ abstract class Proxima_Controller_Base extends Controller {
 
 	public function before()
 	{
-		// The user may be logged in but not have the correct permissions to view this controller and/or action, 
+		// The user may be logged in but not have the correct permissions to view this controller and/or action,
 		// so instead of redirecting to signin page we redirect to 403 Forbidden
 		if ( Auth::instance()->logged_in() AND Auth::instance()->logged_in($this->auth_required) === FALSE)
-		{   
+		{
 			$this->request->redirect('403');
-		}   
+		}
 
 		// If this page is secured and the user is not logged in (or doesn't match role), then redirect to the signin page
 		if ($this->auth_required !== FALSE && Auth::instance()->logged_in($this->auth_required) === FALSE)
-		{   
+		{
 			Message::set(Message::ERROR, __('You need to be signed in to do that.'));
 
 			// Set the return path so user is redirect back to this page after successful sign in

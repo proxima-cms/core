@@ -86,7 +86,7 @@ define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
 // Clean up the configuration vars
 unset($application, $modules, $system);
 
-if (file_exists('install'.EXT))
+if (FALSE AND file_exists('install'.EXT))
 {
 	// Load the installation check
 	return include 'install'.EXT;
@@ -119,3 +119,5 @@ echo Request::factory()
 	->execute()
 	->send_headers()
 	->body();
+
+I18n::write();

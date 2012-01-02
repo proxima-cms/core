@@ -7,33 +7,33 @@ class Proxima_View_Model_Master extends View_Model {
 		parent::__construct();
 
 		$request = Request::current();
-		
+
 		// Set the default admin page data
 		$this
 			->set('environment', Kohana::$environment == Kohana::DEVELOPMENT ? 'development' : 'production')
-			->styles(array())  
-			->scripts(array())  
-			->paths(array())  
+			->styles(array())
+			->scripts(array())
+			->paths(array())
 			->param(
 				$request->param()
-			);  
+			);
 	}
-	
+
 	/**
 	 * Sets a page data group
 	 *
 	 */
 	private function data($key, $items)
 	{
-		try
-		{
-			$data = $this->$key;
-		}
-		catch(Kohana_Exception $e)
+		if (!$this->view->__isset($key))
 		{
 			$data = array();
 		}
-	
+		else
+		{
+			$data = $this->$key;
+		}
+
 		foreach($items as $item)
 		{
 			if (!is_array($item))
@@ -50,7 +50,7 @@ class Proxima_View_Model_Master extends View_Model {
 
 		return $this;
 	}
-	
+
 	/**
 	 * Sets the page styles
 	 *
@@ -62,7 +62,7 @@ class Proxima_View_Model_Master extends View_Model {
 
 		return $this;
 	}
-	
+
 	/**
 	 * Sets the page scripts
 	 *
@@ -74,7 +74,7 @@ class Proxima_View_Model_Master extends View_Model {
 
 		return $this;
 	}
-	
+
 	/**
 	 * Sets the page paths
 	 *
