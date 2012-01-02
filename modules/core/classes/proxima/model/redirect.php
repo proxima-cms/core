@@ -23,54 +23,15 @@ class Proxima_Model_Redirect extends Model_Base {
 		);
 	}
 
-	public function admin_add(& $data)
+	public function admin_add($data)
 	{
-		$data = Validation::factory($data);
-		$rules = $this->rules();
-
-		$fields = array(
-			'uri',
-			'target',
-			'target_id',
-		);	
-		foreach($fields as $field)
-		{		
-			$data->rules($field, $rules[$field]);
-		}		
-
-		if (!$data->check())
-		{		
-			return FALSE;
-		}		
-
-		$post = $data->as_array();
-		$this->values($post);
+		$this->values($data);
 
 		return $this->save();
 	}
 
-	public function admin_update(& $data)
+	public function admin_update($data)
 	{
-		$data = Validation::factory($data);
-		$rules = $this->rules();
-
-		$fields = array(
-			'uri',
-			'target',
-			'target_id',
-		);	
-		foreach($fields as $field)
-		{		
-			$data->rules($field, $rules[$field]);
-		}		
-		
-		if ( !$data->check())
-		{		
-			return FALSE;
-		}		
-
-		$data = $data->as_array();
-
 		$this->values($data);
 
 		return $this->save();

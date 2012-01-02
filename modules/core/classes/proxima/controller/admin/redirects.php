@@ -1,69 +1,88 @@
-<?php 
+<?php
 
 class Proxima_Controller_Admin_Redirects extends Controller_Admin_Base {
 
+	public function action_index()
+	{
+		$request_data = array('request' => $this->request->query());
+
+		$this->template
+			->title(__('Redirects'))
+			->content(
+				View_Model::factory('admin/page/redirects/index', $request_data)
+			);
+	}
+
 	public function action_add()
 	{
-		$this->template->title = __('Add redirect');
+		$this->template
+			->title(__('Add redirect'))
+			->content(
+				View_Model::factory('admin/page/redirects/add')
+				->bind('redirect', $redirect)
+				->bind('errors', $errors)
+			);
 
-		$this->template->content = View::factory('admin/page/redirects/add')
-			->bind('pages', $pages)
-			->bind('errors', $errors);
+		$redirect = ORM::factory('redirect');
 
-		$pages = ORM::factory('page')->tree_select(4, 0, array('' => __('None')), 0, 'title');
+		if ($this->request->method() === Request::POST)
+		{
+			try
+			{
+				$redirect->admin_add($this->request->post());
 
-		if ($_POST)
-		{		
-			if (ORM::factory('redirect')->admin_add($_POST))
-			{		
 				Message::set(Message::SUCCESS, __('Redirect successfully saved.'));
-				$this->request->redirect('admin/redirects');
-			}		
-			else if ($errors = $_POST->errors('admin/redirects'))
-			{		
-				 Message::set(Message::ERROR, __('Please correct the errors.'));
-			}		
 
-			$_POST = $_POST->as_array();
-		}		
-	}	
-	
+				$this->request->redirect(
+					Route::get('admin')
+					->uri(array(
+						'controller' => 'redirects'
+					))
+				);
+			}
+			catch(ORM_Validation_Exception $e)
+			{
+				$errors = $e->errors('admin/redirects');
+
+				Message::set(Message::ERROR, __('Please correct the errors.'));
+			}
+		}
+	}
+
 	public function action_edit()
 	{
-		$id = (int) $this->request->param('id');
-
-		$redirect = ORM::factory('redirect', $id);
+		$redirect = ORM::factory('redirect', $this->request->param('id'));
 
 		if (!$redirect->loaded())
 		{
-			throw new HTTP_Exception_500('Redirect not found.');
+			throw new Request_Exception('Redirect not found.');
 		}
 
-		$this->template->title = __('Edit redirect');
+		$this->template
+			->title(__('Edit redirect'))
+			->content(
+				View_Model::factory('admin/page/redirects/edit')
+				->set('redirect', $redirect)
+				->bind('errors', $errors)
+			);
 
-		$this->template->content = View::factory('admin/page/redirects/edit')
-			->bind('pages', $pages)
-			->bind('redirect', $redirect)
-			->bind('errors', $errors);
+		if ($this->request->method() === Request::POST)
+		{
+			try
+			{
+				$redirect->admin_update($this->request->post());
 
-		$pages = ORM::factory('page')->tree_select(4, 0, array('' => __('None')), 0, 'title');
-
-		if ($_POST)
-		{		
-			if ($redirect->admin_update($_POST))
-			{		
 				Message::set(Message::SUCCESS, __('Redirect successfully saved.'));
+
 				$this->request->redirect($this->request->uri());
-			}		
-			else if ($errors = $_POST->errors('admin/redirects'))
-			{		
-				 Message::set(Message::ERROR, __('Please correct the errors.'));
-			}		
-		}		
-		else
-		{		
-			$_POST = $redirect->as_array();
-		}  
-	}	
+			}
+			catch(ORM_Validation_Exception $e)
+			{
+				$errors = $e->errors('admin/redirects');
+
+				Message::set(Message::ERROR, __('Please correct the errors.'));
+			}
+		}
+	}
 
 }
