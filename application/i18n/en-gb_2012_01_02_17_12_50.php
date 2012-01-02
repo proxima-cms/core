@@ -4,9 +4,9 @@
  * Automatically generated from previous translation file.
  */
 return array (
-  'Pages' => 'Pages',
-  'Hello, world' => 'Hello, world',
-  'Add page' => 'Add page',
-  'Manage page types' => 'Manage page types',
-  'Page redirects' => 'Page redirects',
+  'Admin - Edit asset' => 'Admin - Edit asset',
+  'None' => 'None',
+  'Download asset' => 'Download asset',
+  'Delete asset' => 'Delete asset',
+  'on' => 'on',
 );

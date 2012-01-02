@@ -4,13 +4,13 @@
  * Automatically generated from previous translation file.
  */
 return array (
-  'Requests' => 'Requests',
+  'Database (default)' => 'Database (default)',
   'Benchmark' => 'Benchmark',
   'Min' => 'Min',
   'Max' => 'Max',
   'Average' => 'Average',
   'Total' => 'Total',
   'Kohana' => 'Kohana',
-  'Database (default)' => 'Database (default)',
+  'Requests' => 'Requests',
   'Application Execution' => 'Application Execution',
 );
