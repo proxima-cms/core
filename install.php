@@ -134,6 +134,14 @@ else
 			<?php endif ?>
 		</tr>
 		<tr>
+			<th>Admin nav config file</th>
+			<?php if (is_dir(CORPATH.'config') AND is_dir(CORPATH.'config/admin') AND is_file(CORPATH.'config/admin/nav.php') AND is_writable(CORPATH.'config/admin/nav.php')): ?>
+				<td class="pass"><?php echo CORPATH.'config/admin/nav.php' ?></td>
+			<?php else: $failed = TRUE ?>
+				<td class="fail">The <code><?php echo CORPATH.'config/admin/nav.php' ?></code> file is not writable.</td>
+			<?php endif ?>
+		</tr>
+		<tr>
 			<th>PCRE UTF-8</th>
 			<?php if ( ! @preg_match('/^.$/u', 'ñ')): $failed = TRUE ?>
 				<td class="fail"><a href="http://php.net/pcre">PCRE</a> has not been compiled with UTF-8 support.</td>
