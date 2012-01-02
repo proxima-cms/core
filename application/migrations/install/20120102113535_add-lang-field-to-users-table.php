@@ -11,7 +11,7 @@ class Migration_Install_20120102113535 extends Minion_Migration_Base {
 	public function up(Kohana_Database $db)
 	{
 		// $db->query(NULL, 'CREATE TABLE ... ');
-		$db->query(NULL, 'ALTER TABLE  `users` ADD  `lang` VARCHAR( 128 ) NULL AFTER  `password`');
+		$db->query(NULL, 'ALTER TABLE  `users` ADD  `lang` VARCHAR( 128 ) NOT NULL AFTER  `password`');
 	}
 
 	/**
