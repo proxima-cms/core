@@ -233,6 +233,14 @@ else
 				<td class="fail">Kohana can use <a href="http://php.net/pdo">PDO</a> to support additional databases.</td>
 			<?php endif ?>
 		</tr>
+		<tr>
+			<th>JAVA Available</th>
+			<?php if ((bool) exec("command -v java >/dev/null && { echo 1; } || { echo 0; }")): ?>
+				<td class="pass">Pass</td>
+			<?php else: $failed = TRUE ?>
+				<td class="fail">Proxima CMS requires JAVA to compile asset files.</td>
+			<?php endif ?>
+		</tr>
 	</table>
 
 	<?php if ($failed === TRUE): ?>
