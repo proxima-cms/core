@@ -126,6 +126,14 @@ else
 			<?php endif ?>
 		</tr>
 		<tr>
+			<th>Modules config file</th>
+			<?php if (is_dir(APPPATH.'config') AND is_file(APPPATH.'config/modules.php') AND is_writable(APPPATH.'config/modules.php')): ?>
+				<td class="pass"><?php echo APPPATH.'config/modules' ?></td>
+			<?php else: $failed = TRUE ?>
+				<td class="fail">The <code><?php echo APPPATH.'config/modules.php' ?></code> file is not writable.</td>
+			<?php endif ?>
+		</tr>
+		<tr>
 			<th>PCRE UTF-8</th>
 			<?php if ( ! @preg_match('/^.$/u', 'ñ')): $failed = TRUE ?>
 				<td class="fail"><a href="http://php.net/pcre">PCRE</a> has not been compiled with UTF-8 support.</td>
