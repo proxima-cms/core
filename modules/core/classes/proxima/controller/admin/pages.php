@@ -19,7 +19,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 				View_Model::factory('admin/page/pages/add', array('template' => $this->template))
 					->bind('errors', $errors)
 			);
-		
+
 		if ($this->request->method() === Request::POST)
 		{
 			try
@@ -27,9 +27,9 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 				$page = ORM::factory('page')->admin_create($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Page successfully saved.'));
-				
+
 				$this->request->redirect('admin/pages/edit/'.$page->id);
-			} 
+			}
 			catch(ORM_Validation_Exception $e)
 			{
 				$errors = $e->errors('admin/pages');
@@ -38,7 +38,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 			}
 		}
 	}
-	
+
 	public function action_edit()
 	{
 		$this->template
@@ -60,11 +60,26 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 		{
 			try
 			{
-				$page->admin_update($this->request->post());
+				if ($this->request->post('add-new-tag') !== NULL)
+				{
+					$page->admin_add_tag($this->request->post());
 
-				Message::set(Message::SUCCESS, __('Page successfully updated.'));
-			
-				$this->request->redirect('admin/pages/edit/' . $page->id);
+					Message::set(Message::SUCCESS, __('New tag successfully added.'));
+				}
+				else
+				{
+					$page->admin_update($this->request->post());
+
+					Message::set(Message::SUCCESS, __('Page successfully updated.'));
+				}
+
+				$this->request->redirect(
+					Route::get('admin')
+						->uri(array(
+							'controller' => 'pages',
+							'action' => 'edit',
+							'id' => $page->id
+						)));
 			}
 			catch(ORM_Validation_Exception $e)
 			{
@@ -90,11 +105,11 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 
 		$this->request->redirect('admin/pages');
 	}
-	
+
 	public function action_tree()
 	{
 		$open_pages = explode(',', Arr::get($_COOKIE, 'pages/index'));
-		
+
 		$this->template
 			->content(
 				ORM::factory('page')->tree_list_html('admin/page/pages/tree', 0, $open_pages)

@@ -33,26 +33,26 @@
 			<fieldset>
 				<legend>Metadata</legend>
 				<div class="field">
-					<?php echo 
+					<?php echo
 						Form::label('title', __('Title'), NULL, $errors).
 						Form::input('title', $page->title, NULL, $errors)
 					?>
 				</div>
 				<div class="field">
-					<?php 
-						echo 
+					<?php
+						echo
 						Form::label('uri', __('URI'), array('style' => 'display:inline'), $errors);
 
-						echo '&nbsp;&nbsp;&nbsp;'. 
+						echo '&nbsp;&nbsp;&nbsp;'.
 						HTML::anchor('admin/pages/generate_uri?page_id='.$page->id, '[Generate]', array('id' => 'update-uri')).
 						'<br/>';
-					
+
 						echo
 						Form::input('uri', $page->uri, NULL, $errors)
 					?>
 				</div>
 				<div class="field">
-					<?php echo 
+					<?php echo
 						Form::label('description', __('Description'), NULL, $errors).
 						Form::input('description', $page->description, NULL, $errors)
 					?>
@@ -75,12 +75,12 @@
 				</div>
 				<div class="field clear">
 					<div class="clear">
-						<?php echo 
+						<?php echo
 							Form::label('visible_in_nav', __('Visible in nav?'), NULL, $errors);
 						?>
 					</div>
 					<div>
-						<?php 
+						<?php
 						echo
 							Form::select('visible_in_nav', array(
 								0 => 'No',
@@ -91,7 +91,7 @@
 				</div>
 				<div class="field clear">
 					<div class="clear">
-						<?php echo 
+						<?php echo
 							Form::label('status', __('Status'), NULL, $errors);
 						?>
 					</div>
@@ -103,7 +103,7 @@
 				</div>
 				<div class="field datepicker-wrapper clear">
 					<div class="clear">
-						<?php echo 
+						<?php echo
 							Form::label('visible_from', __('Visible from'), NULL, $errors);
 						?>
 					</div>
@@ -115,34 +115,34 @@
 				</div>
 				<div class="field datepicker-wrapper clear">
 					<div class="clear">
-						<?php echo 
+						<?php echo
 							Form::label('visible_to', __('Visible to'), NULL, $errors)
 						?>
-						<?php 
+						<?php
 							$visible_to = $page->visible_to;
 							$visible_to_forever = ((bool) Arr::get(Request::current()->post(), 'visible_to_forever') OR !$visible_to);
-							echo 
+							echo
 								Form::checkbox('visible_to_forever', 1, $visible_to_forever, array('style' => 'display:inline'), $errors);
-							echo 
+							echo
 								Form::label('visible_to_forever', __('Forever'), NULL, $errors)
 						?>
 					</div>
 					<div>
-						<?php echo 
+						<?php echo
 							Form::input('visible_to', $page->visible_to, array('class' => 'datepicker'), $errors);
 						?>
 					</div>
 				</div>
 			</fieldset>
 		</div>
-		
+
 		<!-- Tab Content -->
 		<div id="page-content">
 			<fieldset>
 				<legend>Content</legend>
 				<div class="field">
 					<div class="hidden">
-						<?php echo 
+						<?php echo
 							Form::label('body', __('Body content'), NULL, $errors);
 							//Form::textarea('body', Arr::get($_POST, 'body'), array('class' => 'wysiwyg'), TRUE, $errors)
 						?>
@@ -150,7 +150,7 @@
 					<div id="body" class="wysiwyg">
 						<?php echo $page->body; ?>
 					</div>
-				</div>		
+				</div>
 			</fieldset>
 		</div>
 
@@ -159,58 +159,65 @@
 			<fieldset>
 				<legend>Categorize</legend>
 				<div class="field">
-					<?php echo 
+					<?php echo
 						Form::label('parent_id', __('Parent page'), NULL, $errors, 'admin/messages/label_error').
 						Form::select('parent_id', $pages, $page->parent_id, NULL, $errors)
 					?>
 				</div>
 				<div class="field">
-					<?php echo 
+					<?php echo
 						Form::label('pagetype_id', __('Page type'), NULL, $errors).
 						Form::select('pagetype_id', $page_types, $page->pagetype_id, NULL, $errors);
-					?>	
-				</div>	
+					?>
+				</div>
 			</fieldset>
 			<fieldset>
 				<legend>Tags</legend>
+				<?php echo
+					Form::label('new-tag', __('New tag'), NULL, $errors),
+					Form::input('new-tag', '', NULL, $errors);
+				?>
+				<?php echo
+					Form::submit('add-new-tag', __('Add'), array('class' => 'ui-button save'), $errors);
+				?>
 				<ul style="margin-left:0">
 				<?php foreach($tags as $tag){?>
 				<li class="clear" style="list-style:none;padding-bottom:5px;">
 					<span style="float:left">
-						<?php echo 
+						<?php echo
 							Form::checkbox('tags[]', $tag->id, (bool) Request::current()->post('tag-'.$tag->id) ?: FALSE OR in_array($tag->id, $page_tags), array('id'=>'tag-'.$tag->id))
 						?>
 					</span>
 					<span style="float:left">
 					<?php echo
 						Form::label('tag-'.$tag->id, __($tag->name), NULL, $errors)
-					?>	
+					?>
 					</span>
 				</li>
-				<?php }?> 
+				<?php }?>
 			</fieldset>
 		</div>
-			
+
 		<!-- Tab Routing -->
 		<div id="page-routing">
 			<fieldset>
 				<legend>Routing</legend>
 				<p>Add key matches to convert url sections into request parameters.</p>
 				<div class="field">
-					<?php echo 
+					<?php echo
 						Form::label('route_uri', __('Route URI'), array('style' => 'display:inline'), $errors).
-						'&nbsp;&nbsp;&nbsp;'. 
+						'&nbsp;&nbsp;&nbsp;'.
 						HTML::anchor('admin/pages/generate_uri?page_id='.$page->id, '[Generate]', array('id' => 'update-uri')).
 						'<br/>'.
 						Form::input('route_uri', Arr::get($_POST, 'route_uri'), NULL, $errors)
 					?>
 				</div>
 				<div class="field" style="display:none">
-					<?php echo 
+					<?php echo
 						Form::label('route_key1_name', __('Key name'), NULL, $errors).
 						Form::input('route_key1_name', Arr::get($_POST, 'route_key1_name'), NULL, $errors)
 					?>
-					<?php echo 
+					<?php echo
 						Form::label('route_key1_regex', __('Key regex'), NULL, $errors).
 						Form::input('route_key1_regex', Arr::get($_POST, 'route_key1_regex'), NULL, $errors)
 					?>
@@ -225,11 +232,11 @@
 
 	</div>
 
-	<?php echo Form::button('save', 'Update', array('type' => 'submit', 'class' => 'ui-button save'))?>
-		
+	<?php echo Form::submit('save', __('Update'), array('class' => 'ui-button save'))?>
+
 	<div class="helper-right">
-		<?php echo Form::button('preview', 'Preview', array('type' => 'submit', 'class' => 'ui-button save'))?>	
-		<?php echo Form::button('publish', 'Publish', array('type' => 'submit', 'class' => 'ui-button save'))?>
+		<?php echo Form::submit('preview', __('Preview'), array('class' => 'ui-button save'))?>
+		<?php echo Form::submit('publish', __('Publish'), array('class' => 'ui-button save'))?>
 	</div>
-		
+
 <?php echo Form::close()?>

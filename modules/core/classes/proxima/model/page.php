@@ -5,13 +5,13 @@ class Proxima_Model_Page extends Model_Base {
 	protected $_belongs_to = array(
 		'parent'    => array('model' => 'page', 'foreign_key' => 'parent_id'),
 		'page_type'	=> array('model' => 'page_type', 'foreign_ley' => 'pagetype_id'),
-	);	
-	
+	);
+
 	protected $_has_many = array(
 		'children'	=> array('model' => 'page', 'foreign_key' => 'parent_id'),
 		'tags'			=> array('model' => 'tag', 'through' => 'tags_pages'),
 	);
-	
+
 	public function create_rules()
 	{
 		return array(
@@ -70,7 +70,7 @@ class Proxima_Model_Page extends Model_Base {
 			)
 		);
 	}
-	
+
 	public function delete($id = NULL)
 	{
 		if ($id === NULL)
@@ -78,7 +78,7 @@ class Proxima_Model_Page extends Model_Base {
 			// Use the the primary key value
 			$id = $this->pk();
 		}
-		
+
 		if ( ! empty($id) OR $id === '0')
 		{
 			foreach ($this->children->find_all() as $child)
@@ -94,30 +94,32 @@ class Proxima_Model_Page extends Model_Base {
 
 	public function update_tags(& $tags)
 	{
-		foreach(ORM::factory('tag')->find_all() as $tag) {
-
-			if (in_array($tag->id, $tags)) {
-
-				try {
+		foreach(ORM::factory('tag')->find_all() as $tag)
+		{
+			if (in_array($tag->id, $tags))
+			{
+				try
+				{
 					$this->add('tags', new Model_Tag(array('id' => $tag->id)));
-
-				} catch(Exception $e){}
-
-			} else {
+				}
+				catch(Exception $e){}
+			}
+			else
+			{
 				$this->remove('tags', new Model_Tag(array('id' => $tag->id)));
-			}		
-		}		
+			}
+		}
 	}
 
 	public function search($query)
 	{
 		return $this->where(
-			DB::expr('MATCH(page.title, page.description, page.body)'), 
-			'', 
+			DB::expr('MATCH(page.title, page.description, page.body)'),
+			'',
 			DB::expr('AGAINST(' . Database::instance()->escape($query) . ')')
-		);	
+		);
 	}
-	
+
 	public function admin_create($data)
 	{
 		$validation = Validation::factory($data);
@@ -139,7 +141,7 @@ class Proxima_Model_Page extends Model_Base {
 	public function admin_update($data)
 	{
 		$tags = Arr::get($data, 'tags', array());
-		
+
 		if (Arr::get($data, 'visible_to_forever', FALSE) !== FALSE)
 		{
 			$data['visible_to'] = NULL;
@@ -155,10 +157,32 @@ class Proxima_Model_Page extends Model_Base {
 		$this->values($data);
 		$this->save($validation);
 		$this->update_tags($tags);
-				
+
 		return $this;
 	}
-	
+
+	public function admin_add_tag($data)
+	{
+		$name = array('name' => $data['new-tag']);
+		$slug = array('slug' => URL::title($name['name']));
+		$tag  = ORM::factory('tag', $name);
+
+		if (!$tag->loaded())
+		{
+			try
+			{
+				$tag->values($name + $slug);
+				$tag->save();
+			}
+			catch(ORM_Validation_Exception $e)
+			{
+				throw new Exception('Unable to save new tag. '. $e->getMessage());
+			}
+		}
+
+		$this->add('tags', $tag);
+	}
+
 	public function admin_check_parent_id(Validation $array, $field)
 	{
 		if ( ! (bool) $this->parent_id )
@@ -166,7 +190,7 @@ class Proxima_Model_Page extends Model_Base {
 			$array->error($field, 'root_reparent', array($array[$field]));
 		}
 	}
-	
+
 	// Don't delete id 1
 	public function admin_check_id(Validate $array, $field)
 	{
@@ -175,19 +199,19 @@ class Proxima_Model_Page extends Model_Base {
 			$array->error($field, 'delete_id_1', array($array[$field]));
 		}
 	}
-	
+
 	public function admin_delete($id = NULL, $data)
 	{
 		if ($id === NULL)
 		{
 			$data = Validation::factory($data);
 				//->callback('id', array($this, 'admin_check_id'));
-				
-			if ( !$data->check()) return FALSE;			
+
+			if ( !$data->check()) return FALSE;
 		}
 
-		
-		return parent::delete($id);		
+
+		return parent::delete($id);
 	}
 
 	public function generate_uri($prefix = NULL)
@@ -205,14 +229,14 @@ class Proxima_Model_Page extends Model_Base {
 				$prefixes = array($prefix);
 			}
 			else if ($prefix === NULL AND (int) $this->parent_id > 0)
-			{		
+			{
 				$parent_page = ORM::factory('page', (int) $this->parent_id);
 
 				if ($parent_page->loaded() AND $parent_page->uri)
-				{		
+				{
 					$prefixes = array($parent_page->uri);
-				}		
-			}		
+				}
+			}
 
 			$prefixes[] = URL::title($this->title, '-');
 
@@ -225,7 +249,7 @@ class Proxima_Model_Page extends Model_Base {
 				->where('id', '<>', $this->id)
 				->find()
 				->loaded())
-			{		
+			{
 				$c++;
 				$page_uri = $orig_uri.$c;
 			}
