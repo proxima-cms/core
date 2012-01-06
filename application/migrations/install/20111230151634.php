@@ -1081,13 +1081,6 @@
 		$db->query(NULL, "CREATE TRIGGER users_date_updated_insert BEFORE INSERT ON users FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
 
 		$db->query(NULL, "
-			INSERT INTO `users` (`id`, `email`, `username`, `password`, `logins`, `last_login`)
-			VALUES (1, 'admin@example.com', 'admin', 'b9314be4ac625671d4048b5e6a5e8c178c9c0c910e7ef2a629a6b2afc40804c5', 0, 0)"
-		);
-		$db->query(NULL, "INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES (1, 1)"); // login role
-		$db->query(NULL, "INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES (1, 2)"); // admin role
-
-		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `user_tokens` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`user_id` int(11) unsigned NOT NULL,

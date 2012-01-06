@@ -21,6 +21,6 @@ class Migration_Install_20120102113535 extends Minion_Migration_Base {
 	 */
 	public function down(Kohana_Database $db)
 	{
-		$db->query('ALTER TABLE `users` DROP `lang`');
+		$db->query(NULL, 'ALTER TABLE `users` DROP `lang`');
 	}
 }

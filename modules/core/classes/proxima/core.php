@@ -3,12 +3,26 @@
 class Proxima_Core {
 
 	/**
+	 * @var  string  True if Proxima CMS is installed
+	 */
+	public static $is_installed = TRUE;
+
+	/**
 	* This function is called once within bootstrap.php
 	*
 	* @return  void
 	*/
 	public static function init()
 	{
+		try
+		{
+			ORM::factory('user');
+		}
+		catch(Database_Exception $e)
+		{
+			Core::$is_installed = FALSE;
+		}
+
 		// Set default config.
 		I18n::lang('en-gb');
 		Cache::$default = 'apc';
@@ -16,7 +30,7 @@ class Proxima_Core {
 		Cookie::$salt = 'proxima-cms';
 
 		// Attach the database config reader.
-		if ( ! Kohana::$is_cli)
+		if ( ! Kohana::$is_cli AND Core::$is_installed )
 		{
 			Kohana::$config->attach(new Config_Database);
 		}
@@ -193,22 +207,32 @@ class Proxima_Core {
 					'controller' => 'home'
 				));
 
-			// Find all pages that require routing to specific controllers
-			$route_pages = ORM::factory('site_page')
-				->where('pagetype_controller', '<>', 'page')
-				->and_where('pagetype_controller', 'IS NOT', NULL)
-				->find_all();
-
-			foreach($route_pages as $page)
+			if (Core::$is_installed)
 			{
-				// Set the page route
-				Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
-					->defaults(array(
-						'controller' => $page->pagetype_controller,
-						'action'     => 'index',
-						'uri'        => $page->uri,
-					));
+				// Find all pages that require routing to specific controllers
+				$route_pages = ORM::factory('site_page')
+					->where('pagetype_controller', '<>', 'page')
+					->and_where('pagetype_controller', 'IS NOT', NULL)
+					->find_all();
+
+				foreach($route_pages as $page)
+				{
+					// Set the page route
+					Route::set($page->uri, $page->uri.'(/<param>)', array('param' => '.*'))
+						->defaults(array(
+							'controller' => $page->pagetype_controller,
+							'action'     => 'index',
+							'uri'        => $page->uri,
+						));
+				}
 			}
+
+			// Set the install route
+			Route::set('install', 'install(/<action>)')
+					->defaults(array(
+							'controller' => 'install',
+							'action' => 'index',
+				));
 
 			// Set the 'catch all' route
 			Route::set('page', '<uri>', array('uri' => '.*'))
@@ -216,6 +240,7 @@ class Proxima_Core {
 					'controller' => 'page',
 					'action'     => 'index'
 				));
+
 
 			Route::cache(TRUE);
 		}
