@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Proxima_View_Admin_Page_Pages_Types_Edit extends View_Model {
+class Proxima_View_Admin_Page_Pages_Types_Edit extends Proxima_View_Admin_Page_Pages_Types_Add {
 
 	public function var_components()
 	{
-		return $this->view->page_type->component_type->find_all();
+		return $this->page_type->component_type->find_all();
 	}
 
 	public function var_component_types()

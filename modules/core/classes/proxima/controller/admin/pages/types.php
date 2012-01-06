@@ -4,44 +4,38 @@ class Proxima_Controller_Admin_Pages_Types extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$this->template->title = __('Page types');
-		$this->template->content = View_Model::factory('admin/page/pages/types/index');
-		
-		array_push($this->template->scripts, 
-			Core::path('pages/media/js/admin/pages.js')
-		);  
+		$this->template
+			->title(__('Page types'))
+			->content(
+				View_Model::factory('admin/page/pages/types/index')
+			)
+			->scripts(array(Core::path('pages/media/js/admin/pages.js')));
 	}
 
 	public function action_add()
 	{
-		$this->template->title = __('Add page type');
-
-		$this->template->content = View_Model::factory('admin/page/pages/types/add')
-			->bind('errors', $errors)
-			->bind('page_type', $page_type)
-			->bind('templates', $templates);
-
-		$templates = array();
+		$this->template
+			->title(__('Add page type'))
+			->content(
+				View_Model::factory('admin/page/pages/types/add')
+					->bind('errors', $errors)
+					->bind('page_type', $page_type)
+			);
 
 		$page_type = ORM::factory('page_type');
 
-		foreach(Kohana::list_files('views/'.Theme::path('templates')) as $key => $template)
-		{
-			$templates[basename($key)] = basename($key);
-		}
-
 		if ($this->request->method() === Request::POST)
-		{		
-			try 
-			{		
+		{
+			try
+			{
 				$page_type->admin_add($this->request->post());
 
-				Message::set(Message::SUCCESS, __('Page type successfully saved.'));		 
+				Message::set(Message::SUCCESS, __('Page type successfully saved.'));
 
 				$this->request->redirect('admin/pages/types');
-			}	
-			catch(ORM_Validation_Exception $e) 
-			{		
+			}
+			catch(ORM_Validation_Exception $e)
+			{
 				$errors = $e->errors('admin/pages/types');
 
 				Message::set(Message::ERROR, __('Please correct the errors.'));
@@ -60,28 +54,20 @@ class Proxima_Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			throw new Kohana_Exception('Page type not found.');
 		}
 
-		$this->template->title = __('Edit page type');
-
-		$this->template->content = View_model::factory('admin/page/pages/types/edit')
-			->set('page_type', $page_type)
-			->bind('component_type', $component_type)
-			->bind('templates', $templates)
-			->bind('errors', $errors);
+		$this->template
+			->title(__('Edit page type'))
+			->content(
+				View_model::factory('admin/page/pages/types/edit')
+					->set('page_type', $page_type)
+					->bind('component_type', $component_type)
+					->bind('errors', $errors)
+			);
 
 		$component_type = ORM::factory('page_type_component_type');
 
-		// Get the file templates.
-		$templates = array();
-		$template_files = Kohana::list_files('views/'.Theme::path('templates'));
-
-		// Format the templates array.
-		foreach($template_files as $key => $template)
-		{
-			$templates[basename($key)] = basename($key);
-		}
-
 		if ($this->request->method() === Request::POST)
 		{
+			// Try save a new component to this page type
 			if (Arr::get($this->request->post(), 'save-component') !== NULL)
 			{
 				$component_type->values(array(
@@ -111,29 +97,45 @@ class Proxima_Controller_Admin_Pages_Types extends Controller_Admin_Base {
 					Message::set(Message::ERROR, __('Please correct the errors.'));
 				}
 			}
+			// Try update the page type
 			else
 			{
 				try
 				{
 					$page_type->admin_update($this->request->post());
 
-					Message::set(Message::SUCCESS, __('Page type successfully updated.'));		 
+					Message::set(Message::SUCCESS, __('Page type successfully updated.'));
 
 					$this->request->redirect($this->request->uri());
 				}
 				catch(ORM_Validation_Exception $e)
 				{
 					$errors = $e->errors('admin/pages/types');
-	
+
 					Message::set(Message::ERROR, __('Please correct the errors.'));
 				}
 			}
 		}
 	}
 
-	public function action_delete($id = NULL, $set_message = TRUE)
+	public function action_delete()
 	{
-		return parent::action_delete();
+		$page_type = ORM::factory('page_type', $this->request->param('id'));
+
+		if (!$page_type->loaded())
+		{
+			throw new Request_Exception('Page type not found');
+		}
+
+		$page_type->delete();
+
+		Message::set(Message::SUCCESS, __('Page type successully deleted.'));
+
+		$this->request->redirect(
+			Route::get('admin')
+				->uri(array(
+					'controller' => str_replace('_', '/', $this->request->controller())
+				)));
 	}
-	
-} // End Controller_Admin_Pages_Types
+
+}
