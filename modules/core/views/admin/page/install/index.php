@@ -52,9 +52,7 @@
 					<span id="loading" style="display:none">
 						<?php echo HTML::image(Core::path('media/img/admin/ajax_loader_small.gif')); ?>
 						<span>
-							<!--
 							Please wait...
-							-->
 						</span>
 					</span>
 
@@ -76,6 +74,8 @@
 	<script>
 	(function(){
 		var
+			timer = null,
+			$loadText = $('#loading span').hide(),
 			focus_fields = (function(){
 				$('#username,#email,#password,#password_confirm').each(function(){
 					if (this.value === '' || this.className === 'error-field'){
@@ -123,6 +123,7 @@
 			},
 			postSuccess = function(errors) {
 
+				$loadText.hide();
 				$('#signin').removeAttr('disabled');
 				$('#loading').hide();
 
@@ -137,8 +138,13 @@
 				}
 			},
 			formSubmit = (function(){
+
 				$('#install-form').submit(function(e){
 					e.preventDefault();
+
+					timer = setTimeout(function(){
+						$loadText.show();
+					}, 1500);
 
 					$.ajax({
 						type:     'POST',

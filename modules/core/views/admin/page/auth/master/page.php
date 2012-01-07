@@ -6,6 +6,9 @@
 	<title><?php echo $title ?></title>
 	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n";?>
 	<?php echo implode("\n\t", array_map('HTML::script', $scripts)), "\n" ?>
+	<style type="text/css">
+		#content{width:354px;}
+	</style>
 </head>
 	<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
 	<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->

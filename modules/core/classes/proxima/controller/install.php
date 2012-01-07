@@ -61,14 +61,20 @@ class Proxima_Controller_Install extends Controller_Base {
 				// Run the migration task
 				$migration_task = Minion_Task::factory('migrations_run')->execute(array());
 
+				$user = ORM::factory('user');
+
 				try
 				{
-					ORM::factory('user')->admin_add($this->request->post());
+					$user->admin_add($this->request->post());
+					$user->add('roles', new Model_Role(array('name' => 'login')));
+					$user->add('roles', new Model_Role(array('name' => 'admin')));
 				}
 				catch(ORM_Validation_Exception $e)
 				{
 					throw new Exception('Unabled to create new admin user');
 				}
+
+				Cache::instance()->delete_all();
 
 				if (Request::current()->is_ajax())
 				{
