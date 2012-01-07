@@ -74,10 +74,15 @@
 	<script>
 	(function(){
 		var
-			timer = null,
-			$loadText = $('#loading span').hide(),
+			// Elements
+			$loadText    = $('#loading span').hide(),
+			$loading     = $('#loading'),
+			$signin      = $('#signin'),
+			$installForm = $('#install-form'),
+			$fields      = $('#username,#email,#password,#password_confirm'),
+			// Actions
 			focus_fields = (function(){
-				$('#username,#email,#password,#password_confirm').each(function(){
+				$fields.each(function(){
 					if (this.value === '' || this.className === 'error-field'){
 						this.focus();
 						return false;
@@ -86,7 +91,7 @@
 				return arguments.callee;
 			})(),
 			showErrors = function(errors){
-				$('#username,#email,#password,#password_confirm').each(function(){
+				$fields.each(function(){
 
 					var $label = $('label[for="' + this.id + '"]'),
 							$label_error = $label.find('.label-error');
@@ -116,7 +121,7 @@
 
 				var $success = $(errors.success).hide();
 
-				$('#install-form').slideUp(500, function(){
+				$installForm.slideUp(500, function(){
 					$(this).after($success);;
 					$success.slideDown(500);
 				});
@@ -124,8 +129,8 @@
 			postSuccess = function(errors) {
 
 				$loadText.hide();
-				$('#signin').removeAttr('disabled');
-				$('#loading').hide();
+				$signin.removeAttr('disabled');
+				$loading.hide();
 
 				// No errors, successful submit
 				if (errors.success !== undefined) {
@@ -139,10 +144,10 @@
 			},
 			formSubmit = (function(){
 
-				$('#install-form').submit(function(e){
+				$installForm.submit(function(e){
 					e.preventDefault();
 
-					timer = setTimeout(function(){
+					window.setTimeout(function(){
 						$loadText.show();
 					}, 1500);
 
@@ -154,8 +159,8 @@
 						success:  postSuccess
 					});
 
-					$('#loading').show();
-					$('#signin').attr('disabled', 'disabled');
+					$loading.show();
+					$signin.attr('disabled', 'disabled');
 				});
 			})()
 		;
