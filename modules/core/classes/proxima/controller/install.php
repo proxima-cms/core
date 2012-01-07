@@ -48,11 +48,18 @@ class Proxima_Controller_Install extends Controller_Base {
 				$errors = $validation->errors('install');
 
 				Message::set(Message::ERROR, __('Please correct the errors.'));
+
+				if (Request::current()->is_ajax())
+				{
+					Request::current()->response()->headers('Content-Type', 'application/json');
+
+					$this->template->content = json_encode($errors);
+				}
 			}
 			else
 			{
-				$migration_task = Minion_Task::factory('migrations_run')
-					->execute(array());
+				// Run the migration task
+				$migration_task = Minion_Task::factory('migrations_run')->execute(array());
 
 				try
 				{
@@ -60,7 +67,14 @@ class Proxima_Controller_Install extends Controller_Base {
 				}
 				catch(ORM_Validation_Exception $e)
 				{
-					die(print_r($e->errors()));
+					throw new Exception('Unabled to create new admin user');
+				}
+
+				if (Request::current()->is_ajax())
+				{
+					Request::current()->response()->headers('Content-Type', 'application/json');
+
+					$this->template->content = json_encode(array('success' => $this->template->content->render()));
 				}
 			}
 		}
