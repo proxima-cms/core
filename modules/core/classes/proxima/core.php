@@ -26,7 +26,7 @@ class Proxima_Core {
 		}
 
 		// Redirect to install controller if Proxima is not installed
-		if ( !Kohana::$is_cli AND !Core::$is_installed AND Request::detect_uri() !== '/install')
+		if ( !Kohana::$is_cli AND !Core::$is_installed AND Request::detect_uri() !== '/install' AND Request::detect_uri() !== '/install/tests')
 		{
 			Request::factory('install')->redirect('install');
 		}

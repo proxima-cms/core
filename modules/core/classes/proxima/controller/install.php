@@ -124,6 +124,15 @@ class Proxima_Controller_Install extends Controller_Base {
 		}
 	}
 
+	public function action_tests()
+	{
+		$this->template
+			->title(__('Environment Tests'))
+			->content(
+				View::factory('page/install/tests')
+			);
+	}
+
 	// Remove the Proxima CMS tables
 	public function action_uninstall()
 	{
