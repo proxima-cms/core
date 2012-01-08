@@ -23,7 +23,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			);
 
 		$user = ORM::factory('user');
-	
+
 		if ($this->request->method() == Request::POST)
 		{
 			try
@@ -44,7 +44,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			}
 		}
 	}
-	
+
 	public function action_signup()
 	{
 		if (Auth::instance()->logged_in())
@@ -67,7 +67,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			try
 			{
 				$user->signup($this->request->post());
-			
+
 				Message::set(Message::SUCCESS, __(':username successully registered.', array('username' => $this->request->post('username'))));
 
 				Auth::instance()->login($this->request->post('username'), $this->request->post('password'));
@@ -95,7 +95,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 				))
 			);
 		}
-		
+
 		$this->template
 			->title(__('Profile'))
 			->content(
@@ -103,7 +103,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 				->bind('errors', $errors)
 				->bind('user', $user)
 			);
-			
+
 		$user = Auth::instance()->get_user();
 
 		if ($this->request->method() === Request::POST)
@@ -111,9 +111,9 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			try
 			{
 				$user->admin_update($this->request->post());
-			
+
 				Message::set(Message::SUCCESS, __(':username profile updated.', array(':username' => $user->username)));
-					
+
 				$this->request->redirect(
 					Route::get('admin')
 					->uri(array(
@@ -156,7 +156,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			{
 				// Try send reset passwork link in email
 				$user->reset_password($this->request->post());
-				
+
 				// Store the result in session FIXME use messages class
 				Session::instance()->set('message_sent', TRUE);
 
@@ -178,7 +178,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 		$this->template->content = View::factory('admin/page/auth/confirm_reset_password')
 			->set('token', @$_REQUEST['auth_token'])
 			->bind('errors', $errors);
-		
+
 		$id = (int) Arr::get($_REQUEST, 'id');
 		$token = (string) Arr::get($_REQUEST, 'auth_token');
 

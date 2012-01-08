@@ -2,14 +2,14 @@
 
 class Proxima_Controller_Install extends Controller_Base {
 
-	public $view_model = 'admin/page/master/page/install';
+	public $view_model = 'page/install/master/install';
 
 	public function action_index()
 	{
 		$this->template
 			->title(__('Install Proxima CMS'))
 			->content(
-				View::factory('admin/page/install/index')
+				View::factory('page/install/index')
 				->bind('errors', $errors)
 				->bind('user', $user)
 				->bind('migration', $migration_task)
@@ -97,7 +97,7 @@ class Proxima_Controller_Install extends Controller_Base {
 		if (Kohana::$environment !== Kohana::DEVELOPMENT)
 		{
 			// Get the welcome email content
-			$message_body = View::factory('admin/page/install/email/signup')
+			$message_body = View::factory('page/install/email/signup')
 				->set('user', $user);
 
 			// Load swiftmailer
