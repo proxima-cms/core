@@ -15,34 +15,27 @@ else
 }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en" class="no-js admin 40 install" dir="ltr">
 <head>
-
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Proxima CMS Installation</title>
-
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Install Proxima CMS</title>
+	<link type="text/css" rel="stylesheet" href="/modules/core/media/css/install/install.css" />
 	<style type="text/css">
-	body { width: 54em; margin: 0 auto; font-family: sans-serif; background: #fff; font-size: 80% }
-	h1 { letter-spacing: -0.04em; }
-	h1 + p { margin: 0 0 2em; color: #333; font-size: 90%; font-style: italic; }
-	code { font-family: monaco, monospace; }
-	table { border-collapse: collapse; width: 100%; }
-		table th,
-		table td { padding: 0.4em; text-align: left; vertical-align: top; }
-		table th { width: 12em; font-weight: normal; }
-		table tr:nth-child(odd) { background: #eee; }
-		table td.pass { color: #191; }
-		table td.fail { color: #911; }
-	#results { padding: 0.8em; color: #fff; font-size: 1.5em; }
-	#results.pass { background: #191; }
-	#results.fail { background: #911; }
+	#install{position:static;width:654px;margin:3em auto;}
 	</style>
 
+	<script type="text/javascript" src="/modules/core/media/js/admin/libs/jquery/jquery-min.js"></script>
 </head>
 <body>
+	<div id="install">
+		<div id="content">
+		<div>
+	<div class="section tests">
+	</div>
+	<div class="section install">
 
 	<h1>Environment Tests</h1>
 
@@ -282,6 +275,7 @@ else
 			<?php endif ?>
 		</tr>
 	</table>
+</div></div>
 
 </body>
 </html>

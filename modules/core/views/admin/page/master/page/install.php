@@ -4,31 +4,14 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title><?php echo $title ?></title>
-	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n";?>
-	<?php echo implode("\n\t", array_map('HTML::script', $scripts)), "\n" ?>
-	<style type="text/css">
-	#content {width:354px}
-	</style>
+	<?php echo HTML::style(Core::path('media/css/install/install.css')); ?>
+	<?php echo HTML::script(Core::path('media/js/admin/libs/jquery/jquery-min.js')); ?>
 </head>
-	<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
-	<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
-	<!--[if IE 8 ]>    <body class="ie8"> <![endif]-->
-	<!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
-	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
-
-	<div id="ajax-loading">
-		<img src="/modules/admin/media/img/ajax_loader.gif" />
-	</div>
-
-
-	<div id="content">
-
-		<div id="messages">
-		<?php echo Message::render( new View('admin/message/basic') ) ?>
-		</div>
+<body>
+	<div id="install">
+		<div id="content">
 		<?php echo $content ?>
 	</div>
-
 	<?php echo View::factory('admin/page/fragments/footer', array('paths' => $paths)) ?>
 </body>
 </html>

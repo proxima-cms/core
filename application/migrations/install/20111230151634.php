@@ -1,4 +1,4 @@
-<?php class Migration_Install_20111230151634 extends Minion_Migration_Base {
+<?php defined('SYSPATH') or die('No direct script access.'); class Migration_Install_20111230151634 extends Minion_Migration_Base {
 
 	/**
 	 * Run queries needed to apply this migration
@@ -1212,28 +1212,27 @@
 		$db->query(NULL, 'DROP TRIGGER IF EXISTS tags_date_updated_insert');
 		$db->query(NULL, 'DROP TRIGGER IF EXISTS users_date_updated_update');
 		$db->query(NULL, 'DROP TRIGGER IF EXISTS users_date_updated_insert');
-
 		$db->query(NULL, 'DROP TABLE IF EXISTS activities');
-		$db->query(NULL, 'DROP TABLE IF EXISTS assets');
+		$db->query(NULL, 'DROP TABLE IF EXISTS mimetypes');
 		$db->query(NULL, 'DROP TABLE IF EXISTS assets_folders');
 		$db->query(NULL, 'DROP TABLE IF EXISTS assets_sizes');
-		$db->query(NULL, 'DROP TABLE IF EXISTS components');
-		$db->query(NULL, 'DROP TABLE IF EXISTS component_types');
+		$db->query(NULL, 'DROP TABLE IF EXISTS assets');
 		$db->query(NULL, 'DROP TABLE IF EXISTS config');
 		$db->query(NULL, 'DROP TABLE IF EXISTS groups_users');
 		$db->query(NULL, 'DROP TABLE IF EXISTS groups');
-		$db->query(NULL, 'DROP TABLE IF EXISTS mimetypes');
 		$db->query(NULL, 'DROP TABLE IF EXISTS modules');
-		$db->query(NULL, 'DROP TABLE IF EXISTS pages');
-		$db->query(NULL, 'DROP TABLE IF EXISTS page_types');
 		$db->query(NULL, 'DROP TABLE IF EXISTS page_type_component_types');
+		$db->query(NULL, 'DROP TABLE IF EXISTS page_types');
+		$db->query(NULL, 'DROP TABLE IF EXISTS components');
 		$db->query(NULL, 'DROP TABLE IF EXISTS redirects');
 		$db->query(NULL, 'DROP TABLE IF EXISTS roles_users');
 		$db->query(NULL, 'DROP TABLE IF EXISTS roles');
+		$db->query(NULL, 'DROP TABLE IF EXISTS pages');
 		$db->query(NULL, 'DROP VIEW IF EXISTS site_pages');
-		$db->query(NULL, 'DROP TABLE IF EXISTS tags');
 		$db->query(NULL, 'DROP TABLE IF EXISTS tags_pages');
+		$db->query(NULL, 'DROP TABLE IF EXISTS tags');
+		$db->query(NULL, 'DROP TABLE IF EXISTS component_types');
 		$db->query(NULL, 'DROP TABLE IF EXISTS user_tokens');
 		$db->query(NULL, 'DROP TABLE IF EXISTS users');
 	}
-	}
+}
