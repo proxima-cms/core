@@ -22,9 +22,6 @@
 [submodule "modules/minion"]
 	path = modules/minion
 	url = git://github.com/kohana-minion/core.git
-[submodule "modules/core/vendor/swiftmailer"]
-	path = modules/core/vendor/swiftmailer
-	url = git://github.com/swiftmailer/swiftmailer.git
 [submodule "modules/compress"]
 	path = modules/compress
 	url = git://github.com/azampagl/kohana-compress.git

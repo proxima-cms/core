@@ -27,8 +27,8 @@ class Proxima_Modules {
 			throw $e;
 		}
 	}
-	
-	// Get module config from the database and return 
+
+	// Get module config from the database and return
 	// the module config string.
 	private static function get_module_config()
 	{
@@ -40,16 +40,18 @@ class Proxima_Modules {
 
 		// Now build a string with the config array.
 		$config = '';
-		
+		// Add the addon modules
 		foreach($modules as $module)
 		{
-			$config .= "\t'{$module->name}' => MODPATH.'{$module->name}',\n";
+			$config .= "\t'{$module->name}' => CORMODPATH.'{$module->name}',\n";
 		}
-		
-		// Add the default modules.
+
+		$config .= "\t'core' => CORPATH,\n";
+
+		// Add the default core modules.
 		foreach(Kohana::$config->load('default.modules') as $module)
 		{
-			$config .= "\t'{$module}' => MODPATH.'{$module}',\n";
+			$config .= "\t'{$module}' => ".($module === 'core' ? '' : "MODPATH.")."'{$module}',\n";
 	  }
 
 		$config .= ');';
@@ -85,7 +87,7 @@ class Proxima_Modules {
 		return $config;
 	}
 
-	// Get the admin navigation config form the db and 
+	// Get the admin navigation config form the db and
 	// return the navigation config file string.
 	private static function get_nav_config()
 	{
@@ -94,7 +96,7 @@ class Proxima_Modules {
 			->find_all();
 
 		$config = "\t'links' => array(\n";
-		
+
 		foreach(Kohana::$config->load('admin/default.nav.links') as $url => $module)
 		{
 			$config .= "\t\t'{$url}' => '{$module}',\n";
@@ -109,7 +111,7 @@ class Proxima_Modules {
 			$admin_name     = $module->nav_name ?: Arr::get($mod_config, 'name');
 
 			$config .= "\t\t'{$admin_url}' => '{$admin_name}',\n";
-		}		
+		}
 
 		$config .= "\t)\n);";
 
@@ -124,7 +126,7 @@ class Proxima_Modules {
 		return array($file_path, $config);
 	}
 
-	// Re-generate the modules init config file and the 
+	// Re-generate the modules init config file and the
 	// admin nav config files.
 	public static function generate_config()
 	{
@@ -139,7 +141,7 @@ class Proxima_Modules {
 	public static function save_all()
 	{
 		$modules = Kohana::list_files(NULL, array(MODPATH));
-			
+
 		foreach($modules as $name => $module)
 		{
 			$config = Modules::config($name);
@@ -156,13 +158,13 @@ class Proxima_Modules {
 				}
 				continue;
 			}
-			
+
 			$enabled        = $module_db->loaded() ? $module_db->enabled : Arr::get($config, 'enabled', TRUE);
 			$order          = Arr::get($config, 'load_order', 0);
 			$admin_nav      = Arr::get($config, 'admin_nav', array());
 			$nav_controller = Arr::get($admin_nav, 'controller');
 			$nav_name       = Arr::get($admin_nav, 'name') ?: Arr::get($config, 'name');
-		
+
 			$module_db
 				->values(array(
 					'name' => $name,
@@ -170,7 +172,7 @@ class Proxima_Modules {
 					'nav_name' => $nav_name,
 					'enabled' => $enabled,
 					'order' => $order
-				))  
+				))
 				->save();
 		}
 	}

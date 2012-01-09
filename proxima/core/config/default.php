@@ -4,7 +4,6 @@ return array(
 	'modules' => array(
 		'minion',
 		'minion-tasks-migrations',
-		'core',
 		'message',
 		'image',
 		'database',

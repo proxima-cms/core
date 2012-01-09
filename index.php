@@ -18,7 +18,12 @@ $modules = 'modules';
 /**
  * The directory in which the proxima core file are located.
  */
-$core = 'modules/core';
+$core = 'proxima/core';
+
+/**
+ * The directory in which the proxima modules are located.
+ */
+$core_modules = 'proxima/modules';
 
 /**
  * The directory in which the Kohana resources are located. The system
@@ -81,6 +86,7 @@ if ( ! is_dir($system) AND is_dir(DOCROOT.$system))
 define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
 define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
 define('CORPATH', realpath($core).DIRECTORY_SEPARATOR);
+define('CORMODPATH', realpath($core_modules).DIRECTORY_SEPARATOR);
 define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
 
 // Clean up the configuration vars
