@@ -63,8 +63,8 @@
 
 			var $success = $(errors.success).hide();
 
-			$installForm.slideUp(500, function(){
-				$(this).after($success);;
+			$('#install').slideUp(500, function(){
+				$('#install').after($success).remove();
 				$success.slideDown(500);
 			});
 		},

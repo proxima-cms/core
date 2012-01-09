@@ -38,12 +38,15 @@ table td.fail{color:#911;}
 #results{padding:0.8em;color:#fff;font-size:1.5em;}
 #results.pass{background:#191;}
 #results.fail{background:#911;}
-input[type="submit"],.btn{overflow:visible;white-space:nowrap;padding:.5em 1em;cursor:pointer;border:1px solid #bbb;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;-moz-box-shadow:#bbb 0 1px 4px;-webkit-box-shadow:#bbb 0 1px 4px;box-shadow:#bbb 0 1px 4px;color:#333;-moz-text-shadow:1px 1px 0 #FFF;-webkit-text-shadow:1px 1px 0 #FFF;text-shadow:1px 1px 0 #FFF;font:bold 15px helvetica,arial,freesans,clean,sans-serif;
+input[type="submit"],.btn{display:inline-block;text-decoration:none;overflow:visible;white-space:nowrap;padding:.5em 1em;cursor:pointer;border:1px solid #bbb;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;-moz-box-shadow:#bbb 0 1px 4px;-webkit-box-shadow:#bbb 0 1px 4px;box-shadow:#bbb 0 1px 4px;color:#333;-moz-text-shadow:1px 1px 0 #FFF;-webkit-text-shadow:1px 1px 0 #FFF;text-shadow:1px 1px 0 #FFF;font:bold 15px helvetica,arial,freesans,clean,sans-serif;
 background:#f4f4f4;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#ddd');
 background:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#ddd));
 background:-moz-linear-gradient(top,#fff,#ddd);
 filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#FFFFFFFF,endColorStr=#DDDDDDFF);}
 input[type="submit"]:hover,.btn:hover{color:#000;border-color:#888;outline:none;}
-input[type="submit"]:active,.btn:active{background:#f4f4f4;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee',endColorstr='#ffffff');background:-webkit-gradient(linear,left top,left bottom,from(#eee),to(#fff));background:-moz-linear-gradient(top,#eee,#fff);}
+input[type="submit"]:active,.btn:active{background:#f4f4f4;}
 input[type="submit"][disabled]{opacity:.5;cursor:default;}
 input[type="submit"][disabled]:hover{color:#333;border-color:#bbb;}
+
+.btn.signin span, .btn.install span{float:left;margin:0 4px 0 -10px;width: 16px;height: 16px;background:url(../../img/install/icons.png);background-position:-192px -96px;}
+.btn.uninstall span {float:left;margin:0 4px 0 -10px;width: 16px;height: 16px;background:url(../../img/install/icons.png);background-position: -96px -128px;}

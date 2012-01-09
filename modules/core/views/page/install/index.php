@@ -1,3 +1,5 @@
+<?php if ($migration === NULL) {?>
+
 <div id="install">
 	<div id="content">
 		<div class="section install">
@@ -5,16 +7,18 @@
 		<?php echo Form::open(NULL, array('id' => 'install-form', 'data-errors' => count($errors)))?>
 			<fieldset>
 				<?php if (Core::$is_installed){?>
-					<br />
+					<p id="results" class="fail">Warning</p>
 					<p>
 						It appears that the Proxima CMS is already installed.
 					</p>
 					<p>
 						Note!! You should remove this installer for public sites.
 					</p>
-					<p>
-						Would you like to
-						<?php echo HTML::anchor(Route::get('install')->uri(array('action' => 'uninstall')), 'uninstall');?>?
+						<p>
+						<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'uninstall')));?>" class="btn uninstall">
+							<span></span>
+							Uninstall
+						</a>
 					</p>
 
 				<?php } else {?>
@@ -26,17 +30,17 @@
 
 					<?php if ($migration === NULL) {?>
 
-						<h2>Admin account details</h2>
+						<h2>Enter the admin account details:</h2>
 						<div class="field">
 							<?php echo
 								Form::label('username', 'Username', NULL, $errors),
-								Form::input('username', $user['username'], NULL, $errors)
+								Form::input('username', $user['username'] ?: 'admin', NULL, $errors)
 							?>
 						</div>
 						<div class="field">
 							<?php echo
 								Form::label('email', 'Email', NULL, $errors),
-								Form::input('email', $user['email'], NULL, $errors)
+								Form::input('email', $user['email'] ?: 'test@test.com', NULL, $errors)
 							?>
 						</div>
 						<div class="field">
@@ -53,7 +57,11 @@
 						</div>
 
 						<div style="padding-top:.5em">
-							<?php echo Form::submit('signin', 'Install', array('class' => 'ui-button default'))?>
+							<button type="submit" id="signin" class="btn install">
+								<span></span>
+								Install
+							</button>
+
 
 							<span id="loading">
 								<?php echo HTML::image(Core::path('media/img/admin/ajax_loader_small.gif')); ?>
@@ -65,12 +73,6 @@
 
 					<?php } else { ?>
 
-						<?php echo nl2br($migration); ?>
-
-						<p>
-							Proxima CMS is now installed! You can now
-							<?php echo HTML::anchor('admin/auth/signin', 'Sign in >>'); ?>
-						</p>
 
 					<?php }?>
 
@@ -81,3 +83,7 @@
 		</div>
 	</div>
 </div>
+
+<?php  } else { ?>
+	<?php echo View::factory('page/install/success', array('migration' => $migration)); ?>
+<?php } ?>
