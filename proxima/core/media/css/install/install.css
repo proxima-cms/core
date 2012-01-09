@@ -1,52 +1,43 @@
-body{font:13px/1.231 sans-serif;*font-size:small;}
-body{background:#ccc;}
+body{font:13px/1.231 sans-serif;background:#ccc;}
 div,p,input,label,fieldset,button{font-size:100%;}
-body,select,input,textarea{color: #444;}
+body,select,input,textarea{color:#444;}
+h1{letter-spacing:-0.04em;}
 h1,h2,h3,h4,h5,h6{font-weight:bold;}
-a:hover,a:active{outline:none;}
-a,a:active,a:visited{color:#607890;}
-a:hover{color: #036;}
+h2,h2,h4{margin-bottom:1em;font-size:100%;}
+a,a:active,a:visited{color:#111;}
+a:hover{color:#BB0000;}
 ul,ol{margin-left:1.8em;}
 ol{list-style-type:decimal;}
 body{text-align:center;}
 h1{font-size:1.5em;margin-bottom:.6em;margin:0;}
-h2,h2,h4{margin-bottom:1em;font-size:100%;}
 ul,ol{margin:0 2em 1em 2em;}
 p,form{margin:0 0 1em 0;}
 fieldset{border:0;margin:0;padding:0;}
 form .field{margin-bottom:.8em;}
 label{padding:.2em 0;display:block;}
 input,select,textarea{margin:0;clear:both;}
-select,input[type="text"],input[type="email"],input[type="url"],input[type="password"], textarea{padding: .5em .4em .5em .3em; border: 1px solid #AAA; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; -moz-box-shadow: inset 2px 2px 1px #ddd; -webkit-box-shadow: inset 2px 2px 1px #ddd; box-shadow: inset 2px 2px 1px #ddd; font-size:100%;}
-select,input[type="text"],input[type="email"],input[type="url"],input[type="password"]{width: 24em;}
-input.error-field, textarea.error-field{border-color: #BB0000;}
-.label-error{color:#BB0000;background:url(../../img/admin/error.gif) no-repeat 5px 2px; padding-left: 20px;}
-a, a:active, a:visited{color:#000;}
-#install{text-align:left;margin:3em auto;width:356px;border:4px solid transparent;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-box-shadow:0 0 18px rgba(0,0,0,0.4);-moz-box-shadow:0 0 18px rgba(0,0,0,0.4);box-shadow:0 0 18px rgba(0,0,0,0.4);}
-#install.tests{width:626px;}
-#content{filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#fbfbfb');background:-webkit-gradient(linear,left top,left bottom,from(white),to(#FBFBFB));background:-moz-linear-gradient(top,white,#FBFBFB);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;padding:.8em 1.2em;}
-#loading{display:none;}
-h1{letter-spacing:-0.04em;}
-h1 + p{margin:0 0 2em;color:#333;font-size:90%;font-style:italic;}
-code{font-family:monaco, monospace;}
+input[type="submit"][disabled]:active,.btn[disabled]:active,input[type="submit"],.btn{display:inline-block;text-decoration:none;overflow:visible;white-space:nowrap;padding:.5em 1em;cursor:pointer;border:1px solid #bbb;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;-moz-box-shadow:#bbb 0 1px 4px;-webkit-box-shadow:#bbb 0 1px 4px;box-shadow:#bbb 0 1px 4px;color:#333;-moz-text-shadow:1px 1px 0 #FFF;-webkit-text-shadow:1px 1px 0 #FFF;text-shadow:1px 1px 0 #FFF;font:bold 15px helvetica,arial,freesans,clean,sans-serif;background:#f4f4f4;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#ddd');background:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#ddd));background:-moz-linear-gradient(top,#fff,#ddd);filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#FFFFFFFF,endColorStr=#DDDDDDFF);}
+select,input[type="text"],input[type="email"],input[type="url"],input[type="password"],textarea{padding:.5em .4em .5em .3em;border:1px solid #AAA; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; -moz-box-shadow: inset 2px 2px 1px #ddd; -webkit-box-shadow: inset 2px 2px 1px #ddd; box-shadow: inset 2px 2px 1px #ddd; font-size:100%;}
+select,input[type="text"],input[type="email"],input[type="url"],input[type="password"]{width:24em;}
+input[type="submit"]:hover,.btn:hover{color:#000;border-color:#888;outline:none;}
+input[type="submit"]:active,.btn:active{background:#f4f4f4;}
+input[type="submit"][disabled],.btn[disabled]{opacity:.6;cursor:default;}
+input[type="submit"][disabled]:hover,.btn[disabled]:hover{color:#333;border-color:#bbb;}
+input.error-field,textarea.error-field{border-color:#BB0000;}
+.label-error{color:#BB0000;background:url(../../img/install/error.gif) no-repeat 5px 2px;padding-left:20px;}
+code{font-family:monaco,monospace;}
 table{border-collapse:collapse;width:100%;}
 table th, table td{padding:0.4em;text-align:left;vertical-align:top;}
 table th{width:12em;font-weight:normal;}
 table tr:nth-child(odd){background:#eee;}
 table td.pass{color:#191;}
 table td.fail{color:#911;}
+#install{text-align:left;margin:3em auto;width:356px;border:4px solid transparent;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-box-shadow:0 0 18px rgba(0,0,0,0.4);-moz-box-shadow:0 0 18px rgba(0,0,0,0.4);box-shadow:0 0 18px rgba(0,0,0,0.4);}
+#install.tests{width:626px;}
+#content{filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#fbfbfb');background:-webkit-gradient(linear,left top,left bottom,from(white),to(#FBFBFB));background:-moz-linear-gradient(top,white,#FBFBFB);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;padding:.8em 1.2em;}
+#loading{display:none;}
 #results{padding:0.8em;color:#fff;font-size:1.5em;}
 #results.pass{background:#191;}
 #results.fail{background:#911;}
-input[type="submit"],.btn{display:inline-block;text-decoration:none;overflow:visible;white-space:nowrap;padding:.5em 1em;cursor:pointer;border:1px solid #bbb;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;-moz-box-shadow:#bbb 0 1px 4px;-webkit-box-shadow:#bbb 0 1px 4px;box-shadow:#bbb 0 1px 4px;color:#333;-moz-text-shadow:1px 1px 0 #FFF;-webkit-text-shadow:1px 1px 0 #FFF;text-shadow:1px 1px 0 #FFF;font:bold 15px helvetica,arial,freesans,clean,sans-serif;
-background:#f4f4f4;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#ddd');
-background:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#ddd));
-background:-moz-linear-gradient(top,#fff,#ddd);
-filter:progid:DXImageTransform.Microsoft.gradient(startColorStr=#FFFFFFFF,endColorStr=#DDDDDDFF);}
-input[type="submit"]:hover,.btn:hover{color:#000;border-color:#888;outline:none;}
-input[type="submit"]:active,.btn:active{background:#f4f4f4;}
-input[type="submit"][disabled]{opacity:.5;cursor:default;}
-input[type="submit"][disabled]:hover{color:#333;border-color:#bbb;}
-
-.btn.signin span, .btn.install span{float:left;margin:0 4px 0 -10px;width: 16px;height: 16px;background:url(../../img/install/icons.png);background-position:-192px -96px;}
-.btn.uninstall span {float:left;margin:0 4px 0 -10px;width: 16px;height: 16px;background:url(../../img/install/icons.png);background-position: -96px -128px;}
+.btn.signin span,.btn.install span{float:left;margin:0 4px 0 -10px;width:16px;height:16px;background:url(../../img/install/icons.png);background-position:-192px -96px;}
+.btn.uninstall span{float:left;margin:0 4px 0 -10px;width:16px;height:16px;background:url(../../img/install/icons.png);background-position:-96px -128px;}

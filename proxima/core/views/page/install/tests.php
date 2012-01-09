@@ -33,7 +33,7 @@ else
 						$pass_msg = '✔ Your environment passed all requirements.';
 						try
 						{
-						require_once('modules/core/views/page/install/tests/tests.php');
+						require_once(CORPATH.'views/page/install/tests/tests.php');
 						}
 						catch(Exception $e)
 						{
