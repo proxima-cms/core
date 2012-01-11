@@ -14,12 +14,12 @@
 					<p>
 						Note!! You should remove this installer for public sites.
 					</p>
-						<p>
+						<div>
 						<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'uninstall')));?>" class="btn uninstall">
 							<span></span>
 							Uninstall
 						</a>
-					</p>
+					</div>
 
 				<?php } else {?>
 

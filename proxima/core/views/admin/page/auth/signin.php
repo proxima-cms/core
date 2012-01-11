@@ -1,4 +1,4 @@
-<div>
+<div class="section signin">
 		<?php echo Form::open()?>
 			<fieldset>
 
@@ -23,11 +23,14 @@
 					?>
 				</div>
 
-				<?php echo Form::submit('signin', 'Sign in', array('class' => 'ui-button default', 'style' => 'float:left;margin-right:1em'))?>
+				<button class="btn signin" type="submit" style="float:left;margin-right:1em;">
+					<span></span>
+					Sign in
+				</button>
 
-				<span style="float: left;margin-top:.2em;font-size:.9em">
+				<span style="float:right;margin-top:.9em;font-size:.9em">
 
-				<?php echo HTML::anchor('/admin/auth/reset', __('Forgot username or password?'));?>
+				<?php echo HTML::anchor('/admin/auth/reset', __('Reset password'));?>
 				|
 				<?php echo HTML::anchor('/admin/auth/signup', __('Sign up'));?>
 				</span>

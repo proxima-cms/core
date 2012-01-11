@@ -16,18 +16,27 @@
 	<!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
 	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 
-	<div id="ajax-loading">
-		<img src="/modules/admin/media/img/ajax_loader.gif" />
+	<div id="messages">
+		<div class="inner">
+			<?php echo Message::render( new View('admin/message/basic') ) ?>
+		</div>
 	</div>
 
-
 	<div id="content">
-<div id="messages">
-<?php echo Message::render( new View('admin/message/basic') ) ?>
-</div>
-				<?php echo $content ?>
+		<div id="inner">
+
+			<?php echo $content ?>
 	</div>
 
 	<?php echo View::factory('admin/page/fragments/footer', array('paths' => $paths)) ?>
+	</div>
+	<script>
+	if ($('#messages').find('li').length){
+	$('#messages').fadeIn();
+	setTimeout(function(){
+		//$('#messages').fadeOut();
+	}, 5000);
+	}
+	</script>
 </body>
 </html>

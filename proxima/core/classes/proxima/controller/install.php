@@ -4,6 +4,17 @@ class Proxima_Controller_Install extends Controller_Base {
 
 	public $view_model = 'page/install/master/install';
 
+	public function before()
+	{
+		// Secure this controller
+	 	if (!Kohana::$config->load('install.can_install_and_uninstall'))
+	 	{
+			throw new HTTP_Exception_503('Not allowed');
+	 	}
+
+		parent::before();
+	}
+
 	public function action_index()
 	{
 		$this->template
