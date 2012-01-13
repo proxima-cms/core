@@ -50,10 +50,22 @@ class Proxima_Core {
 			{
 				// Attach the database config reader.
 				Kohana::$config->attach(new Config_Database);
-			}
 
-			// Set the application routes.
-			self::set_routes();
+				if ( ! Route::cache())
+				{
+					// Set the core application routes
+					include CORPATH.'config/routes'.EXT;
+				}
+			}
+			else
+			{
+				// Set the install route
+				Route::set('install', 'install(/<action>)')
+					->defaults(array(
+						'controller' => 'install',
+						'action' => 'index',
+				));
+			}
 		}
 	}
 
@@ -81,31 +93,5 @@ class Proxima_Core {
 		}
 
 		return $root . $file;
-	}
-
-	/**
-	* Set the site application routes.
-	*
-	* @return  void
-	*/
-	public static function set_routes()
-	{
-		if (Core::$is_installed)
-		{
-			if ( ! Route::cache())
-			{
-				// Set the core application routes
-				include CORPATH.'config/routes'.EXT;
-			}
-		}
-		else
-		{
-			// Set the install route
-			Route::set('install', 'install(/<action>)')
-				->defaults(array(
-					'controller' => 'install',
-					'action' => 'index',
-			));
-		}
 	}
 }
