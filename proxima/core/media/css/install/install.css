@@ -11,8 +11,9 @@ ol{list-style-type:decimal;}
 body{text-align:center;}
 h1{font-size:1.5em;margin-bottom:.6em;margin:0;}
 ul,ol{margin:0 2em 1em 2em;}
-p,form{margin:0 0 1em 0;}
+p{margin:0 0 1em 0;}
 fieldset{border:0;margin:0;padding:0;}
+form{margin:0;}
 form .field{margin-bottom:.8em;}
 label{padding:.2em 0;display:block;}
 input,select,textarea{margin:0;clear:both;}
@@ -56,5 +57,6 @@ table td.fail{color:#911;}
 #results{padding:0.8em;color:#fff;font-size:1.5em;}
 #results.pass{background:#191;}
 #results.fail{background:#911;}
+#install-form{margin-bottom:.6em;}
 .btn.signin span,.btn.install span{float:left;margin:0 4px 0 -10px;width:16px;height:16px;background:url(../../img/install/icons.png);background-position:-192px -96px;}
 .btn.uninstall span{float:left;margin:0 4px 0 -10px;width:16px;height:16px;background:url(../../img/install/icons.png);background-position:-96px -128px;}

@@ -1,5 +1,9 @@
 <div class="action-bar clear">
-	<a href="<?php echo URL::site('admin/users/delete/'.$user->id)?>" id="delete-user" class="button ui-button default helper-right">
+	<a href="<?php echo URL::site(Route::get('admin')
+		->uri(array(
+			'controller' => 'users',
+			'action' => 'delete',
+			'id' => $user->id))); ?>" id="delete-user" class="button ui-button default helper-right">
 		<span>Delete user</span>
 	</a>
 	<script type="text/javascript">

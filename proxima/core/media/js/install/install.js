@@ -1,13 +1,12 @@
 (function(){
 	var
-		// Elements
+
 		$loadText    = $('#loading span').hide(),
 		$loading     = $('#loading'),
 		$signin      = $('#signin'),
-		$installForm = $('#install-form'),
+		$installForm = $('#install-form form'),
 		$fields      = $('#username,#email,#password,#password_confirm'),
 
-		// Actions
 		focus_fields = (function(){
 			var hasFocus = false;
 			$fields.each(function(key, elem){
@@ -103,7 +102,7 @@
 				$loadText.hide();
 				clearTimeout(timer);
 				timer = window.setTimeout(function(){
-					$loadText.fadeIn();
+					//$loadText.fadeIn();
 				}, 1500);
 
 				// Remove error messages

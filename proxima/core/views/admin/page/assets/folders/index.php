@@ -2,8 +2,16 @@
 	<div class="action-menu helper-right">
 		<button>Actions</button>
 		<ul>
-			<li><?php echo HTML::anchor('admin/assets/folders/add', __('Add folder'))?></li>
-			<li><?php echo HTML::anchor('admin/assets/folders/delete', __('Delete folders'), array('id' => 'delete-folders'))?></li>
+			<li><?php echo HTML::anchor(Route::get('admin/assets-folders')
+				->uri(array(
+					'controller'=> 'folders',
+					'action' => 'add'
+				)), __('Add folder'))?></li>
+			<li><?php echo HTML::anchor(Route::get('admin/assets-folders')
+				->uri(array(
+					'controller'=> 'folders',
+					'action' => 'delete'
+				)), __('Delete folders'), array('id' => 'delete-folders'))?></li>
 		</ul>
 	</div>
 	<?php echo $breadcrumbs?>
@@ -26,18 +34,18 @@
 		<tr>
 			<td>
 				<?php echo Form::checkbox('folder-'.$folder->id, '1', FALSE); ?>
-				<?php echo HTML::anchor('admin/assets/folders/edit/'.$folder->id, $folder->name)?>
+				<?php echo HTML::anchor(Route::get('admin/assets-folders')->uri(array('action' => 'edit', 'id' => $folder->id)), $folder->name)?>
 			</td>
 			<td><?php echo $folder->friendly_date?></td>
 		</tr>
-		<?php }?> 
+		<?php }?>
 	</tbody>
 	<tfoot>
 		<tr>
 			<td colspan="2">
 				<div style="float:right"><?php echo $pagination->render()?></div>
 				Showing <?php echo $items->count()?> of <?php echo $total?> Folders
-			</td> 
-		</tr>   
-	</tfoot>   
+			</td>
+		</tr>
+	</tfoot>
 </table>
