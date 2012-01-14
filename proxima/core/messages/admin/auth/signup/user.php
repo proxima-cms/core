@@ -7,8 +7,4 @@ return array(
 	'username' => array(
 		'unique' => 'username is already registered',
 	),
-	'_external' => array(
-		'password_confirm' => array(
-			'matches' => 'password confirm must match password'
-	)
 );
