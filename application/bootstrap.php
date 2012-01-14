@@ -61,9 +61,10 @@ I18n::lang('en-us');
  * Note: If you supply an invalid environment name, a PHP warning will be thrown
  * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
-if (isset($_SERVER['KOHANA_ENV']))
+if (($env = getenv('KOHANA_ENV')) !== FALSE)
 {
-	Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
+	Kohana::$environment = constant('Kohana::'.strtoupper($env));
+	unset($env);
 }
 else
 {
@@ -102,8 +103,6 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
 Kohana::$config->attach(new Config_File);
 
 /**
- * Load the modules.
+ * Enable the modules.
  */
-$modules = Kohana::$config->load('modules')->as_array();
-
-Kohana::modules($modules);
+Kohana::modules(Kohana::$config->load('modules')->as_array());

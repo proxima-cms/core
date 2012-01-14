@@ -11,20 +11,10 @@
 			var hasFocus = false;
 			$fields.each(function(key, elem){
 				var $field = $(elem);
-				if ($field.hasClass('error-field')) {
-					$field.blur(function(){
-						if ($.trim(this.value) !== '') {
-							$field
-							.removeClass('error-field')
-							.prev()
-							.find('.label-error')
-							.remove();
-						}
-					});
-				}
 				if ( !hasFocus && ( $.trim(this.value) === '' || $field.hasClass('error-field') )){
 					this.focus();
 					hasFocus = true;
+					return false;
 				}
 			});
 			return arguments.callee;

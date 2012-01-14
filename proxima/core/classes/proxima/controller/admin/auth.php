@@ -76,7 +76,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			}
 			catch(ORM_Validation_Exception $e)
 			{
-				$errors = $e->errors('signup');
+				$errors = $e->errors('admin/auth/signup');
 
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
