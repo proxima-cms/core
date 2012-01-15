@@ -1,31 +1,26 @@
-<?php echo Form::open()?>
-	<fieldset>
+<?php if (!$message_sent){?>
 
-		<?php if (!$message_sent){?>
+	<?php echo Form::open()?>
+		<fieldset>
 
-			<?php if ($errors) {?>
-				<ul class="errors">
-				<?php foreach($errors as $field => $error){?>
-					<li><?php echo $error ?></li>
-				<?php }?>
-				</ul>
-			<?php }?>
-		
 			<div class="field">
-				<?php echo 
-					Form::label('email', 'Enter your email:'), 
-					Form::input('email', Arr::get($_POST, 'email'), array('type' => 'email', 'id'=>'email'))
+				<?php echo
+					Form::label('email', 'Enter your email:', NULL, $errors),
+					Form::input('email', $user->email, NULL, $errors)
 				?>
 			</div>
-		
+
 			<?php echo Form::submit('resetpass', 'Reset password', array('class' => 'ui-button default'))?>
-	
-		<?php } else { ?>
 
-			<div class="form-success">
-				 A password reset link has been sent to your email.
-			</div>
-		<?php }?>
+		</fieldset>
+	<?php echo Form::close()?>
 
-	</fieldset> 
-<?php echo Form::close()?>
+<?php } else { ?>
+
+	<p>
+	 A password reset link has been sent to your email.
+	</p>
+
+	<?php echo HTML::anchor(Route::get('admin')->uri(array('controller' => 'auth', 'action' => 'signin')), __('Sign in'), array('class' => 'btn')); ?>
+
+<?php }?>

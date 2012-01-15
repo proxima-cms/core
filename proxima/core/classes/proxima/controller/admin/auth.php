@@ -11,7 +11,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 		// Redirect if user is logged in
 		if (Auth::instance()->logged_in())
 		{
-			$this->request->redirect(Route::get('admin')->uri());
+			throw new Request_Exception('You are already signed in.');
 		}
 
 		$this->template
@@ -157,17 +157,17 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 				// Try send reset passwork link in email
 				$user->reset_password($this->request->post());
 
-				// Store the result in session FIXME use messages class
+				// Store the result in session
 				Session::instance()->set('message_sent', TRUE);
 
 				// Redirect user to prevent refresh on POST request
 				$this->request->redirect(URL::site($this->request->uri(array('action' => 'reset_password'))));
 			}
-			catch(Validation_Exeption $e)
+			catch(Validation_Exception $e)
 			{
-					$errors = $e->array->errors('reset_password');
+				$errors = $e->array->errors('admin/auth/reset_password');
 
-					Message::set(Message::ERROR, __('Please correct the errors.'));
+				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 		}
 	}
@@ -192,9 +192,10 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 				throw new Exception('User not found.');
 			}
 
-			if ($user->confirm_reset_password($_POST, $token))
+			if ($user->confirm_reset_password($this->request->post(), $token))
 			{
 				Message::set(Message::SUCCESS, __('Password successfully changed.'));
+
 				$this->request->redirect('admin/auth/signin?username='.$user->username);
 			}
 			else if ($errors = $_POST->errors('confirm_reset_password'))

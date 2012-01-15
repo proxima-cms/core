@@ -1,14 +1,14 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Saturday 31st of December 2011 12:30:35 AM
+ * Auto generated on: Saturday 14th of January 2012 05:30:03 PM
  */
 
 return array(
-	'blogimport' => MODPATH.'blogimport',
+	'userguide' => MODPATH.'userguide',
+	'core' => CORPATH,
 	'minion' => MODPATH.'minion',
 	'minion-tasks-migrations' => MODPATH.'minion-tasks-migrations',
-	'core' => MODPATH.'core',
 	'message' => MODPATH.'message',
 	'image' => MODPATH.'image',
 	'database' => MODPATH.'database',
@@ -17,4 +17,5 @@ return array(
 	'auth' => MODPATH.'auth',
 	'orm' => MODPATH.'orm',
 	'pagination' => MODPATH.'pagination',
+	'email' => MODPATH.'email',
 );

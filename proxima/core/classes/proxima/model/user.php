@@ -173,91 +173,85 @@ class Proxima_Model_User extends Model_Auth_User {
 		}
 	}
 
+	// Reset password validation check
+	public static function exists_by_email($email, Model_User $user)
+	{
+		return $user->loaded();
+	}
+
 	public function reset_password($data)
 	{
-		$rules = $this->rules();
+		// Try load the user
+		$this->where('email', '=', Arr::get($data, 'email'))->find();
 
-		$data = Validation::factory($data)
-			->rule('email','not_empty')
-			->rule('email','email');
+		// Check the email address
+		$validation= Validation::factory($data)
+			->bind(':model', $this)
+			->rules('email', array(
+				array('not_empty'),
+				array('email'),
+				array(array($this, 'exists_by_email'), array(':value', ':model'))
+			));
 
-		if (!$data->check())
+		if (!$validation->check())
 		{
-			return FALSE;
+			// Add the email back in, useful for displaying in form
+			$this->values($data);
+
+			throw new Validation_Exception($validation);
 		}
 
-		$this->where('email', '=', $data['email']);
-		$this->find();
-
-		if (!$this->loaded())
-		{
-			return FALSE;
-		}
-
-		// generate the token
+		// Generate the token
 		$token = Auth::instance()->hash_password($this->email.'+'.$this->password);
 
-		// generate the reset password link
-		$url = URL::site('admin/auth/confirm_reset_password?id=' . $this->id . '&auth_token=' . $token, TRUE);
+		// Generate the reset password link
+		$url = URL::site(
+			Route::get('admin')
+				->uri(array(
+					'controller' => 'auth',
+					'action'     => 'confirm_reset_password'
+				))
+				. '?id=' . $this->id . '&auth_token=' . $token, TRUE);
 
-		// set the token in cookie
+		// Set the token in cookie
 		Cookie::set('token', $token);
 
-		$body = View::factory('admin/page/auth/email/reset_password')
+		// Get the email message view
+		$email_html = View::factory('admin/page/auth/email/reset_password')
 			->set('user', $this)
 			->set('url', $url);
 
-		$swift_loader = Kohana::find_file('vendor', 'swiftmailer/lib/swift_required');
+		// Send the reset password link email
+		$email = Email::factory('Password reset', $email_html, 'text/html')
+			->to($this->email, $this->username)
+			->from(Kohana::$config->load('core.email_address'), Kohana::$config->load('core.email_name'))
+			->send();
 
-		if ($swift_loader === FALSE)
-		{
-			throw new Kohana_Exception('Swiftmailer library not found.');
-		}
-
-		require_once $swift_loader;
-
-		$message = Swift_Message::newInstance()
-			->setSubject('Password reset')
-			->setFrom(array('your_website@domain'))
-			->setTo(array($this->email => $this->username))
-			->addPart($body, 'text/plain');
-
-		$transport = Swift_MailTransport::newInstance();
-
-		Swift_Mailer::newInstance($transport)->send($message);
+		die($url);
 
 		return TRUE;
 	}
 
-	public function confirm_reset_password(& $data, $token)
+	public function confirm_reset_password($data, $token)
 	{
 		$cookie_token = Cookie::get('token', FALSE);
 
-		if ( $token !== $cookie_token )
+		$hash = $this->email . '+' . $this->password;
+
+		if ( !$this->loaded() OR $token !== $cookie_token OR $token !== Auth::instance()->hash_password($hash))
 		{
 			throw new Exception(__('Invalid auth token.'));
 		}
 
-		$rules = array_merge(
-			$this->rules(),
-			array('password_confirm' =>
-				array(
-					array('matches',
-						array(':validation', ':field', 'password')
-					)
-				)
-			)
-		);
+		$validation = Validation::factory($data)
+			->rules('password', Arr::get($this->rules(), 'password'))
+			->rules('password_confirm', array(
+					array('matches', array(':validation', ':field', 'password'))
+				));
 
-		$data = Validation::factory($data)
-			->rules('password', $rules['password'])
-			->rules('password_confirm', $rules['password_confirm']);
-
-		$hash = $this->email.'+'.$this->password;
-
-		if ( !$data->check() OR !$this->loaded() OR $token !== Auth::instance()->hash_password($hash))
+		if ( !$validation->check())
 		{
-			return FALSE;
+			throw new Validation_Exception($validation);
 		}
 
 		/* Remove token from cookie */

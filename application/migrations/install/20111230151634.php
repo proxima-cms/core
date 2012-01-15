@@ -196,14 +196,33 @@
 		}
 		catch(DataBase_Exception $e){}
 
-		// Site - title
+		// Core - email address
 		$config = ORM::factory('config');
 		$config->values(array(
-			'group_name' => 'site',
-			'config_key' => 'title',
-			'label' => 'Site title',
-			'config_value' => serialize('Default title'),
-			'default' => serialize('Default title'),
+			'group_name' => 'core',
+			'config_key' => 'email_address',
+			'label' => 'Email address',
+			'config_value' => serialize('email@example.com'),
+			'default' => serialize('email@example.com'),
+			'rules' => serialize(array(
+				array('not_empty'),
+				array('max_length', array(':value', 255)),
+				array('email'),
+			))));
+		try
+		{
+			$config->save();
+		}
+		catch(Database_Exception $e) {}
+
+		// Core - email name
+		$config = ORM::factory('config');
+		$config->values(array(
+			'group_name' => 'core',
+			'config_key' => 'email_name',
+			'label' => 'Email name',
+			'config_value' => serialize('Admin'),
+			'default' => serialize('Admin'),
 			'rules' => serialize(array(
 				array('not_empty'),
 				array('max_length', array(':value', 32)),

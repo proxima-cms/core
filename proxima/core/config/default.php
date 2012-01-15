@@ -12,5 +12,6 @@ return array(
 		'auth',
 		'orm',
 		'pagination',
+		'email',
 	)
 );
