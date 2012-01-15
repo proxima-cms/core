@@ -36,4 +36,4 @@
 	url = git://github.com/shadowhand/email.git
 [submodule "modules/userguide"]
 	path = modules/userguide
-	url = git://github.com/kohana/userguide.git
+	url = git@github.com:badsyntax/userguide.git
