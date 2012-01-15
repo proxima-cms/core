@@ -34,3 +34,6 @@
 [submodule "modules/userguide"]
 	path = modules/userguide
 	url = git@github.com:badsyntax/userguide.git
+[submodule "system"]
+	path = system
+	url = git@github.com:badsyntax/core.git

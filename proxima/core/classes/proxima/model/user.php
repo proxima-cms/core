@@ -232,37 +232,25 @@ class Proxima_Model_User extends Model_Auth_User {
 		return TRUE;
 	}
 
-	public function confirm_reset_password($data, $token)
+	public function confirm_reset_password($data)
 	{
-		$cookie_token = Cookie::get('token', FALSE);
-
-		$hash = $this->email . '+' . $this->password;
-
-		if ( !$this->loaded() OR $token !== $cookie_token OR $token !== Auth::instance()->hash_password($hash))
-		{
-			throw new Exception(__('Invalid auth token.'));
-		}
-
+		// Add a password confirmation check
 		$validation = Validation::factory($data)
-			->rules('password', Arr::get($this->rules(), 'password'))
+			->rules('password', array(
+				array('not_empty')
+			))
 			->rules('password_confirm', array(
-					array('matches', array(':validation', ':field', 'password'))
-				));
+				array('matches', array(':validation', ':field', 'password')),
+			));
 
 		if ( !$validation->check())
 		{
 			throw new Validation_Exception($validation);
 		}
 
-		/* Remove token from cookie */
-		Cookie::delete('token');
-
 		/* Change users password. The password will be auto-hashed on save.*/
 		$this->password = $data['password'];
-
 		$this->save();
-
-		return TRUE;
 	}
 
 	public function friendly_date()
