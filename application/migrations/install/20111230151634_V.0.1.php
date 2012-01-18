@@ -1138,6 +1138,8 @@
 		}
 		catch(DataBase_Exception $e){}
 
+		$db->query(NULL, 'ALTER TABLE  `users` ADD  `lang` VARCHAR( 128 ) NOT NULL AFTER  `password`');
+
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `roles` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,

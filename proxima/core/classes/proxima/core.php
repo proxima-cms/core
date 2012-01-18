@@ -25,6 +25,12 @@ class Proxima_Core {
 			Core::$is_installed = FALSE;
 		}
 
+		// Set default config.
+		I18n::lang('en-gb');
+		Cache::$default = 'apc';
+		Image::$default_driver = 'imagick';
+		Cookie::$salt = 'JpTKsYl8bqjJdsNbHKqg';
+
 		$installer_urls = array(
 			'/install',
 			'/install/tests',
@@ -37,12 +43,6 @@ class Proxima_Core {
 		{
 			Request::factory('install')->redirect('install');
 		}
-
-		// Set default config.
-		I18n::lang('en-gb');
-		Cache::$default = 'apc';
-		Image::$default_driver = 'imagick';
-		Cookie::$salt = 'proxima-cms';
 
 		if ( ! Kohana::$is_cli)
 		{
