@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Proxima_Model_User extends Model_Auth_User {
-	
+
 	protected $_has_many = array(
 		'user_tokens'	=> array('model' => 'user_token'),
 		'assets'			=> array('model' => 'asset'),
@@ -15,7 +15,7 @@ class Proxima_Model_User extends Model_Auth_User {
 		$this->check_passwords($data);
 		$this->values($data);
 		$this->save();
-		
+
 		$roles  = Arr::get($data, 'roles');
 		$groups = Arr::get($data, 'groups');
 
@@ -52,9 +52,9 @@ class Proxima_Model_User extends Model_Auth_User {
 	{
 		// Check the passwords match.
 		$validation = Validation::factory($data)
-			->rules('password_confirm', 
+			->rules('password_confirm',
 				array(
-					array('matches', 
+					array('matches',
 						array(':validation', ':field', 'password')
 					)
 				)
@@ -81,7 +81,7 @@ class Proxima_Model_User extends Model_Auth_User {
 				->rules('password', array(
 					array('not_empty'),
 				));
-		
+
 			if ( ! $validation->check())
 			{
 				throw new Validation_Exception($validation);
@@ -98,16 +98,16 @@ class Proxima_Model_User extends Model_Auth_User {
 		$this->values($data);
 		$this->save();
 		$this->add('roles', new Model_Role(array('name' =>'login')));
-		
+
 		$message_body = View::factory('admin/page/auth/email/signup')
 			->set('user', $this);
 
 		$swift_loader = Kohana::find_file('vendor', 'swiftmailer/lib/swift_required');
 
 		if ($swift_loader === FALSE)
-		{		
+		{
 			throw new Exception('Swiftmailer library not found.');
-		}		
+		}
 
 		require_once $swift_loader;
 
@@ -118,7 +118,7 @@ class Proxima_Model_User extends Model_Auth_User {
 			->addPart($message_body, 'text/plain');
 
 		$transport = Swift_MailTransport::newInstance();
-		
+
 		Swift_Mailer::newInstance($transport)->send($message);
 	}
 
@@ -126,9 +126,9 @@ class Proxima_Model_User extends Model_Auth_User {
 	{
 		foreach(ORM::factory('role')->find_all() as $role)
 		{
-			if (in_array($role->id, $roles)) 
+			if (in_array($role->id, $roles))
 			{
-				try 
+				try
 				{
 					// Add roles relationship
 					$this->add('roles', new Model_Role(array('id' => $role->id)));
@@ -142,7 +142,7 @@ class Proxima_Model_User extends Model_Auth_User {
 			}
 		}
 	}
-	
+
 	public function update_groups($groups)
 	{
 		foreach(ORM::factory('group')->find_all() as $group)
@@ -153,10 +153,10 @@ class Proxima_Model_User extends Model_Auth_User {
 				{
 					// Add groups relationship
 					$this->add('groups', new Model_Group(array('id' => $group->id)));
-				} 
+				}
 				catch(Exception $e){}
-			} 
-			else 
+			}
+			else
 			{
 				// Remove groups relationship
 				$this->remove('groups', new Model_Group(array('id' => $group->id)));
@@ -187,9 +187,14 @@ class Proxima_Model_User extends Model_Auth_User {
 
 		// generate the token
 		$token = Auth::instance()->hash_password($this->email.'+'.$this->password);
-	
+
 		// generate the reset password link
-		$url = URL::site('admin/auth/confirm_reset_password?id=' . $this->id . '&auth_token=' . $token, TRUE);
+		$url = URL::site(Route::get('admin')
+			->uri(array(
+				'controller' => 'auth'
+				'action' => 'confirm_reset_password'
+			))
+			.'?id=' . $this->id . '&auth_token=' . $token, TRUE);
 
 		// set the token in cookie
 		Cookie::set('token', $token);
@@ -201,9 +206,9 @@ class Proxima_Model_User extends Model_Auth_User {
 		$swift_loader = Kohana::find_file('vendor', 'swiftmailer/lib/swift_required');
 
 		if ($swift_loader === FALSE)
-		{		
+		{
 			throw new Kohana_Exception('Swiftmailer library not found.');
-		}		
+		}
 
 		require_once $swift_loader;
 
@@ -224,21 +229,21 @@ class Proxima_Model_User extends Model_Auth_User {
 	{
 		$cookie_token = Cookie::get('token', FALSE);
 
-		if ( $token !== $cookie_token ) 
+		if ( $token !== $cookie_token )
 		{
 			throw new Exception(__('Invalid auth token.'));
 		}
 
 		$rules = array_merge(
 			$this->rules(),
-			array('password_confirm' =>  
+			array('password_confirm' =>
 				array(
-					array('matches', 
+					array('matches',
 						array(':validation', ':field', 'password')
-					)   
-				)   
+					)
+				)
 			)
-		);  
+		);
 
 		$data = Validation::factory($data)
 			->rules('password', $rules['password'])
@@ -270,9 +275,9 @@ class Proxima_Model_User extends Model_Auth_User {
 	public function __get($key)
 	{
 		if ($key === 'friendly_date')
-		{   
+		{
 			return $this->friendly_date();
-		}   
+		}
 
 		return parent::__get($key);
 	}

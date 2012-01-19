@@ -11,7 +11,7 @@
 			</p>
 			<p>Proxima CMS is now installed.</p>
 			<p>
-				<a href="<?php echo URL::site('admin/auth/signin'); ?>" class="btn signin">
+				<a href="<?php echo URL::site(Route::get('admin')->uri(array('controller' => 'auth', 'action' => 'signin'))); ?>" class="btn signin">
 					<span></span>
 					Sign in
 				</a>

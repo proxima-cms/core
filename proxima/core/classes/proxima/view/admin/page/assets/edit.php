@@ -6,7 +6,7 @@ class Proxima_View_Admin_Page_Assets_Edit extends View_Model_Admin {
 	{
 		return $this->asset->sizes->where('resized', '=', 1)->find_all();
 	}
-		
+
 	public function var_links()
 	{
 		return View_Model::factory('admin/page/assets/index', array('request' => $this->request))
@@ -30,11 +30,11 @@ class Proxima_View_Admin_Page_Assets_Edit extends View_Model_Admin {
 	public function var_folder_uri_template()
 	{
 		$links = $this->links;
-		
+
 		$query = Request::current()->query();
-		
+
 		$query['folder'] = '<%= folder %>';
 
-		return urldecode(URL::site('admin/assets' . '?' . http_build_query($query)));
+		return urldecode(URL::site(Route::get('admin')->uri(array('controller' => 'assets')) . '?' . http_build_query($query)));
 	}
 }

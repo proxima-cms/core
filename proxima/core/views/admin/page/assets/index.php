@@ -39,7 +39,7 @@
 				</li>
 			</ul>
 		</div>
-	</div>	
+	</div>
 	<?php echo $breadcrumbs ?>
 </div>
 
@@ -57,7 +57,7 @@
 			));?>
 	</div>
 
-	<?php 
+	<?php
 		$header_link = URL::site(
 			Route::get('admin')->uri(array(
 				'controller' => 'assets'
@@ -69,24 +69,24 @@
 			<thead>
 				<tr>
 					<th class="filename">
-						<a 
-							title="Sort by filename" 
+						<a
+							title="Sort by filename"
 							href="<?php echo HTML::chars($header_link.'&sort=friendly_filename')?>">
 							Filename
 							<span class="ui-icon <?php echo ($order_by == 'filename' AND $direction == 'asc') ? 'ui-icon-triangle-1-n' : 'ui-icon-triangle-1-s'?>"></span>
 						</a>
 					</th>
 					<th class="type">
-						<a 
-							title="Sort by type" 
+						<a
+							title="Sort by type"
 							href="<?php echo HTML::chars($header_link.'&sort=type')?>">
 							Type
 							<span class="ui-icon <?php echo ($order_by == 'type' AND $direction == 'asc') ? 'ui-icon-triangle-1-n' : 'ui-icon-triangle-1-s'?>"></span>
 						</a>
 					</th>
 					<th class="size">
-						<a 
-							title="Sort by size" 
+						<a
+							title="Sort by size"
 							href="<?php echo HTML::chars($header_link.'&sort=filesize')?>">
 							Size
 							<span class="ui-icon <?php echo ($order_by == 'filesize' AND $direction == 'asc') ? 'ui-icon-triangle-1-n' : 'ui-icon-triangle-1-s'?>"></span>
@@ -98,13 +98,13 @@
 				<?php foreach($assets as $asset){?>
 				<tr>
 					<td>
-						<a 
-							href="<?php echo URL::site('admin/assets/edit/'.$asset->id)?>" 
-							class="asset" 
+						<a
+							href="<?php echo URL::site(Route::get('admin')->uri(array('controller' => 'assets', 'action' => 'edit', 'id' => $asset->id))); ?>"
+							class="asset"
 							data-id="<?php echo $asset->id?>"
 							data-mimetype="<?php echo $asset->mimetype->subtype.'/'.$asset->mimetype->type?>"
 							data-filename="<?php echo $asset->filename?>">
-							
+
 							<?php if ($asset->is_text_document()){?>
 								<img src="/modules/assets/media/img/admin/assets/page-white-text.png" class="asset-thumb helper-left" />
 							<?php } else if ($asset->is_archive()){?>
@@ -112,7 +112,7 @@
 							<?php } else {?>
 								<img src="<?php echo URL::site($asset->image_url(40, 40, TRUE))?>" class="asset-thumb helper-left" />
 							<?php }?>
-											
+
 							<?php echo $asset->friendly_filename?>
 						</a>
 						<div style="color:#888;padding-top:.5em">
@@ -120,8 +120,8 @@
 						</div>
 					</td>
 					<td>
-						<a 
-							href="<?php echo URL::site('admin/assets?filter=type-'.$asset->mimetype->type.'&direction='.$direction.'&page='.$pagination->current_page)?>"
+						<a
+							href="<?php echo URL::site(Route::get('admin')->uri(array('controller' => 'assets', 'action' => 'edit')).'?filter=type-'.$asset->mimetype->type.'&direction='.$direction.'&page='.$pagination->current_page)?>"
 							class="asset-type subtype-<?php echo $asset->mimetype->subtype?> type-<?php echo $asset->mimetype->type?>"><?php echo $asset->mimetype->type?></a>
 					</td>
 					<td>
@@ -134,5 +134,5 @@
 		<?php if (count($assets) === 0){?>
 			<p style="margin-top:10px"><em>No results.</em></p>
 		<?php }?>
-	</div>	
+	</div>
 </div>
