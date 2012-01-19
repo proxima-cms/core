@@ -25,10 +25,10 @@
 
 		// File browser
 		file_browser_callback : 'tinymce_assets',
-		file_browser_url : '<?php echo URL::site(Route::get('admin')->uri(array('controller' => 'assets', 'action' => 'popup')), TRUE)?>',
+		file_browser_url : '<?php echo URL::site(Route::get('admin/popup-assets')->uri(), TRUE)?>',
 
 		// Custom vars
-		admin_ajax_loader: '<?php echo URL::site(Core::path('media/img/ajax_loader.gif'), TRUE)?>',
+		admin_ajax_loader: '<?php echo URL::site('modules/admin/media/img/ajax_loader.gif', TRUE)?>',
 		admin_base_url: '<?php echo URL::site(Route::get('admin')->uri(), TRUE)?>'
 	};
 

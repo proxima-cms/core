@@ -40,9 +40,17 @@
 <div class="section clear">
 	<h3>
 		<span style="float:right;font-weight:normal;">
-			<?php echo HTML::anchor('admin/assets/folders/add?return_to='.Request::current()->uri(), __('Add +'), array('style' => 'font-weight:normal'));?>
+			<?php echo HTML::anchor(Route::get('admin')
+				->uri(array(
+					'controller' => 'assets',
+					'action' => 'add'
+				)).'?return_to='.Request::current()->uri(), __('Add +'), array('style' => 'font-weight:normal'));?>
 			|
-			<?php echo HTML::anchor('admin/assets/folders', __('Manage'), array('style' => 'font-weight:normal'));?>
+			<?php echo HTML::anchor(Route::get('admin')
+				->uri(array(
+					'controller' => 'assets',
+					'action' => 'folders'
+				)), __('Manage'), array('style' => 'font-weight:normal'));?>
 		</span>
 		Folders
 	</h3>
@@ -56,7 +64,7 @@
 <!-- SEARCH -->
 <div class="section clear">
 	<h3>Search</h3>
-	<?php echo Form::open('admin/assets', array('class' => 'ui-helper-clearfix', 'style' => 'padding-bottom:6px'))?>
+	<?php echo Form::open(Route::get('admin')->uri('controller' => 'assets'), array('class' => 'ui-helper-clearfix', 'style' => 'padding-bottom:6px'))?>
 		<?php echo Form::input('search', $search, array('class' => 'helper-left', 'style' => 'width: 150px'))?>
 		<?php echo Form::button('search-submit', 'Go', array('class' => 'helper-left ui-button default'))?>
 	<?php echo Form::close()?>

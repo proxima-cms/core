@@ -11,7 +11,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 		// Redirect if user is logged in
 		if (Auth::instance()->logged_in())
 		{
-			$this->request->redirect(Route::get('admin')->uri());
+			throw new Request_Exception('You are already signed in.');
 		}
 
 		$this->template
@@ -76,7 +76,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 			}
 			catch(ORM_Validation_Exception $e)
 			{
-				$errors = $e->errors('signup');
+				$errors = $e->errors('admin/auth/signup');
 
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
@@ -157,49 +157,68 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 				// Try send reset passwork link in email
 				$user->reset_password($this->request->post());
 
-				// Store the result in session FIXME use messages class
+				// Store the result in session
 				Session::instance()->set('message_sent', TRUE);
 
 				// Redirect user to prevent refresh on POST request
 				$this->request->redirect(URL::site($this->request->uri(array('action' => 'reset_password'))));
 			}
-			catch(Validation_Exeption $e)
+			catch(Validation_Exception $e)
 			{
-					$errors = $e->array->errors('reset_password');
+				$errors = $e->array->errors('admin/auth/reset_password');
 
-					Message::set(Message::ERROR, __('Please correct the errors.'));
+				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 		}
 	}
 
 	public function action_confirm_reset_password()
 	{
-		$this->template->title = __('Reset password');
-		$this->template->content = View::factory('admin/page/auth/confirm_reset_password')
-			->set('token', @$_REQUEST['auth_token'])
-			->bind('errors', $errors);
+		$this->template
+			->title(__('Reset password'))
+			->content(
+				View::factory('admin/page/auth/confirm_reset_password')
+				->bind('errors', $errors)
+				->bind('token', $token)
+			);
 
-		$id = (int) Arr::get($_REQUEST, 'id');
-		$token = (string) Arr::get($_REQUEST, 'auth_token');
+		$token = $this->request->query('auth_token');
+		$user  = ORM::factory('user', $this->request->query('id'));
+		$hash  = $user->email . '+' . $user->password;
 
-		if ($_POST)
+		if ( !$user->loaded() OR $token !== Cookie::get('token', FALSE) OR $token !== Auth::instance()->hash_password($hash))
 		{
+			throw new Exception(__('Invalid auth token.'));
+		}
 
-			$user = ORM::factory('user', $id);
-
-			if (!$user->loaded())
+		if ($this->request->method() === Request::POST)
+		{
+			try
 			{
-				throw new Exception('User not found.');
-			}
+				$user->confirm_reset_password($this->request->post());
 
-			if ($user->confirm_reset_password($_POST, $token))
-			{
+				// Remove token from cookie
+	 			Cookie::delete('token');
+
 				Message::set(Message::SUCCESS, __('Password successfully changed.'));
-				$this->request->redirect('admin/auth/signin?username='.$user->username);
+
+				$this->request->redirect(
+					Route::get('admin')
+					->uri(array(
+						'controller' => 'auth',
+						'action'     => 'signin'
+					)) . '?username='.$user->username
+				);
 			}
-			else if ($errors = $_POST->errors('confirm_reset_password'))
+			catch(Validation_Exception $e)
 			{
 				Message::set(Message::ERROR, __('Please correct the errors.'));
+				$errors = $e->array->errors('admin/auth/changepass');
+			}
+			catch(ORM_Validation_Exception $e)
+			{
+				Message::set(Message::ERROR, __('Please correct the errors.'));
+				$errors = $e->errors('admin/auth/changepass');
 			}
 		}
 	}
@@ -211,4 +230,4 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 		$this->request->redirect('admin');
 	}
 
-} // End Controller_Auth_Auth
+}

@@ -34,16 +34,12 @@ input,textarea{
 -o-transition: border linear 0.2s, box-shadow linear 0.2s;
 transition: border linear 0.2s, box-shadow linear 0.2s;:
 }
-input:focus, textarea:focus {
-outline: 0;
+input:focus, textarea:focus { outline: 0;
 -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 4px rgba(82, 168, 236, 0.6);
 -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 4px rgba(82, 168, 236, 0.6);
 box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.6);
 }
-input.error-field:focus, textarea.error-field:focus {
-
-border-color: #BB0000;
-}
+input.error-field:focus, textarea.error-field:focus { border-color: #BB0000; }
 code{font-family:monaco,monospace;}
 table{border-collapse:collapse;width:100%;}
 table th, table td{padding:0.4em;text-align:left;vertical-align:top;}
@@ -53,20 +49,13 @@ table td.pass{color:#191;}
 table td.fail{color:#911;}
 #install,#content{text-align:left;margin:3em auto;width:356px;border:4px solid transparent;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-box-shadow:0 0 18px rgba(0,0,0,0.4);-moz-box-shadow:0 0 18px rgba(0,0,0,0.4);box-shadow:0 0 18px rgba(0,0,0,0.4);}
 #messages{display:none;width:360px;margin:2em auto -1em auto;text-align:left;}
-#messages{-webkit-box-shadow:0 0 10px rgba(0,0,0,0.4);-moz-box-shadow:0 0 18px rgba(0,0,0,0.4);box-shadow:0 0 10px rgba(0,0,0,0.4); -moz-border-radius: 4px;
+#messages{-moz-border-radius: 4px;
 -webkit-border-radius: 4px;}
-#messages .inner{
-padding: 10px 10px 5px 10px;
--moz-border-radius: 4px;
--webkit-border-radius: 4px;border: 1px solid #CD0A0A;
-background: #FEF1EC;
-color: #CD0A0A;}
+#messages .inner{ padding: 10px 10px 5px 10px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; background: #FFF; color: #CD0A0A;}
 #messages ul{margin:0;padding:0;}
 #messages ul li{list-style:none;margin-bottom:5px;}
 #messages p{margin:0;}
-#messages span{float: left;
-margin-right: .3em;background:url(../../img/admin/red-icons.png) no-repeat 0 -144px;width: 16px;
-height: 16px;}
+#messages span{float: left; margin-right: .3em;background:url(../../img/admin/red-icons.png) no-repeat 0 -144px;width: 16px; height: 16px;}
 #install.tests{width:626px;}
 #inner{filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#fbfbfb');background:-webkit-gradient(linear,left top,left bottom,from(white),to(#FBFBFB));background:-moz-linear-gradient(top,white,#FBFBFB);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;padding:.8em 1.2em;}
 #loading{display:none;}

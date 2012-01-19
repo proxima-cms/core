@@ -30,13 +30,5 @@
 
 	<?php echo View::factory('admin/page/fragments/footer', array('paths' => $paths)) ?>
 	</div>
-	<script>
-	if ($('#messages').find('li').length){
-	$('#messages').fadeIn();
-	setTimeout(function(){
-		//$('#messages').fadeOut();
-	}, 5000);
-	}
-	</script>
 </body>
 </html>

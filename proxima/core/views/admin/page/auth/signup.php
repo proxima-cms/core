@@ -1,15 +1,15 @@
 <?php echo Form::open()?>
 	<fieldset>
 		<div class="field">
-			<?php echo 
+			<?php echo
 				Form::label('username', 'Username', NULL, $errors),
 				Form::input('username', $user->username, NULL, $errors)
 			?>
 		</div>
 		<div class="field">
-			<?php echo 
+			<?php echo
 				Form::label('email', 'Email', NULL, $errors),
-				Form::input('email', $user->email, array('type' => 'email'), NULL, $errors)
+				Form::input('email', $user->email, array('type' => 'email'), $errors)
 			?>
 		</div>
 		<div class="field">

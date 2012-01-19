@@ -29,7 +29,7 @@ class Proxima_View_Model {
 	public static function factory($file = NULL, array $data = NULL)
 	{
 		$class = 'View_'.strtr($file, '/', '_');
-		
+
 		return new $class($file, $data);
 	}
 
@@ -39,14 +39,14 @@ class Proxima_View_Model {
 
 		return $this;
 	}
-	
+
 	public static function bind_global($key, & $value)
 	{
 		$this->view->bind_global($key, $value);
 
 		return $this;
 	}
-	
+
 	public function render()
 	{
 		// Add view-model variable methods as view variables.
@@ -67,7 +67,7 @@ class Proxima_View_Model {
 	public function set($key, $value = NULL)
 	{
 		$this->view->set($key, $value);
-		
+
 		return $this;
 	}
 
@@ -89,7 +89,7 @@ class Proxima_View_Model {
 	{
 		return $this->view->{$key};
 	}
-	
+
 	public function __set($key, $value)
 	{
 		$this->set($key, $value);

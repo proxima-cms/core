@@ -7,6 +7,11 @@
 	CustomLog /var/log/apache2/proxima-cms-alogs combined
 	ErrorLog /var/log/apache2/proxima-cms-elogs
 
+
 	SetEnv KOHANA_ENV development
+
+	<Directory /var/www/proxima-cms>
+		AllowOverride All
+	</Directory>
 
 </VirtualHost>

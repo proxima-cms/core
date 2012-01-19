@@ -18,7 +18,7 @@ else
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>Install Proxima CMS</title>
-	<link type="text/css" rel="stylesheet" href="/modules/core/media/css/install/install.css" />
+	<link type="text/css" rel="stylesheet" href="<?php echo CORPATH . 'media/css/install/install.css'; ?>" />
 	<style type="text/css">
 	#install{position:static;width:654px;margin:3em auto;}
 	</style>
@@ -33,12 +33,15 @@ else
 					<p>
 						The following tests have been run to determine if Kohana &amp; Proxima will work in your environment.
 					</p>
+
 					<?php
+
 						$fail_msg = '✘ Kohana &amp; Proxima may not work correctly with your environment. Please fix the errors above before installing.';
 						$pass_msg = '✔ Your environment passed all requirements. Please remove install.php before installing.';
+
 						try
 						{
-						require_once('modules/core/views/page/install/tests/tests.php');
+							require CORPATH . 'views/page/install/tests/tests.php';
 						}
 						catch(Exception $e)
 						{

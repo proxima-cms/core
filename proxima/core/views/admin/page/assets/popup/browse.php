@@ -18,7 +18,6 @@
 	}
 
 	$cur_url = Request::current()->uri() . URL::query();
-
 ?>
 
 <div class="clear">
@@ -101,7 +100,10 @@
 						<div style="white-space: nowrap;
 						overflow: hidden;width:270px">
 						<a
-							href="<?php echo URL::site(Route::get('admin/popup-assets')->uri(array('action' => 'view', 'id' => $asset->id))); ?>"
+							href="<?php echo URL::site(Route::get('admin/popup-assets')
+								->uri(array(
+									'action' => 'view',
+									'id' => $asset->id))); ?>"
 							class="asset"
 							data-id="<?php echo $asset->id?>"
 							data-mimetype="<?php echo $asset->mimetype->subtype.'/'.$asset->mimetype->type?>"
