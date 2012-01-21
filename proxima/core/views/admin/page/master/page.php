@@ -6,6 +6,9 @@
 	<title><?php echo $title ?></title>
 	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n"; ?>
 	<?php echo implode("\n\t", array_map('HTML::script', $scripts)); ?>
+	<style type="text/css">
+	#messages{display:block;}
+	</style>
 </head>
 	<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
 	<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
@@ -22,18 +25,18 @@
 	<div id="content">
 
 		<div id="admin-nav" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
-			
+
 			<?php echo View::factory('admin/page/fragments/nav') ?>
-			
+
 			<div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
-				
+
 				<div id="messages">
 					<?php echo Message::render( new View('admin/message/basic') ) ?>
 				</div>
 
 				<?php echo $content ?>
 			</div>
-		
+
 		</div> <!-- /#admin-nav -->
 
 	</div> <!-- /#content -->
@@ -53,7 +56,7 @@
 				CORPATH: '<?php echo '/', str_replace(DOCROOT, '', CORPATH); ?>',
 				MODPATH: '<?php echo '/', str_replace(DOCROOT, '', MODPATH); ?>'
 			};
-	
+
 			$(function(){
 				new App(AppConfig).route(window.AppRoutes);
 			});

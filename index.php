@@ -86,10 +86,11 @@ if ( ! is_dir($system) AND is_dir(DOCROOT.$system))
 define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
 define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
 define('CORPATH', realpath($core).DIRECTORY_SEPARATOR);
+define('CORMODPATH', realpath($core_modules).DIRECTORY_SEPARATOR);
 define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
 
 // Clean up the configuration vars
-unset($application, $modules, $core, $system);
+unset($application, $modules, $core, $core_modules, $system);
 
 if (file_exists('install'.EXT))
 {

@@ -3,9 +3,10 @@
 		<button>Actions</button>
 		<ul>
 			<li><?php echo HTML::anchor('admin/modules/generate_config', 'Re-generate module data')?></li>
+			<li><?php echo HTML::anchor('admin/modules/add', 'Add new module')?></li>
 		</ul>
 	</div>
-	
+
 	<?php echo $breadcrumbs?>
 </div>
 
