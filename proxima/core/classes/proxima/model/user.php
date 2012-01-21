@@ -69,9 +69,9 @@ class Proxima_Model_User extends Model_Auth_User {
 	public function login($data)
 	{
 		if (!Auth::instance()->login(
-			$data['username'],
-			$data['password'],
-			$data['remember']
+			Arr::get($data, 'username'),
+			Arr::get($data, 'password'),
+			Arr::get($data, 'remember')
 		))
 		{
 			$validation = Validation::factory($data)
@@ -80,6 +80,22 @@ class Proxima_Model_User extends Model_Auth_User {
 				))
 				->rules('password', array(
 					array('not_empty'),
+					// Check if username and password exist in DB
+					array(function($validation, $field, $password, $username){
+
+						$user = ORM::factory('user', array(
+								'username' => 'username',
+								'password' => 'password'
+							));
+
+						if ( ! $user->loaded())
+						{
+							$validation->error($field, 'incorrect_password');
+
+							return FALSE;
+						}
+
+					}, array(':validation', ':field', ':value', ':username' => Arr::get($data, 'username')))
 				));
 
 			if ( ! $validation->check())
