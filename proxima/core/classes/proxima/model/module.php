@@ -76,8 +76,7 @@ class Proxima_Model_Module extends Model_Base {
 	{
 		$validation = Validation::factory($data)
 			->rule('github-name', 'not_empty')
-			->rule('github-url', 'not_empty')
-			->rule('github-url', 'Valid::url');
+			->rule('github-url', 'not_empty');
 
 		if (! $validation->check())
 		{
@@ -87,15 +86,17 @@ class Proxima_Model_Module extends Model_Base {
 		$url    = Arr::get($data, 'github-url');
 		$name   = Arr::get($data, 'github-name');
 		$folder = CORMODPATH.$name;
+
 		$stderr = exec(sprintf('git clone %s %s 2>&1', escapeshellarg($url), escapeshellarg($folder)));
 
 		// Git clone failed
 		if (strpos(strtolower($stderr), 'error') !== FALSE OR strpos(strtolower($stderr), 'fatal') !== FALSE)
 		{
-			exec(sprintf('rm -r %s 2>&1', escapeshellarg($folder)));
-
 			throw new Kohana_Exception($stderr);
 		}
+
+		// Update submodules
+		$stderr = exec(sprintf('cd %s; git submodule update --init 2>&1', escapeshellarg($folder)));
 
 		Modules::save_all();
 	}

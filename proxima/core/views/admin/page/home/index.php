@@ -17,7 +17,13 @@
 </fieldset>
 
 <fieldset class="dashboard-modules last">
-	<legend>Enabled Modules</legend>
+	<legend>Enabled Modules
+ [<?php echo HTML::anchor(Route::get('admin')->uri(
+		array(
+			'controller' => 'modules',
+			'action' => 'add'
+		)), 'Add module')?>]
+	</legend>
 
 	<ul>
 	<?php foreach($modules as $name => $path){?>

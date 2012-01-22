@@ -12,7 +12,6 @@
 
 <h2>Upload module</h2>
 
-
 <?php echo Form::open(NULL, array('enctype' => 'multipart/form-data')); ?>
 <fieldset>
 	<legend>Select file</legend>
@@ -29,7 +28,9 @@
 			</ul>
 		<?php }?>
 		<div class="field">
-			<?php echo Form::file('module_file', NULL, $errors)?>
+			<?php echo
+				Form::label('module_file', 'Select file', NULL, $errors),
+				Form::file('module_file', NULL, $errors)?>
 		</div>
 	</div>
 
@@ -42,22 +43,18 @@
 </fieldset>
 <?php echo Form::close(); ?>
 
-<h2>Add module from git url</h2>
+<h2>Add module from github</h2>
 
-
-<?php echo Form::open(NULL, array('enctype' => 'multipart/form-data')); ?>
+<?php echo Form::open(); ?>
 <fieldset>
-	<legend>Github repository url:</legend>
-
-	<p>Allowed urls types: <?php echo $allowed_github_urls; ?></p>
 
 	<?php echo
-		Form::label('github-url', 'Github URL'),
+		Form::label('github-url', 'Github URL', NULL, $errors),
 		Form::input('github-url', NULL, NULL, $errors);
 	?>
 
 	<?php echo
-		Form::label('github-name', 'Module name'),
+		Form::label('github-name', 'Module name', NULL, $errors),
 		Form::input('github-name', NULL, NULL, $errors);
 	?>
 

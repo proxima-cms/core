@@ -2,8 +2,16 @@
 	<div class="action-menu helper-right">
 		<button>Actions</button>
 		<ul>
-			<li><?php echo HTML::anchor('admin/modules/generate_config', 'Re-generate module data')?></li>
-			<li><?php echo HTML::anchor('admin/modules/add', 'Add new module')?></li>
+			<li><?php echo HTML::anchor(Route::get('admin')->uri(
+				array(
+					'controller' => 'modules',
+					'action' => 'generate_config'
+				)), 'Re-generate module data')?></li>
+			<li><?php echo HTML::anchor(Route::get('admin')->uri(
+				array(
+					'controller' => 'modules',
+					'action' => 'add'
+				)), 'Add new module')?></li>
 		</ul>
 	</div>
 
@@ -19,7 +27,9 @@
 	<?php } ?>
 </ul>
 
-<h2>Enabled Modules</h2>
+<h2>Enabled Modules
+
+</h2>
 <p>These are all enabled Kohana 3.2 modules.</p>
 <ul>
 	<?php foreach($kohana_modules as $name => $path) {?>
@@ -27,7 +37,14 @@
 	<?php } ?>
 </ul>
 
-<h2>Addon modules</h2>
+<h2>Addon modules
+
+			[<?php echo HTML::anchor(Route::get('admin')->uri(
+				array(
+					'controller' => 'modules',
+					'action' => 'add'
+				)), 'Add module')?>]
+</h2>
 
 <p>Addon modules can add new functionality to the proxima core, or can be any Kohana 3.2 compatible module.</p>
 
@@ -36,12 +53,32 @@
 		<li>
 			<?php echo $name;?> -
 			<?php if (in_array($name, $enabled_modules)){?>
-				<?php echo HTML::anchor('admin/modules/disable/'.$name, __('Disable'));?>
+
+				<?php echo HTML::anchor(Route::get('admin')->uri(
+					array('controller' => $name, 'View'))
+				, __('View')); ?>
+				|
+				<?php echo HTML::anchor(Route::get('admin')->uri(
+					array(
+						'controller' => 'modules',
+						'action' => 'disable'
+					)).'/'.$name, 'Disable')?>
+
 			<?php } else { ?>
-				<?php echo HTML::anchor('admin/modules/enable/'.$name, __('Enable'));?>
+
+				<?php echo HTML::anchor(Route::get('admin')->uri(
+					array(
+						'controller' => 'modules',
+						'action' => 'enable'
+					)).'/'.$name, 'Enable')?>
+
 			<?php }?>
 			|
-			<?php echo HTML::anchor('admin/modules/remove/'.$name, __('Remove'));?>
+			<?php echo HTML::anchor(Route::get('admin')->uri(
+				array(
+					'controller' => 'modules',
+					'action' => 'remove'
+				)).'/'.$name, 'Remove')?>
 		</li>
 	<?php }?>
 </ul>
