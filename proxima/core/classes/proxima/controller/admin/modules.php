@@ -117,12 +117,16 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 
 	public function action_enable()
 	{
-		$this->save_module(TRUE);
+		$module = $this->request->param('module');
+
+		$this->save_module($module, TRUE);
 	}
 
 	public function action_disable()
 	{
-		$this->save_module(FALSE);
+		$module = $this->request->param('module');
+
+		$this->save_module($module, FALSE);
 	}
 
 	public function action_remove()
@@ -162,10 +166,8 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 		$this->request->redirect('admin/modules');
 	}
 
-	private function save_module($enabled = FALSE)
+	private function save_module($module, $enabled = FALSE)
 	{
-		$module = $this->request->param('module');
-
 		if ($module === NULL)
 		{
 			Message::set(Message::ERROR, 'Module name not specified');
@@ -191,16 +193,45 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 			))
 			->save();
 
-		// Generate the enabled modules config file.
+		// Run the uninstall migrations
+		if (!$enabled)
+		{
+			if (Arr::get(Kohana::list_files('migrations'), 'migrations' . DIRECTORY_SEPARATOR . $module) !== NULL)
+			{
+				$migration_task = Minion_Task::factory('migrations_run')
+					->execute(array(
+						'down' => FALSE,
+						'group' => $module
+					));
+			}
+		}
+
+		// Generate the enabled modules config file
 		Modules::generate_config();
+
+		// Remove kohana internal cache
+		Cache::instance()->delete_all();
+
+		// Reload the enabled modules
+		Kohana::modules(require APPPATH.'config/modules'.EXT);
+
+		// Run the install migrations
+		if ($enabled)
+		{
+			if (Arr::get(Kohana::list_files('migrations'), 'migrations' . DIRECTORY_SEPARATOR . $module) !== NULL)
+			{
+				$migration_task = Minion_Task::factory('migrations_run')
+					->execute(array(
+						'group' => $module
+					));
+			}
+		}
 
 		Message::set(
 			Message::SUCCESS,
-			__('Module successfully :state.', array(
-				':state' => $enabled ? __('enabled') : __('disabled')
-			))
+			__('Module successfully :state', array(':state' => $enabled ? 'enabled' : 'disabled'))
 		);
 
-		$this->request->redirect('admin/modules');
+		$this->request->redirect(Route::get('admin')->uri(array('controller' => 'modules')));
 	}
 }
