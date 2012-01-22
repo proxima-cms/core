@@ -31,9 +31,9 @@
 [submodule "modules/email"]
 	path = modules/email
 	url = git://github.com/shadowhand/email.git
-[submodule "modules/userguide"]
-	path = modules/userguide
-	url = git@github.com:badsyntax/userguide.git
 [submodule "system"]
 	path = system
 	url = git@github.com:badsyntax/core.git
+[submodule "proxima/modules/userguide"]
+	path = proxima/modules/userguide
+	url = git@github.com:badsyntax/userguide.git
