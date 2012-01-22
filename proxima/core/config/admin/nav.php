@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Sunday 22nd of January 2012 10:03:09 AM
+ * Auto generated on: Sunday 22nd of January 2012 02:00:28 PM
  */
 
 return array(
@@ -18,6 +18,6 @@ return array(
 		'admin/cache' => 'Cache',
 		'admin/redirects' => 'Redirects',
 		'admin/modules' => 'Modules',
-		'admin/userguide' => '',
+		'admin/blogimport' => 'Blog import',
 	)
 );

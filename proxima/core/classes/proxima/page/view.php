@@ -20,7 +20,7 @@ class Proxima_Page_View {
 
 			if ( ! isset($data['view_model']))
 			{
-				throw new HTTP_Exception_404('Not found.');
+				throw new Kohana_Exception('View model template not set');
 			}
 
 			static::$_instance = View_Model::factory($data['view_model']);

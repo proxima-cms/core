@@ -85,16 +85,8 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 
 	public function action_remove()
 	{
-		$module    = $this->request->param('module');
-		$module_db = ORM::factory('module', array('name' => $module));
-
-		if ($module_db->loaded())
-		{
-			$module_db->delete();
-		}
-
+		$module = $this->request->param('module');
 		$folder = CORMODPATH.$module;
-
 		$stderr = exec(sprintf('rm -r %s 2>&1', escapeshellarg($folder)));
 
 		if (strpos($stderr, 'Permission denied') !== FALSE)
@@ -103,6 +95,16 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 		}
 		else
 		{
+			$module_db = ORM::factory('module', array('name' => $module));
+
+			if ($module_db->loaded())
+			{
+				$module_db->delete();
+			}
+
+			// Re-generate the module config file
+			Modules::generate_config();
+
 			Message::set(Message::SUCCESS, __('Module successully deleted.'));
 		}
 

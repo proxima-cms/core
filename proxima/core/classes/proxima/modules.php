@@ -70,7 +70,7 @@ class Proxima_Modules {
 	// Return the module config.
 	public static function config($module = '')
 	{
-		$file = MODPATH.join(DIRECTORY_SEPARATOR, array(
+		$file = CORMODPATH.join(DIRECTORY_SEPARATOR, array(
 			$module,
 			'config',
 			$module,
@@ -87,8 +87,7 @@ class Proxima_Modules {
 		return $config;
 	}
 
-	// Get the admin navigation config form the db and
-	// return the navigation config file string.
+	// Get the admin navigation config for all enabled modules.
 	private static function get_nav_config()
 	{
 		$modules = ORM::factory('module')
@@ -109,6 +108,11 @@ class Proxima_Modules {
 			$nav_controller = $module->nav_controller;
 			$admin_url      = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
 			$admin_name     = $module->nav_name ?: Arr::get($mod_config, 'name');
+
+			if (!$admin_name)
+			{
+				continue;
+			}
 
 			$config .= "\t\t'{$admin_url}' => '{$admin_name}',\n";
 		}
@@ -140,7 +144,7 @@ class Proxima_Modules {
 	// Save all module file data to the database.
 	public static function save_all()
 	{
-		$modules = Kohana::list_files(NULL, array(MODPATH));
+		$modules = Kohana::list_files(NULL, array(CORMODPATH));
 
 		foreach($modules as $name => $module)
 		{
@@ -150,13 +154,16 @@ class Proxima_Modules {
 				->where('name', '=', $name)
 				->find();
 
+			// If no config found then delete the module
 			if ($config === NULL)
 			{
 				if ($module_db->loaded())
 				{
 					$module_db->delete();
 				}
+
 				continue;
+				// Message::set(Message::ERROR, 'No module configuration file found for '.$name);
 			}
 
 			$enabled        = $module_db->loaded() ? $module_db->enabled : Arr::get($config, 'enabled', TRUE);
