@@ -16,6 +16,11 @@ class Proxima_View_Admin_Page_Modules_Add extends View_Model_Admin {
 		return implode(', ', $this->upload_types);
 	}
 
+	public function var_allowed_github_urls()
+	{
+		return implode(' ', array('git://', 'http://'));
+	}
+
 	public function var_max_file_uploads()
 	{
 		return 1;

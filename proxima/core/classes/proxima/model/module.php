@@ -69,16 +69,34 @@ class Proxima_Model_Module extends Model_Base {
 
 		unlink($file_path);
 
-		$config_file = implode(DIRECTORY_SEPARATOR, array($folder, 'config', $module_name, 'details' . EXT));
+		Modules::save_all();
+	}
 
-		if (! file_exists($config_file))
+	public function admin_add_github_repo($data)
+	{
+		$validation = Validation::factory($data)
+			->rule('github-name', 'not_empty')
+			->rule('github-url', 'not_empty')
+			->rule('github-url', 'Valid::url');
+
+		if (! $validation->check())
 		{
-			$stderr = exec(sprintf('rm -r %s 2>&1', escapeshellarg($folder)));
+			throw new Validation_Exception($validation);
+		}
 
-			throw new Kohana_Exception('Module details config file not found.');
+		$url    = Arr::get($data, 'github-url');
+		$name   = Arr::get($data, 'github-name');
+		$folder = CORMODPATH.$name;
+		$stderr = exec(sprintf('git clone %s %s 2>&1', escapeshellarg($url), escapeshellarg($folder)));
+
+		// Git clone failed
+		if (strpos(strtolower($stderr), 'error') !== FALSE OR strpos(strtolower($stderr), 'fatal') !== FALSE)
+		{
+			exec(sprintf('rm -r %s 2>&1', escapeshellarg($folder)));
+
+			throw new Kohana_Exception($stderr);
 		}
 
 		Modules::save_all();
 	}
-
-} // End Model_Module
+}

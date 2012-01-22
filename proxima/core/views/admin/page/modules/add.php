@@ -14,7 +14,7 @@
 
 
 <?php echo Form::open(NULL, array('enctype' => 'multipart/form-data')); ?>
-<fieldset class="last">
+<fieldset>
 	<legend>Select file</legend>
 
 	<p>Allowed types: <?php echo $allowed_upload_type?></p>
@@ -44,3 +44,24 @@
 
 <h2>Add module from git url</h2>
 
+
+<?php echo Form::open(NULL, array('enctype' => 'multipart/form-data')); ?>
+<fieldset>
+	<legend>Github repository url:</legend>
+
+	<p>Allowed urls types: <?php echo $allowed_github_urls; ?></p>
+
+	<?php echo
+		Form::label('github-url', 'Github URL'),
+		Form::input('github-url', NULL, NULL, $errors);
+	?>
+
+	<?php echo
+		Form::label('github-name', 'Module name'),
+		Form::input('github-name', NULL, NULL, $errors);
+	?>
+
+	<?php echo Form::submit('save', 'Add module'); ?>
+
+</fieldset>
+<?php echo Form::close(); ?>

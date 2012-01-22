@@ -31,6 +31,7 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 
 			$module = ORM::factory('module');
 
+			// Upload a module
 			if (Arr::get($data, $upload_fieldname))
 			{
 	 			try
@@ -70,6 +71,47 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 					Message::set(Message::ERROR, __($message, array(':errors_count' => count($errors))));
 				}
 			}
+
+			// Add a github module
+			else if (Arr::get($data, 'github-url') !== NULL)
+			{
+	 			try
+ 	 	  	{
+					$module->admin_add_github_repo($data);
+				}
+				// Error validating the github repo
+				catch(Validation_Exception $e)
+				{
+					$errors = $e->array->errors('admin/assets');
+				}
+				// Error processing the github repo
+				catch(Exception $e)
+				{
+					Message::set(Message::ERROR, $e->getMessage());
+
+					$this->request->redirect(Route::get('admin')->uri(array('controller' => 'modules', 'action' => 'add')));
+				}
+				// Error saving the module data to the db.
+				catch(ORM_Validation_Exception $e)
+				{
+					$errors = $e->errors('admin/assets');
+				}
+
+				if ($errors === NULL)
+				{
+					$message = __('Github module successfully added. You must enable this module if you wish to use it.');
+
+					Message::set(Message::SUCCESS, $message);
+
+					$this->request->redirect(Route::get('admin')->uri(array('controller' => 'modules')));
+				}
+				else
+				{
+					$message = __('Error adding the github repository');
+
+					Message::set(Message::ERROR, $message);
+				}
+			}
 		}
 	}
 
@@ -91,7 +133,7 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 
 		if (strpos($stderr, 'Permission denied') !== FALSE)
 		{
-			Message::set(Message::ERROR, __('Unable to delete module from filesystem.'));
+			Message::set(Message::ERROR, __('Unable to delete module from filesystem. Check file permissions.'));
 		}
 		else
 		{
