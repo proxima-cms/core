@@ -40,10 +40,10 @@ class Proxima_Model_Module extends Model_Base {
 			throw new Exception(__('Unable to move the uploaded file.'));
 		}
 
-		$extension = explode('.', $name);
-		$extension = strtolower(end($extension));
+		$extension   = explode('.', $name);
+		$extension   = strtolower(end($extension));
 		$module_name = str_replace('.'.$extension, '', $name);
-		$folder = CORMODPATH . $module_name;
+		$folder      = CORMODPATH . $module_name;
 
 		switch($extension)
 		{
@@ -54,7 +54,7 @@ class Proxima_Model_Module extends Model_Base {
 					throw new Kohana_Exception('The \'unzip\' program is not installed.');
 				}
 
-				exec(sprintf('unzip %s -d %s', escapeshellarg($file_path), escapeshellarg(CORMODPATH)));
+				$stderr = exec(sprintf('unzip %s -d %s 2>&1', escapeshellarg($file_path), escapeshellarg(CORMODPATH)));
 			break;
 			case 'tar':
 
@@ -63,7 +63,7 @@ class Proxima_Model_Module extends Model_Base {
 					throw new Kohana_Exception('The \'tar\' program is not installed.');
 				}
 
-				exec(sprintf('tar -xf %s %s', escapeshellarg($file_path), escapeshellarg($folder)));
+				$stderr = exec(sprintf('tar -xf %s %s 2>&1', escapeshellarg($file_path), escapeshellarg($folder)));
 			break;
 		}
 
@@ -73,7 +73,7 @@ class Proxima_Model_Module extends Model_Base {
 
 		if (! file_exists($config_file))
 		{
-			exec(sprintf('rm -r %s', escapeshellarg($folder)));
+			$stderr = exec(sprintf('rm -r %s 2>&1', escapeshellarg($folder)));
 
 			throw new Kohana_Exception('Module details config file not found.');
 		}

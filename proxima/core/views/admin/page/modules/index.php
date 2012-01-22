@@ -10,7 +10,17 @@
 	<?php echo $breadcrumbs?>
 </div>
 
+<h2>Proxima Modules</h2>
+<p>These are the Kohana 3.2 modules that are required by proxima cms.</p>
+
+<ul>
+	<?php foreach($default_modules as $name) {?>
+		<li><?php echo $name; ?></li>
+	<?php } ?>
+</ul>
+
 <h2>Enabled Modules</h2>
+<p>These are all enabled Kohana 3.2 modules.</p>
 <ul>
 	<?php foreach($kohana_modules as $name => $path) {?>
 		<li><?php echo $name; ?></li>
@@ -19,15 +29,19 @@
 
 <h2>Addon modules</h2>
 
+<p>Addon modules can add new functionality to the proxima core, or can be any Kohana 3.2 compatible module.</p>
+
 <ul>
-	<?php foreach($modules as $name => $path){?>
+	<?php foreach($addon_modules as $name => $path){?>
 		<li>
 			<?php echo $name;?> -
 			<?php if (in_array($name, $enabled_modules)){?>
-				<?php echo HTML::anchor('admin/modules/disable/'.$name, 'Disable');?>
+				<?php echo HTML::anchor('admin/modules/disable/'.$name, __('Disable'));?>
 			<?php } else { ?>
-				<?php echo HTML::anchor('admin/modules/enable/'.$name, 'Enable');?>
+				<?php echo HTML::anchor('admin/modules/enable/'.$name, __('Enable'));?>
 			<?php }?>
+			|
+			<?php echo HTML::anchor('admin/modules/remove/'.$name, __('Remove'));?>
 		</li>
 	<?php }?>
 </ul>
