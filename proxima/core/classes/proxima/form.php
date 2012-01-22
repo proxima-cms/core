@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Proxima_Base_Form extends Kohana_Form {
+class Proxima_Form extends Kohana_Form {
 
 	private static function attributes($name, & $attributes = NULL, $errors = NULL)
 	{
@@ -18,7 +18,7 @@ class Proxima_Base_Form extends Kohana_Form {
 			// Set the error classname
 			if (isset($errors[$name]))
 			{
-				$attributes['class'] = trim( (string) @$attributes['class'].' error-field');			
+				$attributes['class'] = trim( (string) @$attributes['class'].' error-field');
 			}
 		}
 	}
@@ -50,14 +50,14 @@ class Proxima_Base_Form extends Kohana_Form {
 
 		return parent::textarea($name, $body, $attributes, $double_encode);
 	}
-	
+
 	public static function file($name, array $attributes = NULL, array $errors = NULL)
  	{
 		static::attributes($name, $attributes, $errors);
-	
+
 		return parent::file($name, $attributes);
 	}
-	
+
 	public static function label($input, $text = NULL, array $attributes = NULL, array $errors = NULL, $view = 'messages/label_error')
 	{
 		if ($errors !== NULL)
@@ -75,4 +75,4 @@ class Proxima_Base_Form extends Kohana_Form {
 		return parent::label($input, $text, $attributes);
 	}
 
-} // End Base_Form 
+} // End Base_Form
