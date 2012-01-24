@@ -14,7 +14,9 @@ class Proxima_View_Model {
 			{
 				// Get the view name from the class name.
 				$class = explode('_', get_class($this));
+
 				array_shift($class);
+
 				$file = strtolower(implode('/', $class));
 			}
 			else
@@ -23,12 +25,14 @@ class Proxima_View_Model {
 			}
 		}
 
+		$file = str_replace('view/model/', '', $file);
+
 		$this->view = new View($file, $data);
 	}
 
 	public static function factory($file = NULL, array $data = NULL)
 	{
-		$class = 'View_'.strtr($file, '/', '_');
+		$class = 'Proxima_View_Model_' . strtr($file, '/', '_');
 
 		return new $class($file, $data);
 	}
