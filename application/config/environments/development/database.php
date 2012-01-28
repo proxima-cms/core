@@ -8,7 +8,7 @@ return array(
 			'username'	 => 'root',
 			'password'	 => 'dec1ph3r',
 			'persistent' => FALSE,
-			'database'	 => 'blog.badsyntax.co_dedv',
+			'database'	 => 'blog.badsyntax.co_dev',
 		),
 		'table_prefix' => '',
 		'charset'			 => 'utf8',

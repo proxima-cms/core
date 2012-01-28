@@ -89,8 +89,6 @@ if (Kohana::$environment != Kohana::PRODUCTION)
 	Kohana::$config->attach(new Config_File('config/environments/'.$env));
 }
 
-unset($env);
-
 /**
  * Initialize Kohana, setting the default options.
  *
@@ -114,6 +112,16 @@ Kohana::init(Kohana::$config->load('init')->as_array());
 Kohana::$config->attach(new Config_File);
 
 /**
+ * Attach the environment specific configuration file reader to config if not in production.
+ */
+if (Kohana::$environment != Kohana::PRODUCTION)
+{
+	Kohana::$config->attach(new Config_File('config/environments/'.$env));
+}
+
+unset($env);
+
+/**
  * Attach the file write to logging. Multiple writers are supported.
  */
 Kohana::$log->attach(new Log_File(APPPATH.'logs'));
@@ -124,6 +132,6 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
 Kohana::modules(Kohana::$config->load('modules')->as_array());
 
 /**
- * Initialize Proxima
+ * Initialize Proxima CMS.
  */
 Core::init();
