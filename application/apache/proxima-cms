@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-	DocumentRoot	/var/www/proxima-cms
+	DocumentRoot	/var/www/proxima-cms/httpdocs
 	ServerName	proxima-cms
 
 	UseCanonicalName On
@@ -7,10 +7,10 @@
 	CustomLog /var/log/apache2/proxima-cms-alogs combined
 	ErrorLog /var/log/apache2/proxima-cms-elogs
 
-
+	# Set the environment
 	SetEnv KOHANA_ENV development
 
-	<Directory /var/www/proxima-cms>
+	<Directory /var/www/proxima-cms/httpdocs>
 		AllowOverride All
 	</Directory>
 

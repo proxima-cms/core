@@ -16,30 +16,16 @@ class Proxima_Core {
 	public static function init()
 	{
 		// Run a check to see if Proxima is installed.
-		try
-		{
-			ORM::factory('user');
-		}
-		catch(Database_Exception $e)
-		{
-			Core::$is_installed = FALSE;
-		}
+		// We probably want to handle this in a config file!
+		self::$is_installed = (bool) Database::instance()->query(Database::SELECT, 'SHOW TABLES LIKE "users"')->count();
 
 		// Set default config.
-		I18n::lang('en-gb');
 		Cache::$default = 'apc';
 		Image::$default_driver = 'imagick';
 		Cookie::$salt = 'JpTKsYl8bqjJdsNbHKqg';
 
-		$installer_urls = array(
-			'/install',
-			'/install/tests',
-			'/install/success'
-		);
-
-		// If Proxima is not installed, and we're not viewing
-		// an install page, then redirect to the installer.
-		if ( !Kohana::$is_cli AND !Core::$is_installed AND !in_array(Request::detect_uri(), $installer_urls))
+		// If Proxima is not installed, and we're not viewing an install page, then redirect to the installer.
+		if ( !Kohana::$is_cli AND !Core::$is_installed AND !preg_match('/^\/install(\/.*?)?$/', Request::detect_uri()) )
 		{
 			Request::factory('install')->redirect('install');
 		}
@@ -70,15 +56,15 @@ class Proxima_Core {
 	}
 
 	/**
-	 * Returns the core module path for a given file.
+	 * Returns the core media path for a given file.
 	 *
 	 * @param		mixed		$file		File name
 	 * @param		bool		$root		Add the root application path?
 	 * @return	string	$path		The file path
 	 */
-	public static function path($file = NULL, $root = TRUE)
+	public static function media($file = NULL)
 	{
-		$root = $root === TRUE ? str_replace(DOCROOT, '', CORPATH) : '';
+		$root = 'media/proxima/';
 
 		if (is_array($file))
 		{

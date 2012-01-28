@@ -10,7 +10,7 @@ $(function(){
 	});
 
 	if ($('#messages').find('li').length){
-		$('#messages').fadeIn();
+		$('#messages').fadeIn(700);
 	}
 
 });

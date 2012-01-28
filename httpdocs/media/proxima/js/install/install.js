@@ -112,6 +112,12 @@
 					error:    postError
 				});
 			});
-		})()
+		})(),
+
+		uninstall = (function(){
+			$('#uninstall').click(function(){
+				return confirm("Are you sure you want to uninstall Proxima CMS?\nYou will lose all data!");
+			});
+		})();
 	;
 })();

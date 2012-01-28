@@ -2,6 +2,6 @@
 
 return array(
 	'scripts'	=> array(
-		Core::path('component/media/js/admin/components.js')
+		Core::media('js/admin/components.js')
 	)
 );

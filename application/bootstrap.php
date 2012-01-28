@@ -53,7 +53,7 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
 /**
  * Set the default language
  */
-I18n::lang('en-us');
+I18n::lang('en-gb');
 
 /**
  * Set Kohana::$environment if a 'KOHANA_ENV' environment variable has been supplied.
@@ -64,13 +64,32 @@ I18n::lang('en-us');
 if (($env = getenv('KOHANA_ENV')) !== FALSE)
 {
 	Kohana::$environment = constant('Kohana::'.strtoupper($env));
-	unset($env);
 }
 else
 {
 	// Default to 'development' environment.
 	Kohana::$environment = Kohana::DEVELOPMENT;
 }
+
+/**
+ * Load the config
+ */
+Kohana::$config = new Config;
+
+/**
+ * Attach a file reader to config. Multiple readers are supported.
+ */
+Kohana::$config->attach(new Config_File);
+
+/**
+ * Attach the environment specific configuration file reader to config if not in production.
+ */
+if (Kohana::$environment != Kohana::PRODUCTION)
+{
+	Kohana::$config->attach(new Config_File('config/environments/'.$env));
+}
+
+unset($env);
 
 /**
  * Initialize Kohana, setting the default options.
@@ -85,12 +104,14 @@ else
  * - boolean  profile     enable or disable internal profiling               TRUE
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
-Kohana::init(array(
-	'base_url'    => '/',
-	'index_file'  => FALSE,
-	'errors'      => TRUE,
-	'caching'     => Kohana::$environment !== Kohana::DEVELOPMENT
-));
+Kohana::init(Kohana::$config->load('init')->as_array());
+
+/**
+ * Attach a file reader to config. Multiple readers are supported.
+ * Kohana::init will overwrite the config instance so we need to re-attach the reader/s.
+ * This should be fixed in Kohana core!
+ */
+Kohana::$config->attach(new Config_File);
 
 /**
  * Attach the file write to logging. Multiple writers are supported.
@@ -98,11 +119,11 @@ Kohana::init(array(
 Kohana::$log->attach(new Log_File(APPPATH.'logs'));
 
 /**
- * Attach a file reader to config. Multiple readers are supported.
- */
-Kohana::$config->attach(new Config_File);
-
-/**
  * Enable the modules.
  */
 Kohana::modules(Kohana::$config->load('modules')->as_array());
+
+/**
+ * Initialize Proxima
+ */
+Core::init();

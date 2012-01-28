@@ -9,7 +9,7 @@ class Proxima_Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			->content(
 				View_Model::factory('admin/page/pages/types/index')
 			)
-			->scripts(array(Core::path('pages/media/js/admin/pages.js')));
+			->scripts(array(Core::media('js/admin/pages.js')));
 	}
 
 	public function action_add()

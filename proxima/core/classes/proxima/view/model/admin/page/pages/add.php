@@ -11,7 +11,7 @@ class Proxima_View_Model_Admin_Page_Pages_Add extends View_Model_Admin {
 			->scripts(array( 
 				Kohana::$config->load('admin/media.paths.tinymce_jquery'),
 				kohana::$config->load('admin/media.paths.tinymce_config'),
-				Core::path('media/js/admin/pages/pages.js')
+				Core::media('js/admin/pages/pages.js')
 			)); 
 	}
 
