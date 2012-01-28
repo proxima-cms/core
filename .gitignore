@@ -1,12 +1,28 @@
-Icon?
-.DS_Store
-.svn
-nbproject
-Thumbs.db
-*.bak
-*.sass-cache
+# Kohana generates files
 application/cache/*
 application/logs/*
-*.komodoproject
-.idea
+
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.vi
+*~
+
+# OS or Editor folders
+._*
+.DS_Store
+.cache
+.project
+.settings
+thumbs.db
 *.sublime-project
+
+# Folders to ignore
+.hg
+.svn
+.idea
