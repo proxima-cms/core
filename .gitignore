@@ -1,4 +1,4 @@
-# Kohana generates files
+# Kohana generated files
 application/cache/*
 application/logs/*
 

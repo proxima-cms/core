@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Saturday 28th of January 2012 08:11:17 PM
+ * Auto generated on: Sunday 29th of January 2012 03:16:53 PM
  */
 
 return array(
@@ -12,6 +12,7 @@ return array(
 	'message' => MODPATH.'message',
 	'image' => MODPATH.'image',
 	'database' => MODPATH.'database',
+	'media' => MODPATH.'media',
 	'compress' => MODPATH.'compress',
 	'cache' => MODPATH.'cache',
 	'auth' => MODPATH.'auth',

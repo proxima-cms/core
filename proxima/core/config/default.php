@@ -5,6 +5,7 @@ return array(
 		'minion',
 		'minion-tasks-migrations',
 		'message',
+		'media',
 		'image',
 		'database',
 		'compress',

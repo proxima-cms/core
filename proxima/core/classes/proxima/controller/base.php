@@ -24,13 +24,15 @@ abstract class Proxima_Controller_Base extends Controller {
 		{
 			Message::set(Message::ERROR, __('You need to be signed in to do that.'));
 
-			// Set the return path so user is redirect back to this page after successful sign in
+			// Generate the signin URL
 			$uri = Route::get('admin')
 				->uri(array(
 					'controller' => 'auth',
 					'action' => 'signin'
-				))
-				.'?return_to=' . $this->request->uri();
+				));
+
+			// Set the return path so user is redirect back to this page after successful sign in.
+			$uri .= '?return_to=' . $this->request->uri();
 
 			$this->request->redirect($uri);
 		}
