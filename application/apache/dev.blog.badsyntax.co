@@ -1,10 +1,13 @@
 <VirtualHost *:80>
-	DocumentRoot	/home/richard/www/sites/dev.blog.badsyntax.co
+	DocumentRoot	/home/richard/www/sites/dev.blog.badsyntax.co/httpdocs
 	ServerName	dev.blog.badsyntax.co
 
 	UseCanonicalName On
 
-	CustomLog /home/richard/www/logs/dev.blog.badsyntax.co-alogs combined 
+	CustomLog /home/richard/www/logs/dev.blog.badsyntax.co-alogs combined
 	ErrorLog /home/richard/www/logs/dev.blog.badsyntax.co-elogs
+
+	# Set the environment
+	SetEnv KOHANA_ENV development
 
 </VirtualHost>

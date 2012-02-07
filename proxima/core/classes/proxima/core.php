@@ -25,7 +25,7 @@ class Proxima_Core {
 		Cookie::$salt = 'JpTKsYl8bqjJdsNbHKqg';
 
 		// If Proxima is not installed, and we're not viewing an install page, then redirect to the installer
-		if ( !Kohana::$is_cli AND !Core::$is_installed AND !preg_match('/^\/install(\/.*?)?$/', Request::detect_uri()) )
+		if ( !Kohana::$is_cli AND !Core::$is_installed AND !preg_match('/^\/install|media(\/.*?)?$/', Request::detect_uri()) )
 		{
 			Request::factory('install')->redirect('install');
 		}
@@ -64,7 +64,7 @@ class Proxima_Core {
 	 */
 	public static function media($file = NULL)
 	{
-		$root = 'media/proxima/';
+		$root = 'proxima/';
 
 		if (is_array($file))
 		{
@@ -72,12 +72,12 @@ class Proxima_Core {
 
 			foreach($file as $f)
 			{
-				$files[] = $root . $f;
+				$files[] = Media::uri($root.$f);
 			}
 
 			return $files;
 		}
 
-		return $root . $file;
+		return Media::uri($root.$file);
 	}
 }

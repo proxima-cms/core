@@ -162,6 +162,15 @@ foreach($route_pages as $page)
 		));
 }
 
+Route::set('media', 'media/(<uid>/)kohana/<filepath>', array(
+		'filepath' => '.*', // Pattern to match the file path
+		'uid' => '.*?',     // Match the unique string that is not part of the media file
+	))
+	->defaults(array(
+		'controller' => 'media',
+		'action'     => 'serve',
+	));
+
 // Set the 'catch all' route
 Route::set('page', '<uri>', array('uri' => '.*'))
 	->defaults(array(
