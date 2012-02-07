@@ -19,12 +19,12 @@ class Proxima_Core {
 		// We probably want to handle this in a config file!
 		self::$is_installed = (bool) Database::instance()->query(Database::SELECT, 'SHOW TABLES LIKE "users"')->count();
 
-		// Set default config.
+		// Set default config
 		Cache::$default = 'apc';
 		Image::$default_driver = 'imagick';
 		Cookie::$salt = 'JpTKsYl8bqjJdsNbHKqg';
 
-		// If Proxima is not installed, and we're not viewing an install page, then redirect to the installer.
+		// If Proxima is not installed, and we're not viewing an install page, then redirect to the installer
 		if ( !Kohana::$is_cli AND !Core::$is_installed AND !preg_match('/^\/install(\/.*?)?$/', Request::detect_uri()) )
 		{
 			Request::factory('install')->redirect('install');

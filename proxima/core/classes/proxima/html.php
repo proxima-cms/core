@@ -2,38 +2,14 @@
 
 abstract class Proxima_HTML extends Kohana_HTML {
 
-	public static function styles($styles = array())
+	public static function styles($styles)
 	{
-		if (!is_array($styles))
-		{
-			throw new Exception('Array expected');
-		}
-
-		$styles_html = '';
-
-		foreach($styles as $style)
-		{
-			$styles_html .= HTML::style($style);
-		}
-
-		return $styles_html;
+		return implode("\n", array_map('HTML::style', $styles));
 	}
-	
-	public static function scripts($scripts = array())
+
+	public static function scripts($scripts)
 	{
-		if (!is_array($scripts))
-		{
-			throw new Exception('Array expected');
-		}
-
-		$scripts_html = '';
-
-		foreach($scripts as $script)
-		{
-			$scripts_html .= HTML::script($script);
-		}
-
-		return $scripts_html;
+		return implode("\n", array_map('HTML::script', $scripts));
 	}
 
 }

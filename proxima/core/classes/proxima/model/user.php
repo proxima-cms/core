@@ -12,9 +12,7 @@ class Proxima_Model_User extends Model_Auth_User {
 
 	public function admin_add($data = array())
 	{
-		$this->check_passwords($data);
-		$this->values($data);
-		$this->save();
+		$this->create_user($data, array('username', 'email', 'password', 'lang'));
 
 		$roles  = Arr::get($data, 'roles');
 		$groups = Arr::get($data, 'groups');
@@ -48,6 +46,7 @@ class Proxima_Model_User extends Model_Auth_User {
 		}
 	}
 
+	// NOTE: not used since we started using $user->create_user();
 	private function check_passwords($data)
 	{
 		// Check the passwords match.
@@ -55,7 +54,7 @@ class Proxima_Model_User extends Model_Auth_User {
 			->rules('password_confirm',
 				array(
 					array('matches',
-						array(':validation', ':field', 'password')
+						array(':validation', 'password', ':field')
 					)
 				)
 			);

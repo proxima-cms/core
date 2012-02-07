@@ -6,6 +6,6 @@ return array(
 		'pages' => '%s/api/pages'
 	),
 	'scripts' => array(
-		Core::path('blogimport/media/js/admin/blogimport.js')
+		Core::media('blogimport/media/js/admin/blogimport.js')
 	)
 );
