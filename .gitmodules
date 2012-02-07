@@ -4,18 +4,12 @@
 [submodule "modules/database"]
 	path = modules/database
 	url = https://github.com/kohana/database.git
-[submodule "modules/orm"]
-	path = modules/orm
-	url = https://github.com/kohana/orm.git
 [submodule "modules/message"]
 	path = modules/message
 	url = git://github.com/GeertDD/kohana-message.git
 [submodule "modules/auth"]
 	path = modules/auth
 	url = https://github.com/kohana/auth.git
-[submodule "modules/image"]
-	path = modules/image
-	url = https://github.com/kohana/image.git
 [submodule "modules/minion"]
 	path = modules/minion
 	url = git://github.com/kohana-minion/core.git
@@ -31,12 +25,18 @@
 [submodule "modules/email"]
 	path = modules/email
 	url = git://github.com/shadowhand/email.git
-[submodule "system"]
-	path = system
-	url = git@github.com:badsyntax/core.git
 [submodule "proxima/modules/userguide"]
 	path = proxima/modules/userguide
 	url = git@github.com:badsyntax/userguide.git
 [submodule "modules/media"]
 	path = modules/media
 	url = git://github.com/Zeelot/kohana-media.git
+[submodule "system"]
+	path = system
+	url = git@github.com:badsyntax/core.git
+[submodule "modules/image"]
+	path = modules/image
+	url = git@github.com:badsyntax/image.git
+[submodule "modules/orm"]
+	path = modules/orm
+	url = git@github.com:badsyntax/orm.git
