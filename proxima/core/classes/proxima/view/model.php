@@ -2,15 +2,17 @@
 
 class Proxima_View_Model {
 
-	protected $view;
+	protected $_view;
 
-	protected $file;
+	protected $_file;
 
-	public function __construct($file = NULL, array $data = NULL)
+	protected $_assets;
+
+	public function __construct($file = NULL, array $data = NULL, Assets $assets = NULL)
 	{
 		if ($file === NULL)
 		{
-			if ($this->file === NULL)
+			if ($this->_file === NULL)
 			{
 				// Get the view name from the class name.
 				$class = explode('_', get_class($this));
@@ -21,13 +23,15 @@ class Proxima_View_Model {
 			}
 			else
 			{
-				$file = $this->file;
+				$file = $this->_file;
 			}
 		}
 
-		$file = str_replace('view/model/', '', $file);
+		$this->_assets = $assets;
 
-		$this->view = new View($file, $data);
+		$this->_file = str_replace('view/model/', '', $file);
+
+		$this->_view = new View($this->_file, $data);
 	}
 
 	public static function factory($file = NULL, array $data = NULL)
@@ -39,20 +43,26 @@ class Proxima_View_Model {
 
 	public function bind($key, & $value)
 	{
-		$this->view->bind($key, $value);
+		$this->_view->bind($key, $value);
 
 		return $this;
 	}
 
 	public static function bind_global($key, & $value)
 	{
-		$this->view->bind_global($key, $value);
+		$this->_view->bind_global($key, $value);
 
 		return $this;
 	}
 
 	public function render()
 	{
+		// Set the assets var
+		if ($this->_assets !== NULL)
+		{
+			$this->_view->set('assets', $this->_assets);
+		}
+
 		// Add view-model variable methods as view variables.
 		foreach(get_class_methods($this) as $method)
 		{
@@ -60,38 +70,38 @@ class Proxima_View_Model {
 
 			if (count($matches))
 			{
-				$this->view->set($matches[1], $this->{$method}());
+				$this->_view->set($matches[1], $this->{$method}());
 			}
 		}
 
 		// Render the view.
-		return $this->view->render();
+		return $this->_view->render();
 	}
 
 	public function set($key, $value = NULL)
 	{
-		$this->view->set($key, $value);
+		$this->_view->set($key, $value);
 
 		return $this;
 	}
 
 	public function set_filename($file)
 	{
-		$this->view->set_filename($file);
+		$this->_view->set_filename($file);
 
 		return $this;
 	}
 
 	public static function set_global($key, $value = NULL)
 	{
-		$this->view->set_global($key, $value);
+		$this->_view->set_global($key, $value);
 
 		return $this;
 	}
 
 	public function __get($key)
 	{
-		return $this->view->{$key};
+		return $this->_view->{$key};
 	}
 
 	public function __set($key, $value)
@@ -101,12 +111,12 @@ class Proxima_View_Model {
 
 	public function __isset($key)
 	{
-		return isset($this->view->{$key});
+		return isset($this->_view->{$key});
 	}
 
 	public function __unset($key)
 	{
-		unset($this->view->{$key});
+		unset($this->_view->{$key});
 	}
 
 	public function __toString()

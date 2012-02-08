@@ -40,3 +40,6 @@
 [submodule "modules/orm"]
 	path = modules/orm
 	url = git@github.com:badsyntax/orm.git
+[submodule "modules/assets"]
+	path = modules/assets
+	url = https://github.com/Zeelot/kohana-assets.git

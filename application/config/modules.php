@@ -7,6 +7,7 @@
 return array(
 	'blogimport' => CORMODPATH.'blogimport',
 	'core' => CORPATH,
+	'assets' => MODPATH.'assets',
 	'minion' => MODPATH.'minion',
 	'minion-tasks-migrations' => MODPATH.'minion-tasks-migrations',
 	'message' => MODPATH.'message',

@@ -2,9 +2,9 @@
 
 class Proxima_View_Model_Master extends View_Model {
 
-	public function __construct($file = NULL, array $data = NULL)
+	public function __construct($file = NULL, array $data = NULL, Assets $assets)
 	{
-		parent::__construct();
+		parent::__construct($file, $data, $assets);
 
 		$request = Request::current();
 
@@ -25,7 +25,7 @@ class Proxima_View_Model_Master extends View_Model {
 	 */
 	private function data($key, $items)
 	{
-		if (!$this->view->__isset($key))
+		if (!$this->_view->__isset($key))
 		{
 			$data = array();
 		}
