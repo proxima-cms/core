@@ -20,18 +20,14 @@ class Proxima_Core {
 		self::$is_installed = (bool) Database::instance()->query(Database::SELECT, 'SHOW TABLES LIKE "users"')->count();
 
 		// Set default config
-		Cache::$default = 'apc';
-		Image::$default_driver = 'imagick';
-		Cookie::$salt = 'JpTKsYl8bqjJdsNbHKqg';
+		Cache::$default = Kohana::$config->load('default.cache.driver');
+		Image::$default_driver = Kohana::$config->load('default.image.driver');
+		Cookie::$salt = Kohana::$config->load('default.cookie.salt');
 
-		// If Proxima is not installed, and we're not viewing an install page, then redirect to the installer
-		if ( !Kohana::$is_cli AND !Core::$is_installed AND !preg_match('/^\/install|media(\/.*?)?$/', Request::detect_uri()) )
+		if ( !Kohana::$is_cli )
 		{
-			Request::factory('install')->redirect('install');
-		}
+			$can_install = Kohana::$config->load('install.can_install_and_uninstall');
 
-		if ( ! Kohana::$is_cli)
-		{
 			if (Core::$is_installed)
 			{
 				// Attach the database config reader.
@@ -40,7 +36,7 @@ class Proxima_Core {
 				if ( ! Route::cache())
 				{
 					// Set the core application routes
-					include CORPATH.'config/routes'.EXT;
+					include_once CORPATH.'config/routes'.EXT;
 				}
 			}
 			else
@@ -52,7 +48,30 @@ class Proxima_Core {
 						'action' => 'index',
 				));
 			}
+
+			// Create the main request site request
+			$request = Request::factory();
+
+			// Allowed install controllers
+			$install_controller = in_array($request->controller(), array('install', 'media'));
+
+			// Check if we need to install
+			if ( (!Core::$is_installed AND !$install_controller) OR ($can_install AND !$install_controller) )
+			{
+				Request::factory('install')->redirect('install');
+			}
 		}
+		else
+		{
+			// Create the CLI request
+			$request = Request::factory();
+		}
+
+		/**
+		 * Execute the main request. A source of the URI can be passed, eg: $_SERVER['PATH_INFO'].
+		 * If no source is specified, the URI will be automatically detected.
+		 */
+		echo $request->execute()->send_headers()->body();
 	}
 
 	/**

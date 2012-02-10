@@ -1,4 +1,5 @@
 (function(){
+
 	var
 
 		$loadText    = $('#loading span').hide(),
@@ -6,6 +7,7 @@
 		$signin      = $('#signin'),
 		$installForm = $('#install-form form'),
 		$fields      = $('#username,#email,#password,#password_confirm'),
+		$options     = $('#options'),
 
 		focus_fields = (function(){
 			var hasFocus = false;
@@ -52,8 +54,8 @@
 
 			var $success = $(errors.success).hide();
 
-			$('#install').slideUp(500, function(){
-				$('#install').after($success).remove();
+			$('#bg').slideUp(500, function(){
+				$('#bg').after($success).remove();
 				$success.slideDown(500);
 			});
 		},
@@ -117,6 +119,13 @@
 		uninstall = (function(){
 			$('#uninstall').click(function(){
 				return confirm("Are you sure you want to uninstall Proxima CMS?\nYou will lose all data!");
+			});
+		})(),
+
+		options = (function(){
+			$('#options-toggle').click(function(e){
+				e.preventDefault();
+				$options.toggle(300);
 			});
 		})();
 	;

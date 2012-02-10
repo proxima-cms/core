@@ -2,7 +2,7 @@
 
 class Proxima_View_Model_Master extends View_Model {
 
-	public function __construct($file = NULL, array $data = NULL, Assets $assets)
+	public function __construct($file = NULL, array $data = NULL, Assets $assets = NULL)
 	{
 		parent::__construct($file, $data, $assets);
 

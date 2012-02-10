@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Tuesday 7th of February 2012 11:00:00 PM
+ * Auto generated on: Friday 10th of February 2012 10:06:53 PM
  */
 
 return array(

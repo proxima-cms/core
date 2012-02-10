@@ -8,17 +8,12 @@
 
 			<p id="results" class="fail">Warning</p>
 			<p>
-				It appears that Proxima CMS is already installed.
+				<strong style="font-size:1.4em">You need to disable this installer in the installer config file to continue.</strong>
 			</p>
-			<p>
-				<strong>Disable this installer in the installer config file.</strong>
+			<p style="margin-bottom:.8em">
+				[<a href="#" id="options-toggle">Options</a>]
 			</p>
-			<div style="padding-top:.3em">
-				<a href="<?php echo URL::site(Route::get('admin')->uri(array('controller' => 'auth', 'action' => 'signin')));?>" class="btn signin">
-					<span></span>
-					Sign in
-				</a>
-				&nbsp;
+			<div id="options" style="display:none;padding-top:.4em;padding-bottom:.6em">
 				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'uninstall')));?>" class="btn uninstall" id="uninstall">
 					<span></span>
 					Uninstall

@@ -15,5 +15,15 @@ return array(
 		'orm',
 		'pagination',
 		'email',
+	),
+	'cache' => array(
+		'driver' => 'apc',
+	),
+	'image' => array(
+		'driver' => 'imagick',
+	),
+	'cookie' => array(
+		// Change this salt to something unique!
+		'salt' => 'JpTKsYl8bqjJdsNbHKqg'
 	)
 );

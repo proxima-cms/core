@@ -9,7 +9,7 @@ class Proxima_Controller_Install extends Controller_Base {
 		// Secure this controller
 	 	if (!Kohana::$config->load('install.can_install_and_uninstall'))
 	 	{
-			throw new HTTP_Exception_503('Not allowed');
+			$this->request->redirect();
 	 	}
 
 		// If it's an AJAX request, then set the response content type as JSON
@@ -34,9 +34,7 @@ class Proxima_Controller_Install extends Controller_Base {
 
 		if (!Core::$is_installed && $this->request->method() === Request::POST)
 		{
-			// As the database table for 'users' doesn't yet exist, we can't use the Model_User create_user()
-			// method to create new user. We also cannot get access to the model rules without constructing a
-			// new Model_User object. The following rules match the rules specified in the Model_User class.
+			// Cant use the Model_User model as the db table doesn't exist
 			$user_rules = array(
 				'username' => array(
 					array('not_empty'),
@@ -76,6 +74,7 @@ class Proxima_Controller_Install extends Controller_Base {
 					$this->template->content = json_encode($errors);
 				}
 			}
+			// Successfully validated the admin user details
 			else
 			{
 				// Run the migration task
@@ -121,6 +120,47 @@ class Proxima_Controller_Install extends Controller_Base {
 		}
 	}
 
+	// Remove the Proxima CMS tables
+	public function action_uninstall()
+	{
+		// We cant uninstall if we're already installed
+		if (!Core::$is_installed)
+		{
+			throw new Kohana_Exception('Proxima CMS is not installed');
+		}
+
+		// Get the applied migrations
+		$migration = new Model_Minion_Migration(Database::instance());
+		$applied_migrations = $migration->fetch_current_versions('group');
+
+		// Uninstall migrations will not be run if no migrations have been applied
+		if (!count($applied_migrations))
+		{
+			throw new Exception('No migrations have been applied');
+		}
+
+		// Remove any application cache
+		Cache::instance()->delete_all();
+
+		// Ensure the user is logged out to avoid any db session issues
+		Auth::instance()->logout();
+
+		// Run the uninstall migrations
+		$migrations = Minion_Task::factory('migrations_run')
+			->execute(array('down' => TRUE));
+
+		// Check if any migrations were actually run
+		if (!count($migrations->executed_migrations))
+		{
+			throw new Kohana_Exception('No migrations were run');
+		}
+
+		$this->request->redirect(
+			Route::get('install')->uri()
+		);
+	}
+
+	// Display environment tests
 	public function action_tests()
 	{
 		$this->template
@@ -130,6 +170,7 @@ class Proxima_Controller_Install extends Controller_Base {
 			);
 	}
 
+	// Display install 'success' message
 	public function action_success()
 	{
 		$this->template
@@ -138,21 +179,4 @@ class Proxima_Controller_Install extends Controller_Base {
 				View::factory('page/install/success')
 			);
 	}
-
-	// Remove the Proxima CMS tables
-	public function action_uninstall()
-	{
-		// Remove any application cache
-		Cache::instance()->delete_all();
-
-		// Ensure the user is logged out to avoid any db session issues
-		Auth::instance()->logout();
-
-		// Run the uninstall migration task
-		$migration_task = Minion_Task::factory('migrations_run')
-			->execute(array('down' => TRUE));
-
-		$this->request->redirect(Route::get('install')->uri());
-	}
-
 }
