@@ -26,7 +26,6 @@ class Proxima_Core {
 
 		if ( !Kohana::$is_cli )
 		{
-			$can_install = Kohana::$config->load('install.can_install_and_uninstall');
 
 			if (Core::$is_installed)
 			{
@@ -55,10 +54,12 @@ class Proxima_Core {
 			// Allowed install controllers
 			$install_controller = in_array($request->controller(), array('install', 'media'));
 
+			$can_install = (bool) Kohana::$config->load('install.can_install_uninstall');
+
 			// Check if we need to install
 			if ( (!Core::$is_installed AND !$install_controller) OR ($can_install AND !$install_controller) )
 			{
-				Request::factory('install')->redirect('install');
+				$request->redirect('install');
 			}
 		}
 		else
@@ -79,12 +80,13 @@ class Proxima_Core {
 	 *
 	 * @param		mixed		$file		File name
 	 * @param		bool		$root		Add the root application path?
-	 * @return	string	$path		The file path
+	 * @return	mixed   $paths
 	 */
 	public static function media($file = NULL)
 	{
 		$root = 'proxima/';
 
+		// If we have an array of media files
 		if (is_array($file))
 		{
 			$files = array();

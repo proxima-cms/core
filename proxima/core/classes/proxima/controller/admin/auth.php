@@ -11,7 +11,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 		// Redirect if user is logged in
 		if (Auth::instance()->logged_in())
 		{
-			throw new Request_Exception('You are already signed in.');
+			$this->request->redirect($this->request->query('return_to') ?: Route::get('admin')->uri());
 		}
 
 		$this->template

@@ -8,12 +8,14 @@
 
 			<p id="results" class="fail">Warning</p>
 			<p>
-				<strong style="font-size:1.4em">You need to disable this installer in the installer config file to continue.</strong>
+				<strong style="font-size:1.1em">You need to disable this installer to continue.</strong>
 			</p>
-			<p style="margin-bottom:.8em">
-				[<a href="#" id="options-toggle">Options</a>]
-			</p>
-			<div id="options" style="display:none;padding-top:.4em;padding-bottom:.6em">
+			<div id="options" style="padding-top:.4em;padding-bottom:.6em">
+				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'disable')));?>" class="btn tick">
+					<span></span>
+					Disable installer
+				</a>
+				&nbsp;&nbsp;
 				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'uninstall')));?>" class="btn uninstall" id="uninstall">
 					<span></span>
 					Uninstall

@@ -1,21 +1,20 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Proxima_View_Model_Admin_Page_Index extends View_Model_Admin {
-	
+
 	protected $order_by = 'name';
 
 	public function __construct($file = NULL, array $data = NULL)
 	{
 		parent::__construct($file, $data);
 
-		$this->view
-			->set(array(
+		$this->set(array(
 				'direction'      => Arr::get($data, 'direction', 'asc'),
 				'order_by'       => Arr::get($data, 'sort', $this->order_by),
 				'items_per_page' => 18,
 			));
 	}
-	
+
 	// Return the total amount of filtered items
 	public function var_total()
 	{

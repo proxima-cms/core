@@ -340,6 +340,23 @@
 			$config->save();
 		}
 		catch(Database_Exception $e) {}
+
+		// Installer
+		$config = ORM::factory('config');
+		$config->values(array(
+			'group_name' => 'install',
+			'config_key' => 'can_install_uninstall',
+			'label' => 'Can install/uninstall',
+			'config_value' => serialize(1),
+			'default' => serialize(1),
+			'rules' => serialize(array(
+				array('not_empty'),
+			))));
+		try
+		{
+			$config->save();
+		}
+		catch(Database_Exception $e) {}
 	}
 
 	public function create_groups($db)

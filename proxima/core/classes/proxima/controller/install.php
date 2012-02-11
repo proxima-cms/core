@@ -6,8 +6,10 @@ class Proxima_Controller_Install extends Controller_Base {
 
 	public function before()
 	{
+		$can_install = Kohana::$config->load('install.can_install_uninstall');
+
 		// Secure this controller
-	 	if (!Kohana::$config->load('install.can_install_and_uninstall'))
+	 	if ($can_install !== NULL AND (bool) $can_install === FALSE)
 	 	{
 			$this->request->redirect();
 	 	}
@@ -31,6 +33,7 @@ class Proxima_Controller_Install extends Controller_Base {
 				->bind('user', $user)
 				->bind('migration', $migration_task)
 			);
+
 
 		if (!Core::$is_installed && $this->request->method() === Request::POST)
 		{
@@ -158,6 +161,30 @@ class Proxima_Controller_Install extends Controller_Base {
 		$this->request->redirect(
 			Route::get('install')->uri()
 		);
+	}
+
+	// Disable the installer
+	public function action_disable()
+	{
+		$return_to = $this->request->query('return_to');
+
+		$config = ORM::factory('config')
+			->where('group_name', '=', 'install')
+			->where('config_key', '=', 'can_install_uninstall')
+			->find();
+
+		$config->config_value = serialize('0');
+		$config->group_name = 'install';
+		$config->config_key = 'can_install_uninstall';
+		$config->save();
+
+		$this->request->redirect($return_to);
+	}
+
+	// Enable the installer
+	public function action_enable()
+	{
+
 	}
 
 	// Display environment tests
