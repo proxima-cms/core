@@ -58,4 +58,4 @@ table td.fail{color:#911;}
 #install-form{margin-bottom:.6em;}
 .btn.signin span,.btn.install span{float:left;margin:0 4px 0 -10px;width:16px;height:16px;background:url(../../img/install/icons.png);background-position:-192px -96px;}
 .btn.uninstall span{float:left;margin:0 4px 0 -10px;width:16px;height:16px;background:url(../../img/install/icons.png);background-position:-96px -128px;}
-.btn.tick span{float:left;margin:0 4px 0 -10px;width:16px;height:16px;background:url(../../img/install/icons.png);background-position:-96px -128px;}
+.btn.tick span{float:left;margin:0 4px 0 -10px;width:16px;height:16px;background:url(../../img/install/icons.png);background-position:-64px -144px;}

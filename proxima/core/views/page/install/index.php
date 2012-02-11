@@ -11,9 +11,9 @@
 				<strong style="font-size:1.1em">You need to disable this installer to continue.</strong>
 			</p>
 			<div id="options" style="padding-top:.4em;padding-bottom:.6em">
-				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'disable')));?>" class="btn tick">
+				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'disable'))).'?return_to='.Request::current()->query('return_to');?>" class="btn tick">
 					<span></span>
-					Disable installer
+					Disable
 				</a>
 				&nbsp;&nbsp;
 				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'uninstall')));?>" class="btn uninstall" id="uninstall">

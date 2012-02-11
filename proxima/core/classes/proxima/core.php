@@ -59,7 +59,7 @@ class Proxima_Core {
 			// Check if we need to install
 			if ( (!Core::$is_installed AND !$install_controller) OR ($can_install AND !$install_controller) )
 			{
-				$request->redirect('install');
+				$request->redirect('install?return_to='.$request->uri());
 			}
 		}
 		else
