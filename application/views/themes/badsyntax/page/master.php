@@ -10,8 +10,8 @@
 	<link rel="canonical" href="http://dev.blog.badsyntax.co/" />
 	<link rel="alternate" type="application/rss+xml" title="BadSyntax" href="http://dev.blog.badsyntax.co/blog/rss/all.rss" />
 	-->
-	<link href="//fonts.googleapis.com/css?family=Orbitron:400,500,700,900|Cabin:bold,regular" rel="stylesheet" type="text/css" />
-	<?php echo Component::factory('Head_Scripts'); ?>
+	<?php echo implode("\n\t", $assets->get('head')); ?>
+
 	<?php if (Kohana::$environment === Kohana::DEVELOPMENT){?>
 	<style>
 	/*.kohana{display:none;}*/
@@ -50,7 +50,7 @@
 						)); ?>
 				</nav>
 			</div>
-				
+
 				<h4>Tags</h4>
 
 			<div class="nav">
@@ -105,7 +105,7 @@
 <div style="color:#666;font-size:.8em;text-align:center;margin-bottom:1em;">Powered by <a href="http://kohanaframework.org/">Kohana 3.2</a></div>
 
 		</div>
-	
+
 		<footer>
 		</footer>
 	</div>
@@ -113,6 +113,7 @@
 	<?php echo
 		Component::factory('Footer_Scripts');
 	?>
+	<?php echo implode("\n\t", $assets->get('body')); ?>
 
 </body>
 </html>

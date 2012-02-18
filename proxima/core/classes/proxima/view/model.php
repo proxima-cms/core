@@ -36,7 +36,7 @@ class Proxima_View_Model {
 
 	public static function factory($file = NULL, array $data = NULL)
 	{
-		$class = 'Proxima_View_Model_' . strtr($file, '/', '_');
+		$class = 'View_Model_' . strtr($file, '/', '_');
 
 		return new $class($file, $data);
 	}
