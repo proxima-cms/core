@@ -162,8 +162,7 @@ class Proxima_Modules {
 					$module_db->delete();
 				}
 
-				continue;
-				// Message::set(Message::ERROR, 'No module configuration file found for '.$name);
+				throw new Kohana_Exception('Unable to save Proxima module \'' . $name .'\' to DB. The module requires configuration.');
 			}
 
 			$enabled        = $module_db->loaded() ? $module_db->enabled : Arr::get($config, 'enabled', TRUE);

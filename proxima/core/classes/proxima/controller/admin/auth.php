@@ -4,7 +4,7 @@ class Proxima_Controller_Admin_Auth extends Controller_Admin_Base {
 
 	public $view_model = 'admin/page/auth/master/page';
 
-	public $auth_required = FALSE;
+	public $_auth_required = FALSE;
 
 	public function action_signin()
 	{

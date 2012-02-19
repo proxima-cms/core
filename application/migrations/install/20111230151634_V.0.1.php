@@ -21,7 +21,12 @@
 		$this->create_groups($db);
 
 		// Save modules to DB, and update file configs
-		Modules::save_all();
+		try
+		{
+			Modules::save_all();
+		}
+		catch(Exception $e) { }
+
 		Modules::generate_config();
 	}
 

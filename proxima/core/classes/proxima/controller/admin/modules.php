@@ -159,8 +159,13 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 
 	public function action_generate_config()
 	{
-		Modules::save_all();
+		try
+		{
+			Modules::save_all();
+		} catch(Exception $e){}
+
 		Modules::generate_config();
+
 		Message::set(Message::SUCCESS, __('Modules successfully updated.'));
 
 		$this->request->redirect('admin/modules');

@@ -14,15 +14,18 @@ class Proxima_View_Model {
 
 	public function __construct($file = NULL, array $data = NULL, Assets $assets = NULL)
 	{
+		// Get the view filename
 		if ($file === NULL)
 		{
 			if ($this->_file === NULL)
 			{
-				// Get the view name from the class name.
 				$class = explode('_', get_class($this));
 
+				// Remove 'view' and 'model' segments from the class name
+				array_shift($class);
 				array_shift($class);
 
+				// Join the remaining class name segments into a view string
 				$file = strtolower(implode('/', $class));
 			}
 			else
@@ -31,12 +34,15 @@ class Proxima_View_Model {
 			}
 		}
 
-		// If an assets instance exists
+		// Set the view instance
+		$this->_view = new View($file, $data);
+
+		// If an assets instance exists then set it
 		if ($assets instanceof Assets)
 		{
 			$this->_assets = $assets;
 		}
-		// Else if the assets config path has been set then create a new assets instance.
+		// Else if the assets config path has been set then create a new assets instance
 		elseif ($this->_assets_config !== NULL)
 		{
 			$this->_assets = new Assets(Kohana::$config->load($this->_assets_config));
@@ -46,10 +52,6 @@ class Proxima_View_Model {
 				$this->_assets->group($this->_assets_group);
 			}
 		}
-
-		$this->_file = str_replace('view/model/', '', $file);
-
-		$this->_view = new View($this->_file, $data);
 	}
 
 	public static function factory($file = NULL, array $data = NULL)
