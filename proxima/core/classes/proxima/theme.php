@@ -31,7 +31,7 @@ abstract class Proxima_Theme {
 
 		return $path;
 	}
-	
+
 	/**
 	 * Returns a theme view.
 	 *
@@ -54,7 +54,7 @@ abstract class Proxima_Theme {
 	{
 		return self::path('media/css/'.$file, TRUE);
 	}
-	
+
 	/**
 	 * Returns the root application script path for a script file.
 	 *
@@ -81,15 +81,23 @@ abstract class Proxima_Theme {
 
 		if (strpos($group, '.') !== FALSE)
 		{
+
 			list($group, $path) = explode('.', $group, 2);
 		}
 
 		if (!isset(self::$config[$group]))
 		{
-			self::$config[$group] = require Kohana::find_file('views/themes/badsyntax/config', $group);
+			self::$config[$group] = require Kohana::find_file('themes', 'badsyntax/config/' . $group);
 		}
-	
-		return self::$config[$group][$path];
+
+		if (isset($path))
+		{
+			return self::$config[$group][$path];
+		}
+		else
+		{
+			return self::$config[$group];
+		}
 	}
 
 }

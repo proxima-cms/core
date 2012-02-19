@@ -8,12 +8,9 @@ class Proxima_View_Model_Master extends View_Model {
 
 		$request = Request::current();
 
-		// Set the default admin page data
+		// Set the default page data
 		$this
 			->set('environment', Kohana::$environment == Kohana::DEVELOPMENT ? 'development' : 'production')
-			->styles(array())
-			->scripts(array())
-			->paths(array())
 			->param(
 				$request->param()
 			);

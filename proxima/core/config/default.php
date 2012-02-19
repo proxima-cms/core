@@ -12,6 +12,7 @@ return array(
 		'compress',
 		'cache',
 		'auth',
+		'theme-badsyntax',
 		'orm',
 		'pagination',
 		'email',

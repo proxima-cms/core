@@ -8,6 +8,10 @@ class Proxima_View_Model {
 
 	protected $_assets;
 
+	protected $_assets_config;
+
+	protected $_assets_group = 'page';
+
 	public function __construct($file = NULL, array $data = NULL, Assets $assets = NULL)
 	{
 		if ($file === NULL)
@@ -27,7 +31,21 @@ class Proxima_View_Model {
 			}
 		}
 
-		$this->_assets = $assets;
+		// If an assets instance exists
+		if ($assets instanceof Assets)
+		{
+			$this->_assets = $assets;
+		}
+		// Else if the assets config path has been set then create a new assets instance.
+		elseif ($this->_assets_config !== NULL)
+		{
+			$this->_assets = new Assets(Kohana::$config->load($this->_assets_config));
+
+			if ($this->_assets_group !== NULL)
+			{
+				$this->_assets->group($this->_assets_group);
+			}
+		}
 
 		$this->_file = str_replace('view/model/', '', $file);
 

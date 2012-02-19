@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Component_Driver_Contact_Form extends Component_Component {
+class Proxima_Component_Driver_Contact_Form extends Component_Component {
 
 	public $_default_config = array(
 		'recipient' => 'null@example.com',
@@ -9,7 +9,7 @@ class Component_Driver_Contact_Form extends Component_Component {
 
 	public function render()
 	{
-		$view = View::factory(Theme::path('components/contact/form/form'))
+		$view = View::factory('components/contact/form/form')
 			->bind('errors', $errors);
 
 		$data = Validation::factory(Request::current()->post())
@@ -30,7 +30,7 @@ class Component_Driver_Contact_Form extends Component_Component {
 
 			$transport = Swift_MailTransport::newInstance();
 			$mailer = Swift_Mailer::newInstance($transport);
-			
+
 			// Create an email message
 			$message = Swift_Message::newInstance()
 				->setSubject(__($this->_config['subject'], array(':name' => $data['name'])))
@@ -42,7 +42,7 @@ class Component_Driver_Contact_Form extends Component_Component {
 			Swift_Mailer::newInstance($transport)->send($message);
 
 			Message::set(Message::SUCCESS, __('Message successfully sent.'));
-			
+
 			Request::current()->redirect(Request::current()->uri());
 		}
 
@@ -50,7 +50,7 @@ class Component_Driver_Contact_Form extends Component_Component {
 		{
 			Message::set(Message::ERROR, __('Please correct the errors.'));
 		}
-		
+
 		return $view->render();
 	}
 }

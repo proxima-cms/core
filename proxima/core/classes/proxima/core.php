@@ -82,9 +82,9 @@ class Proxima_Core {
 	 * @param		bool		$root		Add the root application path?
 	 * @return	mixed   $paths
 	 */
-	public static function media($file = NULL)
+	public static function media($file = NULL, $root = 'proxima')
 	{
-		$root = 'proxima/';
+		$root .= '/';
 
 		// If we have an array of media files
 		if (is_array($file))

@@ -2,7 +2,8 @@
 
 class Proxima_Controller_Page extends Controller_Base {
 
-	public $view_model = 'themes/badsyntax/page/master';
+	// Master template view model
+	public $view_model = 'page/master';
 
 	public function before()
 	{
@@ -11,7 +12,7 @@ class Proxima_Controller_Page extends Controller_Base {
 		$page = Page::factory($this->request->param('uri'));
 
 		// Get the page template from the page type.
-		$template = Theme::path('templates/' . str_replace(EXT, '', $page->pagetype_template));
+		$template = 'templates/' . str_replace(EXT, '', $page->pagetype_template);
 
 		// Generate the page title.
 		$page->title = Kohana::$config->load('site.title') . ' - ' . $page->title;

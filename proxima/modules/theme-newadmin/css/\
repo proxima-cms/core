@@ -1,0 +1,22 @@
+body {
+	padding-top: 60px;
+}
+
+.page-tree {
+	width: 400px;
+	height: 400px;
+	overflow: auto;
+	padding: 10px;
+}
+.page-tree ul {
+	margin-left: 8px;
+	margin-bottom: 0;
+}
+.page-tree li {
+	list-style: none;
+}
+.page-tree li a {
+	background: url(../img/icon_file.gif) no-repeat left top;
+	padding-left: 20px;
+	display: block;
+}

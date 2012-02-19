@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Component_Driver_SocialMedia_Twitter extends Component_Component {
+class Proxima_Component_Driver_SocialMedia_Twitter extends Component_Component {
 
 	public $_default_config = array(
 		'username' => NULL,
 		'max_amount' => 5,
-	);	
+	);
 
 	public function render()
 	{
@@ -26,7 +26,7 @@ class Component_Driver_SocialMedia_Twitter extends Component_Component {
 			Cache::instance()->set($cache_key, $tweets, 24 * 60 * 60);
 		}
 
-		return View::factory(Theme::path('components/socialmedia/twitter'))
+		return View::factory('components/socialmedia/twitter')
 			->set('tweets', json_decode($tweets))
 			->set('username', $this->_config['username'])
 			->set('max_amount', $this->_config['max_amount'])

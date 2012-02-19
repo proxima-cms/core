@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Component_Driver_Page_Body extends Component_Component {
+class Proxima_Component_Driver_Page_Body extends Component_Component {
 
 	public function render()
 	{
-		return View::factory(Theme::path('components/pages/body/body'))
+		return View::factory('components/pages/body/body')
 			->set($this->_config)
 			->render();
 	}

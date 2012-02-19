@@ -6,7 +6,7 @@ class Proxima_View_Model_Admin_Page_Pages_Types_Add extends View_Model_Admin {
 	{
 		$templates = array();
 
-		foreach(Kohana::list_files('views/'.Theme::path('templates')) as $key => $template)
+		foreach(Kohana::list_files('views/templates') as $key => $template)
 		{
 			$templates[basename($key)] = basename($key);
 		}
