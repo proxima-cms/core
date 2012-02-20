@@ -46,7 +46,7 @@
 				<div class="nav">
 				<nav>
 					<?php echo Component::factory('Page_Nav', array(
-						'parent_id' => 233
+						'parent_id' => 1
 						)); ?>
 				</nav>
 			</div>
@@ -80,7 +80,8 @@
 
 	<div class="widget twitter_feed">
 		<h3>Latest Tweets</h3>
-		<?php echo Component::factory('SocialMedia_Twitter', array('username' => 'badsyntax'))?>
+		<?php // echo Component::factory('SocialMedia_Twitter', array('username' => 'badsyntax'), Component::VIEW)
+		?>
 	</div>
 
 </div>

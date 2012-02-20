@@ -1,17 +1,13 @@
-<?php defined('SYSPATH') or die('No direct access allowed.');
+<?php defined('SYSPATH') or die('No direct script access.');
 
-class Proxima_Component_Driver_Contact_Form extends Component_Component {
+class Proxima_Controller_Component_Contact extends Controller_Component {
 
-	public $_default_config = array(
-		'recipient' => 'null@example.com',
-		'subject' => 'Default subject'
-	);
-
-	public function render()
+	public function action_form()
 	{
-		$data = Request::initial()->post();
-
-		die(print_r($data));
+		$data = array_merge(array(
+			'subject'   => 'Default subject',
+			'recipient' => 'test@example.com'
+		), Request::initial()->post());
 
 		$view = View::factory('components/contact/form/form')
 			->bind('errors', $errors);
@@ -21,9 +17,9 @@ class Proxima_Component_Driver_Contact_Form extends Component_Component {
 			->rule('email', 'not_empty')
 			->rule('email', 'email');
 
-		if (Request::current()->method() === 'POST' && $data->check())
+		if (Request::initial()->method() === 'POST' && $data->check())
 		{
-	 		// Get the email content
+			// Get the email content
 			$email_body    = $data['message'];
 			$email_subject = __($this->_config['subject'], array(':name' => $data['name']));
 

@@ -30,8 +30,8 @@ class Proxima_View_Model_Admin_Page_Pages_Edit extends View_Model_Admin {
 	{
 		$page_tags = array();
 
-		foreach($this->view->page->tags->find_all() as $tag)
-		{   
+		foreach($this->page->tags->find_all() as $tag)
+		{
 			$page_tags[] = $tag->id;
 		}
 
@@ -43,9 +43,9 @@ class Proxima_View_Model_Admin_Page_Pages_Edit extends View_Model_Admin {
 		$page_types = array('' => 'None');
 
 		foreach(ORM::factory('page_type')->find_all() as $page_type)
-		{   
+		{
 			$page_types[$page_type->id] = $page_type->name;
-		} 
+		}
 
 		return $page_types;
 	}
@@ -55,12 +55,12 @@ class Proxima_View_Model_Admin_Page_Pages_Edit extends View_Model_Admin {
 		return array(
 			'' => __('Live'),
 			'1' => __('Draft')
-		);  
+		);
 	}
 
 	public function var_page_published()
 	{
-		return ORM::factory('site_page', $this->view->page->id)->loaded();
+		return ORM::factory('site_page', $this->page->id)->loaded();
 	}
 
 }

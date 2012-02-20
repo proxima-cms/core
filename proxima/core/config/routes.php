@@ -137,7 +137,6 @@ Route::set('install', 'install(/<action>)')
 /*
  * Admin routes
  */
-// Admin controllers
 Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 ->defaults(array(
 	'action'     => 'index',
@@ -145,6 +144,14 @@ Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 	'controller' => 'home'
 ));
 
+/*
+ * Component routes
+ */
+Route::set('component', 'component(/<controller>(/<action>(/<id>)))')
+->defaults(array(
+	'action'     => 'index',
+	'directory'  => 'component',
+));
 
 
 // Find all pages that require routing to specific controllers

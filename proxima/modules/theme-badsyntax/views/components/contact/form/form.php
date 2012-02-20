@@ -3,13 +3,13 @@
 	<fieldset>
 
 		<div class="field">
-			<?php echo 
+			<?php echo
 				Form::label('name', 'Name', NULL, $errors) .
 				Form::input('name', Request::current()->post('name'), NULL, $errors)?>
 		</div>
 
 		<div class="field">
-			<?php echo 
+			<?php echo
 				Form::label('email', 'Email', NULL, $errors) .
 				Form::input('email', Request::current()->post('email'), array('type' => 'email'), $errors)
 			?>
