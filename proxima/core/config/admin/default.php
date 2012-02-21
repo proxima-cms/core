@@ -15,6 +15,7 @@ return array(
 			'admin/cache'        => __('Cache'),
 			'admin/redirects'    => __('Redirects'),
 			'admin/modules'      => __('Modules'),
+			'admin/components'   => __('Components'),
 			//'admin/activity'   => __('Activity'),
 			//'admin/wysiwyg'    => __('Wysiwyg'),
 			//'admin/migrations' => __('Migrations'),

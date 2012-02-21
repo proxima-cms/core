@@ -2,9 +2,9 @@
 
 return array(
 	'styles' => Core::media(array(
-		'js/libs/jquery-ui/css/smoothness/jquery-ui-1.8.16.custom.css',
-		'css/admin/jquery.ui.theme.admin.css',
-		'css/admin/admin.css',
+		//'js/libs/jquery-ui/css/smoothness/jquery-ui-1.8.16.custom.css',
+		//'css/admin/jquery.ui.theme.admin.css',
+		'css/admin/admin.global.css',
 	)),
 	'scripts' => Core::media(array(
 		'js/libs/jquery/jquery-min.js',

@@ -2,35 +2,35 @@
 
 class Proxima_Page {
 
-	protected $data;
+	protected $_data;
+
+	protected $_components;
 
 	public function __construct($uri = NULL)
 	{
-		$uri = (string) $uri;
+		$this->_data = $this->get_page($uri);
+	}
 
-		$cache_key = 'page-'.$uri;
+	private function get_page($uri = NULL)
+	{
+		$data = ORM::factory('site_page')->where('uri', '=', $uri)->find();
 
-		if (!$this->data = Cache::instance()->get($cache_key))
+		if (!$data->loaded())
 		{
-			$this->data = ORM::factory('site_page')->where('uri', '=', $uri)->find();
+			// Check for a page redirect.
+			$redirect = ORM::factory('redirect')->where('uri', '=', $uri)->find();
 
-			if (!$this->data->loaded())
+			if (!$redirect->loaded())
 			{
-				// Check for a page redirect.
-				$redirect = ORM::factory('redirect')->where('uri', '=', $uri)->find();
-
-				if (!$redirect->loaded())
-				{
-					throw new HTTP_Exception_404('Page not found.');
-				}
-
-				$target = ORM::factory($redirect->target, $redirect->target_id);
-
-				$this->request->redirect($target->uri, 301);
+				throw new HTTP_Exception_404('Page not found.');
 			}
 
-			Cache::instance()->set($cache_key, (object) $this->data->as_array());
+			$target = ORM::factory($redirect->target, $redirect->target_id);
+
+			$this->request->redirect($target->uri, 301);
 		}
+
+		return $data;
 	}
 
 	public static function factory($uri = NULL)
@@ -38,9 +38,24 @@ class Proxima_Page {
 		return new Page($uri);
 	}
 
-	public function __get($property)
+	public function component($name)
 	{
-		return $this->data->$property;
+		die('component: '.$name);
+	}
+
+	public function __isset($key)
+	{
+		return isset($this->_data->{$key});
+	}
+
+	public function __unset($key)
+	{
+		unset($this->_data->{$key});
+	}
+
+	public function __get($key)
+	{
+		return $this->_data->{$key};
 	}
 
 }

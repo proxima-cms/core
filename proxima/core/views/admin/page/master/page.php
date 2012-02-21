@@ -43,6 +43,8 @@
 
 	<?php echo View::factory('admin/page/fragments/footer') ?>
 
+	{profiler}
+
 	<script type="text/javascript">
 		(function($){
 

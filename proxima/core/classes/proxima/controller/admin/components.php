@@ -4,7 +4,7 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$request_data = array('request' => $this->request->query());  
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Components'))
@@ -15,7 +15,7 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 
 	public function action_add()
 	{
-		$request_data = array('request' => $this->request->post());  
+		$request_data = array('request' => $this->request->post());
 
 		$this->template
 			->title(__('Add component'))
@@ -34,9 +34,9 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 				$component->admin_add($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Component successfully saved.'));
-				
+
 				Request::current()->redirect('admin/components/edit/'.$component->id);
-			} 
+			}
 			catch(ORM_Validation_Exception $e)
 			{
 				$errors = $e->errors('admin/components');
@@ -45,10 +45,10 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 			}
 		}
 	}
-	
+
 	public function action_edit()
 	{
-		$request_data = array('request' => $this->request->post());  
+		$request_data = array('request' => $this->request->post());
 
 		$this->template
 			->title(__('Edit page'))
@@ -74,7 +74,7 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 				$component->admin_update($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Component successfully updated.'));
-			
+
 				Request::current()->redirect('admin/components/edit/'.$id);
 			}
 			catch(ORM_Validation_Exception $e)
@@ -89,7 +89,7 @@ class Proxima_Controller_Admin_Components extends Controller_Admin_Base {
 	public function action_delete()
 	{
 		$id = $this->request->param('id');
-	
+
 		$component = ORM::factory('component', $id);
 
 		if (!$component->loaded())

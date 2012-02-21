@@ -140,16 +140,19 @@
 				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`),
-				FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+				FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+				UNIQUE KEY `uniq_name` (`name`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
 		);
 
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `components` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`type_id` int(11) unsigned NOT NULL DEFAULT '0',
-				`page_id` int(11) unsigned NOT NULL DEFAULT '0',
+				`type_id` int(11) unsigned NOT NULL,
+				`page_id` int(11) unsigned NULL,
+				`page_type_id` int(11) unsigned NULL,
 				`user_id` int(11) unsigned NOT NULL,
+				`name` varchar(255) NOT NULL,
 				`data` text NOT NULL,
 				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -1040,14 +1043,24 @@
 
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `page_type_component_types` (
+				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`component_type_id` int(11) unsigned NOT NULL DEFAULT '0',
 				`page_type_id` int(11) unsigned NOT NULL DEFAULT '0',
 				`name` varchar(255) NOT NULL,
-				KEY `component_type_id` (`component_type_id`,`page_type_id`),
+				`date_updated` timestamp NULL DEFAULT NULL,
+				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				PRIMARY KEY (`id`),
 				FOREIGN KEY (`component_type_id`) REFERENCES `component_types` (`id`) ON DELETE CASCADE,
 				FOREIGN KEY (`page_type_id`) REFERENCES `page_types` (`id`) ON DELETE CASCADE
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
 		);
+
+		try
+		{
+			$db->query(NULL, "CREATE TRIGGER page_type_component_types_date_updated_update BEFORE UPDATE ON page_type_component_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+			$db->query(NULL, "CREATE TRIGGER page_types_component_types_date_updated_insert BEFORE INSERT ON page_type_component_types FOR EACH ROW SET NEW.date_updated = CURRENT_TIMESTAMP");
+		}
+		catch(DataBase_Exception $e){}
 
 		// Home page
 		$db->query(NULL, "

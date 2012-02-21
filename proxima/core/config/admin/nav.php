@@ -1,7 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Sunday 19th of February 2012 07:00:07 PM
+ * Auto generated on: Tuesday 21st of February 2012 08:39:30 PM
+ * Notes: Change the default admin navigation links in config/admin/default.php
  */
 
 return array(
@@ -18,7 +19,7 @@ return array(
 		'admin/cache' => 'Cache',
 		'admin/redirects' => 'Redirects',
 		'admin/modules' => 'Modules',
+		'admin/components' => 'Components',
 		'admin/blogimport' => 'Blog import',
-		'admin/theme-badsyntax' => 'Theme - BadSyntax',
 	)
 );

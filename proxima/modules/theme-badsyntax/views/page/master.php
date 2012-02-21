@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title><?php echo $page->title ?><?php if(Kohana::$environment === Kohana::DEVELOPMENT){ echo ' - DEVELOPMENT'; }?></title>
-	<meta name="description" content="" />
+	<meta name="description" content="<?php echo $page->description; ?>" />
 	<meta name="keywords" content="" />
 	<!--
 	<link rel="canonical" href="http://dev.blog.badsyntax.co/" />
@@ -45,9 +45,7 @@
 
 				<div class="nav">
 				<nav>
-					<?php echo Component::factory('Page_Nav', array(
-						'parent_id' => 1
-						)); ?>
+					<?php echo $page->component('page/nav')->render(); ?>
 				</nav>
 			</div>
 
@@ -55,6 +53,8 @@
 
 			<div class="nav">
 				<div id="tags">
+					<?php echo Component::factory($page, 'Tag_List', Component::REQUEST, array()); ?>
+					<!--
 					<ul>
 						<li><?php echo HTML::anchor('tag/bash', 'Bash'); ?></li>
 						<li><?php echo HTML::anchor('tag/dubstep', 'Dubstep'); ?></li>
@@ -65,6 +65,7 @@
 						<li><?php echo HTML::anchor('tag/php', 'PHP'); ?></li>
 						<li><?php echo HTML::anchor('tag/vim', 'Vim'); ?></li>
 					</ul>
+					-->
 					<?php /* echo Component::factory('Tag_List');*/?>
 				</div>
 			</div>

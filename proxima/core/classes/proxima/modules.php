@@ -3,14 +3,16 @@
 class Proxima_Modules {
 
 	// Save a config file string to file.
-	private static function save_config($data = array())
+	private static function save_config($data = array(), $notes = array())
 	{
 		list($file_path, $config) = $data;
 
 		$config = "<?php defined('SYSPATH') or die('No direct script access.');\n\n"
-			. "/*\n * Auto generated on: " . date('l jS \of F Y h:i:s A') . "\n */\n\n"
+			. "/*\n * Auto generated on: " . date('l jS \of F Y h:i:s A') . "\n"
+			. " * Notes: ".implode("\n\n", $notes)."\n */\n\n"
 			. "return array(\n"
 			. $config;
+
 
 		try
 		{
@@ -109,7 +111,7 @@ class Proxima_Modules {
 			$admin_url      = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
 			$admin_name     = $module->nav_name ?: Arr::get($mod_config, 'name');
 
-			if (!$admin_name)
+			if (!Arr::get($mod_config, 'admin_nav'))
 			{
 				continue;
 			}
@@ -138,7 +140,9 @@ class Proxima_Modules {
 		$nav_config    = self::get_nav_config();
 
 		self::save_config($module_config);
-		self::save_config($nav_config);
+		self::save_config($nav_config, array(
+			__('Change the default admin navigation links in :file', array(':file' => 'config/admin/default.php'))
+		));
 	}
 
 	// Save all module file data to the database.

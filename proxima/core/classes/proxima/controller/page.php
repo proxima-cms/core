@@ -9,6 +9,7 @@ class Proxima_Controller_Page extends Controller_Base {
 	{
 		parent::before();
 
+		// Create a new page instance
 		$page = Page::factory($this->request->param('uri'));
 
 		// Get the page template from the page type.

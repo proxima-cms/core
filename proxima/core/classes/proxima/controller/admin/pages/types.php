@@ -59,26 +59,28 @@ class Proxima_Controller_Admin_Pages_Types extends Controller_Admin_Base {
 			->content(
 				View_model::factory('admin/page/pages/types/edit')
 					->set('page_type', $page_type)
-					->bind('component_type', $component_type)
+					->bind('component', $component)
 					->bind('errors', $errors)
 			);
 
-		$component_type = ORM::factory('page_type_component_type');
+		$component = ORM::factory('component');
 
 		if ($this->request->method() === Request::POST)
 		{
 			// Try save a new component to this page type
 			if (Arr::get($this->request->post(), 'save-component') !== NULL)
 			{
-				$component_type->values(array(
-					'component_type_id' => $this->request->post('component_type'),
-					'page_type_id' => $page_type->id,
+				$component->values(array(
+					'user_id' => Auth::instance()->get_user()->id,
+					'type_id' => (int) $this->request->post('component_type'),
+					'page_type_id' => (int) $page_type->id,
+					'data' => json_encode(array()),
 					'name' => $this->request->post('component_name')
 				));
 
 				try
 				{
-					$component_type->save();
+					$component->save();
 
 					Message::set(Message::SUCCESS, __('Component successfully saved.'));
 
@@ -93,6 +95,8 @@ class Proxima_Controller_Admin_Pages_Types extends Controller_Admin_Base {
 						$errors['component_'.$key] = $error;
 						unset($errors[$key]);
 					}
+
+					die(print_r($errors));
 
 					Message::set(Message::ERROR, __('Please correct the errors.'));
 				}

@@ -17,7 +17,7 @@ class Proxima_Controller_Install extends Controller_Base {
 		// If it's an AJAX request, then set the response content type as JSON
 		if (Request::current()->is_ajax())
 		{
-			$this->request->response()->headers('Content-Type', 'application/json');
+			Request::current()->response()->headers('Content-Type', 'application/json');
 		}
 
 		parent::before();

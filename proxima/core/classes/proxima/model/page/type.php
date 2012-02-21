@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Proxima_Model_Page_Type extends Model_Base { 
+class Proxima_Model_Page_Type extends Model_Base {
 
 	protected $_has_many = array(
-		'component_type'      => array('model' => 'component_type', 'through' => 'page_type_component_types'),
+		'component'      => array('model' => 'component', 'foreign_key' => 'page_type_id'),
 	);
-	
+
 	public function rules()
 	{
 		return array(
@@ -13,24 +13,24 @@ class Proxima_Model_Page_Type extends Model_Base {
 				array('not_empty'),
 				array('min_length', array(':value', 4)),
 				array('max_length', array(':value', 32)),
-			),	
+			),
 			'description' => array(
 				array('not_empty'),
 				array('min_length', array(':value', 4)),
 				array('max_length', array(':value', 255)),
-			),	
+			),
 			'template' => array(
 				array('not_empty'),
 				array('min_length', array(':value', 4)),
 				array('max_length', array(':value', 32)),
-			)	
+			)
 		);
 	}
 
 	public function filters()
 	{
 		return array(
-			// As the 'controller' field may be NULL in the DB, 
+			// As the 'controller' field may be NULL in the DB,
 			// we need to ensure a PHP NULL value if empty string,
 			'controller' => array(
 				array(function($value){
@@ -58,5 +58,5 @@ class Proxima_Model_Page_Type extends Model_Base {
 	{
 		return parent::delete();
 	}
-	
+
 } // End Model_Page_Type

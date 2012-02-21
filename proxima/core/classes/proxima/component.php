@@ -7,21 +7,23 @@ class Proxima_Component {
 	const VIEW_MODEL = 'view_model';
 	const REQUEST = 'request';
 
+	// Component properties
+	protected $_name;
+	protected $_page;
 	protected $_type;
-
 	protected $_request;
-
 	protected $_view;
-
 	protected $_view_model;
 
-	public static function factory($name = NULL, $data = array(), $type = NULL)
+	public static function factory(Page $page, $name, $type, $data = array())
 	{
-		return new Component($name, $data, $type);
+		return new Component($page, $name, $type, $data);
 	}
 
-	public function __construct($name = NULL, $data = array(), $type = NULL)
+	public function __construct(Page $page, $name, $type, Array $data = array())
 	{
+		$this->_name = $name;
+		$this->_page = $page;
 		$this->_type = $type ?: Component::REQUEST;
 
 		list($controller, $action) = array_map('strtolower', explode('_', $name, 2));
@@ -44,8 +46,20 @@ class Proxima_Component {
 		}
 		elseif ($this->_type === Component::VIEW_MODEL)
 		{
-			$this->_view_model = '';
+			$view = 'components/'.$controller.'/'.$action.'/'.$action;
+
+			$this->_view_model = View_Model::factory($view, $data);
 		}
+	}
+
+	public function name()
+	{
+		return $this->_name;
+	}
+
+	public function page()
+	{
+		return $this->_page;
 	}
 
 	public function request()
@@ -70,28 +84,37 @@ class Proxima_Component {
 
 	public function render()
 	{
-		try
+		$cache_key = 'Component_'.$this->_name;
+
+		if (!$html = Cache::instance()->get($cache_key))
 		{
-			if ($this->_type === Component::REQUEST)
+			try
 			{
-				return $this->_request->execute()->body();
+				if ($this->_type === Component::REQUEST)
+				{
+					$html = $this->_request->execute()->body();
+				}
+				elseif ($this->_type === Component::VIEW)
+				{
+					$html = $this->_view->render();
+				}
+				elseif ($this->_type === Component::VIEW_MODEL)
+				{
+					$html = $this->_view_model->render();
+				}
+				else
+				{
+					$html = __('Invalid component type');
+				}
+
+				Cache::instance()->set($cache_key, $html);
 			}
-			elseif ($this->_type === Component::VIEW)
+			catch(Exception $e)
 			{
-				return $this->_view->render();
-			}
-			elseif ($this->_type === Component::VIEW_MODEL)
-			{
-				return $this->_view_model->render();
-			}
-			else
-			{
-				return 'Invalid component type';
+				return Kohana_Exception::handler($e);
 			}
 		}
-		catch(Exception $e)
-		{
-			return Kohana_Exception::handler($e);
-		}
+
+		return $html;
 	}
 }

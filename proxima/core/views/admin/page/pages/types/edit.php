@@ -83,14 +83,14 @@
 			<legend>Add a new component</legend>
 				<div class="field">
 					<?php echo
-						Form::label('component_name', __('Name'), NULL, $errors),
-						Form::input('component_name', $component_type->name, NULL, $errors)
+						Form::label('component_type', __('Component'), NULL, $errors),
+						Form::select('component_type', $component_types, $component->type_id, NULL, $errors)
 					?>
 				</div>
 				<div class="field">
 					<?php echo
-						Form::label('component_type', __('Component'), NULL, $errors),
-						Form::select('component_type', $component_types, $component_type->component_type_id, NULL, $errors)
+						Form::label('component_name', __('Name'), NULL, $errors),
+						Form::input('component_name', $component->name, NULL, $errors)
 					?>
 				</div>
 				<?php echo Form::button('save-component', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
