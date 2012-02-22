@@ -43,7 +43,7 @@ abstract class Proxima_Controller_Base extends Controller {
 
 	public function after()
 	{
-		// If it's an AJAX or HMVC request then only render the INNER template
+		// If it's an AJAX or HMVC internal request then only render the INNER template
 		if ($this->request->is_ajax() OR Request::initial() !== $this->request OR $this->auto_render === FALSE)
 		{
 			$this->request->response()->body($this->template->content);

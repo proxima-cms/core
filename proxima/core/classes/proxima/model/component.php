@@ -4,6 +4,7 @@ class Proxima_Model_Component extends Model_Base {
 
 	protected $_belongs_to = array(
 		'user' => array('model' => 'user', 'foreign_key' => 'user_id'),
+		'type' => array('model' => 'component_type', 'foreign_key' => 'type_id'),
 	);
 
 	public function rules()
@@ -14,6 +15,11 @@ class Proxima_Model_Component extends Model_Base {
 				array('min_length', array(':value', 2)),
 			),
 		);
+	}
+
+	public function data()
+	{
+		return json_decode($this->data);
 	}
 
 	public function admin_add($data)

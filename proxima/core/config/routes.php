@@ -151,6 +151,7 @@ Route::set('component', 'component(/<controller>(/<action>(/<id>)))')
 ->defaults(array(
 	'action'     => 'index',
 	'directory'  => 'component',
+	'uri'        => '' // This sets the page model to be the home page
 ));
 
 

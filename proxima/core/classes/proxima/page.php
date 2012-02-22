@@ -6,6 +6,11 @@ class Proxima_Page {
 
 	protected $_components;
 
+	public static function factory($uri = NULL)
+	{
+		return new Page($uri);
+	}
+
 	public function __construct($uri = NULL)
 	{
 		$this->_data = $this->get_page($uri);
@@ -33,14 +38,42 @@ class Proxima_Page {
 		return $data;
 	}
 
-	public static function factory($uri = NULL)
+	private function get_components()
 	{
-		return new Page($uri);
+		if ($this->_components === NULL)
+		{
+			$components = array();
+
+			// First we get the default page type components
+			foreach($this->page_type->component->find_all() as $component)
+			{
+				$components[$component->name] = $component;
+			}
+
+			// Now we get the page specifc components, overwriting the page type components
+			foreach($this->component->find_all() as $component)
+			{
+				$components[$component->name] = $component;
+			}
+
+			// Note:: we could probably combine the last two queries into one
+
+			$this->_components = $components;
+		}
+
+		return $this->_components;
 	}
 
-	public function component($name)
+	public function component($name, $data = array(), $type = Component::REQUEST)
 	{
-		die('component: '.$name);
+		$components = $this->get_components();
+
+		if (isset($components[$name]))
+		{
+			$data = $components[$name]->data();
+		}
+
+		return Component::factory($this, $name, $type, $data);
 	}
 
 	public function __isset($key)

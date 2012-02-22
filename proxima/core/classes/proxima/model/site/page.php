@@ -11,6 +11,7 @@ class Proxima_Model_Site_Page extends Model_Base {
 
 	protected $_has_many = array(
 		'children'    => array('model' => 'site_page', 'foreign_key' => 'parent_id'),
+		'component'   => array('model' => 'component', 'foreign_key' => 'page_id'),
 	);
 
 	protected $_table_columns = array(

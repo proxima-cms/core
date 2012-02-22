@@ -54,7 +54,12 @@ class Proxima_Model_Page extends Model_Base {
 				array('max_length', array(':value', 128)),
 			),
 			'uri' => array(
-				array('not_empty'),
+				array(function($validation, $field, $value, $model){
+					if ((int) $model->id !== 1 AND empty($value))
+					{
+						$validation->error($field, 'not_empty');
+					}
+				}, array(':validation', ':field', ':value', $this)),
 				array('min_length', array(':value', 3)),
 				array('max_length', array(':value', 128)),
 			),

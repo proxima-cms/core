@@ -15,18 +15,25 @@ class Proxima_Component {
 	protected $_view;
 	protected $_view_model;
 
-	public static function factory(Page $page, $name, $type, $data = array())
+	public static function factory(Page $page, $name = NULL, $type = NULL, $data = array())
 	{
 		return new Component($page, $name, $type, $data);
 	}
 
-	public function __construct(Page $page, $name, $type, Array $data = array())
+	public function __construct(Page $page, $name = NULL, $type = NULL, $data = array())
 	{
 		$this->_name = $name;
 		$this->_page = $page;
 		$this->_type = $type ?: Component::REQUEST;
 
-		list($controller, $action) = array_map('strtolower', explode('_', $name, 2));
+		try
+		{
+			list($controller, $action) = array_map('strtolower', explode('/', $name, 2));
+		}
+		catch(ErrorException $e)
+		{
+			return;
+		}
 
 		if ($this->_type === Component::REQUEST)
 		{
@@ -42,13 +49,13 @@ class Proxima_Component {
 		{
 			$view = 'components/'.$controller.'/'.$action.'/'.$action;
 
-			$this->_view = View::factory($view, $data);
+			$this->_view = View::factory($view, $data)->set('page', $this->_page);
 		}
 		elseif ($this->_type === Component::VIEW_MODEL)
 		{
 			$view = 'components/'.$controller.'/'.$action.'/'.$action;
 
-			$this->_view_model = View_Model::factory($view, $data);
+			$this->_view_model = View_Model::factory($view, $data)->set('page', $this->page);
 		}
 	}
 
@@ -90,28 +97,28 @@ class Proxima_Component {
 		{
 			try
 			{
-				if ($this->_type === Component::REQUEST)
+				if ($this->_type === Component::REQUEST AND $this->_request !== NULL)
 				{
 					$html = $this->_request->execute()->body();
 				}
-				elseif ($this->_type === Component::VIEW)
+				elseif ($this->_type === Component::VIEW AND $this->_view !== NULL)
 				{
 					$html = $this->_view->render();
 				}
-				elseif ($this->_type === Component::VIEW_MODEL)
+				elseif ($this->_type === Component::VIEW_MODEL AND $this->_view_model !== NULL)
 				{
 					$html = $this->_view_model->render();
 				}
 				else
 				{
-					$html = __('Invalid component type');
+					return __('Component not rendered: :component', array(':component' => $this->_name));
 				}
 
 				Cache::instance()->set($cache_key, $html);
 			}
 			catch(Exception $e)
 			{
-				return Kohana_Exception::handler($e);
+				return __('Component not rendered: :component', array(':component' => $this->_name));
 			}
 		}
 

@@ -89,7 +89,7 @@
 				</div>
 				<div class="field">
 					<?php echo
-						Form::label('component_name', __('Name'), NULL, $errors),
+						Form::label('component_name', __('Identifier (eg. page/nav)'), NULL, $errors),
 						Form::input('component_name', $component->name, NULL, $errors)
 					?>
 				</div>

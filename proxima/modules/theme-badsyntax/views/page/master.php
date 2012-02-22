@@ -53,7 +53,7 @@
 
 			<div class="nav">
 				<div id="tags">
-					<?php echo Component::factory($page, 'Tag_List', Component::REQUEST, array()); ?>
+					<?php echo $page->component('tag/list')->render(); ?>
 					<!--
 					<ul>
 						<li><?php echo HTML::anchor('tag/bash', 'Bash'); ?></li>
@@ -66,7 +66,6 @@
 						<li><?php echo HTML::anchor('tag/vim', 'Vim'); ?></li>
 					</ul>
 					-->
-					<?php /* echo Component::factory('Tag_List');*/?>
 				</div>
 			</div>
 
@@ -109,6 +108,7 @@
 		</div>
 
 		<footer>
+		{profiler}
 		</footer>
 	</div>
 
