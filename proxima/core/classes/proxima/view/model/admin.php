@@ -4,9 +4,9 @@ class Proxima_View_Model_Admin extends View_Model {
 
 	protected $breadcrumbs = array();
 
-	public function __construct($file = NULL, array $data = NULL)
+	public function __construct($file = NULL, array $data = NULL, Assets $assets = NULL)
 	{
-		parent::__construct($file, $data);
+		parent::__construct($file, $data, $assets);
 
 		$controller = Request::current()->controller();
 

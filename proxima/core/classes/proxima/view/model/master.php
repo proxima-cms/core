@@ -6,94 +6,7 @@ class Proxima_View_Model_Master extends View_Model {
 	{
 		parent::__construct($file, $data, $assets);
 
-		$request = Request::current();
-
-		// Set the default page data
-		$this
-			->set('environment', Kohana::$environment == Kohana::DEVELOPMENT ? 'development' : 'production')
-			->param(
-				$request->param()
-			);
-	}
-
-	/**
-	 * Sets a page data group
-	 *
-	 */
-	private function data($key, $items)
-	{
-		if (!$this->_view->__isset($key))
-		{
-			$data = array();
-		}
-		else
-		{
-			$data = $this->$key;
-		}
-
-		foreach($items as $item)
-		{
-			if (!is_array($item))
-			{
-				array_push($data, $item);
-			}
-			else
-			{
-				$data = array_merge($data, $item);
-			}
-		}
-
-		$this->$key = $data;
-
-		return $this;
-	}
-
-	/**
-	 * Sets the page styles
-	 *
-	 * @return  Page_View
-	 */
-	public function styles($styles = array())
-	{
-		$this->data('styles', $styles);
-
-		return $this;
-	}
-
-	/**
-	 * Sets the page scripts
-	 *
-	 * @return  Page_View
-	 */
-	public function scripts($scripts = array())
-	{
-		$this->data('scripts', $scripts);
-
-		return $this;
-	}
-
-	/**
-	 * Sets the page paths
-	 *
-	 * @return  Page_View
-	 */
-	public function paths($paths = array())
-	{
-		$this->data('paths', $paths);
-
-		return $this;
-	}
-
-	/**
-	 * Sets the page parameters
-	 *
-	 * @return  Page_View
-	 */
-	public function param($param = array())
-	{
-		$this->data('param', $param);
-
-		return $this;
+		$this->set('environment', Kohana::$environment == Kohana::DEVELOPMENT ? 'development' : 'production');
 	}
 
 	/**
@@ -119,6 +32,26 @@ class Proxima_View_Model_Master extends View_Model {
 	}
 
 	/**
+	 * Set the master page title
+	 */
+	public function title($title)
+	{
+		$this->set('title', $title);
+
+		return $this;
+	}
+
+	/**
+	 * Set the master page inner template (can be an instance of View or View_Model)
+	 */
+	public function content($view)
+	{
+		$this->set('content', $view);
+
+		return $this;
+	}
+
+	/**
 	 * Adds profiler data to the view string
 	 *
 	 * @return  string
@@ -126,20 +59,5 @@ class Proxima_View_Model_Master extends View_Model {
 	public function __toString()
 	{
 		return $this->profiler(parent::__toString());
-	}
-
-	/**
-	 * Allow methods to be used for setting view variables
-	 *
-	 * @return  View_Admin_Page_Master_Page
-	 */
-	public function __call($name, $arguments)
-	{
-		if ( !method_exists($this, $name))
-		{
-			$this->set($name, current($arguments));
-
-			return $this;
-		}
 	}
 }

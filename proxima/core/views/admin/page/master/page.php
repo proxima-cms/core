@@ -4,8 +4,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title><?php echo $title ?></title>
-	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n"; ?>
-	<?php echo implode("\n\t", array_map('HTML::script', $scripts)); ?>
+	<?php echo implode("\n\t", $assets->get('head')); ?>
 	<style type="text/css">
 	#messages{display:block;}
 	</style>
@@ -44,6 +43,8 @@
 	<?php echo View::factory('admin/page/fragments/footer') ?>
 
 	{profiler}
+
+	<?php echo implode("\n\t", $assets->get('body')); ?>
 
 	<script type="text/javascript">
 		(function($){

@@ -2,19 +2,6 @@
 
 class Proxima_View_Model_Admin_Page_Pages_Edit extends View_Model_Admin {
 
-	public function __construct($file = NULL, array $data = NULL)
-	{
-		parent::__construct($file, $data);
-
-		$this->template
-			->styles(array(Kohana::$config->load('admin/media.paths.tinymce_skin')))
-			->scripts(array(
-				Kohana::$config->load('admin/media.paths.tinymce_jquery'),
-				kohana::$config->load('admin/media.paths.tinymce_config'),
-				Core::media('js/admin/pages/pages.js')
-			));
-	}
-
 	public function var_pages()
 	{
 		return ORM::factory('page')

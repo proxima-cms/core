@@ -2,24 +2,22 @@
 
 class Proxima_View_Model_Admin_Master extends View_Model_Master {
 
-	public function __construct($file = NULL, array $data = NULL)
+	public function __construct($file = NULL, array $data = NULL, Assets $assets = NULL)
 	{
-		parent::__construct();
-
 		$request = Request::current();
 
-		$this
-			->styles(array(
-				(array) Kohana::$config->load('admin/media.styles'),
-				(array) Kohana::$config->load('admin/'.$request->controller().'.styles')
-			))
-			->scripts(array(
-				(array) Kohana::$config->load('admin/media.scripts'),
-				(array) Kohana::$config->load('admin/'.$request->controller().'.scripts'),
-			))
-			->paths(array(
-				(array) Kohana::$config->load('admin/media.paths'),
-				(array) Kohana::$config->load('admin/'.$request->controller().'.paths'),
-			));
+		// Get the default master assets
+		$assets = new Assets(Kohana::$config->load('assets/admin'));
+
+		// Get the controller specific assets
+		$assets->config(Kohana::$config->load('assets/admin/'.$request->controller()));
+
+		// Load the master group
+		$assets->group('master');
+
+		// Load the action specific group
+		$assets->group($request->action());
+
+		parent::__construct($file, $data, $assets);
 	}
 }
