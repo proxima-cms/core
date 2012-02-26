@@ -2,7 +2,6 @@
 
 return array(
 	'paths' => array(
-		'base'             => 'admin',
 		'tinymce_skin'     => Core::media('js/admin/libs/tinymce/jscripts/tiny_mce/themes/advanced/skins/cirkuit/ui.css'),
 		'tinymce'          => Core::media('js/admin/libs/tinymce/jscripts/tiny_mce/tiny_mce.js'),
 		'tinymce_popup'    => Core::media('js/admin/libs/tinymce/jscripts/tiny_mce/tiny_mce_popup.js'),

@@ -2,19 +2,6 @@
 
 class Proxima_View_Model_Admin_Page_Pages_Add extends View_Model_Admin {
 
-	public function __construct($file = NULL, array $data = NULL)
-	{
-		parent::__construct($file, $data);
-
-		$this->template
-			->styles(array(Kohana::$config->load('admin/media.paths.tinymce_skin')))
-			->scripts(array( 
-				Kohana::$config->load('admin/media.paths.tinymce_jquery'),
-				kohana::$config->load('admin/media.paths.tinymce_config'),
-				Core::media('js/admin/pages/pages.js')
-			)); 
-	}
-
 	public function var_pages()
 	{
 		return ORM::factory('page')
@@ -31,7 +18,7 @@ class Proxima_View_Model_Admin_Page_Pages_Add extends View_Model_Admin {
 		return array(
 			'' => __('Live'),
 			'1' => __('Draft')
-		);  
+		);
 	}
 
 	public function var_page_types()
@@ -39,11 +26,11 @@ class Proxima_View_Model_Admin_Page_Pages_Add extends View_Model_Admin {
 		$page_types = array('' => 'None');
 
 		foreach(ORM::factory('page_type')->find_all() as $page_type)
-		{   
+		{
 			$page_types[$page_type->id] = $page_type->name;
 		}
 
-		return $page_types; 
+		return $page_types;
 	}
 
 }

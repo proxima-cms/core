@@ -4,8 +4,7 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title><?php echo $title ?></title>
-	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n";?>
-	<?php echo implode("\n\t", array_map('HTML::script', $scripts)), "\n" ?>
+	<?php echo implode("\n\t", $assets->get('head')); ?>
 	<style type="text/css">
 		#content{width:354px;}
 	</style>
@@ -28,7 +27,7 @@
 			<?php echo $content ?>
 	</div>
 
-	<?php echo View::factory('admin/page/fragments/footer', array('paths' => $paths)) ?>
+	<?php echo View::factory('admin/page/fragments/footer') ?>
 	</div>
 </body>
 </html>
