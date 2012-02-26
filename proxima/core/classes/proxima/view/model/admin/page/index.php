@@ -9,10 +9,10 @@ class Proxima_View_Model_Admin_Page_Index extends View_Model_Admin {
 		parent::__construct($file, $data);
 
 		$this->set(array(
-				'direction'      => Arr::get($data, 'direction', 'asc'),
-				'order_by'       => Arr::get($data, 'sort', $this->order_by),
-				'items_per_page' => 18,
-			));
+			'direction'      => Arr::get($data, 'direction', 'asc'),
+			'order_by'       => Arr::get($data, 'sort', $this->order_by),
+			'items_per_page' => 18,
+		));
 	}
 
 	// Return the total amount of filtered items
