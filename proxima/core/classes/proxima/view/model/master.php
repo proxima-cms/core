@@ -2,13 +2,6 @@
 
 class Proxima_View_Model_Master extends View_Model {
 
-	public function __construct($file = NULL, array $data = NULL, Assets $assets = NULL)
-	{
-		parent::__construct($file, $data, $assets);
-
-		$this->set('environment', Kohana::$environment == Kohana::DEVELOPMENT ? 'development' : 'production');
-	}
-
 	/**
 	 * Replaces profiler placeholder data with actual profiler data in a string
 	 *
