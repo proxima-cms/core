@@ -27,7 +27,8 @@
 			<div id="install-form">
 
 				<?php echo Form::open(NULL, array('data-errors' => count($errors)))?>
-				<fieldset>
+
+					<fieldset>
 
 						<h1>
 							<?php echo HTML::anchor('install/tests', __('Tests'), array('style' => 'float:right;font-size:.6em;margin-top:4px;')); ?>
@@ -36,7 +37,7 @@
 
 						<?php if ($migration === NULL) {?>
 
-							<h2>Enter the admin account details:</h2>
+							<h2>Admin user:</h2>
 							<div class="field">
 								<?php echo
 									Form::label('username', 'Username', NULL, $errors),
@@ -60,6 +61,15 @@
 									Form::label('password_confirm', 'Password confirm', NULL, $errors),
 									Form::password('password_confirm', NULL, NULL, $errors)
 								?>
+							</div>
+
+							<h2>Install options:</h2>
+
+							<div class="field">
+									<label>
+										<?php echo Form::checkbox('demo_pages'); ?>
+										<?php echo __('Install demo pages'); ?>
+									</label>
 							</div>
 
 							<div style="padding-top:.5em">

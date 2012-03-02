@@ -6,6 +6,7 @@ body,select,input,textarea{color:#444;}
 h1{letter-spacing:-0.04em;}
 h1,h2,h3,h4,h5,h6{font-weight:bold;}
 h2,h2,h4{margin-bottom:1em;font-size:100%;}
+h2 {margin:1.4em 0 1em 0;}
 a,a:active,a:visited{color:#111;}
 a:hover{color:#BB0000;}
 ul,ol{margin-left:1.8em;}

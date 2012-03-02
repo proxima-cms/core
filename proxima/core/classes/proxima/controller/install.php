@@ -31,13 +31,13 @@ class Proxima_Controller_Install extends Controller_Base {
 				View::factory('page/install/index')
 				->bind('errors', $errors)
 				->bind('user', $user)
-				->bind('migration', $migration_task)
+				->bind('migration', $install_migration)
 			);
 
 
 		if (!Core::$is_installed && $this->request->method() === Request::POST)
 		{
-			// Cant use the Model_User model as the db table doesn't exist
+			// We cant use the Model_User model as the db table doesn't exist
 			$user_rules = array(
 				'username' => array(
 					array('not_empty'),
@@ -80,8 +80,16 @@ class Proxima_Controller_Install extends Controller_Base {
 			// Successfully validated the admin user details
 			else
 			{
-				// Run the migration task
-				$migration_task = Minion_Task::factory('migrations_run')->execute(array());
+				$migration_groups = array('install');
+
+				if (Arr::get($this->request->post(), 'demo_pages') !== NULL)
+				{
+					$migration_groups[] = 'install_demopages';
+				}
+
+				// Run the install migration task
+				$install_migration = Minion_Task::factory('migrations_run')
+					->execute(array('groups' => $migration_groups));
 
 				// Load the user
 				$user = ORM::factory('user')
