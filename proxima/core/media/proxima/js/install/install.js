@@ -81,7 +81,8 @@
 			$loadText.hide();
 			$signin.removeAttr('disabled');
 			$loading.hide();
-			alert(jqXHR.status + ': ' + errorThrown + "\n\nPlease try again.");
+			console.debug(arguments);
+			alert(jqXHR.status + ': ' + errorThrown + "\n" + jqXHR.responseText + "\n\nPlease try again.");
 		},
 
 		formSubmit = (function(){

@@ -7,8 +7,17 @@
 	 */
 	public function up(Kohana_Database $db)
 	{
-		// $db->query(NULL, 'CREATE TABLE ... ');
-		//die('install_demopages!!!');
+		// Contact page
+		$db->query(NULL, "
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 5, 1, 0, 0, 1, 'Contact', 'contact', 'Contact page with contact form', '<p>Send me an email using the contact form below</p>', CURRENT_TIMESTAMP, NULL)"
+		);
+
+		// About page
+		$db->query(NULL, "
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 1, 0, 0, 1, 'About', 'about', 'About page', '<p>View more information about me and this site.</p>', CURRENT_TIMESTAMP, NULL)"
+		);
 	}
 
 	/**
@@ -18,6 +27,10 @@
 	 */
 	public function down(Kohana_Database $db)
 	{
-		// $db->query(NULL, 'DROP TABLE ... ');
+		// Remove contact page
+		$db->query(NULL, "DELETE FROM `pages` WHERE `uri` = 'contact'");
+
+		// Remove about page
+		$db->query(NULL, "DELETE FROM `pages` WHERE `uri` = 'about'");
 	}
 }

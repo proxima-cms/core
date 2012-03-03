@@ -49,7 +49,7 @@ class Proxima_Controller_Install extends Controller_Base {
 				),
 				'email' => array(
 					array('not_empty'),
-					array('email'),
+					array('email', array(':value')),
 				),
 				'password_confirm' => array(
 					array('matches', array(':validation', 'password', ':field'))

@@ -47,7 +47,7 @@
 							<div class="field">
 								<?php echo
 									Form::label('email', 'Email', NULL, $errors),
-									Form::input('email', $user['email'] ?: 'test@test.com', NULL, $errors)
+									Form::input('email', $user['email'] ?: 'willis.rh@gmail.com', NULL, $errors)
 								?>
 							</div>
 							<div class="field">
