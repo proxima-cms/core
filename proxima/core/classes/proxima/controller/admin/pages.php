@@ -18,13 +18,17 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 			->content(
 				View_Model::factory('admin/page/pages/add', array('template' => $this->template))
 					->bind('errors', $errors)
+					->bind('page', $page)
 			);
+
+		$page = ORM::factory('page');
+		$page->parent_id = $this->request->param('id');
 
 		if ($this->request->method() === Request::POST)
 		{
 			try
 			{
-				$page = ORM::factory('page')->admin_create($this->request->post());
+				$page->admin_create($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Page successfully saved.'));
 
