@@ -2,6 +2,6 @@
 
 return array(
 	'scripts'	=> array(
-		Core::media('js/admin/components.js')
+		Proxima::media('js/admin/components.js')
 	)
 );

@@ -35,7 +35,7 @@ class Proxima_Controller_Install extends Controller_Base {
 			);
 
 
-		if (!Core::$is_installed && $this->request->method() === Request::POST)
+		if (!Proxima::$is_installed && $this->request->method() === Request::POST)
 		{
 			// We cant use the Model_User model as the db table doesn't exist
 			$user_rules = array(
@@ -135,7 +135,7 @@ class Proxima_Controller_Install extends Controller_Base {
 	public function action_uninstall()
 	{
 		// We cant uninstall if we're already installed
-		if (!Core::$is_installed)
+		if (!Proxima::$is_installed)
 		{
 			throw new Kohana_Exception('Proxima CMS is not installed');
 		}

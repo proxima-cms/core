@@ -5,9 +5,9 @@ return array(
 	'upload_path'					=> 'media/assets',
 	'max_file_uploads'		=> 5,
 	'scripts'	=> array(
-		Core::media('js/admin/assets/assets.js')
+		Proxima::media('js/admin/assets/assets.js')
 	),
 	'styles'	=> array(
-		Core::media('css/admin/assets/assets.css')
+		Proxima::media('css/admin/assets/assets.css')
 	),
 );

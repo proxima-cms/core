@@ -6,6 +6,6 @@ return array(
 		'pages' => '%s/api/pages'
 	),
 	'scripts' => array(
-		Core::media('blogimport/media/js/admin/blogimport.js')
+		Proxima::media('blogimport/media/js/admin/blogimport.js')
 	)
 );

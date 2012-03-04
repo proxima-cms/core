@@ -4,7 +4,7 @@
 
 	<div id="content">
 
-		<?php if (Core::$is_installed){?>
+		<?php if (Proxima::$is_installed){?>
 
 			<p id="results" class="fail">Warning</p>
 			<p>
@@ -80,7 +80,7 @@
 
 
 								<span id="loading">
-									<?php echo HTML::image(Core::media('img/admin/ajax_loader_small.gif')); ?>
+									<?php echo HTML::image(Proxima::media('img/admin/ajax_loader_small.gif')); ?>
 									<span>
 										Please wait...
 									</span>

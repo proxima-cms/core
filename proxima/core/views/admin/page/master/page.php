@@ -18,7 +18,7 @@
 	<?php echo View::factory('admin/page/fragments/header') ?>
 
 	<div id="ajax-loading">
-		<?php echo HTML::image(Core::media('img/admin/ajax_loader.gif'))?>
+		<?php echo HTML::image(Proxima::media('img/admin/ajax_loader.gif'))?>
 	</div>
 
 	<div id="content">

@@ -2,6 +2,6 @@
 
 return array(
 	'scripts'	=> array(
-		Core::media('js/admin/tags.js')
+		Proxima::media('js/admin/tags.js')
 	)
 );

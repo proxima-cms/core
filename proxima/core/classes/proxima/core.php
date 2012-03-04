@@ -26,8 +26,7 @@ class Proxima_Core {
 
 		if ( !Kohana::$is_cli )
 		{
-
-			if (Core::$is_installed)
+			if (Proxima::$is_installed)
 			{
 				// Attach the database config reader.
 				Kohana::$config->attach(new Config_Database);
@@ -57,7 +56,7 @@ class Proxima_Core {
 			$can_install = (bool) Kohana::$config->load('install.can_install_uninstall');
 
 			// Check if we need to install
-			if ( (!Core::$is_installed AND !$install_controller) OR ($can_install AND !$install_controller) )
+			if ( (!Proxima::$is_installed AND !$install_controller) OR ($can_install AND !$install_controller) )
 			{
 				$request->redirect('install?return_to='.$request->uri());
 			}

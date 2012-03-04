@@ -134,4 +134,4 @@ Kohana::modules(Kohana::$config->load('modules')->as_array());
 /**
  * Initialize Proxima CMS.
  */
-Core::init();
+Proxima::init();

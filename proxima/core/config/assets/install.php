@@ -2,8 +2,8 @@
 
 return array(
 	'page' => array(
-		array('style', Core::media('css/install/install.css'), 'head', 0),
-		array('script', Core::media('js/libs/jquery/jquery-min.js'), 'head', 1),
-		array('script', Core::media('js/install/install.js'), 'body', 10),
+		array('style', Proxima::media('css/install/install.css'), 'head', 0),
+		array('script', Proxima::media('js/libs/jquery/jquery-min.js'), 'head', 1),
+		array('script', Proxima::media('js/install/install.js'), 'body', 10),
 	)
 );

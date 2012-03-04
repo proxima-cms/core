@@ -2,6 +2,6 @@
 
 return array(
 	'page' => array(
-		array('script', Core::media('js/admin/auth.js'), 'head'),
+		array('script', Proxima::media('js/admin/auth.js'), 'head'),
 	)
 );
