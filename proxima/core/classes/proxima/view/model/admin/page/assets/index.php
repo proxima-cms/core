@@ -6,10 +6,9 @@ class Proxima_View_Model_Admin_Page_Assets_Index extends View_Model_Admin {
 	{
 		parent::__construct($file, $data);
 
-		$data = $this->view->request;
+		$data = $data['request'];
 
-		$this->view
-			->set(array(
+		$this->set(array(
 				'direction'      => Arr::get($data, 'direction', 'asc'),
 				'folder'         => Arr::get($data, 'folder'),
 				'order_by'       => Arr::get($data, 'sort', 'date'),
@@ -20,15 +19,15 @@ class Proxima_View_Model_Admin_Page_Assets_Index extends View_Model_Admin {
 				'items_per_page' => 18,
 			))
 			->set(array(
-				'reverse_direction' => $this->view->direction === 'asc' ? 'desc' : 'asc',
-				'links' => $this->get_filter_links($this->view->direction)
+				'reverse_direction' => $this->direction === 'asc' ? 'desc' : 'asc',
+				'links' => $this->get_filter_links($this->direction)
 			));
 
 		// Adjust the order_by value.
-		switch($this->view->order_by)
+		switch($this->order_by)
 		{
 			case 'type':
-				$this->view->order_by = 'mimetype_id';
+				$this->order_by = 'mimetype_id';
 				break;
 			default:
 				break;

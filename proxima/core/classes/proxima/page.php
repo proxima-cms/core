@@ -32,7 +32,7 @@ class Proxima_Page {
 
 			$target = ORM::factory($redirect->target, $redirect->target_id);
 
-			$this->request->redirect($target->uri, 301);
+			Request::current()->redirect($target->uri, 301);
 		}
 
 		return $data;

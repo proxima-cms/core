@@ -39,7 +39,7 @@
 <!-- SEARCH -->
 <div class="section clear">
 	<h3>Search</h3>
-	<?php echo Form::open(Route::get('admin')->uri('controller' => 'assets'), array('class' => 'ui-helper-clearfix', 'style' => 'padding-bottom:6px'))?>
+	<?php echo Form::open(Route::get('admin')->uri(array('controller' => 'assets')), array('class' => 'ui-helper-clearfix', 'style' => 'padding-bottom:6px'))?>
 		<?php echo Form::input('search', $search, array('class' => 'helper-left', 'style' => 'width: 150px'))?>
 		<?php echo Form::button('search-submit', 'Go', array('class' => 'helper-left ui-button default'))?>
 	<?php echo Form::close()?>
