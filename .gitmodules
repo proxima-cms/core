@@ -46,3 +46,12 @@
 [submodule "proxima/modules/blogimport"]
 	path = proxima/modules/blogimport
 	url = git@github.com:proxima-cms/blogimport.git
+[submodule "proxima/modules/theme-badsyntax"]
+	path = proxima/modules/theme-badsyntax
+	url = git@github.com:proxima-cms/theme-badsyntax.git
+[submodule "proxima/modules/theme-default"]
+	path = proxima/modules/theme-default
+	url = git@github.com:proxima-cms/theme-default.git
+[submodule "proxima/modules/theme-newadmin"]
+	path = proxima/modules/theme-newadmin
+	url = git@github.com:proxima-cms/theme-newadmin.git
