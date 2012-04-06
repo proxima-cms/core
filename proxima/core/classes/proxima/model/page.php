@@ -188,7 +188,7 @@ class Proxima_Model_Page extends Model_Base {
 		$this->add('tags', $tag);
 	}
 
-	public function admin_check_parent_id(Validation $array, $field)
+	public function check_parent_id(Validation $array, $field)
 	{
 		if ( ! (bool) $this->parent_id )
 		{
@@ -197,7 +197,7 @@ class Proxima_Model_Page extends Model_Base {
 	}
 
 	// Don't delete id 1
-	public function admin_check_id(Validate $array, $field)
+	public function check_id(Validate $array, $field)
 	{
 		if ( (int) $this->id === 1)
 		{
@@ -214,7 +214,6 @@ class Proxima_Model_Page extends Model_Base {
 
 			if ( !$data->check()) return FALSE;
 		}
-
 
 		return parent::delete($id);
 	}
@@ -264,4 +263,4 @@ class Proxima_Model_Page extends Model_Base {
 
 		return $page_uri;
 	}
-} // End Model_Page
+}

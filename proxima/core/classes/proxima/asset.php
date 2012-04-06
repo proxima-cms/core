@@ -207,10 +207,17 @@ class Proxima_Asset {
 		static::resize($file_out, $file_out, $width, $height, $crop);
 	}
 
-	public static function extension($filename)
+	public static function extension($file_name)
 	{
-		$pathinfo = pathinfo($filename);
+		$pathinfo = pathinfo($file_name);
 
 		return $pathinfo['extension'];
+	}
+
+	public static function description($file_name)
+	{
+		$description = preg_replace('/\.\w+$/', '', $file_name); // remove extension
+
+		return preg_replace('/[_-]/', ' ', $description); // replace special chars
 	}
 }

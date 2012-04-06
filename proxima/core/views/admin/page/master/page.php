@@ -23,11 +23,13 @@
 
 	<div id="content">
 
-		<div id="admin-nav" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+		<div id="inner" class="clearfix">
 
-			<?php echo View::factory('admin/page/fragments/nav') ?>
+			<div id="nav" style="float:left">
+				<?php echo View::factory('admin/page/fragments/nav') ?>
+			</div>
 
-			<div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+			<div id="body">
 
 				<div id="messages">
 					<?php echo Message::render( new View('admin/message/basic') ) ?>
@@ -36,7 +38,7 @@
 				<?php echo $content ?>
 			</div>
 
-		</div> <!-- /#admin-nav -->
+		</div> <!-- /#inner -->
 
 	</div> <!-- /#content -->
 

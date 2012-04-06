@@ -22,12 +22,12 @@
 	</div>
 
 	<div id="content">
+
 		<div id="inner">
-
 			<?php echo $content ?>
-	</div>
+		</div>
 
-	<?php echo View::factory('admin/page/fragments/footer') ?>
+		<?php echo View::factory('admin/page/fragments/footer') ?>
 	</div>
 </body>
 </html>

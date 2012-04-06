@@ -1,19 +1,21 @@
 (function($){
 
 	var ui = function(selector){
-	
+
 		var elem = $(selector);
 
 		// Messages
-		elem.find('#messages').children().length 
-		
+		elem.find('#messages').children().length
+
 			&& $('#messages')
 				.bind('show', function(){
 					$(this)
 					.fadeIn('fast')
-					.effect("highlight", {}, 1000);			
+					.effect("highlight", {}, 1000);
 				})
 				.trigger('show');
+
+		elem.find('.ui-menu').menu();
 
 		// Selectmenu
 		/*
@@ -28,15 +30,15 @@
 			.button({
 				icons: { primary: "ui-icon-disk" }
 			});
-			
+
 		// Lightbox
 		//elem.find('.ui-lightbox').lightbox();
 
 		// Default Button
 		elem.find('.ui-button.default').button();
-		
+
 		function openmenu(menu, btn){
-			
+
 			if (menu.is(":visible")) {
 				menu.hide();
 				return false;
@@ -45,10 +47,10 @@
 				.menu("deactivate")
 				.css({top:0, left:0})
 				.show();
-				
-			var width = menu.width(), 
+
+			var width = menu.width(),
 				splitwidth = (btn.width() + btn.prev().width()) - 3;
-			
+
 			(menu.width() < splitwidth) && menu.width(splitwidth);
 
 			menu.position({
@@ -56,7 +58,7 @@
 				at: "right bottom",
 				of: btn[0]
 			});
-			
+
 			setTimeout(function(){
 				$(document).one("click", function() {
 					menu.hide();
@@ -64,7 +66,7 @@
 				});
 			});
 		}
-		
+
 		// Split button
 		elem
 			.find('.ui-buttonset')
@@ -72,9 +74,9 @@
 			.find('button:first')
 			.button()
 			.bind('redirect', function(){
-			
+
 				var url = $(this).data('url');
-				
+
 				if (url){
 					window.location = url;
 				}
@@ -90,7 +92,7 @@
 					}
 				})
 				.click(function(event) {
-					
+
 					var btn = this;
 
 					$(this)
@@ -110,7 +112,7 @@
 						},
 						input: $(this)
 					}).hide();
-				
+
 		// Button Menu
 		elem.find('.action-menu button').button({
 			icons: {
@@ -135,20 +137,20 @@
 				.bind('mouseleave.admin.button', function(){
 					$(this).addClass('ui-state-active');
 				});
-	
-			openmenu($(this).next(), $(this));			
+
+			openmenu($(this).next(), $(this));
 			return false;
 		});
 
 		// Tabs
 		elem.find('.tabs').tabs({
-			show: function(event, ui) { 
-				
+			show: function(event, ui) {
+
 				//window.location.hash = ui.tab.hash;
 			}
 		});
-	
-		// Datepicker	
+
+		// Datepicker
 		elem.find('.datepicker').datepicker({
 			showOn: "both",
 			buttonImage: "/modules/admin/media/img/calendar.png",
@@ -159,31 +161,31 @@
 		// Tree node expand/collapse
 		function setTreeCookie(event){
 
-			var id = $(this).data('id'), 
+			var id = $(this).data('id'),
 				name = (Admin.config.route.controller + '/' + Admin.config.route.action),
 				ids = Admin.util.cookie.get(name);
-			
+
 			if (!id) return;
 
 			ids = (ids) ? ids.split(',') : [];
-			
+
 			if (event.type == 'expand') {
 
 				if ( $.inArray( id.toString(), ids ) !== -1 ){
 					return;
 				}
-				
-				ids.push(id.toString());				
-							
+
+				ids.push(id.toString());
+
 			} else if (event.type == 'collapse') {
-			
-				for (var i in ids) {					
+
+				for (var i in ids) {
 					( ids[i] == id ) && ids.splice( i, 1 );
 				}
 			}
 			Admin.util.cookie.set(name, ids.join(','));
 		}
-	
+
 		elem.find('.ui-tree ul:first').tree({
 			onExpand: setTreeCookie,
 			onCollapse: setTreeCookie

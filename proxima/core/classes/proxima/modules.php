@@ -100,7 +100,19 @@ class Proxima_Modules {
 
 		foreach(Kohana::$config->load('admin/default.nav.links') as $url => $module)
 		{
-			$config .= "\t\t'{$url}' => '{$module}',\n";
+			$module_text = $module['text'];
+			$config .= "\t\t'{$url}' => array(\n\t\t\t'text' => __('{$module_text}')";
+			if (isset($module['pages']))
+			{
+				$config .= ",\n\t\t\t'pages' => array(\n";
+				foreach($module['pages'] as $url => $m)
+				{
+					$m_text = $m['text'];
+					$config .= "\t\t\t\t'{$url}' => array(\n\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t)\n";
+				}
+				$config .= "\t\t\t),";
+			}
+			$config .= "\n\t\t),\n";
 		}
 
 		foreach($modules as $module)
@@ -116,7 +128,7 @@ class Proxima_Modules {
 				continue;
 			}
 
-			$config .= "\t\t'{$admin_url}' => '{$admin_name}',\n";
+			$config .= "\t\t'{$admin_url}' => array(\n\t\t\t'text' => __('{$admin_name}')\n\t\t),\n";
 		}
 
 		$config .= "\t)\n);";

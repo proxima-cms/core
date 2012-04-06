@@ -1,25 +1,58 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Saturday 3rd of March 2012 10:55:06 AM
+ * Auto generated on: Friday 6th of April 2012 06:48:07 PM
  * Notes: Change the default admin navigation links in config/admin/default.php
  */
 
 return array(
 	'links' => array(
-		'admin' => 'Dashboard',
-		'admin/pages' => 'Pages',
-		'admin/users' => 'Users',
-		'admin/groups' => 'Groups',
-		'admin/roles' => 'Roles',
-		'admin/assets' => 'Assets',
-		'admin/tags' => 'Tags',
-		'admin/logs' => 'Logs',
-		'admin/config' => 'Config',
-		'admin/cache' => 'Cache',
-		'admin/redirects' => 'Redirects',
-		'admin/modules' => 'Modules',
-		'admin/components' => 'Components',
-		'admin/blogimport' => 'Blog import',
+		'admin' => array(
+			'text' => __('Dashboard')
+		),
+		'admin/pages' => array(
+			'text' => __('Pages'),
+			'pages' => array(
+				'admin/pages/add' => array(
+					'text' => __('Add page')
+				)
+			),
+		),
+		'admin/users' => array(
+			'text' => __('Users')
+		),
+		'admin/groups' => array(
+			'text' => __('Groups')
+		),
+		'admin/roles' => array(
+			'text' => __('Roles')
+		),
+		'admin/assets' => array(
+			'text' => __('Assets')
+		),
+		'admin/tags' => array(
+			'text' => __('Tags')
+		),
+		'admin/logs' => array(
+			'text' => __('Logs')
+		),
+		'admin/config' => array(
+			'text' => __('Config')
+		),
+		'admin/cache' => array(
+			'text' => __('Cache')
+		),
+		'admin/redirects' => array(
+			'text' => __('Redirects')
+		),
+		'admin/modules' => array(
+			'text' => __('Modules')
+		),
+		'admin/components' => array(
+			'text' => __('Components')
+		),
+		'admin/blogimport' => array(
+			'text' => __('Blog import')
+		),
 	)
 );

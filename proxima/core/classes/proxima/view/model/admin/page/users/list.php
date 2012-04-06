@@ -10,8 +10,7 @@ class Proxima_View_Model_Admin_Page_Users_List extends View_Model_Admin {
 	{
 		parent::__construct($file, $data);
 
-		$this->view
-			->set(array(
+		$this->set(array(
 				'direction'      => Arr::get($data, 'direction', 'asc'),
 				'order_by'       => Arr::get($data, 'sort', $this->order_by),
 				'items_per_page' => 18,
@@ -40,14 +39,14 @@ class Proxima_View_Model_Admin_Page_Users_List extends View_Model_Admin {
 		$plural = Inflector::plural($this->by);
 
 		return ORM::factory($this->model)
+			->join($plural.'_users')
+				->on($plural.'_users.user_id', '=', 'user.id')
+			->join($plural)
+				->on($plural.'_users.'.$this->by.'_id', '=',  $plural.'.id')
+			->where($plural.'_users.'.$this->by.'_id', '=', $this->id)
 			->order_by($this->order_by, $this->direction)
 			->limit($this->pagination->items_per_page)
 			->offset($this->pagination->offset)
-			->join($plural.'_users')
-			->on($plural.'_users.user_id', '=', 'user.id')
-			->join($plural)
-			->on($plural.'_users.'.$this->by.'_id', '=',  $plural.'.id')
-			->where($plural.'_users.'.$this->by.'_id', '=', $this->id)
 			->find_all();
 	}
 }

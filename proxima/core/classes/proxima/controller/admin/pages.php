@@ -11,7 +11,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 			);
 	}
 
-	public function action_add()
+	public function action_create()
 	{
 		$this->template
 			->title(__('Add page'))
@@ -72,7 +72,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 				}
 				else
 				{
-					$page->admin_update($this->request->post());
+					$page->update($this->request->post());
 
 					Message::set(Message::SUCCESS, __('Page successfully updated.'));
 				}
@@ -103,7 +103,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 			throw new Exception('Page not found');
 		}
 
-		$page->delete();
+		$page->admin_delete();
 
 		Message::set(Message::SUCCESS, __('Page successully deleted.'));
 
@@ -144,4 +144,4 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 			);
 	}
 
-} // End Controller_Admin_Pages
+}

@@ -9,8 +9,8 @@
 	font-family: Tahoma,Verdana,Arial,Helvetica;
 		font-size: 11px;
 }
-.ui-state-default, 
-.ui-widget-content .ui-state-default, 
+.ui-state-default,
+.ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
 	color: #000;
 	background-image: url(../../img/admin/ui-theme/bg_glass.png);
@@ -63,8 +63,8 @@
 
 /* Tabs
 ----------------------------------*/
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, 
-.ui-tabs .ui-tabs-nav li.ui-state-disabled a, 
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled a,
 .ui-tabs .ui-tabs-nav li.ui-state-processing a {
 	cursor: pointer;
 }
@@ -80,14 +80,9 @@
 }
 
 
-/* Menu
-----------------------------------*/
 .ui-menu {
-	position: absolute; 
-	z-index: 10;
-	-moz-box-shadow: 1px 1px 5px #AAAAAA;
-	-webkit-box-shadow: 1px 1px 5px #AAAAAA;
-	box-shadow: 1px 1px 5px #AAAAAA;
+	width: 200px;
+	margin: 0 10px 0 0;
 }
 
 /* Dialog */
@@ -102,7 +97,7 @@
 	box-shadow:  0 0 6px #AAA;
 }
 .ui-dialog .ui-dialog-titlebar {
-	padding: 0.2em 1em 0.3em;	
+	padding: 0.2em 1em 0.3em;
 }
 .ui-dialog.ui-dialog-tinymce .ui-dialog-titlebar .ajax-loader {
 	position: absolute;
@@ -123,7 +118,7 @@
 .ui-dialog.ui-dialog-tinymce .ui-dialog-content {
 	padding: 0;
 	overflow: hidden;
-	background: #FFF;	
+	background: #FFF;
 }
 
 /* TinyMCE Buttons */
@@ -150,23 +145,23 @@
 }
 
 
-/* TREE 
+/* TREE
 ==============================*/
-#files { 
-	margin:2em 0 5em; 
-	width:400px; 
+#files {
+	margin:2em 0 5em;
+	width:400px;
 }
-.tree { 
-	font-size:1.3em; 
+.tree {
+	font-size:1.3em;
 }
 .tree,.tree ul,
-.tree li { 
-	list-style:none; 
-	margin:0; 
-	padding:0; 
-	zoom: 1; 
+.tree li {
+	list-style:none;
+	margin:0;
+	padding:0;
+	zoom: 1;
 }
-.tree ul { 
+.tree ul {
 	clear: both;
 }
 .tree li {
@@ -176,36 +171,36 @@
 .tree li.collapsable, .tree li.expandable {
 		background-position: 0 -176px;
 }
-.tree li a { 
-	color: #555; 
-	height: 11px; 
-	display: block; 
+.tree li a {
+	color: #555;
+	height: 11px;
+	display: block;
 	text-decoration: none;
 	padding: .1em 0;
 	font-size: 96%;
 	min-height: 16px;
 }
-.tree li a.tree-parent { 
+.tree li a.tree-parent {
 	background: url(../../img/admin/ui-theme/icon_toggle_open.gif) 5px 50% no-repeat;
 }
-.tree li a.tree-parent-collapsed { 
+.tree li a.tree-parent-collapsed {
 	background: url(../../img/admin/ui-theme/icon_toggle_closed.gif) 8px 50% no-repeat;
 }
 .tree li a:hover,
 .tree li a.tree-parent:hover,
 .tree li a:focus,
 .tree li a.tree-parent:focus,
-.tree li a.tree-item-active { 
+.tree li a.tree-item-active {
 	color: #000;
 
 }
 .tree li a:focus,
 .tree li a.tree-parent:focus,
-.tree li a.tree-item-active { 
+.tree li a.tree-item-active {
 	background-color: #FAFAFA;
 }
-.tree ul.tree-group-collapsed { 
-	display:none; 
+.tree ul.tree-group-collapsed {
+	display:none;
 }
 .tree li .tree-icon-toggle,
 .tree li .tree-icon-item {
@@ -280,7 +275,7 @@
 * html .ui-selectmenu-menu li { border-color: pink; filter:chroma(color=pink); width:100%; }
 * html .ui-selectmenu-menu li a { position: relative }
 
-/* Selectmenu custom 
+/* Selectmenu custom
 ----------------------------------*/
 .ui-selectmenu {
 	display: block;
@@ -291,7 +286,7 @@
 	-webkit-box-shadow: 1px 2px 4px #CCCCCC;
 	box-shadow: 1px 2px 4px #CCCCCC;
 }
-.ui-selectmenu-menu li a, 
+.ui-selectmenu-menu li a,
 .ui-selectmenu-status {
 	padding: .3em 1em;
 }
@@ -307,8 +302,8 @@
 	padding-top: 0;
 	padding-bottom: 0;
 }
-.ui-grid th a {	
-	display: block;	
+.ui-grid th a {
+	display: block;
 	padding: .5em;
 }
 .ui-grid th a .ui-icon {
@@ -317,24 +312,24 @@
 
 /* Paging
 ----------------------------------*/
-.ui-paging .ui-icon { 
-	float: right; 
+.ui-paging .ui-icon {
+	float: right;
 	width: 18px;
 }
-.ui-paging { 
-	float: right; 
-	margin-top: -2px; 
+.ui-paging {
+	float: right;
+	margin-top: -2px;
 }
-.ui-paging-num { 
-	float: left; 
-	width: 22px; 
-	height: 16px; 
+.ui-paging-num {
+	float: left;
+	width: 22px;
+	height: 16px;
 	text-align: center;
 }
-.ui-paging-num.ui-state-focus { 
+.ui-paging-num.ui-state-focus {
 	background: #fff;
 }
-.ui-paging-prev { 
+.ui-paging-prev {
 	float: left;
 	width: 20px;
 	height: 16px;
@@ -347,9 +342,9 @@
 .ui-paging a:hover {
 	background-position: 0 -12px;
 	border-color: #555;
-}		
+}
 
-/* Slider 
+/* Slider
 -----------------------------*/
 .ui-slider-horizontal .ui-slider-handle {
 		background-position: 0 -12px !important;
