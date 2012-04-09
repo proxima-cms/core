@@ -1,5 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Theme helper class
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 abstract class Proxima_Theme {
 
 	public static $config = array();
@@ -102,5 +110,5 @@ abstract class Proxima_Theme {
 
 }
 
-// Set the view path.
+// Set the view path
 Proxima_Theme::$view_path = str_replace(DOCROOT, '', APPPATH.'views').'/';

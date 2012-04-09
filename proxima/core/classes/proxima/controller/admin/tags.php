@@ -1,22 +1,30 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Admin tags controller
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 
 	public function action_index()
 	{
 
-		$request_data = array('request' => $this->request->query());  
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - Tags'))
 			->content(
 				View_Model::factory('admin/page/tags/index', $request_data)
-			); 
+			);
 	}
 
 	public function action_add()
 	{
-		$request_data = array('request' => $this->request->query());  
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - Add tag'))
@@ -34,7 +42,7 @@ class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 			{
 				$tag->admin_add($this->request->post());
 
-				Message::set(Message::SUCCESS, __('Tag successfully saved.'));		 
+				Message::set(Message::SUCCESS, __('Tag successfully saved.'));
 
 				$this->request->redirect('admin/tags');
 			}
@@ -52,11 +60,11 @@ class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 		$tag = ORM::factory('tag', $this->request->param('id'));
 
 		if (!$tag->loaded())
-		{		
+		{
 			throw new Exception('Tag not found.');
-		}		
-		
-		$request_data = array('request' => $this->request->query());  
+		}
+
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - Edit tag'))
@@ -71,18 +79,18 @@ class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 			try
 			{
 				$tag->admin_update($this->request->post());
-				
-				Message::set(Message::SUCCESS, __('Tag successfully updated.'));		 
-				
+
+				Message::set(Message::SUCCESS, __('Tag successfully updated.'));
+
 				$this->request->redirect($this->request->uri());
-			}		
+			}
 			catch(ORM_Validation_Exception $e)
 			{
 				$errors = $e->errors('admin/tags');
 
 				Message::set(Message::ERROR, __('Please correct the errors.'));
-			}		
-		}		
+			}
+		}
 	}
 
 	public function action_delete($id = NULL, $set_message = TRUE)
@@ -100,5 +108,5 @@ class Proxima_Controller_Admin_Tags extends Controller_Admin_Base {
 
 		$this->request->redirect('admin/tags');
 	}
-	
+
 } // End Controller_Admin_Tags

@@ -1,19 +1,27 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Admin assets folders controller
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
-	
+
 	public function action_index()
 	{
-		$request_data = array('request' => $this->request->query());  
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - Assets - Folders'))
 			->content(
 				View_Model::factory('admin/page/assets/folders/index', $request_data)
-			);  
+			);
 	}
-	
-	public function action_add()	
+
+	public function action_add()
 	{
 		$request_data = array('request' => $this->request->query());
 
@@ -24,7 +32,7 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 				->bind('folder', $folder)
 				->bind('errors', $errors)
 				);
-		
+
 		$folder = ORM::factory('asset_folder');
 
 		if ($this->request->method() === Request::POST)
@@ -33,7 +41,7 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 			{
 				$folder->admin_add($this->request->post());
 
-				Message::set(Message::SUCCESS, __('Folder successfully added.'));			
+				Message::set(Message::SUCCESS, __('Folder successfully added.'));
 
 				$this->request->redirect( $this->request->post('return_to') ?: 'admin/assets/folders' );
 			}
@@ -46,7 +54,7 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 		}
 	}
 
-	public function action_edit()	
+	public function action_edit()
 	{
 		$folder = ORM::factory('asset_folder', $this->request->param('id'));
 
@@ -63,7 +71,7 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 				View_Model::factory('admin/page/assets/folders/edit', $request_data)
 				->set('folder', $folder)
 				->bind('errors', $errors)
-			); 
+			);
 
 		if ($this->request->method() === Request::POST)
 		{
@@ -71,7 +79,7 @@ class Proxima_Controller_Admin_Assets_Folders extends Controller_Admin_Base {
 			{
 				$folder->admin_update($this->request->post());
 
-				Message::set(Message::SUCCESS, __('Folder successfully updated.'));			
+				Message::set(Message::SUCCESS, __('Folder successfully updated.'));
 
 				$this->request->redirect($this->request->uri());
 			}

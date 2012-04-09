@@ -1,5 +1,14 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Site page model
+ * The model represents a MysqL View
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Model_Site_Page extends Model_Base {
 
 	protected $_table = 'site_pages';

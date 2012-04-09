@@ -1,5 +1,13 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
-
+/**
+ * Component class
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 abstract class Proxima_Component_Component {
 
 	protected $_config = array();
@@ -16,17 +24,17 @@ abstract class Proxima_Component_Component {
 	// Render the component when echoing out.
 	public function __toString()
 	{
-		try 
-		{		
+		try
+		{
 			return $this->render();
-		}		
-		catch (Exception $e) 
-		{		
+		}
+		catch (Exception $e)
+		{
 			// Display the exception message
 			Kohana_Exception::handler($e);
 
-			return ''; 
-		}		
+			return '';
+		}
 	}
 
 	// Config getter.

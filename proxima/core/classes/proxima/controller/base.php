@@ -1,5 +1,17 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * The Bbse controller
+ * Handles:
+ *  - Base templating (through a view model)
+ *  - Authentication
+ *  - Sending the response (handling AJAX responses)
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 abstract class Proxima_Controller_Base extends Controller {
 
 	public $auto_render = TRUE;

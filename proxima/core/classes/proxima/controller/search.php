@@ -1,13 +1,21 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Site search controller
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Controller_Search extends Controller_Page {
 
 	public function action_index()
 	{
 		$query = $this->request->param('query');
-	
+
 		if ($query === NULL)
-		{		
+		{
 			$query = $this->request->query('query');
 		}
 
@@ -29,5 +37,5 @@ class Proxima_Controller_Search extends Controller_Page {
 		// Pass the search results into the template.
 		$this->template->content->set('search_results', $search_results);
 	}
-	
-} // End Controller_Search
+
+}

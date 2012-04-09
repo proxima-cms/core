@@ -1,5 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Config model
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Model_Config extends Model_Base {
 
 	public $_table_name = 'config';
@@ -21,7 +29,7 @@ class Proxima_Model_Config extends Model_Base {
 		}
 
 		foreach($data->as_array() as $name => $value)
-		{			
+		{
 			if (strstr($name, 'config-') !== FALSE)
 			{
 				list($config, $group_name, $config_key) = explode('-', $name);

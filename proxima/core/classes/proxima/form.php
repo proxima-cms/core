@@ -1,5 +1,15 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Form helper class, which extends the default kohana form.
+ * New features include: managing form errors and error states on fields
+ * and labels.
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Form extends Kohana_Form {
 
 	private static function attributes($name, & $attributes = NULL, $errors = NULL)

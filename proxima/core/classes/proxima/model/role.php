@@ -1,5 +1,13 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Role model
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Model_Role extends Model_Auth_Role {
 
 	/**
@@ -22,7 +30,7 @@ class Proxima_Model_Role extends Model_Auth_Role {
 						 ->where($field, '=', $value)
 						 ->execute($this->_db)
 						 ->get('total_count');
-	}			 
+	}
 
 	/*
 	public function callback_name_available(Validate $array, $field)
@@ -30,7 +38,7 @@ class Proxima_Model_Role extends Model_Auth_Role {
 		 if ($this->unique_key_exists($array[$field], 'name'))
 		 {
 			 $array->error($field, 'role_unavailable', array($array[$field]));
-		 }							 
+		 }
 	}
 	*/
 
@@ -47,7 +55,7 @@ class Proxima_Model_Role extends Model_Auth_Role {
 
 		return $this->save();
 	}
-	
+
 	public function admin_delete()
 	{
 		return parent::delete();
@@ -61,9 +69,9 @@ class Proxima_Model_Role extends Model_Auth_Role {
 	public function __get($key)
 	{
 		if ($key === 'friendly_date')
-		{   
+		{
 			return $this->friendly_date();
-		}   
+		}
 
 		return parent::__get($key);
 	}

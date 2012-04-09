@@ -1,5 +1,15 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Modules helper class.
+ * This class provides helper methods to re-generate module-related data in
+ * the database and on the filesystem.
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Modules {
 
 	// Save a config file string to file.

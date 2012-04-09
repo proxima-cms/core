@@ -1,10 +1,15 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
-/*
+/**
  * Base model
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
  */
 class Proxima_Model_Base extends ORM {
-	
+
 	/**
 	 * Tests if a unique key value exists in the database.
 	 *
@@ -27,12 +32,12 @@ class Proxima_Model_Base extends ORM {
 			->execute($this->_db)
 			->get('total_count');
 	}
-	
+
 	/**
 	 * Returns a single dimension array with indented values representing the items tree
 	 *
 	 * @param   integer		the number of space chars used for indenting
-	 * @param   integer		parent id of items to start from 
+	 * @param   integer		parent id of items to start from
 	 * @param	array 		items array
 	 * @param	string		key name
 	 * @return  array
@@ -47,12 +52,12 @@ class Proxima_Model_Base extends ORM {
 
 		return $items;
 	}
-		
+
 	/**
 	 * Returns a HTML tree
 	 *
 	 * @param   string		path to tree views directory
-	 * @param   integer		parent id of items to start from 
+	 * @param   integer		parent id of items to start from
 	 * @param	string 		items HTML string
 	 * @return  string
 	 */
@@ -64,12 +69,12 @@ class Proxima_Model_Base extends ORM {
 			->find_all();
 
 		$this->recurse_tree_list_html($start, $list_html, $view_path, $open_items, $order_by);
-		
+
 		return $list_html;
 	}
-	
+
 	/**
-	 * Recursive function to append tree level items 
+	 * Recursive function to append tree level items
 	 *
 	 * @param	DB result 	items db result
 	 * @param	array 		items array
@@ -93,16 +98,16 @@ class Proxima_Model_Base extends ORM {
 			$array[$key] = str_repeat('&nbsp;', ($depth * $indent)) . $item->$text_column;
 
 			$children = $item->children->find_all();
-			
+
 			if (count($children))
 			{
 				$child_depth = $depth + 1;
-				
+
 				$this->recurse_tree_select($children, $array, $indent, $child_depth, $text_column, $key_column);
 			}
-		}		
+		}
 	}
-	
+
 	/**
 	 * Recursive function to concat tree level items HTML
 	 *
@@ -112,11 +117,11 @@ class Proxima_Model_Base extends ORM {
 	 * @param   integer		the recursion depth
 	 */
 	private function recurse_tree_list_html($items, & $html = '', $view_path = 'tree', $open_items = array(), $order_by = array(), & $depth = -1)
-	{		
+	{
 		$depth++;
-		
+
 		$has_items = (count($items) > 0);
-		
+
 		if ($has_items)
 		{
 			$html .= View::factory($view_path.'/list_open')
@@ -133,9 +138,9 @@ class Proxima_Model_Base extends ORM {
 				->find_all();
 
 			$this->recurse_tree_list_html($children, $html, $view_path, $open_items, $order_by, $depth);
-			
+
 			$html .= View::factory($view_path.'/item_close');
-		}		
+		}
 		if ($has_items)
 		{
 			$html .= View::factory($view_path.'/list_close');
@@ -147,7 +152,7 @@ class Proxima_Model_Base extends ORM {
 		return Date::friendly($this->date);
 	}
 
-	/** 
+	/**
 	 * Overload the save method to delete ALL cache entries on model save.
 	 */
 	public function save(Validation $validation = NULL)

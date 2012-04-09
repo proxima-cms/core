@@ -1,16 +1,24 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Admin groups controller
+ *
+ * @package    Proxima CMS
+ * @category   Core
+ * @author     Proxima CMS Team
+ * @copyright  (c) 2011-2012 Proxima CMS Team
+ * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ */
 class Proxima_Controller_Admin_Groups extends Controller_Admin_Base {
 
 	public function action_index()
 	{
-		$request_data = array('request' => $this->request->query());  
+		$request_data = array('request' => $this->request->query());
 
 		$this->template
 			->title(__('Admin - User Groups'))
 			->content(
 				View_Model::factory('admin/page/groups/index', $request_data)
-			);  
+			);
 	}
 
 	public function action_add()
@@ -22,7 +30,7 @@ class Proxima_Controller_Admin_Groups extends Controller_Admin_Base {
 				->bind('errors', $errors)
 				->bind('group', $group)
 			);
-			
+
 		$group = ORM::factory('group');
 
 		if ($this->request->method() === Request::POST)
@@ -32,13 +40,13 @@ class Proxima_Controller_Admin_Groups extends Controller_Admin_Base {
 				$group->admin_add($this->request->post());
 
 				Message::set(Message::SUCCESS, __('Group successfully saved.'));
-		
+
 				$this->request->redirect('admin/groups');
 			}
 			catch(ORM_Validation_Exception $e)
 			{
 				$errors = $e->errors('admin/groups');
-			 	
+
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 		}
@@ -82,7 +90,7 @@ class Proxima_Controller_Admin_Groups extends Controller_Admin_Base {
 
 		$this->request->redirect($return_to);
 	}
-	
+
 	public function action_edit()
 	{
 		// Try get the group
@@ -101,21 +109,21 @@ class Proxima_Controller_Admin_Groups extends Controller_Admin_Base {
 				->bind('group', $group)
 				->bind('errors', $errors)
 			);
-			
+
 		if ($this->request->method() === Request::POST)
 		{
 			try
 			{
 				$group->admin_update($this->request->post());
-				
+
 				Message::set(Message::SUCCESS, __('Group successfully updated.'));
-			
+
 				$this->request->redirect($this->request->uri());
 			}
 			catch(ORM_Validation_Exception $e)
 			{
 				$errors = $e->errors('admin/groups');
-			
+
 				Message::set(Message::ERROR, __('Please correct the errors.'));
 			}
 		}
@@ -133,19 +141,19 @@ class Proxima_Controller_Admin_Groups extends Controller_Admin_Base {
 		$group->delete();
 
 		Message::set(Message::SUCCESS, __('Group succesfully deleted.'));
-				
+
 		$this->request->redirect('admin/groups');
 	}
-	
+
 	public function action_tree()
 	{
 		$open_groups = Arr::get($_COOKIE, 'groups/index', array());
-		
+
 		if ($open_groups)
 		{
 			$open_groups = explode(',', $open_groups);
 		}
-		
+
 		$this->template->content = ORM::factory('group')->tree_list_html('admin/page/users/tree', 0, $open_groups);
 	}
 
