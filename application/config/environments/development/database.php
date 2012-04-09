@@ -6,9 +6,9 @@ return array(
 		'connection' => array(
 			'hostname'	 => 'localhost',
 			'username'	 => 'root',
-			'password'	 => 'dec1ph3r',
+			'password'	 => '',
 			'persistent' => FALSE,
-			'database'	 => 'blog.badsyntax.co_dev',
+			'database'	 => 'sitename',
 		),
 		'table_prefix' => '',
 		'charset'			 => 'utf8',
