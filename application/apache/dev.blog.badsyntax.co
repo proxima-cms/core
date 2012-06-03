@@ -10,4 +10,13 @@
 	# Set the environment
 	SetEnv KOHANA_ENV development
 
+	# Secure the dev area
+	<DirectoryMatch /home/richard/www/sites/dev.blog.badsyntax.co/httpdocs>
+			AuthType Basic
+			AuthName "Restricted Area"
+			AuthUserFile /etc/apache2/users
+			Require valid-user
+	</DirectoryMatch>
+
+
 </VirtualHost>

@@ -12,7 +12,7 @@ class Proxima_Model_Config extends Model_Base {
 
 	public $_table_name = 'config';
 
-	public function update_all(& $data)
+	public function update_all($data)
 	{
 		$data = Validation::factory($data);
 
@@ -25,7 +25,7 @@ class Proxima_Model_Config extends Model_Base {
 
 		if (!$data->check())
 		{
-			return FALSE;
+			throw new Kohana_Validation_Exception($data);
 		}
 
 		foreach($data->as_array() as $name => $value)
@@ -44,8 +44,6 @@ class Proxima_Model_Config extends Model_Base {
 				$config->save();
 			}
 		}
-
-		return TRUE;
 	}
 
 	public function __get($key)

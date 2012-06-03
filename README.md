@@ -1,1 +1,3 @@
-Proxima CMS README
+Proxima CMS
+
+Documentation coming soon!

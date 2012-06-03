@@ -33,11 +33,25 @@ class Proxima_Form extends Kohana_Form {
 		}
 	}
 
-	public static function input($name, $value = NULL, array $attributes = NULL, array $errors = NULL)
+	public static function input($name, $value = NULL, array $attributes = NULL, array $errors = NULL, $view = 'messages/field_error')
 	{
 		static::attributes($name, $attributes, $errors);
 
-		return parent::input($name, $value, $attributes);
+		$input = parent::input($name, $value, $attributes);
+		
+		if ($errors !== NULL)
+		{
+			// Merge in external validation errors.
+			$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+
+			// Use the label_error view to append an error message to the label
+			if (isset($errors[$name]))
+			{
+				$input .= View::factory($view)->bind('error', $errors[$name]);
+			}
+		}
+
+		return $input;
 	}
 
 	public static function select($name, array $options = NULL, $selected = NULL, array $attributes = NULL, array $errors = NULL)
@@ -68,20 +82,8 @@ class Proxima_Form extends Kohana_Form {
 		return parent::file($name, $attributes);
 	}
 
-	public static function label($input, $text = NULL, array $attributes = NULL, array $errors = NULL, $view = 'messages/label_error')
+	public static function label($input, $text = NULL, array $attributes = NULL, array $errors = NULL)
 	{
-		if ($errors !== NULL)
-		{
-			// Merge in external validation errors.
-			$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
-
-			// Use the label_error view to append an error message to the label
-			if (isset($errors[$input]))
-			{
-				$text .= View::factory($view)->bind('error', $errors[$input]);
-			}
-		}
-
 		return parent::label($input, $text, $attributes);
 	}
 

@@ -250,8 +250,6 @@ class Proxima_Model_User extends Model_Auth_User {
 			->from(Kohana::$config->load('core.email_address'), Kohana::$config->load('core.email_name'))
 			->send();
 
-		die($url);
-
 		return TRUE;
 	}
 

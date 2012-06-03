@@ -171,7 +171,9 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 
 		$path = $asset->image_path($width, $height, $crop, TRUE);
 
-		if ($size->loaded() AND !file_exists($path))
+
+
+		if (!file_exists($path))
 		{
 			$this->request->headers['Content-Type'] = $asset->mimetype->subtype.'/'.$asset->mimetype->type;
 
@@ -191,8 +193,14 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 			$size->resized = 1;
 			$size->save();
 
-			$this->response->send_file($path, FALSE, array('inline' => true));
 		}
+
+		header('Content-Type: image/jpeg');
+		readfile($path);
+		exit;
+
+				$this->response->send_file($path, FALSE, array('inline' => true));
+			exit;
 	}
 
 	public function action_get_url()

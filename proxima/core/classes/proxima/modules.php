@@ -118,7 +118,7 @@ class Proxima_Modules {
 				foreach($module['pages'] as $url => $m)
 				{
 					$m_text = $m['text'];
-					$config .= "\t\t\t\t'{$url}' => array(\n\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t)\n";
+					$config .= "\t\t\t\t'{$url}' => array(\n\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t),\n";
 				}
 				$config .= "\t\t\t),";
 			}

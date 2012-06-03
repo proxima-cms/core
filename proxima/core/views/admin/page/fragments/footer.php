@@ -1,15 +1,12 @@
+<hr>
+
 <footer>
-
-<?php if (Kohana::$environment === Kohana::DEVELOPMENT){?>
-	
-	<div class="benchmark"> 
-		<!--
-		{execution_time} - {memory_usage}
-		-->
-	</div>
-	
-<?php } else {?>
-	<!-- {execution_time} - {memory_usage} -->
-<?php }?>
-
+<p>
+	V0.1 - <?php echo Kohana::$environment === Kohana::DEVELOPMENT ? 'Development' : 'Production'; ?> mode [<a href="#">profiler</a>]
+	<?php if (Kohana::$environment === Kohana::DEVELOPMENT) {?>
+	- {execution_time} - {memory_usage}
+	<?php }?>
+</p>
 </footer>
+
+{profiler}

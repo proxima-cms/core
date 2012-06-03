@@ -18,4 +18,13 @@ class Proxima_Controller_Admin_Base extends Controller_Base {
 	// Set the default admin master view model
 	public $view_model = 'admin/page/master/page';
 
+	public function before()
+	{
+		parent::before();
+
+		$user = Auth::instance()->get_user();
+
+		$this->template->set('username', $user ? $user->username : NULL);
+	}
+
 } // End Controller_Admin_Base

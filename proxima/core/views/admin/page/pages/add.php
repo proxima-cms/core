@@ -1,5 +1,5 @@
-<?php echo $breadcrumbs?>
-
+<div class="row-fluid">
+	<div class="span12">
 <?php echo Form::open()?>
 
 	<fieldset>
@@ -40,3 +40,4 @@
 	))?>
 
 <?php echo Form::close()?>
+</div></div>

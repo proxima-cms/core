@@ -3,70 +3,20 @@
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php echo $title ?></title>
 	<?php echo implode("\n\t", $assets->get('head')); ?>
-	<style type="text/css">
-	#messages{display:block;}
-	</style>
 </head>
-	<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
-	<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
-	<!--[if IE 8 ]>    <body class="ie8"> <![endif]-->
-	<!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
-	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+<body>
 
-	<?php echo View::factory('admin/page/fragments/header') ?>
+	<?php echo View::factory('admin/page/fragments/header', array('username' => $username)) ?>
 
-	<div id="ajax-loading">
-		<?php echo HTML::image(Proxima::media('img/admin/ajax_loader.gif'))?>
+	<div class="container-fluid">
+		<?php echo View::factory('admin/page/fragments/messages') ?>
+		<?php echo View::factory('admin/page/fragments/content', array('content' => $content, 'breadcrumbs' => $breadcrumbs)) ?>
+		<?php echo View::factory('admin/page/fragments/footer') ?>
 	</div>
 
-	<div id="content">
-
-		<div id="inner" class="clearfix">
-
-			<div id="nav" style="float:left">
-				<?php echo View::factory('admin/page/fragments/nav') ?>
-			</div>
-
-			<div id="body">
-
-				<div id="messages">
-					<?php echo Message::render( new View('admin/message/basic') ) ?>
-				</div>
-
-				<?php echo $content ?>
-			</div>
-
-		</div> <!-- /#inner -->
-
-	</div> <!-- /#content -->
-
-	<?php echo View::factory('admin/page/fragments/footer') ?>
-
-	{profiler}
-
 	<?php echo implode("\n\t", $assets->get('body')); ?>
-
-	<script type="text/javascript">
-		(function($){
-
-			var AppConfig = {
-				environment: '<?php echo Kohana::$environment === Kohana::DEVELOPMENT ? 'development' : 'production'; ?>',
-				route: {
-					controller: '<?php echo Request::current()->controller(); ?>',
-					directory:  '<?php echo Request::current()->directory(); ?>',
-					action:     '<?php echo Request::current()->action(); ?>'
-				},
-				CORPATH: '<?php echo '/', str_replace(DOCROOT, '', CORPATH); ?>',
-				MODPATH: '<?php echo '/', str_replace(DOCROOT, '', MODPATH); ?>'
-			};
-
-			$(function(){
-				new App(AppConfig).route(window.AppRoutes);
-			});
-
-		})(this.jQuery);
-	</script>
 </body>
 </html>

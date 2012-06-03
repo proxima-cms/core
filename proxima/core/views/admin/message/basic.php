@@ -1,9 +1,6 @@
-<ul>
-	<?php foreach ($messages as $message) { ?>
-		<li class="<?php echo $message->type ?>">
-			<p>
-				<span></span>
-				<?php echo $message->text ?></p>
-		</li>
+<?php foreach ($messages as $message) { ?>
+	<div class="alert alert-<?php echo $message->type ?>">
+	  <a class="close" data-dismiss="alert" href="#">&times;</a>
+			<?php echo $message->text ?>
+		</div>
 	<?php } ?>
-</ul>
