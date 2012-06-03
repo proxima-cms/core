@@ -1,53 +1,6 @@
-<div class="clear">
-	<div class="action-bar">
-		<div class="action-menu helper-right">
-			<button>Actions</button>
-			<ul>
-				<li>
-					<?php echo HTML::anchor(
-						Route::get('admin')
-							->uri(array(
-								'controller' => 'assets',
-								'action' => 'upload'
-							)), __('Upload assets'));
-					?>
-				</li>
-				<li>
-					<?php echo HTML::anchor(
-						Route::get('admin')
-							->uri(array(
-								'controller' => 'assets',
-								'action' => 'delete'
-							)), __('Delete assets'), array('id' => 'delete-assets'));
-					?>
-				</li>
-				<li>
-					<?php echo HTML::anchor(
-						Route::get('admin/config')
-							->uri(array(
-								'group' => 'asset'
-							)), __('Assets config'), array('id' => 'edit-config'));
-					?>
-				</li>
-				<li>
-					<?php echo HTML::anchor(
-						Route::get('admin/assets-folders')
-							->uri(array(
-								'action' => 'add'
-							)), __('Add folder'));
-					?>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<?php echo $breadcrumbs ?>
-</div>
+<div class="row-fluid">
 
-<br/>
-
-<div class="clear assetmanager popup">
-
-	<div class="sidepane" style="width:25%">
+  <div class="span3">
 		<?php echo View::factory('admin/page/assets/sidebar', array(
 			'links'   => $links,
 			'search'  => $search,
@@ -55,7 +8,13 @@
 			'cur_folder'  => $cur_folder,
 			'folder_uri_template'  => $folder_uri_template
 			));?>
-	</div>
+  </div>
+
+  <div class="span9">
+    <div class="page-header">
+      <h1>Assets</h1>
+    </div>
+
 
 	<?php
 		$header_link = URL::site(
@@ -64,8 +23,7 @@
 			)) . '?filter='.$filter.'&direction='.$reverse_direction.'&page='.$pagination->current_page);
 	?>
 
-	<div class="ui-grid assets-list view-list clear" style="width:73%">
-		<table>
+		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
 					<th class="filename">
@@ -73,7 +31,7 @@
 							title="Sort by filename"
 							href="<?php echo HTML::chars($header_link.'&sort=friendly_filename')?>">
 							Filename
-							<span class="ui-icon <?php echo ($order_by == 'filename' AND $direction == 'asc') ? 'ui-icon-triangle-1-n' : 'ui-icon-triangle-1-s'?>"></span>
+							<span class="<?php echo ($order_by == 'filename' AND $direction == 'asc') ? 'caret-up' : 'caret'?>"></span>
 						</a>
 					</th>
 					<th class="type">
@@ -81,7 +39,7 @@
 							title="Sort by type"
 							href="<?php echo HTML::chars($header_link.'&sort=type')?>">
 							Type
-							<span class="ui-icon <?php echo ($order_by == 'type' AND $direction == 'asc') ? 'ui-icon-triangle-1-n' : 'ui-icon-triangle-1-s'?>"></span>
+							<span class="ui-icon <?php echo ($order_by == 'type' AND $direction == 'asc') ? 'caret-up' : 'caret'?>"></span>
 						</a>
 					</th>
 					<th class="size">
@@ -89,7 +47,7 @@
 							title="Sort by size"
 							href="<?php echo HTML::chars($header_link.'&sort=filesize')?>">
 							Size
-							<span class="ui-icon <?php echo ($order_by == 'filesize' AND $direction == 'asc') ? 'ui-icon-triangle-1-n' : 'ui-icon-triangle-1-s'?>"></span>
+							<span class="ui-icon <?php echo ($order_by == 'filesize' AND $direction == 'asc') ? 'caret-up' : 'caret'?>"></span>
 						</a>
 					</th>
 				</tr>

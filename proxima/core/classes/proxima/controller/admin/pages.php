@@ -12,10 +12,13 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 
 	public function action_index()
 	{
+		$open_pages = explode(',', Arr::get($_COOKIE, 'pages/index'));
+
 		$this->template
 			->title(__('Pages'))
 			->content(
 				View_Model::factory('admin/page/pages/index')
+				->set('pages_tree', ORM::factory('page')->tree_list_html('admin/page/pages/tree', 0, $open_pages))
 			);
 	}
 
@@ -120,12 +123,6 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 
 	public function action_tree()
 	{
-		$open_pages = explode(',', Arr::get($_COOKIE, 'pages/index'));
-
-		$this->template
-			->content(
-				ORM::factory('page')->tree_list_html('admin/page/pages/tree', 0, $open_pages)
-			);
 	}
 
 	public function action_generate_uri()

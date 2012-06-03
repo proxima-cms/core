@@ -4999,3 +4999,15 @@ padding: 9px 5px;
 footer {color:#999;}
 
 .page-header {margin-top:0px}
+
+.table thead .caret, .table thead .caret-up {margin-top:8px;}
+.caret-up {
+ border-left: 4px solid transparent;
+     border-right: 4px solid transparent;
+		     border-bottom: 4px solid #000000;
+				     display: inline-block;
+						     height: 0;
+								     opacity: 0.3;
+										     vertical-align: top;
+												     width: 0;
+														 }

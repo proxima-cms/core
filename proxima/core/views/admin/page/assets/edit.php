@@ -1,45 +1,73 @@
-<div class="clear">
-	<div class="action-menu helper-right">
-		<button>Actions</button>
-		<ul>
-			<li><?php echo HTML::anchor(
-				Route::get('admin')
-					->uri(array(
-						'controller' => 'assets',
-						'action' => 'download',
-						'id' => $asset->id
-					)), __('Download asset'));?>
-			</li>	
-			<li><?php echo HTML::anchor(
-				Route::get('admin')
-					->uri(array(
-						'controller' => 'assets',
-						'action' => 'delete',
-						'id' => $asset->id
-					)), __('Delete asset'));?>
-			</li>
-		</ul>
+<div class="row-fluid">
+
+	<div class="span3">
+
+		<!-- ACTIONS -->
+		<div class="well sidebar-nav">
+			<ul class="nav nav-list">
+				<li class="nav-header">Actions</li>
+				<li><?php echo HTML::anchor(
+					Route::get('admin')
+						->uri(array(
+							'controller' => 'assets',
+							'action' => 'download',
+							'id' => $asset->id
+						)), __('Download asset'));?>
+				</li>	
+				<li><?php echo HTML::anchor(
+					Route::get('admin')
+						->uri(array(
+							'controller' => 'assets',
+							'action' => 'delete',
+							'id' => $asset->id
+						)), __('Delete asset'));?>
+				</li>
+				<?php if ($asset->mimetype->subtype == 'image'){?>
+					<li><?php echo HTML::anchor(
+						Route::get('admin')
+						->uri(array(
+							'controller' => 'assets',
+							'action' => 'rotate',
+							'id' => $asset->id
+						)), __('Rotate 90deg'))
+					?></li>
+					<li><?php echo HTML::anchor(
+						Route::get('admin')
+						->uri(array(
+							'controller' => 'assets',
+							'action' => 'sharpen',
+							'id' => $asset->id
+						)), __('Sharpen'))
+					?></li>
+					<li><?php echo HTML::anchor(
+						Route::get('admin')
+						->uri(array(
+							'controller' => 'assets',
+							'action' => 'flip_horizontal',
+							'id' => $asset->id
+						)), __('Flip horizontal'))
+					?></li>
+					<li><?php echo HTML::anchor(
+						Route::get('admin')
+						->uri(array(
+							'controller' => 'assets',
+							'action' => 'flip_vertical',
+							'id' => $asset->id
+						)), __('Flip vertical'))
+					?></li>
+				<?php }?>
+			</ul>
+
+		</div>
 	</div>
-	<?php echo $breadcrumbs?>
-</div>
 
-<br />
+	<div class="span9">
 
-<div class="clear assetmanager popup">
+		<div class="page-header">
+			<h1>View asset</h1>
+		</div>
 
-	<div class="sidepane" style="width:25%">
-		<?php echo View::factory('admin/page/assets/sidebar_edit', array(
-			'links' => $links,
-			'search' => NULL,
-			'folders' => $folders,
-			'cur_folder'  => $cur_folder,
-			'folder_uri_template'  => $folder_uri_template
-			));?>
-	</div>
-
-	<?php echo Form::open(NULL, array('class' => 'assets-edit ajax-validate'))?>
-
-		<div class="ui-grid assets-list view-list clear" style="width:73%">
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
 
 			<?php echo Form::hidden('id', $asset->id)?>
 
@@ -52,71 +80,48 @@
 				</fieldset>
 			<?php }?>
 
-			<fieldset>
-				<legend>Information</legend>
-				
-				<strong>Uploaded by:</strong> 
+		<hr />
+			<table class="table table-bordered table-striped">
+			<tbody>
+<tr>
+	<th scope="row">
+			Uploaded:
+</th>
+<td>
 				<?php echo HTML::anchor(
 					Route::get('admin')
 					->uri(array(
 						'controller' => 'users',
 						'action' => 'view',
 						'id' => $asset->user->id
-					)), $asset->user->username . ' '. __('on') . ' ' .$asset->friendly_date)
-				?> <br />
-				
-				<strong>Mimetype:</strong> 
+					)), $asset->user->username). ' '. __('on') . ' ' .$asset->friendly_date
+				?>
+</td>
+</tr>
+<tr>
+<th scope="row">
+			Mimetype:
+</th>
+<td>
 				<?php echo $asset->mimetype->subtype.'/'.$asset->mimetype->type?> <br />
-				
-				<strong>Filesize:</strong> 
+</td>
+</tr>
+<tr>
+<th scope="row">
+				Filesize: 
+</th>
+<td>
 				<?php echo Text::bytes($asset->filesize)?><br />
-			</fieldset>
+</td></tr></body></table>
 			
 			<?php if ($asset->mimetype->subtype == 'image'){?>
-				<fieldset>
-					<legend>Image actions</legend>
-					<ul>
-						<li><?php echo HTML::anchor(
-							Route::get('admin')
-							->uri(array(
-								'controller' => 'assets',
-								'action' => 'rotate',
-								'id' => $asset->id
-							)), __('Rotate 90deg'))
-						?></li>
-						<li><?php echo HTML::anchor(
-							Route::get('admin')
-							->uri(array(
-								'controller' => 'assets',
-								'action' => 'sharpen',
-								'id' => $asset->id
-							)), __('Sharpen'))
-						?></li>
-						<li><?php echo HTML::anchor(
-							Route::get('admin')
-							->uri(array(
-								'controller' => 'assets',
-								'action' => 'flip_horizontal',
-								'id' => $asset->id
-							)), __('Flip horizontal'))
-						?></li>
-						<li><?php echo HTML::anchor(
-							Route::get('admin')
-							->uri(array(
-								'controller' => 'assets',
-								'action' => 'flip_vertical',
-								'id' => $asset->id
-							)), __('Flip vertical'))
-						?></li>
-					</ul>
-				</fieldset>
 				<?php if (count($resized)){?>
 					<fieldset>
 						<legend>Resized images</legend>
 						<ul>
 							<?php foreach($resized as $size){?>
 							<li>
-								<a 	href="<?php echo URL::site(
+								<a	href="<?php echo URL::site(
 									Route::get('media/assets')
 									->uri(array(
 										'id' => $size->asset->id,
@@ -140,26 +145,28 @@
 		<fieldset class="last">
 			<legend>Edit asset</legend>
 
-			<div class="field">
-				<?php echo
-					Form::label('filename', 'Filename', NULL, $errors).
-					Form::input('filename', Request::current()->post('filename') ?: $asset->filename, NULL, $errors)
-				?>
+			<div class="control-group">
+				<?php echo Form::label('filename', 'Filename', array('class' => 'control-label'), $errors);?>
+				<div class="controls">
+					<?php echo Form::input('filename', Request::current()->post('filename') ?: $asset->filename, NULL, $errors)?>
+				</div>
 			</div>
-			<div class="field">
-				<?php echo
-					Form::label('description', 'Description', NULL, $errors).
-					Form::input('description', Request::current()->post('description') ?: $asset->description, NULL, $errors)
-				?>
+			<div class="control-group">
+				<?php echo Form::label('description', 'Description', array('class' => 'control-label'), $errors);?>
+				<div class="controls">
+					<?php echo Form::input('description', Request::current()->post('description') ?: $asset->description, NULL, $errors);?>
+				</div>
 			</div>
-			<div class="field">
-				<?php echo
-					Form::label('folder_id', 'Folder', NULL, $errors).
-					Form::select('folder_id', $folders, $asset->asset_folder->id, NULL, $errors);
-				?>
+			<div class="control-group">
+				<?php echo Form::label('folder_id', 'Folder', array('class' => 'control-label'), $errors);?>
+				<div class="controls">
+					<?php echo Form::select('folder_id', $folders, $asset->asset_folder->id, NULL, $errors); ?>
+				</div>
 			</div>
 		</fieldset>
-		<br />
-		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
+		<div class="form-actions">
+			<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+		</div>
 		<?php echo Form::close()?>
+	</div>
 </div>

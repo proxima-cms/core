@@ -12,8 +12,9 @@
 	<?php echo View::factory('admin/page/fragments/header', array('username' => $username)) ?>
 
 	<div class="container-fluid">
+		<?php echo $breadcrumbs ?>
 		<?php echo View::factory('admin/page/fragments/messages') ?>
-		<?php echo View::factory('admin/page/fragments/content', array('content' => $content, 'breadcrumbs' => $breadcrumbs)) ?>
+		<?php echo View::factory('admin/page/fragments/content', array('content' => $content)) ?>
 		<?php echo View::factory('admin/page/fragments/footer') ?>
 	</div>
 

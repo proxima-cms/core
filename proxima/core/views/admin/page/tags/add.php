@@ -17,14 +17,14 @@
 				<div class="control-group<?php if (isset($errors['name'])){?> error<?php }?>">
 					<?php echo Form::label('name', __('Name'), array('class' => 'control-label'), $errors);?>
 					<div class="controls">
-						<?php echo Form::input('name', $tag->name, NULL, $errors);?>
+						<?php echo Form::input('name', $tag->name, NULL, $errors) . Form::error_msg('name', $errors);?>
 					</div>
 				</div>
 				
 				<div class="control-group<?php if (isset($errors['slug'])){?> error<?php }?>">
 					<?php echo Form::label('slug', __('Slug'), array('class' => 'control-label'), $errors);?>
 					<div class="controls">
-						<?php echo Form::input('slug', $tag->slug, NULL, $errors);?>
+						<?php echo Form::input('slug', $tag->slug, NULL, $errors) . Form::error_msg('slug', $errors);?>
 					</div>
 				</div>
 
