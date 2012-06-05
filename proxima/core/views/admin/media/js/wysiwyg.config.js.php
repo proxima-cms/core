@@ -7,7 +7,7 @@
 		editor_selector :"wysiwyg",
 		 mode : "textareas",
 		theme : "advanced",
-		skin : "cirkuit",
+		skin : "bootstrap",
 		debug : true,
 		plugins : 'safari,pagebreak,advimage,advlist,iespell,media,contextmenu,paste,nonbreaking,xhtmlxtras,jqueryinlinepopups,proxima_assets',
 

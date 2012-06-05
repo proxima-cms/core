@@ -128,7 +128,7 @@
 				})
 				.css({ 
 					width: f.width,
-					height: f.height + 5
+					height: f.height + 95
 				})
 				.attr('scrollbars', 'no')
 				.appendTo(dialog);
