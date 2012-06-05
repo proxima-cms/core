@@ -33,10 +33,10 @@
 			<h1>Edit page</h1>
 		</div>
 
-		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal tabs', 'id' => 'edit-page'))?>
 
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#metadata">Metadata</a></li>
+				<li><a href="#metadata">Metadata</a></li>
 				<li><a href="#publishing">Publishing</a></li>
 				<li><a href="#content">Content</a></li>
 				<li><a href="#categorize">Categorize</a></li>
@@ -45,7 +45,7 @@
 			 
 			<div class="tab-content">
 
-				<div class="tab-pane active" id="metadata">
+				<div class="tab-pane" id="metadata">
 
 						<fieldset>
 							<legend>Metadata</legend>
@@ -149,16 +149,10 @@
 
 						<fieldset>
 							<legend>Content</legend>
-							<div class="field">
-								<div class="hidden">
-									<?php echo
-										Form::label('body', __('Body content'), NULL, $errors);
-										//Form::textarea('body', Arr::get($_POST, 'body'), array('class' => 'wysiwyg'), TRUE, $errors)
-									?>
-								</div>
-								<div id="body" class="wysiwyg">
+							<div class="control-group">
+								<textarea id="body" class="wysiwyg" style="width:90%">
 									<?php echo $page->body; ?>
-								</div>
+								</textarea>
 							</div>
 						</fieldset>
 				</div>
@@ -253,4 +247,4 @@
 
 		<?php echo Form::close()?>
 	</div>
-		</div>
+</div>

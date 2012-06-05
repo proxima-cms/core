@@ -33,6 +33,23 @@ class Proxima_Form extends Kohana_Form {
 		}
 	}
 
+	public static function error_css($name, $errors = array(), $cls = 'error')
+	{
+		if (!$errors)
+		{
+			return '';
+		}
+		// Merge in external validation errors.
+		$errors = array_merge($errors, (isset($errors['_external']) ? $errors['_external'] : array()));
+
+		if (isset($errors[$name]))
+		{
+			return ' ' . $cls;
+		}
+
+		return '';
+	}
+
 	public static function error_msg($name, $errors, $view = 'messages/field_error')
 	{
 		if ($errors !== NULL)

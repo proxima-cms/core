@@ -1,8 +1,9 @@
+/*
+
 (function($){
 
 	$(function(){
 
-		/* MODELS */
 
 		var PageModel = Backbone.Model.extend({
 			url : function() {
@@ -17,13 +18,11 @@
 			}
 		});
 
-		/* COLLECTIONS */
 
 		var PageCollection = Backbone.Collection.extend({
 			model: new PageModel
 		});
 
-		/* VIEWS */
 
 		var IndexView = Backbone.View.extend({
 			el: $('body'),
@@ -104,3 +103,4 @@
 	});
 
 })(this.jQuery);
+*/

@@ -2,11 +2,10 @@
 
 	window.tinymce_config = {
 
-		script_url : '<?php echo URL::site(Kohana::$config->load('admin/media.paths.tinymce', TRUE));?>',
-
 		// General options
 		mode : "exact",
 		editor_selector :"wysiwyg",
+		 mode : "textareas",
 		theme : "advanced",
 		skin : "cirkuit",
 		debug : true,

@@ -23,7 +23,7 @@ class Proxima_Controller_Admin_Media extends Controller_Admin_Base {
 		if ($file)
 		{
 			// Send the file content as the response
-			$this->response->body(View::factory('admin/media/'.$file));
+			$this->template->content(View::factory('admin/media/'.$file));
 		}
 		else
 		{

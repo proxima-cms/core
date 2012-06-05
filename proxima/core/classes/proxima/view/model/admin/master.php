@@ -12,7 +12,7 @@ class Proxima_View_Model_Admin_Master extends View_Model_Master {
 		$assets = new Assets(Kohana::$config->load('assets/admin'));
 
 		// Get the controller specific assets
-		//$assets->config(Kohana::$config->load('assets/admin/'.$request->controller()));
+		$assets->config(Kohana::$config->load('assets/admin/'.$request->controller()));
 
 		// Load the master group
 		$assets->group('master');

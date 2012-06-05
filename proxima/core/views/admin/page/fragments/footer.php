@@ -1,5 +1,5 @@
-<hr>
 
+<hr />
 <footer>
 <p>
 	V0.1 - <?php echo Kohana::$environment === Kohana::DEVELOPMENT ? 'Development' : 'Production'; ?> mode [<a href="#">profiler</a>]
