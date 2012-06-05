@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Sunday 3rd of June 2012 01:42:09 AM
+ * Auto generated on: Tuesday 5th of June 2012 01:35:29 PM
  * Notes: Change the default admin navigation links in config/admin/default.php
  */
 
@@ -12,26 +12,45 @@ return array(
 		),
 		'#nav-content' => array(
 			'text' => __('Content'),
-			'pages' => array(
-				'admin/pages' => array(
-					'text' => __('Pages')
-				),
-				'admin/tags' => array(
-					'text' => __('Tags')
+			'groups' => array(
+				'pages' => array(
+					'admin/pages' => array(
+						'text' => __('Manage Pages')
+					),
+					'admin/pages/add' => array(
+						'text' => __('Add Page')
+					),
+				),				'tags' => array(
+					'admin/tags' => array(
+						'text' => __('Manage Tags')
+					),
+					'admin/tags/add' => array(
+						'text' => __('Add Tag')
+					),
 				),
 			),
 		),
 		'#nav-users' => array(
 			'text' => __('Users'),
-			'pages' => array(
-				'admin/users' => array(
-					'text' => __('Users')
-				),
-				'admin/groups' => array(
-					'text' => __('Groups')
-				),
-				'admin/roles' => array(
-					'text' => __('Roles')
+			'groups' => array(
+				'users' => array(
+					'admin/users' => array(
+						'text' => __('Manage Users')
+					),
+					'admin/users/add' => array(
+						'text' => __('Add User')
+					),
+				),				'groups' => array(
+					'admin/groups' => array(
+						'text' => __('Manage Groups')
+					),
+					'admin/groups/add' => array(
+						'text' => __('Add Group')
+					),
+				),				'roles' => array(
+					'admin/roles' => array(
+						'text' => __('Manage Roles')
+					),
 				),
 			),
 		),

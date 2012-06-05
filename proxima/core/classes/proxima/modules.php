@@ -122,6 +122,21 @@ class Proxima_Modules {
 				}
 				$config .= "\t\t\t),";
 			}
+			else if (isset($module['groups']))
+			{
+				$config .= ",\n\t\t\t'groups' => array(\n";
+				foreach($module['groups'] as $group => $pages)
+				{
+					$config .= "\t\t\t\t'".$group."' => array(\n";
+					foreach($pages as $url => $m)
+					{	
+						$m_text = $m['text'];
+						$config .= "\t\t\t\t\t'{$url}' => array(\n\t\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t\t),\n";
+					}
+					$config .= "\t\t\t\t),";
+				}
+				$config .= "\n\t\t\t),";
+			}
 			$config .= "\n\t\t),\n";
 		}
 

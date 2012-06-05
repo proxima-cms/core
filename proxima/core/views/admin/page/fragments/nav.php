@@ -24,23 +24,36 @@
 							? 'active '
 							: '';
 
-						$classes .= isset($page['pages']) ? 'dropdown' : '';
+						$has_dropdown = ( isset($page['pages']) || isset($page['groups']) );
+						
+						$classes .= $has_dropdown ? 'dropdown' : '';
 						?>
 
 						<li class="<?php echo $classes?>">
 							<?php echo HTML::anchor(
 								$url, 
-								$page['text'].(isset($page['pages']) ? ' <b class="caret"></b>' : ''), 
+								$page['text'] . ($has_dropdown ? ' <b class="caret"></b>' : ''), 
 								array(
-									'data-toggle' => (isset($page['pages']) ? 'dropdown' : ''), 
-									'class' => (isset($page['pages']) ? 'dropdown-toggle' : ''
-								)))?>
-							<?php if (isset($page['pages'])) {?>
+									'data-toggle' => ($has_dropdown ? 'dropdown' : ''), 
+									'class' => ($has_dropdown ? 'dropdown-toggle' : '')
+								))?>
+							<?php if ($has_dropdown) {?>
 							<ul class="dropdown-menu">
-								<?php foreach($page['pages'] as $suburl => $p) {?>
-									<li>
-										<?php echo HTML::anchor($suburl, $p['text'])?>
-									</li>
+								<?php if(isset($page['groups'])){?>
+									<?php foreach($page['groups'] as $group => $pages){?>
+										<li class="nav-header"><?php echo ucfirst($group);?></li>
+										<?php foreach($pages as $suburl => $p) {?>
+											<li>
+												<?php echo HTML::anchor($suburl, $p['text'])?>
+											</li>
+										<?php }?>
+									<?php }?>
+								<?php } else if (isset($page['pages'])){?>
+									<?php foreach($page['pages'] as $suburl => $p) {?>
+										<li>
+											<?php echo HTML::anchor($suburl, $p['text'])?>
+										</li>
+									<?php }?>
 								<?php }?>
 							</ul>
 							<?php }?>

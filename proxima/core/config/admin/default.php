@@ -8,26 +8,48 @@ return array(
 			),
 			'#nav-content' => array(
 				'text' => __('Content'),
-				'pages' => array(
-					'admin/pages' => array(
-						'text' => __('Pages')
+				'groups' => array(
+					'pages' => array(
+						'admin/pages' => array(
+							'text' => __('Manage Pages')
+						),
+						'admin/pages/add' => array(
+							'text' => __('Add Page')
+						),
 					),
-					'admin/tags' => array(
-						'text' => __('Tags'),
-					),
+					'tags' => array(
+						'admin/tags' => array(
+							'text' => __('Manage Tags'),
+						),
+						'admin/tags/add' => array(
+							'text' => __('Add Tag'),
+						),
+					)
 				)
 			),
 			'#nav-users' => array(
 				'text' => __('Users'),
-				'pages' => array(
-					'admin/users' => array(
-						'text' => __('Users'),
+				'groups' => array(
+					'users' => array(
+						'admin/users' => array(
+							'text' => __('Manage Users'),
+						),
+						'admin/users/add' => array(
+							'text' => __('Add User'),
+						),
 					),
-					'admin/groups' => array(
-						'text' => __('Groups'),
+					'groups' => array(
+						'admin/groups' => array(
+							'text' => __('Manage Groups'),
+						),
+						'admin/groups/add' => array(
+							'text' => __('Add Group'),
+						),
 					),
-					'admin/roles' => array(
-						'text' => __('Roles'),
+					'roles' => array(
+						'admin/roles' => array(
+							'text' => __('Manage Roles'),
+						)
 					)
 				)
 			),
