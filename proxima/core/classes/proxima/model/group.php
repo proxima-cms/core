@@ -2,16 +2,16 @@
 /**
  * Group model
  *
- * @package    Proxima CMS
- * @category   Core
- * @author     Proxima CMS Team
+ * @package		 Proxima CMS
+ * @category	 Core
+ * @author		 Proxima CMS Team
  * @copyright  (c) 2011-2012 Proxima CMS Team
- * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ * @license		 https://raw.github.com/proxima-cms/core/master/LICENSE.md
  */
 class Proxima_Model_Group extends Model_Base {
 
 	protected $_has_many = array(
-		'users'    => array('through' => 'groups_users'),
+		'users'		 => array('through' => 'groups_users'),
 		'children' => array('model' => 'group', 'foreign_key' => 'parent_id')
 	);
 	protected $_belongs_to = array(
@@ -21,12 +21,21 @@ class Proxima_Model_Group extends Model_Base {
 	public function rules()
 	{
 		return array(
-		 'parent_id' => array(
-				array('not_empty'),
-			),
+			'parent_id' => array(),
 			'name' => array(
 				array('not_empty'),
 				array('max_length', array(':value', array(255))),
+			)
+		);
+	}
+
+	public function filters()
+	{
+		return array(
+			'parent_id' => array(
+				array(function($value){
+					return ($value === '' || $value === 0 || $value === '0') ? NULL : $value;
+				}, array(':value')),
 			)
 		);
 	}

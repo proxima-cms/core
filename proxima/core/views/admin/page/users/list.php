@@ -4,7 +4,7 @@
 
 <?php } else {?>
 
-	<table>
+	<table class="table table-bordered table-striped">
 		<thead>
 			<tr>
 				<th>Username</th>

@@ -22,7 +22,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 			);
 	}
 
-	public function action_create()
+	public function action_add()
 	{
 		$this->template
 			->title(__('Add page'))

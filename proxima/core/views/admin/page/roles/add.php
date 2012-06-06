@@ -1,21 +1,47 @@
-<?php echo $breadcrumbs?>
+<div class="row-fluid">
 
-<?php echo Form::open()?>
-	<fieldset class="last">
-		
-		<div class="field">
-			<?php echo 
-				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', $role->name, NULL, $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo 
-				Form::label('description', __('Descripton'), NULL, $errors),
-				Form::input('description', $role->description, NULL, $errors)
-			?>
-		</div>
+  <div class="span3">
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Actions</li>
+        <li><?php echo HTML::anchor(
+            Route::get('admin')
+              ->uri(array(
+                'controller' => 'groups',
+              )), __('Manage groups'));?>
+        </li>
+      </ul>
+    </div><!--/.well -->
+  </div>
 
-		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
-	</fieldset>
-<?php echo Form::close()?>
+  <div class="span9">
+
+    <div class="page-header">
+      <h1>Add role</h1>
+    </div>
+
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+			<fieldset class="last">
+
+					<?php echo Form::control_group(array(
+						'label' => __('Name'),
+						'name' => 'name',
+						'type' => 'input',
+						'value' => $role->name
+					), $errors);?>
+					
+					<?php echo Form::control_group(array(
+						'label' => __('Description'),
+						'name' => 'description',
+						'type' => 'input',
+						'value' => $role->description
+					), $errors);?>
+
+				<div class="form-actions">
+					<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+				</div>
+
+			</fieldset>
+		<?php echo Form::close()?>
+	</div>
+</div>

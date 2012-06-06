@@ -82,9 +82,13 @@ class Proxima_Model_Module extends Model_Base {
 
 	public function admin_add_github_repo($data)
 	{
+		$this->values($data);
+
 		$validation = Validation::factory($data)
-			->rule('github-name', 'not_empty')
-			->rule('github-url', 'not_empty');
+			->rule('name', 'not_empty')
+			->rule('github_url', 'not_empty');
+			// TODO:
+			// Add a URL check via validation (with closure)
 
 		if (! $validation->check())
 		{
@@ -106,6 +110,7 @@ class Proxima_Model_Module extends Model_Base {
 		// Update submodules
 		$stderr = exec(sprintf('cd %s; git submodule update --init 2>&1', escapeshellarg($folder)));
 
+		// Enable the modules and save configuration
 		Modules::save_all();
 	}
 }

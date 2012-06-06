@@ -4,11 +4,11 @@
  * New features include: managing form errors and error states on fields
  * and labels.
  *
- * @package    Proxima CMS
- * @category   Core
- * @author     Proxima CMS Team
+ * @package		 Proxima CMS
+ * @category	 Core
+ * @author		 Proxima CMS Team
  * @copyright  (c) 2011-2012 Proxima CMS Team
- * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ * @license		 https://raw.github.com/proxima-cms/core/master/LICENSE.md
  */
 class Proxima_Form extends Kohana_Form {
 
@@ -48,6 +48,35 @@ class Proxima_Form extends Kohana_Form {
 		}
 
 		return '';
+	}
+
+	public static function control_group($attributes = array(), $errors = array(), $view = 'admin/page/fragments/form_control')
+	{
+		$attributes = $attributes + array(
+			'label' => '',
+			'name' => '',
+			'type' => 'input',
+			'options' => array(),
+			'value' => ''
+		);
+
+		$param = array($attributes['name']);
+
+		if ($attributes['type'] === 'select')
+		{
+			$param[] = $attributes['options'];
+		}
+
+		$param[] = $attributes['value'];
+
+		$field = call_user_func_array('Form::' . $attributes['type'], $param);
+
+		return View::factory($view, array(
+			'field' => $field,
+			'has_error' => isset($errors[$attributes['name']]),
+			'attributes' => $attributes,
+			'errors' => $errors
+		));
 	}
 
 	public static function error_msg($name, $errors, $view = 'messages/field_error')
@@ -96,7 +125,7 @@ class Proxima_Form extends Kohana_Form {
 	}
 
 	public static function file($name, array $attributes = NULL, array $errors = NULL)
- 	{
+	{
 		static::attributes($name, $attributes, $errors);
 
 		return parent::file($name, $attributes) . static::error_msg($name, $errors);

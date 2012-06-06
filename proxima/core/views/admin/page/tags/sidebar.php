@@ -5,12 +5,6 @@
 						Route::get('admin')
 							->uri(array(
 								'controller' => 'tags', 
-							)), __('Edit tags'));?>
-				</li>
-				<li><?php echo HTML::anchor(
-						Route::get('admin')
-							->uri(array(
-								'controller' => 'tags', 
 								'action' => 'add'
 							)), __('Add tag'));?>
 				</li>

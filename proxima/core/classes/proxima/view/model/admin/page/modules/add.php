@@ -4,13 +4,6 @@ class Proxima_View_Model_Admin_Page_Modules_Add extends View_Model_Admin {
 
 	protected $upload_types = array('tar', 'zip');
 
-	public function __construct($file = NULL, array $data = NULL)
-	{
-		parent::__construct($file, $data);
-
-		$this->breadcrumb(array('add', Request::current()->uri()));
-	}
-
 	public function var_allowed_upload_type()
 	{
 		return implode(', ', $this->upload_types);

@@ -21,11 +21,16 @@ class Proxima_View_Model_Admin_Master extends View_Model_Master {
 		$assets->group($request->action());
 
 		$controller = Request::current()->controller();
+		$action = Request::current()->action();
 
 		$this->breadcrumbs(array(
 			array('admin', Route::get('admin')->uri()),
 			array($controller, Route::get('admin')->uri(array('controller' => $controller)))
 		));
+		if ($action !== 'index')
+		{
+			$this->breadcrumb(array($action, Route::get('admin')->uri(array('controller' => $controller, 'action' => $action))));
+		}
 		
 		parent::__construct($file, $data, $assets);
 	}

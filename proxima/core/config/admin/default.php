@@ -11,18 +11,18 @@ return array(
 				'groups' => array(
 					'pages' => array(
 						'admin/pages' => array(
-							'text' => __('Manage Pages')
+							'text' => __('Manage pages')
 						),
 						'admin/pages/add' => array(
-							'text' => __('Add Page')
+							'text' => __('Add page')
 						),
 					),
 					'tags' => array(
 						'admin/tags' => array(
-							'text' => __('Manage Tags'),
+							'text' => __('Manage tags'),
 						),
 						'admin/tags/add' => array(
-							'text' => __('Add Tag'),
+							'text' => __('Add tag'),
 						),
 					)
 				)
@@ -32,29 +32,40 @@ return array(
 				'groups' => array(
 					'users' => array(
 						'admin/users' => array(
-							'text' => __('Manage Users'),
+							'text' => __('Manage users'),
 						),
 						'admin/users/add' => array(
-							'text' => __('Add User'),
+							'text' => __('Add user'),
 						),
 					),
 					'groups' => array(
 						'admin/groups' => array(
-							'text' => __('Manage Groups'),
+							'text' => __('Manage groups'),
 						),
 						'admin/groups/add' => array(
-							'text' => __('Add Group'),
+							'text' => __('Add group'),
 						),
 					),
 					'roles' => array(
 						'admin/roles' => array(
-							'text' => __('Manage Roles'),
-						)
+							'text' => __('Manage roles'),
+						),
+						'admin/roles/add' => array(
+							'text' => __('Add role'),
+						),
 					)
 				)
 			),
-			'admin/assets' => array(
-				'text' => __('Assets')
+			'#nav-assets' => array(
+				'text' => __('Assets'),
+				'pages' => array(
+					'admin/assets' => array(
+						'text' => __('Manage assets')
+					),
+					'admin/assets/upload' => array(
+						'text' => __('Upload assets')
+					)
+				)
 			),
 			'admin/config' => array(
 				'text' => __('Config'),

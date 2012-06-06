@@ -30,14 +30,15 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 			->content(
 				View_Model::factory('admin/page/modules/add', $request_data)
 				->bind('errors', $errors)
+				->bind('module', $module)
 			);
+			
+		$module = ORM::factory('module');
 
 		if ($this->request->method() === Request::POST)
 		{
 			$upload_fieldname = 'module_file';
 			$data = $_FILES + $this->request->post();
-
-			$module = ORM::factory('module');
 
 			// Upload a module
 			if (Arr::get($data, $upload_fieldname))
@@ -81,7 +82,7 @@ class Proxima_Controller_Admin_Modules extends Controller_Admin_Base {
 			}
 
 			// Add a github module
-			else if (Arr::get($data, 'github-url') !== NULL)
+			else if (Arr::get($data, 'github_url') !== NULL)
 			{
 	 			try
  	 	  	{

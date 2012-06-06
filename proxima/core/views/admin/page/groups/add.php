@@ -1,21 +1,47 @@
-<?php echo $breadcrumbs?>
+<div class="row-fluid">
 
-<?php echo Form::open(NULL, array('class' => 'ajax-validate'))?>
-	<fieldset class="last">
+  <div class="span3">
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">Actions</li>
+        <li><?php echo HTML::anchor(
+            Route::get('admin')
+              ->uri(array(
+                'controller' => 'groups',
+              )), __('Manage groups'));?>
+        </li>
+      </ul>
+    </div><!--/.well -->
+  </div>
 
-		<div class="field">
-			<?php echo 
-				Form::label('parent_id', __('Parent group'), NULL, $errors),
-				Form::select('parent_id', $groups, $group->parent_id, NULL, $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo 
-				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', $group->name, NULL, $errors)
-			?>
-		</div>
+  <div class="span9">
 
-		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
-	</fieldset>
-<?php echo Form::close()?>
+    <div class="page-header">
+      <h1>Add group</h1>
+    </div>
+
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+			<fieldset class="last">
+
+				<?php echo Form::control_group(array(
+					'label' => __('Parent group'),
+					'name' => 'parent_id',
+					'type' => 'select',
+					'options' => $groups,
+					'value' => $group->parent_id
+				), $errors);?>
+				
+				<?php echo Form::control_group(array(
+					'label' => __('Name'),
+					'name' => 'name',
+					'type' => 'input',
+					'value' => $group->name
+				), $errors);?>
+
+				<div class="form-actions">
+					<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+				</div>
+			</fieldset>
+		<?php echo Form::close()?>
+	</div>
+</div>

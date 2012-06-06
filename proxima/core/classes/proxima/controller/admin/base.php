@@ -26,5 +26,4 @@ class Proxima_Controller_Admin_Base extends Controller_Base {
 
 		$this->template->set('username', $user ? $user->username : NULL);
 	}
-
 } // End Controller_Admin_Base

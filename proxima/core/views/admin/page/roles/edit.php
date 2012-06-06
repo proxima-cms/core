@@ -1,66 +1,88 @@
-<div class="action-bar clear">
-	<a href="<?php echo URL::site(
-		Route::get('admin')
+
+<div class="row-fluid">
+
+	<div class="span3">
+		<div class="well sidebar-nav">
+			<ul class="nav nav-list">
+				<li class="nav-header">Actions</li>
+				<li><?php echo HTML::anchor(
+					Route::get('admin')
+					->uri(array(
+						'controller' => 'roles',
+						'action' => 'delete',
+						'id' => $role->id
+					)), __('Delete role'));?>
+					</li>
+			</ul>
+		</div><!--/.well -->
+	</div>
+
+	<div class="span9">
+
+		<div class="page-header">
+			<h1>Edit role</h1>
+		</div>
+
+<div id="addmodule" class="tabbable tabs-left"> <!-- Only required for left/right tabs -->
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#edit" data-toggle="tab">Edit role</a></li>
+    <li><a href="#manage" data-toggle="tab">Manage users in role</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="edit">
+
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+			<fieldset>
+
+		 		<?php echo Form::control_group(array(
+						'label' => __('Name'),
+						'name' => 'name',
+						'type' => 'input',
+						'value' => $role->name
+					), $errors);?>
+
+		 		<?php echo Form::control_group(array(
+						'label' => __('Description'),
+						'name' => 'description',
+						'type' => 'input',
+						'value' => $role->description
+					), $errors);?>
+	
+				<div class="form-actions">
+					<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+				</div>
+
+			</fieldset>
+		<?php echo Form::close()?>
+		</div>
+<div class="tab-pane" id="manage">
+
+			<?php echo $users; ?>
+
+		<hr />
+
+		<!-- ADD USER TO THIS ROLE -->
+		<?php echo Form::open(
+			Route::get('admin')
 			->uri(array(
 				'controller' => 'roles',
-				'action' => 'delete',
-				'id' => $role->id
-			))); ?>" id="delete-role" class="ui-button delete small helper-right">
-		<span><?php echo __('Delete role'); ?></span>
-	</a>
-	<script type="text/javascript">
-	(function($){
-		$('#delete-role').click(function(){
-			return confirm('<?php echo __('Are you sure you want to delete this role?')?>');
-		});
-	})(this.jQuery);
-	</script>
-
-	<?php echo $breadcrumbs?>
-</div>
-
-<?php echo Form::open()?>
-	<fieldset>
-
-		<div class="field">
-			<?php echo
-				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', $role->name, NULL, $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo
-				Form::label('description', __('Descripton'), NULL, $errors),
-				Form::input('description', $role->description, NULL, $errors)
-			?>
-		</div>
-
-		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
-	</fieldset>
-<?php echo Form::close()?>
-
-<!-- USERS IN THIS ROLE -->
-<fieldset>
-	<legend>Users in this role</legend>
-	<?php echo $users; ?>
-</fieldset>
-
-<!-- ADD USER TO THIS ROLE -->
-<?php echo Form::open(
-	Route::get('admin')
-	->uri(array(
-		'controller' => 'roles',
-		'action' => 'adduser'
-	)) . '?return_to=' . Request::current()->uri() );
-?>
-<?php echo Form::hidden('role_id', $role->id);?>
-<fieldset>
-	<legend><?php echo __('Add new user to this role'); ?></legend>
-	<div class="field">
-		<?php echo
-			Form::label('user_id', __('User'), NULL, $errors),
-			Form::select('user_id', $users_select, 0, NULL, $errors)
+				'action' => 'adduser'
+			)) . '?return_to=' . Request::current()->uri(), array('class' => 'form-horizontal'));
 		?>
+		<?php echo Form::hidden('role_id', $role->id);?>
+		<fieldset>
+		 		<?php echo Form::control_group(array(
+						'label' => __('Add user'),
+						'name' => 'user_id',
+						'type' => 'select',
+						'options' => $users_select,
+						'value' => 0
+					), $errors);?>
+			<div class="form-actions">
+				<?php echo Form::button('save-newuser', __('Add user'), array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+			</div>
+		</fieldset>
+</div>
+</div>
 	</div>
-	<?php echo Form::button('save-newuser', __('Add user'), array('type' => 'submit', 'class' => 'ui-button save'))?>
-</fieldset>
+</div>

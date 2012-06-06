@@ -3,7 +3,7 @@
 		<div class="well sidebar-nav">
 			<ul class="nav nav-list">
 				<li class="nav-header">Actions</li>
-				<li><?php echo HTML::anchor('admin/pages/create', __('Add page'))?></li>
+				<li><?php echo HTML::anchor('admin/pages/add', __('Add page'))?></li>
 				<li><?php echo HTML::anchor('admin/pages/types', __('Manage types'))?></li>
 				<li><?php echo HTML::anchor('admin/redirects', __('Page redirects'))?></li>
 			</ul>
