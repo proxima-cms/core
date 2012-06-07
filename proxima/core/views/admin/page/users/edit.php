@@ -1,134 +1,108 @@
-<div class="action-bar clear">
-	<a href="<?php echo URL::site(Route::get('admin')
-		->uri(array(
-			'controller' => 'users',
-			'action' => 'delete',
-			'id' => $user->id))); ?>" id="delete-user" class="button ui-button default helper-right">
-		<span>Delete user</span>
-	</a>
-	<script type="text/javascript">
-	(function($){
-		$('#delete-user').click(function(){
+<div class="row-fluid">
 
-			return confirm('<?php echo __('Are you sure you want to delete this user?')?>');
-		});
-	})(this.jQuery);
-	</script>
+	<div class="span3">
+		<div class="well sidebar-nav">
+			<ul class="nav nav-list">
+				<li class="nav-header">Actions</li>
+				<li><?php echo HTML::anchor(
+						Route::get('admin')
+							->uri(array(
+								'controller' => 'users', 
+							)), __('Manage users'));?>
+				</li>
+			</ul>
+		</div><!--/.well -->
+	</div>
 
-	<?php echo $breadcrumbs?>
+	<div class="span9">
+
+		<div class="page-header">
+			<h1>Edit user</h1>
+		</div>
+
+		<div id="edituser" class="tabbable tabs-left"> <!-- Only required for left/right tabs -->
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#edit" data-toggle="tab">Edit user</a></li>
+				<li><a href="#permissions" data-toggle="tab">User permissions</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="edit">
+
+					<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+						<fieldset>
+
+							<?php echo Form::control_group(array(
+								'name' => 'username',
+								'type' => 'input',
+								'label' => __('Username'),
+								'value' => $user->username,
+								), $errors);?>
+							
+							<?php echo Form::control_group(array(
+								'name' => 'email',
+								'type' => 'input',
+								'label' => __('Email'),
+								'value' => $user->email,
+								), $errors);?>
+							
+							<?php echo Form::control_group(array(
+								'name' => 'password',
+								'type' => 'password',
+								'label' => __('New password'),
+								), $errors);?>
+							
+							<?php echo Form::control_group(array(
+								'name' => 'password_confirm',
+								'type' => 'password',
+								'label' => __('Confirm password'),
+								), $errors);?>
+							
+							<?php echo Form::control_group(array(
+								'name' => 'lang',
+								'type' => 'select',
+								'label' => __('Language'),
+								'options' => $langs,
+								'value' => $user->lang,
+								), $errors);?>
+
+							<div class="control-group">
+								<?php echo Form::label('roles', __('Roles'), array('class' => 'control-label')); ?>
+								<div class="controls">
+									<?php foreach($roles as $role){?>
+										<label class="checkbox">
+											<?php echo
+												Form::checkbox('roles[]', $role->id, in_array($role->id, $user_roles), array('id' => 'role-'.$role->id)),
+												$role->name
+											?>
+										</label>
+									<?php }?>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<?php echo Form::label('groups', __('Groups'), array('class' => 'control-label')); ?>
+								<div class="controls">
+									<?php foreach($groups as $group){?>
+										<label class="checkbox">
+											<?php echo
+												Form::checkbox('groups[]', $role->id, in_array($group->id, $user_groups), array('id' => 'role-'.$group->id)),
+												$group->name
+											?>
+										</label>
+									<?php }?>
+								</div>
+							</div>
+
+							<div class="form-actions">
+								<?php echo Form::button('save', 'Update', array('class' => 'btn btn-primary'))?>
+							</div>
+						</fieldset>
+					<?php echo Form::close()?>
+				</div>
+				<div class="tab-pane" id="permissions">
+						<p>No permissions are saved for this user.</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
-<?php echo Form::open()?>
-	<fieldset>
-		<legend>Edit user</legend>
-		<div class="field">
-			<?php echo
-				Form::label('username', 'Username', NULL, $errors),
-				Form::input('username', Request::current()->post('username') ?: $user->username, array('class' => 'test'), $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo
-				Form::label('email', 'Email', NULL, $errors),
-				Form::input('email', Request::current()->post('email') ?: $user->email, array('type' => 'email'), $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo
-				Form::label('password', 'New password', NULL, $errors),
-				Form::password('password', NULL, NULL, $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo
-				Form::label('password_confirm', 'Confirm password', NULL, $errors),
-				Form::password('password_confirm', NULL, NULL, $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo
-				Form::label('lang', 'Language', NULL, $errors),
-				Form::select('lang', $langs, $user->lang, NULL, $errors)
-			?>
-		</div>
-	</fieldset>
-
-	<!-- ROLES -->
-	<fieldset>
-		<legend>
-			<?php echo __('Roles'); ?>
-			<span>[
-			<?php echo HTML::anchor(
-				Route::get('admin')
-					->uri(array(
-						'controller' => 'roles'
-					)), __('Manage'));
-			?>]
-			</span>
-		</legend>
-		<div class="field">
-			<?php foreach($roles as $role){?>
-			<div class="checkbox">
-				<?php echo
-					Form::checkbox('roles[]', $role->id, in_array($role->id, $user_roles), array('id' => 'role-'.$role->id)),
-					Form::label('role-'.$role->id, $role->name)
-				?>
-			</div>
-			<?php }?>
-		</div>
-	</fieldset>
-
-	<!-- GROUPS -->
-	<fieldset>
-		<legend>
-			<?php echo __('Groups'); ?>
-			<span>[
-			<?php echo HTML::anchor(
-				Route::get('admin')
-					->uri(array(
-						'controller' => 'groups'
-					)), __('Manage'));
-			?>]
-			</span>
-		</legend>
-		<div class="field">
-			<?php echo
-				Form::label('groups', __('Groups'))
-			?>
-			<?php foreach($groups as $group){?>
-			<div class="checkbox">
-				<?php echo
-					Form::checkbox('groups[]', $group->id, in_array($group->id, $user_groups), array('id' => 'group-'.$group->id)),
-					Form::label('group-'.$group->id, $group->name)
-				?>
-			</div>
-			<?php }?>
-		</div>
-	</fieldset>
-
-	<!-- PERMISSIONS -->
-	<fieldset>
-		<legend>
-			<?php echo __('Permissions'); ?>
-			<span>[
-			<?php echo HTML::anchor(
-				Route::get('admin')
-					->uri(array(
-						'controller' => 'permissions',
-						'action' => 'add'
-					)), __('Add'));
-			?> |
-			<?php echo HTML::anchor(
-				Route::get('admin')
-					->uri(array(
-						'controller' => 'permissions'
-					)), __('Manage'));
-			?>]
-			</span>
-		</legend>
-		<p>No overriding permissions are saved for this user.</p>
-	</fieldset>
-
-	<?php echo Form::button('save', 'Update', array('class' => 'ui-button save'))?>
-
-<?php echo Form::close()?>

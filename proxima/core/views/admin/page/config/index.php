@@ -20,7 +20,7 @@
 					<?php
 					echo Form::input(
 						"config-{$group}-{$item->config_key}", 
-						Request::current()->post('config-'.$group.'-'.$item->config_key) ?: $item->config_value, 
+						Request::current()->post('config-'.$group.'-'.$item->config_key) ?: ( is_array($item->config_value) ? NULL : $item->config_value),
 						NULL, 
 						$errors
 					);
