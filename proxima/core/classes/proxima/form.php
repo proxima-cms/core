@@ -12,7 +12,7 @@
  */
 class Proxima_Form extends Kohana_Form {
 
-	private static function attributes($name, & $attributes = NULL, $errors = NULL)
+	private static function attributes($name, $attributes = NULL, $errors = NULL, $error_cls = 'error-field')
 	{
 		// Set the id attribute
 		if (!isset($attributes['id']))
@@ -28,7 +28,7 @@ class Proxima_Form extends Kohana_Form {
 			// Set the error classname
 			if (isset($errors[$name]))
 			{
-				$attributes['class'] = trim( (string) @$attributes['class'].' error-field');
+				$attributes['class'] = trim( (string) @$attributes['class'].' '.$error_cls);
 			}
 		}
 	}
@@ -44,7 +44,7 @@ class Proxima_Form extends Kohana_Form {
 
 		if (isset($errors[$name]))
 		{
-			return ' ' . $cls;
+			return ' '.$cls;
 		}
 
 		return '';
@@ -128,7 +128,7 @@ class Proxima_Form extends Kohana_Form {
 	{
 		static::attributes($name, $attributes, $errors);
 
-		return parent::file($name, $attributes) . static::error_msg($name, $errors);
+		return parent::file($name, $attributes);
 	}
 
 	public static function label($input, $text = NULL, array $attributes = NULL, array $errors = NULL)
