@@ -93,7 +93,7 @@ class Proxima_Core {
 	  $uri_segments = explode('/', Request::current()->uri());
 		$links = Kohana::$config->load('admin/nav.links');
 		$html = '<ul class="nav">';
-
+		
 		foreach($links as $url => $page)
 		{
 			$has_dropdown = ( isset($page['pages']) || isset($page['groups']) );

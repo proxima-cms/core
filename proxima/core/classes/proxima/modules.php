@@ -20,9 +20,7 @@ class Proxima_Modules {
 		$config = "<?php defined('SYSPATH') or die('No direct script access.');\n\n"
 			. "/*\n * Auto generated on: " . date('l jS \of F Y h:i:s A') . "\n"
 			. " * Notes: ".implode("\n\n", $notes)."\n */\n\n"
-			. "return array(\n"
-			. $config;
-
+			. "return ".$config.";";
 
 		try
 		{
@@ -39,46 +37,7 @@ class Proxima_Modules {
 			throw $e;
 		}
 	}
-
-	// Get module config from the database and return
-	// the module config string.
-	private static function get_module_config()
-	{
-		// Get the enabled addon modules.
-		$modules = ORM::factory('module')
-			->where('enabled', '=', TRUE)
-			->order_by('order', 'ASC')
-			->find_all();
-
-		// Now build a string with the config array.
-		$config = '';
-		// Add the addon modules
-		foreach($modules as $module)
-		{
-			$config .= "\t'{$module->name}' => CORMODPATH.'{$module->name}',\n";
-		}
-
-		$config .= "\t'core' => CORPATH,\n";
-
-		// Add the default core modules.
-		foreach(Kohana::$config->load('default.modules') as $module)
-		{
-			$config .= "\t'{$module}' => ".($module === 'core' ? '' : "MODPATH.")."'{$module}',\n";
-	  }
-
-		$config .= ');';
-
-		// Find the modules config file path
-		$file_path = current(Kohana::find_file('config', 'modules'));
-
-		if ($file_path === FALSE)
-		{
-			$file_path = APPPATH.'config/modules'.EXT;
-		}
-
-		return array($file_path, $config);
-	}
-
+	
 	// Return the module config.
 	public static function config($module = '')
 	{
@@ -99,86 +58,81 @@ class Proxima_Modules {
 		return $config;
 	}
 
+
+	// Get module config from the database and return
+	// the module config string.
+	private static function get_module_config()
+	{
+		// Get the enabled addon modules.
+		$modules = ORM::factory('module')
+			->where('enabled', '=', TRUE)
+			->order_by('order', 'ASC')
+			->find_all();
+
+		$config = array();
+
+		// Add the addon modules
+		foreach($modules as $module)
+		{
+			$config[$module->name] = "CORMODPATH.{$module->name}";
+		}
+
+		$config['core'] = "CORPATH";
+
+		// Add the default core modules.
+		foreach(Kohana::$config->load('default.modules') as $module)
+		{
+			$config[$module] = ($module === 'core' ? '' : "MODPATH.").$module;
+	  }
+
+		$config = var_export($config, true);
+		$config = str_replace('\'CORMODPATH.', 'CORMODPATH.\'', $config);
+		$config = str_replace('\'MODPATH.', 'MODPATH.\'', $config);
+		$config = str_replace('\'CORPATH\'', 'CORPATH', $config);
+
+		if (($file_path = current(Kohana::find_file('config', 'modules'))) === FALSE)
+		{
+			$file_path = APPPATH.'config/modules'.EXT;
+		}
+
+		return array($file_path, $config);
+	}
+
 	// Returns the admin navigation config string
 	// It need lots of work.
 	private static function get_nav_config()
 	{
+		$links = Kohana::$config->load('admin/default.nav.links');
+
 		$modules = ORM::factory('module')
 			->where('enabled', '=', TRUE)
 			->find_all();
 
-		$config = "\t'links' => array(\n";
-
-		foreach(Kohana::$config->load('admin/default.nav.links') as $url => $module)
+		// Add the addon modues
+		foreach($modules as $module)
 		{
-			$module_text = $module['text'];
-			$config .= "\t\t'{$url}' => array(\n\t\t\t'text' => __('{$module_text}')";
+			$mod_config     = Modules::config($module->name);
+			$nav_name       = $module->nav_name;
+			$nav_controller = $module->nav_controller;
+			$admin_url      = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
+			$admin_name     = $module->nav_name ?: Arr::get($mod_config, 'name');
 
-			if (isset($module['pages']))
+			if (!Arr::get($mod_config, 'admin_nav'))
 			{
-				$config .= ",\n\t\t\t'pages' => array(\n";
-				foreach($module['pages'] as $url => $m)
-				{
-					$m_text = $m['text'];
-					$config .= "\t\t\t\t'{$url}' => array(\n\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t),\n";
-				}
-				$config .= "\t\t\t)";
-			}
-		
-			if (isset($module['groups']))
-			{
-				$config .= ",\n\t\t\t'groups' => array(\n";
-				foreach($module['groups'] as $group => $pages)
-				{
-					$config .= "\t\t\t\t'".$group."' => array(\n";
-
-					if ($group === 'Addon modules')
-					{
-						// Add the addon modues
-						foreach($modules as $module)
-						{
-							$mod_config     = Modules::config($module->name);
-							$nav_name       = $module->nav_name;
-							$nav_controller = $module->nav_controller;
-							$admin_url      = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
-							$admin_name     = $module->nav_name ?: Arr::get($mod_config, 'name');
-
-							if (!Arr::get($mod_config, 'admin_nav'))
-							{
-								continue;
-							}
-
-							$config .= "\t\t\t\t\t'{$admin_url}' => array(\n\t\t\t\t\t\t'text' => __('{$admin_name}')\n\t\t\t\t\t),\n";
-						}
-					}
-					else
-					{
-						foreach($pages as $url => $m)
-						{	
-							$m_text = $m['text'];
-							$config .= "\t\t\t\t\t'{$url}' => array(\n\t\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t\t),\n";
-						}
-					}
-
-					$config .= "\t\t\t\t),";
-				}
-				$config .= "\n\t\t\t),";
+				continue;
 			}
 
-			$config .= "\n\t\t),\n";
+			$links['#nav-modules']['groups']['Addon modules'][$admin_url] = array('text' => __($admin_name));
 		}
 
-		$config .= "\t)\n);";
-
-		// Get the admin module config file path.
-		$file_path = current(Kohana::find_file('config', 'admin/nav'));
-
-		if ($file_path === FALSE)
+		if (($file_path = current(Kohana::find_file('config', 'admin/nav'))) === FALSE)
 		{
 			$file_path = CORPATH.'admin/config/admin/nav'.EXT;
 		}
 
-		return array($file_path, $config);
+		$links = var_export(array('links' => $links), TRUE);
+
+		return array($file_path, $links);
 	}
 
 	// Re-generate the modules init config file and the
