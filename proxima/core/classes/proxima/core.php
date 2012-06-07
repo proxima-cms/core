@@ -84,7 +84,71 @@ class Proxima_Core {
 	}
 
 	/**
-	 * Returns the core media path for a given file.
+	 * Generates and returns the admin navigation markup
+	 *
+	 * @return	string  $html
+	 */
+	public static function admin_nav()
+	{
+	  $uri_segments = explode('/', Request::current()->uri());
+		$links = Kohana::$config->load('admin/nav.links');
+		$html = '<ul class="nav">';
+
+		foreach($links as $url => $page)
+		{
+			$has_dropdown = ( isset($page['pages']) || isset($page['groups']) );
+
+			$classes = ($url === Request::current()->uri() OR $url === $uri_segments[0].'/'.@$uri_segments[1])
+				? 'active '
+				: '';
+			$classes .= $has_dropdown ? 'dropdown' : '';
+
+			$html .= '<li class="'.$classes.'">';
+			$html .= HTML::anchor(
+					$url,
+					$page['text'] . ($has_dropdown ? ' <b class="caret"></b>' : ''),
+					array(
+						'data-toggle' => ($has_dropdown ? 'dropdown' : ''),
+						'class' => ($has_dropdown ? 'dropdown-toggle' : '')
+					));
+			
+			if ($has_dropdown)
+			{
+				$html .= '<ul class="dropdown-menu">';
+				
+				
+				if (isset($page['pages']))
+				{
+					foreach($page['pages'] as $suburl => $p)
+					{
+						$html .= '<li>'.HTML::anchor($suburl, $p['text']).'</li>';
+					}
+				}
+				
+				if(isset($page['groups']))
+				{
+					foreach($page['groups'] as $group => $pages)
+					{
+						$html .= '<li class="nav-header">'.ucfirst($group).'</li>';
+
+						foreach($pages as $suburl => $p)
+						{
+							$html .= '<li>'.HTML::anchor($suburl, $p['text']).'</li>';
+						}
+					}
+				}
+				$html .= '</ul>';
+			}
+			$html .= '</li>';
+		}
+
+		$html .= '</ul>';
+
+		return $html;
+	}
+
+	/**
+	 * Returns the media path for a given file/s
 	 *
 	 * @param		mixed		$file		File name
 	 * @param		bool		$root		Add the root application path?

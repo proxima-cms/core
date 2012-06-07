@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Wednesday 6th of June 2012 11:38:02 PM
+ * Auto generated on: Thursday 7th of June 2012 08:14:56 PM
  * Notes: Change the default admin navigation links in config/admin/default.php
  */
 
@@ -66,33 +66,28 @@ return array(
 				'admin/assets/upload' => array(
 					'text' => __('Upload assets')
 				),
-			),
+			)
 		),
 		'admin/config' => array(
 			'text' => __('Config')
 		),
-		'#nav-maintenance' => array(
-			'text' => __('Maintenance'),
+		'#nav-modules' => array(
+			'text' => __('Modules'),
 			'pages' => array(
-				'admin/logs' => array(
-					'text' => __('Logs')
+				'admin/modules' => array(
+					'text' => __('Manage modules')
 				),
-				'admin/cache' => array(
-					'text' => __('Cache')
-				),
-				'admin/redirects' => array(
-					'text' => __('Redirects')
-				),
-				'admin/components' => array(
-					'text' => __('Components')
+				'admin/modules/add' => array(
+					'text' => __('Add module')
 				),
 			),
-		),
-		'admin/modules' => array(
-			'text' => __('Modules')
-		),
-		'admin/blogimport' => array(
-			'text' => __('Blog import')
+			'groups' => array(
+				'Addon modules' => array(
+					'admin/blogimport' => array(
+						'text' => __('Blog import')
+					),
+				),
+			),
 		),
 	)
 );

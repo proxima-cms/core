@@ -99,7 +99,8 @@ class Proxima_Modules {
 		return $config;
 	}
 
-	// Get the admin navigation config for all enabled modules.
+	// Returns the admin navigation config string
+	// It need lots of work.
 	private static function get_nav_config()
 	{
 		$modules = ORM::factory('module')
@@ -112,6 +113,7 @@ class Proxima_Modules {
 		{
 			$module_text = $module['text'];
 			$config .= "\t\t'{$url}' => array(\n\t\t\t'text' => __('{$module_text}')";
+
 			if (isset($module['pages']))
 			{
 				$config .= ",\n\t\t\t'pages' => array(\n";
@@ -120,40 +122,50 @@ class Proxima_Modules {
 					$m_text = $m['text'];
 					$config .= "\t\t\t\t'{$url}' => array(\n\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t),\n";
 				}
-				$config .= "\t\t\t),";
+				$config .= "\t\t\t)";
 			}
-			else if (isset($module['groups']))
+		
+			if (isset($module['groups']))
 			{
 				$config .= ",\n\t\t\t'groups' => array(\n";
 				foreach($module['groups'] as $group => $pages)
 				{
 					$config .= "\t\t\t\t'".$group."' => array(\n";
-					foreach($pages as $url => $m)
-					{	
-						$m_text = $m['text'];
-						$config .= "\t\t\t\t\t'{$url}' => array(\n\t\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t\t),\n";
+
+					if ($group === 'Addon modules')
+					{
+						// Add the addon modues
+						foreach($modules as $module)
+						{
+							$mod_config     = Modules::config($module->name);
+							$nav_name       = $module->nav_name;
+							$nav_controller = $module->nav_controller;
+							$admin_url      = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
+							$admin_name     = $module->nav_name ?: Arr::get($mod_config, 'name');
+
+							if (!Arr::get($mod_config, 'admin_nav'))
+							{
+								continue;
+							}
+
+							$config .= "\t\t\t\t\t'{$admin_url}' => array(\n\t\t\t\t\t\t'text' => __('{$admin_name}')\n\t\t\t\t\t),\n";
+						}
 					}
+					else
+					{
+						foreach($pages as $url => $m)
+						{	
+							$m_text = $m['text'];
+							$config .= "\t\t\t\t\t'{$url}' => array(\n\t\t\t\t\t\t'text' => __('{$m_text}')\n\t\t\t\t\t),\n";
+						}
+					}
+
 					$config .= "\t\t\t\t),";
 				}
 				$config .= "\n\t\t\t),";
 			}
+
 			$config .= "\n\t\t),\n";
-		}
-
-		foreach($modules as $module)
-		{
-			$mod_config     = Modules::config($module->name);
-			$nav_name       = $module->nav_name;
-			$nav_controller = $module->nav_controller;
-			$admin_url      = 'admin/' . ( $module->nav_controller ?: strtolower($module->name) );
-			$admin_name     = $module->nav_name ?: Arr::get($mod_config, 'name');
-
-			if (!Arr::get($mod_config, 'admin_nav'))
-			{
-				continue;
-			}
-
-			$config .= "\t\t'{$admin_url}' => array(\n\t\t\t'text' => __('{$admin_name}')\n\t\t),\n";
 		}
 
 		$config .= "\t)\n);";

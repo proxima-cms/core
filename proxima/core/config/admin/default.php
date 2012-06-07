@@ -70,6 +70,7 @@ return array(
 			'admin/config' => array(
 				'text' => __('Config'),
 			),
+			/*
 			'#nav-maintenance' => array(
 				'text' => __('Maintenance'),
 				'pages' => array(
@@ -87,8 +88,20 @@ return array(
 					),
 				)
 			),
-			'admin/modules' => array(
+			*/
+			'#nav-modules' => array(
 				'text' => __('Modules'),
+				'pages' => array(
+					'admin/modules' => array(
+						'text' => __('Manage modules'),
+					),
+				 	'admin/modules/add' => array(
+						'text' => __('Add module')
+					)
+				),
+				'groups' => array(
+					'Addon modules' => array()
+				)
 			),
 		)
 	)
