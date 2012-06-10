@@ -12,7 +12,7 @@
  */
 class Proxima_Form extends Kohana_Form {
 
-	private static function attributes($name, $attributes = NULL, $errors = NULL, $error_cls = 'error-field')
+	private static function attributes($name,&$attributes = NULL, $errors = NULL, $error_cls = 'error-field')
 	{
 		// Set the id attribute
 		if (!isset($attributes['id']))

@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Friday 8th of June 2012 09:49:30 AM
+ * Auto generated on: Sunday 10th of June 2012 11:35:39 AM
  * Notes: Change the default admin navigation links in config/admin/default.php
  */
 
@@ -118,6 +118,10 @@ return array (
       array (
         'Addon modules' => 
         array (
+          'admin/blogimport' => 
+          array (
+            'text' => 'Blog import',
+          ),
         ),
       ),
     ),

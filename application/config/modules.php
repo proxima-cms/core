@@ -1,12 +1,12 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Friday 8th of June 2012 09:49:30 AM
+ * Auto generated on: Sunday 10th of June 2012 11:35:39 AM
  * Notes: 
  */
 
 return array (
-  'userguide' => CORMODPATH.'userguide',
+  'blogimport' => CORMODPATH.'blogimport',
   'theme-badsyntax' => CORMODPATH.'theme-badsyntax',
   'core' => CORPATH,
   'assets' => MODPATH.'assets',

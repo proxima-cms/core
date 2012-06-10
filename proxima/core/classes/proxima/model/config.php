@@ -20,7 +20,10 @@ class Proxima_Model_Config extends Model_Base {
 		{
 			$rules = unserialize($config->rules);
 
-			$data->rules('config-'.$config->group_name.'-'.$config->config_key, $rules);
+			if (is_array($rules))
+			{
+				$data->rules('config-'.$config->group_name.'-'.$config->config_key, $rules);
+			}
 		}
 
 		if (!$data->check())

@@ -23,27 +23,30 @@
 		})(),
 
 		showErrors = function(errors){
+
 			$fields.each(function(){
 
-				var $label = $('label[for="' + this.id + '"]'),
-						$label_error = $label.find('.label-error');
+				var 
+					$controlGroup = $(this).parents('.control-group'),
+					$controls = $controlGroup.find('.controls'),
+					$errorMsg = $controls.find('.help-inline')
+				;
 
 				if (errors[this.id]) {
 
-					if (!$label_error.length){
-						$label_error = $('<span class="label-error" />').appendTo($label);
+					if (!$errorMsg.length){
+						$errorMsg = $('<span class="help-inline" />').appendTo($controls);
 					}
 
-					$label_error
+					$errorMsg
 					.hide()
 					.html(errors[this.id])
 					.fadeIn();
 
-					$(this).addClass('error-field');
-
+					$controlGroup.addClass('error');
 				} else {
-					$label_error.remove();
-					$(this).removeClass('error-field');
+					$errorMsg.remove();
+					$controlGroup.removeClass('error');
 				}
 			});
 
@@ -99,8 +102,8 @@
 				}, 1500);
 
 				// Remove error messages
-				$('.label-error').remove();
-				$('.error-field').removeClass('error-field');
+				$('.error .help-inline').remove();
+				$('.error').removeClass('error');
 
 				$loading.fadeIn();
 				$signin.attr('disabled', 'disabled');

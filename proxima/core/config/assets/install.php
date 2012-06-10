@@ -2,7 +2,7 @@
 
 return array(
 	'page' => array(
-		array('style', 'proxima/'.Proxima::media('css/install/install.css'), 'head', 0),
+		array('style', Proxima::media('css/admin/global.css'), 'head', 0),
 		array('script', Proxima::media('js/libs/jquery/jquery-min.js'), 'head', 1),
 		array('script', Proxima::media('js/install/install.js'), 'body', 10),
 	)
