@@ -39,7 +39,7 @@
 							title="Sort by type"
 							href="<?php echo HTML::chars($header_link.'&sort=type')?>">
 							Type
-							<span class="ui-icon <?php echo ($order_by == 'type' AND $direction == 'asc') ? 'caret-up' : 'caret'?>"></span>
+							<span class="<?php echo ($order_by == 'type' AND $direction == 'asc') ? 'caret-up' : 'caret'?>"></span>
 						</a>
 					</th>
 					<th class="size">
@@ -47,7 +47,7 @@
 							title="Sort by size"
 							href="<?php echo HTML::chars($header_link.'&sort=filesize')?>">
 							Size
-							<span class="ui-icon <?php echo ($order_by == 'filesize' AND $direction == 'asc') ? 'caret-up' : 'caret'?>"></span>
+							<span class="<?php echo ($order_by == 'filesize' AND $direction == 'asc') ? 'caret-up' : 'caret'?>"></span>
 						</a>
 					</th>
 				</tr>

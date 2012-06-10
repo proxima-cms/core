@@ -28,10 +28,12 @@ Route::set('admin/get-asset', 'admin/assets/get_image_url/(<id>)(/<width>)(/<hei
 	));
 
 // Global media assets
+/*
 Route::set('media/assets', 'media/assets/<filename>', array(
 		'filename' => '.+'
 	))
 	->defaults(array());
+*/
 
 // Global media resized assets
 Route::set('media/assets/resized', 'media/assets/resized/<id>_<width>_<height>_<crop>_<filename>', array(

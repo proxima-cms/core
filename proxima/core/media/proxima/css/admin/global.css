@@ -5011,3 +5011,13 @@ footer {color:#999;}
 										     vertical-align: top;
 												     width: 0;
 														 }
+
+.datepicker-wrapper .icon-calendar {}
+
+
+ul.nav li.dropdown:hover ul.dropdown-menu{
+    display: block;    
+	
+	}
+
+	.dropdown-menu {margin-top:0;}

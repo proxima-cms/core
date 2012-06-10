@@ -75,15 +75,17 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 		{
 			try
 			{
+				// Add new tag
 				if ($this->request->post('add-new-tag') !== NULL)
 				{
 					$page->admin_add_tag($this->request->post());
 
 					Message::set(Message::SUCCESS, __('New tag successfully added.'));
 				}
+				// Update page
 				else
 				{
-					$page->update($this->request->post());
+					$page->admin_update($this->request->post());
 
 					Message::set(Message::SUCCESS, __('Page successfully updated.'));
 				}

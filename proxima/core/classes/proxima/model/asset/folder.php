@@ -2,11 +2,11 @@
 /**
  * Asset folder model
  *
- * @package    Proxima CMS
- * @category   Core
- * @author     Proxima CMS Team
+ * @package		 Proxima CMS
+ * @category	 Core
+ * @author		 Proxima CMS Team
  * @copyright  (c) 2011-2012 Proxima CMS Team
- * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ * @license		 https://raw.github.com/proxima-cms/core/master/LICENSE.md
  */
 class Proxima_Model_Asset_Folder extends Model_Base {
 
@@ -24,6 +24,7 @@ class Proxima_Model_Asset_Folder extends Model_Base {
 	public function rules()
 	{
 		return array(
+			'parent_id' => array(),
 			'name' => array(
 				array('not_empty'),
 				array('max_length', array(':value', array(255))),
@@ -34,6 +35,11 @@ class Proxima_Model_Asset_Folder extends Model_Base {
 	public function admin_add($data)
 	{
 		$this->values($data);
+
+		if (empty($this->parent_id))
+		{
+			unset($this->parent_id);
+		}
 
 		return $this->save();
 	}

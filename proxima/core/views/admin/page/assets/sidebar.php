@@ -12,25 +12,25 @@
 
 		<li class="<?php selected($links, 'all', 'active');?>">
 			<a href="<?php echo URL::site($links['links']['all']);?>" class="<?php selected($links, 'all');?>">
-				<span class="ui-icon ui-icon-folder-collapsed"></span>
+				<i class="icon-folder-close"></i>
 				All files
 			</a>
 		</li>
 		<li class="<?php selected($links, 'img', 'active');?>">
 			<a href="<?php echo URL::site($links['links']['img']);?>" class="<?php selected($links, 'img');?>">
-				<span class="ui-icon ui-icon-folder-collapsed"></span>
+				<i class="icon-folder-close"></i>
 				Images
 			</a>
 		</li>
 		<li class="<?php selected($links, 'doc', 'active');?>">
 			<a href="<?php echo URL::site($links['links']['doc']);?>" class="<?php selected($links, 'doc');?>">
-				<span class="ui-icon ui-icon-folder-collapsed"></span>
+				<i class="icon-folder-close"></i>
 				Documents
 			</a>
 		</li>
 		<li class="<?php selected($links, 'arc', 'active');?>">
 			<a href="<?php echo URL::site($links['links']['arc']);?>" class="<?php selected($links, 'arc');?>">
-				<span class="ui-icon ui-icon-folder-collapsed"></span>
+				<i class="icon-folder-close"></i>
 				Archives
 			</a>
 		</li>

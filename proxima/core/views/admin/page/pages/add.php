@@ -11,11 +11,13 @@
 
 	<div class="span9">
 
-<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+	<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
   <div class="page-header">
       <h1>Add page</h1>
     </div>
-
+		<div class="alert alert-info">
+			<strong>Note:</strong> You can add page content once the page has been created.
+   	</div>
 	<fieldset>
 		<div class="control-group<?php if (isset($errors['title']) || isset($errors['_external']['title'])){?> error<?php }?>">
 			<?php echo Form::label('title', __('Title'), array('class' => 'control-label'), $errors);?>

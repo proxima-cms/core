@@ -9,21 +9,21 @@
 		</div><!--/.well -->
 		<div class="well sidebar-nav">
 		<ul class="nav nav-list">
-		<li class="nav-header">Info</li>
-		<li>
-								<?php if ($page_published === TRUE){?>
-									<p>
-										<b class="icon-ok"></b>
-										This page is published.
-									</p>
-								<?php } else {?>
-									<p>
-										<b class="icon-warning-sign"></b>
-										This page is not published.
-									</p>
-								<?php }?>
-								</li>
-								</ul>
+			<li class="nav-header">Info</li>
+			<li>
+				<?php if ($page_published === TRUE){?>
+					<p>
+						<b class="icon-ok"></b>
+						This page is published.
+					</p>
+				<?php } else {?>
+					<p>
+						<b class="icon-warning-sign"></b>
+						This page is not published.
+					</p>
+				<?php }?>
+				</li>
+			</ul>
 		</div>
 	</div><!--/span-->
 
@@ -46,38 +46,32 @@
 			<div class="tab-content">
 
 				<div class="tab-pane" id="metadata">
-
 						<fieldset>
 							<legend>Metadata</legend>
-							<div class="control-group">
-								<?php echo Form::label('title', __('Title'), array('class' => 'control-label'), $errors);?>
-								<div class="controls">
-									<?php echo Form::input('title', $page->title, NULL, $errors) ?>
-								</div>
-							</div>
-							<div class="control-group">
-								<?php
-									echo
-									Form::label('uri', __('URI'), array('class' => 'control-label', 'style' => 'display:inline'), $errors);
-								?>
-								<div class="controls">
-								<?php 
-									echo
-									Form::input('uri', $page->uri, NULL, $errors)
-								?>
-								<div class="help-block">
-								<?php echo  
-									HTML::anchor('admin/pages/generate_uri?page_id='.$page->id, '[Generate]', array('id' => 'update-uri'));
-									?>
-									</div>
-								</div>
-							</div>
-							<div class="control-group">
-								<?php echo Form::label('description', __('Description'), array('class' => 'control-label'), $errors);?>
-								<div class="controls">
-									<?php echo Form::input('description', $page->description, NULL, $errors); ?>
-								</div>
-							</div>
+
+							<?php echo Form::control_group(array(
+								'name' => 'title',
+								'label' => __('Title'),
+								'type' => 'input',
+								'value' => $page->title,
+							), $errors);?>
+
+							<?php echo Form::control_group(array(
+								'name' => 'uri',
+								'label' => __('URI'),
+								'type' => 'input',
+								'value' => $page->uri,
+								'errors' => $errors,
+								'help-block' => HTML::anchor('admin/pages/generate_uri?page_id='.$page->id, '[Generate]', array('id' => 'update-uri'))
+							), $errors);?>
+							
+							<?php echo Form::control_group(array(
+								'name' => 'description',
+								'label' => __('Description'),
+								'type' => 'input',
+								'value' => $page->description,
+							), $errors);?>
+
 						</fieldset>
 				</div>
 
@@ -85,68 +79,50 @@
 			
 						<fieldset>
 							<legend>Publishing</legend>
-							<div class="control-group">
-								<div class="controls">
-</div>
-							</div>
-							<div class="control-group">
-								<?php echo
-									Form::label('visible_in_nav', __('Visible in nav?'), array('class' => 'control-label'), $errors);
-								?>
-								<div class="controls">
-									<?php
-									echo
-										Form::select('visible_in_nav', array(
-											0 => 'No',
-											1 => 'Yes'
-										), $page->visible_in_nav, NULL, $errors);
-									?>
-								</div>
-							</div>
-							<div class="control-group">
-								<?php echo
-									Form::label('status', __('Status'), array('class' => 'control-label'), $errors);
-								?>
-								<div class="controls">
-									<?php echo
-										Form::select('draft', $statuses, $page->draft, NULL, $errors);
-									?>
-								</div>
-							</div>
-							<div class="control-group datepicker-wrapper clear">
-									<?php echo
-										Form::label('visible_from', __('Visible from'), array('class' => 'control-label'), $errors);
-									?>
-								<div class="controls">
-									<?php echo
-										Form::input('visible_from', $page->visible_from, array('class' => 'datepicker'), $errors);
-									?>
-								</div>
-							</div>
-							<div class="control-group datepicker-wrapper clear">
-									<?php echo
-										Form::label('visible_to', __('Visible to'), array('class' => 'control-label'), $errors)
-									?>
-								<div class="controls">
-									<?php
-										$visible_to = $page->visible_to;
-										$visible_to_forever = ((bool) Arr::get(Request::current()->post(), 'visible_to_forever') OR !$visible_to);?>
-										<label class="checkbox">
-										<?php echo
-											Form::checkbox('visible_to_forever', 1, $visible_to_forever, array('style' => 'display:inline'), $errors).
-											__('Forever')
-											
-									?></label>
-									<?php echo
-										Form::input('visible_to', $page->visible_to, array('class' => 'datepicker'), $errors);
-									?>
-								</div>
-							</div>
+
+							<?php echo Form::control_group(array(
+								'name' => 'visible_in_nav',
+								'label' => __('Visible in nav?'),
+								'type' => 'select',
+								'options' => array('No', 'Yes'),
+								'value' => $page->visible_in_nav,
+							), $errors);?>
+							
+							<?php echo Form::control_group(array(
+								'name' => 'status',
+								'label' => __('Status'),
+								'type' => 'select',
+								'options' => $statuses,
+								'value' => $page->draft,
+							), $errors);?>
+							
+							<?php echo Form::control_group(array(
+								'name' => 'visible_from',
+								'label' => __('Visible from'),
+								'type' => 'input',
+								'value' => $page->visible_from,
+								'class' => 'datepicker'
+							), $errors);?>
+							
+							<?php 
+							$visible_to = $page->visible_to;
+							$visible_to_forever = ((bool) Arr::get(Request::current()->post(), 'visible_to_forever') OR !$visible_to);
+							$help_block = '<label class="checkbox">'
+								.Form::checkbox('visible_to_forever', 1, $visible_to_forever, array('style' => 'display:inline'), $errors)
+								.' '.__('Forever')
+								.'</label>';
+							echo Form::control_group(array(
+								'name' => 'visible_to',
+								'label' => __('Visible to'),
+								'type' => 'input',
+								'class' => 'datepicker',
+								'value' => $page->visible_to,
+								'help-block' => $help_block
+							), $errors);?>
 						</fieldset>
 
 				</div>
 				<div class="tab-pane" id="content">
-
 						<fieldset>
 							<legend>Content</legend>
 							<div class="control-group">
@@ -181,7 +157,7 @@
 								<?php echo Form::input('new-tag', '', NULL, $errors); ?>
 
 							<?php echo
-								Form::submit('add-new-tag', __('Add'), array('class' => 'ui-button save'), $errors);
+								Form::submit('add-new-tag', __('Add'), array('class' => 'btn'), $errors);
 							?>
 							</div>
 							</div>
@@ -241,8 +217,7 @@
 
 		<div class="form-actions">
 			<?php echo Form::submit('save', __('Update'), array('class' => 'btn btn-primary'))?>
-				<?php echo Form::submit('preview', __('Preview'), array('class' => 'btn'))?>
-				<?php echo Form::submit('publish', __('Publish'), array('class' => 'btn'))?>
+			<?php echo Form::submit('preview', __('Preview'), array('class' => 'btn'))?>
 		</div>
 
 		<?php echo Form::close()?>

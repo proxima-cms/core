@@ -9,7 +9,7 @@ class Proxima_View_Model_Admin_Page_Groups_Edit extends View_Model_Admin {
 
 	public function var_users()
 	{
-		return Request::factory('admin/users/list/'.$this->group->id)->execute();
+		return Request::factory('admin/users/list?by=group&id='.$this->group->id)->execute();
 	}
 	
 	public function var_users_select()

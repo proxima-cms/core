@@ -50,31 +50,32 @@ class Proxima_Form extends Kohana_Form {
 		return '';
 	}
 
-	public static function control_group($attributes = array(), $errors = array(), $view = 'admin/page/fragments/form_control')
+	public static function control_group($options = array(), $errors = array(), $view = 'admin/page/fragments/form_control')
 	{
-		$attributes = $attributes + array(
-			'label' => '',
-			'name' => '',
-			'type' => 'input',
-			'options' => array(),
-			'value' => ''
+		$options = $options + array(
+			'label' => '',          // Field label
+			'name' => '',           // Field name
+			'type' => 'input',      // Field type
+			'options' => array(),   // Select field options
+			'value' => '',          // Field value
+			'class' => NULL,        // Field css class name
+			'help-block' => NULL    // Field help-block content
 		);
 
-		$param = array($attributes['name']);
-
-		if ($attributes['type'] === 'select')
+		$field_options = array($options['name']);
+		if ($options['type'] === 'select')
 		{
-			$param[] = $attributes['options'];
+			$field_options[] = $options['options'];
 		}
+		$field_options[] = $options['value'];
+		$field_options[] = array('class' => $options['class']);
 
-		$param[] = $attributes['value'];
-
-		$field = call_user_func_array('Form::' . $attributes['type'], $param);
+		$field = call_user_func_array('Form::' . $options['type'], $field_options);
 
 		return View::factory($view, array(
 			'field' => $field,
-			'has_error' => isset($errors[$attributes['name']]),
-			'attributes' => $attributes,
+			'has_error' => isset($errors[$options['name']]),
+			'options' => $options,
 			'errors' => $errors
 		));
 	}

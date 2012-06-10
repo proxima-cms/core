@@ -2,16 +2,16 @@
 /**
  * Page model
  *
- * @package    Proxima CMS
- * @category   Core
- * @author     Proxima CMS Team
+ * @package		 Proxima CMS
+ * @category	 Core
+ * @author		 Proxima CMS Team
  * @copyright  (c) 2011-2012 Proxima CMS Team
- * @license    https://raw.github.com/proxima-cms/core/master/LICENSE.md
+ * @license		 https://raw.github.com/proxima-cms/core/master/LICENSE.md
  */
 class Proxima_Model_Page extends Model_Base {
 
 	protected $_belongs_to = array(
-		'parent'    => array('model' => 'page', 'foreign_key' => 'parent_id'),
+		'parent'		=> array('model' => 'page', 'foreign_key' => 'parent_id'),
 		'page_type'	=> array('model' => 'page_type', 'foreign_ley' => 'pagetype_id'),
 	);
 
@@ -178,7 +178,7 @@ class Proxima_Model_Page extends Model_Base {
 	{
 		$name = array('name' => $data['new-tag']);
 		$slug = array('slug' => URL::title($name['name']));
-		$tag  = ORM::factory('tag', $name);
+		$tag	= ORM::factory('tag', $name);
 
 		if (!$tag->loaded())
 		{

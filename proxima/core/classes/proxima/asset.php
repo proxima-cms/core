@@ -93,14 +93,8 @@ class Proxima_Asset {
 
 		if ($asset->mimetype->subtype == 'image' AND $width AND $height)
 		{
-			try
-			{
-				$image = Image::factory($path);
-			}
-			catch(Kohana_Exception $e)
-			{
-				throw new Kohana_Exception($e);
-			}
+			
+			$image = Image::factory($path);
 
 			if ($image->height > $height OR $image->width > $width)
 			{
