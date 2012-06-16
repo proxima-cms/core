@@ -933,6 +933,7 @@
 				`enabled` tinyint(4) NOT NULL DEFAULT '0',
 				`order` int(11) NOT NULL DEFAULT '-1',
 				`name` varchar(255) NOT NULL,
+				`github_url` varchar(255) NULL,
 				`nav_name` varchar(64) NOT NULL,
 				`nav_controller` varchar(64) NOT NULL,
 				`date_updated` timestamp NULL DEFAULT NULL,
