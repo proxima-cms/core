@@ -6,6 +6,8 @@
 		<?php echo View::factory('admin/page/fragments/messages') ?>
 
 		<?php if (Proxima::$is_installed){?>
+
+		<div class="well">
 				
 	<div class="page-header">
 				<h1>Warning</h1>
@@ -15,16 +17,18 @@
 			<p>
 				You need to disable this installer to continue.
 			</p>
-			<div class="form-actions" style="padding-top:.4em;padding-bottom:.6em">
-				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'disable'))).'?return_to='.Request::current()->query('return_to');?>" class="btn tick">
+			<hr />
+			<div class="" style="padding-top:.4em;padding-bottom:.6em">
+				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'disable'))).'?return_to='.Request::current()->query('return_to');?>" class="btn btn-primary">
 					<span></span>
 					Disable installer
 				</a>
 				&nbsp;&nbsp;
-				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'uninstall')));?>" class="btn uninstall" id="uninstall">
+				<a href="<?php echo URL::site(Route::get('install')->uri(array('action' => 'uninstall')));?>" class="btn" id="uninstall" style="float:right">
 					<span></span>
 					Uninstall CMS
 				</a>
+			</div>
 			</div>
 
 		<?php } else {?>

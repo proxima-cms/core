@@ -14,7 +14,6 @@
 				<tr>
 					<th>
 						<label for="tag-all">
-							<?php echo Form::checkbox('tag-all', '1', FALSE); ?>
 							Name
 						</label>
 					</th>
@@ -25,7 +24,6 @@
 				<?php foreach($items as $tag){?>
 				<tr>
 					<td>
-						<?php echo Form::checkbox('tag-'.$tag->id, '1', FALSE); ?>
 						<?php echo HTML::anchor(
 							Route::get('admin')
 								->uri(array(

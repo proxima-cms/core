@@ -212,17 +212,9 @@ class Proxima_Model_Page extends Model_Base {
 		}
 	}
 
-	public function admin_delete($id = NULL, $data)
+	public function admin_delete()
 	{
-		if ($id === NULL)
-		{
-			$data = Validation::factory($data);
-				//->callback('id', array($this, 'admin_check_id'));
-
-			if ( !$data->check()) return FALSE;
-		}
-
-		return parent::delete($id);
+		return $this->delete();
 	}
 
 	public function generate_uri($prefix = NULL)

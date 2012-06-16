@@ -985,6 +985,7 @@
 				`pagetype_id` int(11) unsigned NOT NULL,
 				`parent_id` int(11) unsigned NOT NULL,
 				`is_homepage` tinyint(1) unsigned DEFAULT '0',
+				`deletable` tinyint(1) unsigned DEFAULT '1',
 				`draft` tinyint(1) unsigned NOT NULL DEFAULT '1',
 				`visible_in_nav` tinyint(1) unsigned NOT NULL DEFAULT '1',
 				`title` varchar(128) NOT NULL,
@@ -1064,23 +1065,23 @@
 
 		// Home page
 		$db->query(NULL, "
-			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
-			VALUES (1, 2, 0, 1, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', CURRENT_TIMESTAMP, NULL)"
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `deletable`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 0, 1, 0, 0, 1, 'Home', '', 'Home page', '<p>Welcome to my website.</p>', CURRENT_TIMESTAMP, NULL)"
 		);
 		// Error 404 page
 		$db->query(NULL, "
-			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
-			VALUES (1, 2, 0, 0, 0, 0, 'Error 404', '404', 'Error 404', '<p>Error 404 - Not found</p>', CURRENT_TIMESTAMP, NULL)"
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `deletable`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 0, 0, 0, 0, 0, 'Error 404', '404', 'Error 404', '<p>Error 404 - Not found</p>', CURRENT_TIMESTAMP, NULL)"
 		);
 		// Error 403 page
 		$db->query(NULL, "
-			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
-			VALUES (1, 2, 0, 0, 0, 0, 'Error 403', '403', 'Error 403', '<p>Error 403 - No permission</p>', CURRENT_TIMESTAMP, NULL)"
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `deletable`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 0, 0, 0, 0, 0, 'Error 403', '403', 'Error 403', '<p>Error 403 - No permission</p>', CURRENT_TIMESTAMP, NULL)"
 		);
 		// Error 500 page
 		$db->query(NULL, "
-			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
-			VALUES (1, 2, 0, 0, 0, 0, 'Error 500', '500', 'Error 500', '<p>Error 500 - Internal server error</p>', CURRENT_TIMESTAMP, NULL)"
+			INSERT INTO `pages` (`user_id`, `pagetype_id`, `parent_id`, `is_homepage`, `deletable`, `draft`, `visible_in_nav`, `title`, `uri`, `description`, `body`, `visible_from`, `visible_to`)
+			VALUES (1, 2, 0, 0, 0, 0, 0, 'Error 500', '500', 'Error 500', '<p>Error 500 - Internal server error</p>', CURRENT_TIMESTAMP, NULL)"
 		);
 
 		$db->query(NULL, "
@@ -1122,6 +1123,7 @@
 					,`page`.`pagetype_id` AS `pagetype_id`
 					,`page`.`parent_id` AS `parent_id`
 					,`page`.`is_homepage` AS `is_homepage`
+					,`page`.`deletable` AS `deletable`
 					,`page`.`visible_in_nav` AS `visible_in_nav`
 					,`page`.`draft` AS `draft`
 					,`page`.`title` AS `title`
@@ -1138,7 +1140,11 @@
 					,`pagetype`.`description` AS `pagetype_description`
 					,`user`.`email` AS `user_email`
 					,`user`.`username` AS `user_username`,
-					group_concat(cast(`tags`.`id` as char charset utf8),'|',cast(`tags`.`user_id` as char charset utf8),'|',`tags`.`name`,'|',`tags`.`slug`,'|',cast(`tags`.`date` as char charset utf8) separator ',') AS `tags`
+					group_concat(
+						cast(`tags`.`id` as char charset utf8),'|',
+						cast(`tags`.`user_id` as char charset utf8),'|',`tags`.`name`,'|',`tags`.`slug`,'|',
+						cast(`tags`.`date` as char charset utf8) separator ','
+					) AS `tags`
 				from ((((`pages` `page` join `page_types` `pagetype` on((`page`.`pagetype_id` = `pagetype`.`id`)))
 				join `users` `user` on((`page`.`user_id` = `user`.`id`)))
 				left join `tags_pages` on((`page`.`id` = `tags_pages`.`page_id`)))

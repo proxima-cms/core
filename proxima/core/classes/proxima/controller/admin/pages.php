@@ -116,11 +116,24 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 			throw new Exception('Page not found');
 		}
 
+		// Check if this page can actually be deleted
+		if (!$page->deletable)
+		{
+			Message::set(Message::ERROR, __('This page can not be deleted.'));
+
+			$this->request->redirect($this->request->referrer());
+		}
+
 		$page->admin_delete();
 
 		Message::set(Message::SUCCESS, __('Page successully deleted.'));
 
-		$this->request->redirect('admin/pages');
+		$this->request->redirect(
+			Route::get('admin')
+			->uri(array(
+				'controller' => 'pages',
+			))
+		);
 	}
 
 	public function action_tree()
