@@ -39,7 +39,9 @@ $(function(){
 	})();
 
 	(function datepicker() {
-		$('.datepicker').datepicker().each(function(){
+		$('.datepicker').datepicker({
+			dateFormat: 'yy-mm-dd',
+		}).each(function(){
 			var $icon =  $('<button class="btn" type="button"><i class="icon-calendar"></i></button>').on('click', function(){
 				$icon.prev().focus();
 			});

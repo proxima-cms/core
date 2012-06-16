@@ -1,23 +1,50 @@
-<?php echo $breadcrumbs?>
+<div class="row-fluid">
 
-<?php echo Form::open()?>
+  <div class="span3">
+		<div class="well sidebar-nav">
+			<ul class="nav nav-list">
+				<li class="nav-header">Actions</li>
+				<li><?php echo HTML::anchor(
+						Route::get('admin')
+							->uri(array(
+								'controller' => 'assets/folders', 
+							)), __('Manage folders'));?>
+				</li>
+			</ul>
+	  </div><!--/.well -->
+  </div>
 
-	<fieldset>
-		<legend>Edit folder</legend>
-		<div class="field">
-			<?php echo 
-				Form::label('name', __('Name'), NULL, $errors).
-				Form::input('name', $folder->name, NULL, $errors)
-			?>
+  <div class="span9">
+
+		<div class="page-header">
+			<h1><?php echo __('Add asset folder');?></h1>
 		</div>
-		<div class="field">
-			<?php echo 
-				Form::label('parent_id', __('Parent folder'), NULL, $errors).
-				Form::select('parent_id', $folders, $folder->parent_id, NULL, $errors);
-			?>
-		</div>
-	</fieldset>
-	
-	<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
-	
-<?php echo Form::close()?>
+
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+
+			<fieldset>
+				<legend>New folder</legend>
+
+				<?php echo Form::control_group(array(
+					'label' => __('Name'),
+					'name' => 'name',
+					'type' => 'input',
+					'value' => $folder->name
+				), $errors);?>
+
+				<?php echo Form::control_group(array(
+					'label' => __('Parent folder'),
+					'name' => 'parent_id',
+					'type' => 'select',
+					'value' => $folder->parent_id,
+					'options' => $folders
+				), $errors);?>
+			</fieldset>
+			
+			<div class="form-actions">
+				<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+			</div>
+			
+		<?php echo Form::close()?>
+	</div>
+</div>

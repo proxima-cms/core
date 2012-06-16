@@ -6,7 +6,7 @@ class Proxima_View_Model_Admin_Page_Assets_Folders_Edit extends View_Model_Admin
 	public function var_folders()
 	{
 		return ORM::factory('asset_folder')
-			->tree_select(4, 0, array(__('None')), 0, 'name');
+			->tree_select(4, NULL, array(__('None')), 0, 'name');
 	}
 	
 }

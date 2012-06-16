@@ -78,8 +78,6 @@ class Proxima_Model_Page extends Model_Base {
 				array('date'),
 			),
 			'visible_to' => array(
-				array('not_empty'),
-				array('date'),
 			)
 		);
 	}
@@ -155,11 +153,6 @@ class Proxima_Model_Page extends Model_Base {
 	{
 		$tags = Arr::get($data, 'tags', array());
 
-		if (Arr::get($data, 'visible_to_forever', FALSE) !== FALSE)
-		{
-			$data['visible_to'] = NULL;
-		}
-
 		$validation = Validation::factory($data);
 
 		foreach ($this->update_rules() as $field => $rules)
@@ -168,6 +161,12 @@ class Proxima_Model_Page extends Model_Base {
 		}
 
 		$this->values($data);
+
+		if (!$this->visible_to)
+		{
+			$this->visible_to = NULL;
+		}
+
 		$this->save($validation);
 		$this->update_tags($tags);
 

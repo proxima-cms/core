@@ -117,7 +117,7 @@ class Proxima_View_Model_Admin_Page_Assets_Index extends View_Model_Admin {
 	// Return a folder tree select array.
 	public function var_folders()
 	{
-		return ORM::factory('asset_folder')->tree_select(4, 0, array(__('None')), 0, 'name');
+		return ORM::factory('asset_folder')->tree_select(4, NULL, array(__('None')), 0, 'name');
 	}
 
 	// Return a folder tree select array, with filter url strings for the <option> values.
@@ -129,7 +129,7 @@ class Proxima_View_Model_Admin_Page_Assets_Index extends View_Model_Admin {
 
 		$query = Request::current()->query();
 
-		return ORM::factory('asset_folder')->tree_select(4, 0, array(__('None')), 0, 'name',
+		return ORM::factory('asset_folder')->tree_select(4, NULL, array(__('None')), 0, 'name',
 			function($folder) use ($links, $uri, $query)
 			{
 				$query['folder'] = $folder->id;

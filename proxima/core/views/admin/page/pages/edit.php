@@ -105,19 +105,12 @@
 							), $errors);?>
 							
 							<?php 
-							$visible_to = $page->visible_to;
-							$visible_to_forever = ((bool) Arr::get(Request::current()->post(), 'visible_to_forever') OR !$visible_to);
-							$help_block = '<label class="checkbox">'
-								.Form::checkbox('visible_to_forever', 1, $visible_to_forever, array('style' => 'display:inline'), $errors)
-								.' '.__('Forever')
-								.'</label>';
 							echo Form::control_group(array(
 								'name' => 'visible_to',
 								'label' => __('Visible to'),
 								'type' => 'input',
 								'class' => 'datepicker',
 								'value' => $page->visible_to,
-								'help-block' => $help_block
 							), $errors);?>
 						</fieldset>
 
@@ -126,7 +119,7 @@
 						<fieldset>
 							<legend>Content</legend>
 							<div class="control-group">
-								<textarea id="body" class="wysiwyg" style="width:90%">
+								<textarea id="body" name="body" class="wysiwyg" style="width:90%">
 									<?php echo $page->body; ?>
 								</textarea>
 							</div>

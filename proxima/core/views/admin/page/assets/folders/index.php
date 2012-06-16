@@ -30,7 +30,6 @@
 				<?php foreach($items as $folder){?>
 				<tr>
 					<td>
-						<?php echo Form::checkbox('folder-'.$folder->id, '1', FALSE); ?>
 						<?php echo HTML::anchor(Route::get('admin/assets-folders')->uri(array('action' => 'edit', 'id' => $folder->id)), $folder->name)?>
 					</td>
 					<td><?php echo $folder->friendly_date?></td>

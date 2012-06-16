@@ -17,7 +17,7 @@
   <div class="span9">
 
 		<div class="page-header">
-			<h1>Add user</h1>
+			<h1><?php echo __('Add asset folder');?></h1>
 		</div>
 
 		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
@@ -26,12 +26,14 @@
 
 			<fieldset>
 				<legend>New folder</legend>
+
 				<?php echo Form::control_group(array(
 					'label' => __('Name'),
 					'name' => 'name',
 					'type' => 'input',
 					'value' => $folder->name
 				), $errors);?>
+
 				<?php echo Form::control_group(array(
 					'label' => __('Parent folder'),
 					'name' => 'parent_id',

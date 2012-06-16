@@ -89,7 +89,7 @@
 		$db->query(NULL, "
 			CREATE TABLE IF NOT EXISTS `assets_folders` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`parent_id` int(11) unsigned NOT NULL DEFAULT 0,
+				`parent_id` int(11) unsigned NULL DEFAULT NULL,
 				`name` varchar(255) NOT NULL,
 				`date_updated` timestamp NULL DEFAULT NULL,
 				`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

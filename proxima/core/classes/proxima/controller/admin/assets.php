@@ -118,10 +118,10 @@ class Proxima_Controller_Admin_Assets extends Controller_Admin_Base {
 
 		if (!$asset->loaded())
 		{
-			exit;
+			throw new HTTP_Exception_404('Not found');
 		}
 
-		$this->response->send_file($asset->path(TRUE), $asset->friendly_filename);
+		$this->response->send_file($asset->path());
 	}
 
 	public function action_delete($id = NULL, $set_message = TRUE)
