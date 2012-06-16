@@ -1,39 +1,57 @@
-<div class="action-bar clear">
-	<div class="action-menu helper-right">
-		<button>Actions</button>
-		<ul>
-			<li>
-				<?php echo HTML::anchor(
-					Route::get('admin')
-						->uri(array(
-							'controller' => 'tags',
-							'action' => 'delete',
-							'id' => $tag->id
-						)), __('Delete tag'), array('id' => "delete-tag", 'class' => "button delete small"));
-				?>
-			</li>
-		</ul>
+
+<div class="row-fluid">
+
+  <div class="span3">
+		<div class="well sidebar-nav">
+			<ul class="nav nav-list">
+				<li class="nav-header">Actions</li>
+				<li><?php echo HTML::anchor(
+						Route::get('admin')
+							->uri(array(
+								'controller' => 'tags', 
+								'action' => 'add'
+							)), __('Add tag'));?>
+				</li>
+				<li>
+					<?php echo HTML::anchor(
+						Route::get('admin')
+							->uri(array(
+								'controller' => 'tags',
+								'action' => 'delete',
+								'id' => $tag->id
+							)), __('Delete tag'), array('id' => "delete-tag", 'class' => "button delete small"));
+					?>
+				</li>
+			</ul>
+	  </div><!--/.well -->
+  </div>
+
+  <div class="span9">
+	
+		<div class="page-header">
+			<h1>Edit tag</h1>
+		</div>
+
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+			<fieldset>
+
+				<?php echo Form::control_group(array(
+					'name' => 'name',
+					'label' => __('Name'),
+					'value' => $tag->name,
+				), $errors);?>
+				
+				<?php echo Form::control_group(array(
+					'name' => 'slug',
+					'label' => __('Slug'),
+					'value' => $tag->slug,
+				), $errors);?>
+
+				<div class="form-actions">
+					<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+				</div>
+
+			</fieldset>
+		<?php echo Form::close()?>
 	</div>
-	<?php echo $breadcrumbs?>
 </div>
-
-<?php echo Form::open(NULL)?>
-	<fieldset class="last">
-		
-		<div class="field">
-			<?php echo 
-				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name',  $tag->name, NULL, $errors)
-			?>
-		</div>
-		
-		<div class="field">
-			<?php echo 
-				Form::label('slug', __('Slug'), NULL, $errors),
-				Form::input('slug', $tag->slug, NULL, $errors)
-			?>
-		</div>
-
-		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
-	</fieldset>
-<?php echo Form::close()?>
