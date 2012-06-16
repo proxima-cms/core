@@ -9,7 +9,7 @@
 				ed.windowManager.open({
 					file : ed.settings.file_browser_url,
 					title: 'Asset Manager',
-					width : 680,
+					width : 720,
 					height : 462,
 					inline: 1,
 					popup_css : false

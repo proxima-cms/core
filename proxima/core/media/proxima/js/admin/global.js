@@ -49,5 +49,14 @@ $(function(){
 		});
 	})();
 
+	(function tablescroller() {
+		 $('.assetmanager .table').tableScroll({
+		 	height: 430,
+			containerClass: 'table table-bordered table-striped tablescroll',
+			width: '100%',
+			flush: true
+		});
+	})();
+
 
 });

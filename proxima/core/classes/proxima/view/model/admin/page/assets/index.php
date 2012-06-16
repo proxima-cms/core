@@ -96,6 +96,12 @@ class Proxima_View_Model_Admin_Page_Assets_Index extends View_Model_Admin {
 		return $assets->find_all();
 	}
 
+	// Return the count of all assets
+	public function var_total_assets()
+	{
+		return count( ORM::factory('asset')->find_all() );
+	}
+
 	// Return the current folder.
 	public function var_cur_folder()
 	{

@@ -5022,3 +5022,37 @@ ul.nav li.dropdown:hover ul.dropdown-menu{
 
 	.dropdown-menu {margin-top:0;}
 	#loading{display:none;}
+
+	.assetmanager .container-fluid { max-width: 100%; min-width: 0; padding: 0}
+	.assetmanager body {padding:0;}
+
+
+	.ui-dialog .ui-dialog-titlebar {padding: 5px 7px !important;}
+
+	.ui-dialog .ui-dialog-content {padding: 10px 12px 0 12px !important;}
+
+	.assetmanager .sidebar-nav {padding: 5px 0px;}
+	.assetmanager .sidebar-nav select {width:160px;}
+	.assetmanager .table .type {width:70px;}
+	.assetmanager .table .size {width:70px;}
+	.assetmanager .table {margin:0;}
+
+.tablescroll {
+}
+ 
+.tablescroll_wrapper,
+.tablescroll_head,
+.tablescroll_foot { 
+border:0;
+}
+ 
+.tablescroll td {
+    padding:3px 5px;
+    border-bottom:0;
+    border-right:0; 
+}
+
+
+.table-bordered thead:first-child tr:first-child th:first-child, .table-bordered tbody:first-child tr:first-child td:first-child {
+border-radius: 0;
+}

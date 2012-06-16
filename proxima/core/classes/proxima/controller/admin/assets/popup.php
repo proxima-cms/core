@@ -16,16 +16,16 @@ class Proxima_Controller_Admin_Assets_Popup extends Controller_Admin_Assets {
 	{
 		parent::before();
 
-		$this->template
-			->scripts(array(Kohana::$config->load('admin/assets/popup.scripts')))
-			->styles(array(Kohana::$config->load('admin/assets.styles')));
+		//$this->template
+		//	->scripts(array(Kohana::$config->load('admin/assets/popup.scripts')))
+		//	->styles(array(Kohana::$config->load('admin/assets.styles')));
 	}
 
 	public function action_index($view = 'admin/page/assets/index')
 	{
 		parent::action_index('admin/page/assets/popup/index');
 
-		$this->template->scripts(array(Kohana::$config->load('admin/media.paths.tinymce_popup')));
+		//$this->template->scripts(array(Kohana::$config->load('admin/media.paths.tinymce_popup')));
 	}
 
 	public function action_upload($view_path = 'admin/page/assets/popup/upload', $redirect_to = 'admin/assets/popup#browse')

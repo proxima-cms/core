@@ -68,7 +68,7 @@ class Proxima_Controller_Admin_Pages extends Controller_Admin_Base {
 
 		if (!$page->loaded())
 		{
-			throw new Request_Exception('Page not found.');
+			throw new HTTP_Exception_404('Page not found.');
 		}
 
 		if ($this->request->method() === Request::POST)

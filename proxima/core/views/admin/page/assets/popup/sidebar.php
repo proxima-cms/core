@@ -1,58 +1,63 @@
 <?php
 	function selected($links, $group, $val = 'selected')
 	{
+		echo $links['cur_url']. ' test ';
 		echo ($links['cur_url'] === $links['links'][$group]) ? $val : NULL;
 	}
 ?>
 
-<!-- FILTERS -->
-<div class="section first clear">
-	<h3>Filters</h3>
-	<ul class="folder-list">
-		<li class="<?php selected($links, 'all', 'ui-state-default ui-corner-all');?>">
-			<a href="<?php echo URL::site($links['links']['all']);?>" class="<?php selected($links, 'all');?>">
-				<span class="ui-icon ui-icon-folder-collapsed"></span>
-				All files
-			</a>
-		</li>
-		<li class="<?php selected($links, 'img', 'ui-state-default ui-corner-all');?>">
-			<a href="<?php echo URL::site($links['links']['img']);?>" class="<?php selected($links, 'img');?>">
-				<span class="ui-icon ui-icon-folder-collapsed"></span>
-				Images
-			</a>
-		</li>
-		<li class="<?php selected($links, 'doc', 'ui-state-default ui-corner-all');?>">
-			<a href="<?php echo URL::site($links['links']['doc']);?>" class="<?php selected($links, 'doc');?>">
-				<span class="ui-icon ui-icon-folder-collapsed"></span>
-				Documents
-			</a>
-		</li>
-		<li class="<?php selected($links, 'arc', 'ui-state-default ui-corner-all');?>">
-			<a href="<?php echo URL::site($links['links']['arc']);?>" class="<?php selected($links, 'arc');?>">
-				<span class="ui-icon ui-icon-folder-collapsed"></span>
-				Archives
-			</a>
-		</li>
-	</ul>
-</div>
+<?php if ($total_assets > 0){?>
+	<!-- FILTERS -->
+ 	<div class="well sidebar-nav">
+		 <ul class="nav nav-list">
+			 <li class="nav-header">Filters</li>
 
-<!-- FOLDERS -->
-<div class="section clear">
-	<h3>
-		Folders
-	</h3>
-	<?php echo Form::select('folders', $folders, $cur_folder);?>
+			<li class="<?php selected($links, 'all', 'active');?>">
+				<a href="<?php echo URL::site($links['links']['all']);?>" class="<?php selected($links, 'all');?>">
+					<i class="icon-folder-close"></i>
+					All files
+				</a>
+			</li>
+			<li class="<?php selected($links, 'img', 'active');?>">
+				<a href="<?php echo URL::site($links['links']['img']);?>" class="<?php selected($links, 'img');?>">
+					<i class="icon-folder-close"></i>
+					Images
+				</a>
+			</li>
+			<li class="<?php selected($links, 'doc', 'active');?>">
+				<a href="<?php echo URL::site($links['links']['doc']);?>" class="<?php selected($links, 'doc');?>">
+					<i class="icon-folder-close"></i>
+					Documents
+				</a>
+			</li>
+			<li class="<?php selected($links, 'arc', 'active');?>">
+				<a href="<?php echo URL::site($links['links']['arc']);?>" class="<?php selected($links, 'arc');?>">
+					<i class="icon-folder-close"></i>
+					Archives
+				</a>
+			</li>
 
-	<script type="text/html" id="folder-uri-template">
-		<?php echo $folder_uri_template, "\n" ?>
-	</script>
-</div>
+			 <li class="nav-header">
+				Folders
+			</li>
+			<li>
+				<?php echo Form::select('folders', $folders, $cur_folder);?>
+			</li>
+		</ul>
+	</div>
 
-<!-- SEARCH -->
-<div class="section clear">
-	<h3>Search</h3>
-	<?php echo Form::open('admin/assets/popup', array('class' => 'ui-helper-clearfix', 'style' => 'padding-bottom:6px'))?>
-		<?php echo Form::input('search', $search, array('class' => 'helper-left', 'style' => 'width: 125px'))?>
-		<?php echo Form::button('search-submit', 'Go', array('class' => 'helper-left ui-button default'))?>
-	<?php echo Form::close()?>
-</div>
+	<!-- SEARCH -->
+	<div class="well sidebar-nav">
+		<ul class="nav nav-list">
+			 <li class="nav-header">Search</li>
+			 <li>
+		<?php echo Form::open(Route::get('admin')->uri(array('controller' => 'assets/popup')).'?search=1', array('class' => 'ui-helper-clearfix', 'style' => 'padding-bottom:6px;margin:0;'))?>
+		<div class="input-append">
+			<?php echo Form::input('search', $search, array('class' => 'helper-left', 'style' => 'width: 140px'))?>
+			<?php echo Form::button('search-submit', 'Go', array('class' => 'btn'))?>
+			</div>
+		<?php echo Form::close()?>
+		</li>
+		</ul>
+	</div>
+<?php }?>

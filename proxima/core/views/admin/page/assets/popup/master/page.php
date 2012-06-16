@@ -1,42 +1,21 @@
-<!doctype html>
-<html lang="en" class="no-js admin <?php echo Kohana::$environment?> <?php echo str_replace('_', ' ', Request::current()->controller())?> assetmanager popup" dir="ltr">
+
+<!DOCTYPE html>
+<html lang="en" class="no-js admin assetmanager popup<?php echo Kohana::$environment?> <?php echo Request::current()->controller()?>" dir="ltr">
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php echo $title ?></title>
-	<?php echo implode("\n\t", array_map('HTML::style', $styles)), "\n"?>
-	<?php echo implode("\n\t", array_map('HTML::script', $scripts)), "\n"?>
+	<?php echo implode("\n\t", $assets->get('head')); ?>
 </head>
-	<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
-	<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
-	<!--[if IE 8 ]>    <body class="ie8"> <![endif]-->
-	<!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
-	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
-	<div id="content">	
-		<?php echo Message::render('admin/message/popup') ?>
-		<?php echo $content ?>
+<body>
+
+	<div class="container-fluid">
+		<?php echo Message::render( new View('admin/message/popup')) ?>
+		<?php echo $content ;?>
+		<?php echo View::factory('admin/page/assets/popup/fragments/footer') ?>
 	</div>
 
-	<script type="text/javascript">
-		(function($){
-
-			var AppConfig = {
-				environment: '<?php echo Kohana::$environment === Kohana::DEVELOPMENT ? 'development' : 'production'; ?>',
-				route: {
-					controller: '<?php echo Request::current()->controller(); ?>',
-					directory:  '<?php echo Request::current()->directory(); ?>',
-					action:     '<?php echo Request::current()->action(); ?>'
-				},
-				CORPATH: '<?php echo '/', str_replace(DOCROOT, '', CORPATH); ?>',
-				MODPATH: '<?php echo '/', str_replace(DOCROOT, '', MODPATH); ?>'
-			};
-	
-			$(function(){
-				new App(AppConfig).route(window.AppRoutes);
-			});
-
-		})(this.jQuery);
-	</script>
-	<!-- {execution_time} - {memory_usage} -->
+	<?php echo implode("\n\t", $assets->get('body')); ?>
 </body>
 </html>
