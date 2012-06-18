@@ -1,42 +1,62 @@
-<?php echo $breadcrumbs?>
+<div class="row-fluid">
 
-<?php echo Form::open(NULL)?>
-	<fieldset class="last">
-		
-		<div class="field">
-			<?php echo 
-				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', $page_type->name, NULL, $errors)
-			?>
-		</div>
-		
-		<div class="field">
-			<?php echo 
-				Form::label('description', __('Description'), NULL, $errors),
-				Form::input('description', $page_type->description, NULL, $errors)
-			?>
-		</div>
-		
-		<div class="field">
-			<?php echo 
-				Form::label('template', __('Template'), NULL, $errors),
-				Form::select('template', $templates, $page_type->template, NULL, $errors)
-			?>
+  <div class="span3">
+			
+		<div class="well sidebar-nav">
+			<ul class="nav nav-list">
+				<li class="nav-header">Actions</li>
+				<li><?php echo HTML::anchor(
+						Route::get('admin')
+							->uri(array(
+								'controller' => 'pages/types', 
+							)), __('View page types'));?>
+				</li>
+			</ul>
+	  </div><!--/.well -->
+  </div>
+
+  <div class="span9">
+	
+		<div class="page-header">
+			<h1>Add page type</h1>
 		</div>
 
-		<div class="field">
-			<?php echo 
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+			<fieldset>
 
-				Form::label('controller', __('Controller'), array('style' => 'display:inline'), $errors),
-		
-				'&nbsp;&nbsp;&nbsp;',
-				HTML::anchor('admin/pages/types/generate_controller?name=default', '[Default]', array('id' => 'generate-controller')).'<br/>',
+				<?php echo Form::control_group(array(
+					'name' => 'name',
+					'label' => __('Name'),
+					'value' => $page_type->name
+				), $errors);?>
+				
+				<?php echo Form::control_group(array(
+					'name' => 'description',
+					'label' => __('Description'),
+					'value' => $page_type->description
+				), $errors);?>
+				
+				<?php echo Form::control_group(array(
+					'name' => 'template',
+					'label' => __('Template'),
+					'value' => $page_type->template,
+					'type' => 'select',
+					'options' => $templates
+				), $errors);?>
+				
+				<?php echo Form::control_group(array(
+					'name' => 'controller',
+					'label' => __('Controller'),
+					'value' => $page_type->controller,
+					'help-block' => HTML::anchor('admin/pages/types/generate_controller?name=default', '[Default]', array('id' => 'generate-controller')).'<br/>',
+				), $errors);?>
+				
+				<div class="form-actions">
+					<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+				</div>
 
-				Form::input('controller', $page_type->controller, NULL, $errors)
-			?>	
-		</div>
+			</fieldset>
+		<?php echo Form::close()?>
+	</div>
+</div>
 
-		<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
-
-	</fieldset>
-<?php echo Form::close()?>

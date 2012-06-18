@@ -1,100 +1,110 @@
-<div class="action-bar clear">
-	<div class="action-menu helper-right">
-		<button>Actions</button>
-		<ul>
-			<li>
-				<a href="<?php echo URL::site(Route::get('admin/pages-types')->uri(array('action' => 'delete', 'id' => $page_type->id))); ?>" id="delete-page_type" class="button delete small helper-right">
-					<span>Delete page_type</span>
-				</a>
-			</li>
-		</ul>
-	</div>
-	<?php echo $breadcrumbs?>
-</div>
 
-<?php echo Form::open()?>
-	<fieldset>
+<div class="row-fluid">
 
-		<legend>Page type</legend>
+  <div class="span3">
+			
+		<div class="well sidebar-nav">
+			<ul class="nav nav-list">
+				<li class="nav-header">Actions</li>
+				<li>
+					<a href="<?php echo URL::site(Route::get('admin/pages-types')
+						->uri(array('action' => 'delete', 'id' => $page_type->id))); ?>" id="delete-page_type" class="button delete small helper-right">
+						<span>Delete page type</span>
+					</a>
+				</li>
+			</ul>
+	  </div><!--/.well -->
+  </div>
 
-		<div class="field">
-			<?php echo
-				Form::label('name', __('Name'), NULL, $errors),
-				Form::input('name', $page_type->name, NULL, $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo
-				Form::label('description', __('Descripton'), NULL, $errors),
-				Form::input('description', $page_type->description, NULL, $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo
-				Form::label('template', __('Template'), NULL, $errors),
-				Form::select('template', $templates, $page_type->template, NULL, $errors)
-			?>
-		</div>
-		<div class="field">
-			<?php echo
-				Form::label('controller', __('Controller'), array('style' => 'display:inline'), $errors),
-
-				'&nbsp;&nbsp;&nbsp;',
-				HTML::anchor('admin/pages/types/generate_controller?name=default&page_type_id'.$page_type->id, '[Default]', array('id' => 'generate-controller')).'<br/>',
-
-				Form::input('controller', $page_type->controller, NULL, $errors)
-			?>
+  <div class="span9">
+	
+		<div class="page-header">
+			<h1>Add page type</h1>
 		</div>
 
-		<?php echo Form::button('save-type', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+			<fieldset>
 
-	</fieldset>
+				<?php echo Form::control_group(array(
+					'name' => 'name',
+					'label' => __('Name'),
+					'value' => $page_type->name
+				), $errors);?>
+				
+				<?php echo Form::control_group(array(
+					'name' => 'description',
+					'label' => __('Description'),
+					'value' => $page_type->description
+				), $errors);?>
+				
+				<?php echo Form::control_group(array(
+					'name' => 'template',
+					'label' => __('Template'),
+					'value' => $page_type->template,
+					'type' => 'select',
+					'options' => $templates
+				), $errors);?>
+				
+				<?php echo Form::control_group(array(
+					'name' => 'controller',
+					'label' => __('Controller'),
+					'value' => $page_type->controller,
+					'help-block' => HTML::anchor('admin/pages/types/generate_controller?name=default', '[Default]', array('id' => 'generate-controller')).'<br/>',
+				), $errors);?>
+				
+				<div class="form-actions">
+					<?php echo Form::button('save', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+				</div>
 
-<?php echo Form::close()?>
+			</fieldset>
+		<?php echo Form::close()?>
 
-
-<?php echo Form::open()?>
-	<fieldset class="last">
-		<legend>Components</legend>
-		<?if (count($components)){?>
-		<table>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach($components as $component){?>
-				<tr>
-					<td><?php echo $component->id;?></td>
-					<td>
-						<?php echo HTML::anchor('admin/components/edit/'.$component->id, $component->name)?>
-					</td>
-				</tr>
+		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
+			<fieldset>
+				<?if (count($components)){?>
+				<h2>Components</h2>
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach($components as $component){?>
+						<tr>
+							<td><?php echo $component->id;?></td>
+							<td>
+								<?php echo HTML::anchor('admin/components/edit/'.$component->id, $component->name)?>
+							</td>
+						</tr>
+						<?php }?>
+					</tbody>
+				</table>
+				<br />
 				<?php }?>
-			</tbody>
-		</table>
-		<br />
-		<?php } else {?>
-		<?php }?>
 
-		<fieldset>
-			<legend>Add a new component</legend>
-				<div class="field">
-					<?php echo
-						Form::label('component_type', __('Component'), NULL, $errors),
-						Form::select('component_type', $component_types, $component->type_id, NULL, $errors)
-					?>
-				</div>
-				<div class="field">
-					<?php echo
-						Form::label('component_name', __('Identifier (eg. page/nav)'), NULL, $errors),
-						Form::input('component_name', $component->name, NULL, $errors)
-					?>
-				</div>
-				<?php echo Form::button('save-component', 'Save', array('type' => 'submit', 'class' => 'ui-button save'))?>
-		</fieldset>
-	</fieldset>
+				<fieldset>
+					<legend>Add a new component</legend>
+						<?php echo Form::control_group(array(
+							'name' => 'component_type',
+							'label' => __('Component'),
+							'value' => $component->type_id,
+							'type' => 'select',
+							'options' => $component_types
+						), $errors);?>
+						<?php echo Form::control_group(array(
+							'name' => 'component_name',
+							'label' => __('Identifier (eg. page/nav)'),
+							'value' => $component->name
+						), $errors);?>
+				</fieldset>
+			</fieldset>
+			
+			<div class="form-actions">
+				<?php echo Form::button('save-component', 'Save', array('type' => 'submit', 'class' => 'btn btn-primary'))?>
+			</div>
 
-<?php echo Form::close()?>
+		<?php echo Form::close()?>
+	</div>
+</div>
