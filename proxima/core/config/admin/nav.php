@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /*
- * Auto generated on: Saturday 16th of June 2012 09:55:03 PM
+ * Auto generated on: Tuesday 2nd of October 2012 11:56:06 PM
  * Notes: Change the default admin navigation links in config/admin/default.php
  */
 

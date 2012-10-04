@@ -7,7 +7,8 @@
 	<title><?php echo $title ?></title>
 	<?php echo implode("\n\t", $assets->get('head')); ?>
 	<style type="text/css">
-	body {padding-top:30px;}
+	.help-inline{display:block !important;}
+	body {padding:30px 0;}
 	</style>
 </head>
 <body>

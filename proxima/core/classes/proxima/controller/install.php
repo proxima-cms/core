@@ -10,7 +10,7 @@
  */
 class Proxima_Controller_Install extends Controller_Base {
 
-	public $view_model = 'page/install/master/install';
+	public $view_model = 'install/page/master';
 
 	public function before()
 	{
@@ -36,7 +36,7 @@ class Proxima_Controller_Install extends Controller_Base {
 		$this->template
 			->title(__('Install Proxima CMS'))
 			->content(
-				View::factory('page/install/index')
+				View::factory('install/page/index')
 				->bind('errors', $errors)
 				->bind('user', $user)
 				->bind('migration', $install_migration)
@@ -45,7 +45,7 @@ class Proxima_Controller_Install extends Controller_Base {
 
 		if (!Proxima::$is_installed && $this->request->method() === Request::POST)
 		{
-			// We cant use the Model_User model as the db table doesn't exist
+			// We cant use the Model_User model to validate the user details as the db table doesn't exist
 			$user_rules = array(
 				'username' => array(
 					array('not_empty'),
@@ -116,7 +116,7 @@ class Proxima_Controller_Install extends Controller_Base {
 				$user->add('roles', new Model_Role(array('name' => 'admin')));
 
 				// Get the welcome email content
-				$email_body    = View::factory('page/install/email/signup')->set('user', $user);
+				$email_body    = View::factory('install/page/email/signup')->set('user', $user);
 				$email_subject = __('Proxima CMS successfully installed - New account created');
 
 				// Send the welcome email
@@ -209,7 +209,7 @@ class Proxima_Controller_Install extends Controller_Base {
 		$this->template
 			->title(__('Environment Tests'))
 			->content(
-				View::factory('page/install/tests')
+				View::factory('install/page/tests')
 			);
 	}
 
@@ -219,7 +219,7 @@ class Proxima_Controller_Install extends Controller_Base {
 		$this->template
 			->title(__('Install Success'))
 			->content(
-				View::factory('page/install/success')
+				View::factory('install/page/success')
 			);
 	}
 }
