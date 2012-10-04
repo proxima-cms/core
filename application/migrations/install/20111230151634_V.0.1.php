@@ -277,24 +277,6 @@
 		}
 		catch(Database_Exception $e) {}
 
-		// Theming
-		$config = ORM::factory('config');
-		$config->values(array(
-			'group_name' => 'theming',
-			'config_key' => 'theme',
-			'label' => 'Site theme',
-			'config_value' => serialize('1'),
-			'default' => serialize('1'),
-			'rules' => serialize(array(
-				array('not_empty'),
-				array('max_length', array(':value', 255)),
-			))));
-		try
-		{
-			$config->save();
-		}
-		catch(Database_Exception $e) {}
-
 		// TinyMCE Plugins
 		$config = ORM::factory('config');
 		$config->values(array(
