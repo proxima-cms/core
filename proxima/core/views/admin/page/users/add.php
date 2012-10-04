@@ -1,3 +1,6 @@
+<div class="page-header">
+	<h1>Add user</h1>
+</div>
 <div class="row-fluid">
 
   <div class="span3">
@@ -15,10 +18,6 @@
   </div>
 
   <div class="span9">
-
-		<div class="page-header">
-			<h1>Add user</h1>
-		</div>
 
 		<?php echo Form::open(NULL, array('class' => 'form-horizontal'))?>
 			<fieldset>

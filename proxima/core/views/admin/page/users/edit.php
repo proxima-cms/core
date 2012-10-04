@@ -1,3 +1,6 @@
+<div class="page-header">
+	<h1>Edit user</h1>
+</div>
 <div class="row-fluid">
 
 	<div class="span3">
@@ -15,10 +18,6 @@
 	</div>
 
 	<div class="span9">
-
-		<div class="page-header">
-			<h1>Edit user</h1>
-		</div>
 
 		<div id="edituser" class="tabbable tabs-left"> <!-- Only required for left/right tabs -->
 			<ul class="nav nav-tabs">

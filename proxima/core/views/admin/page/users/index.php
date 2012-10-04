@@ -1,4 +1,8 @@
+		<div class="page-header">
+			<h1>Users</h1>
+		</div>
 <div class="row-fluid">
+
 
 	<div class="span3">
 		<div class="well sidebar-nav">
@@ -23,9 +27,6 @@
 	</div>
 
 	<div class="span9">
-		<div class="page-header">
-			<h1>Users</h1>
-		</div>
 
 		<table class="table table-bordered table-striped">
 			<thead>

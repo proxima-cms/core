@@ -4,6 +4,7 @@
 		<div class="row">
 			<div class="span7 offset2 section tests">
 				<?php if (Proxima::$is_installed){?>
+					<?php Message::clear(); ?>
 					<h1>Warning</h1>
 					<p>
 						You need to disable this installer to continue.
@@ -54,7 +55,7 @@
 							<div class="control-group">
 								<div class="controls">
 									<label class="checkbox">
-										<?php echo Form::checkbox('demo_pages'); ?>
+										<?php echo Form::checkbox('demo_pages', 1, TRUE); ?>
 										<?php echo __('Install demo pages'); ?>
 									</label>
 								</div>
@@ -76,5 +77,5 @@
 	</div>
 
 <?php  } else { ?>
-	<?php echo View::factory('page/install/success', array('migration' => $migration)); ?>
+	<?php echo View::factory('install/page/success', array('migration' => $migration)); ?>
 <?php } ?>

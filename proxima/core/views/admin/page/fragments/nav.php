@@ -1,6 +1,6 @@
-<div class="navbar navbar-fixed-top">
+<div class="navbar navbar-fixed-top navbar-inverse">
 	<div class="navbar-inner">
-		<div class="container-fluid">
+		<div class="container">
 			<div class="btn-group pull-right">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 					<i class="icon-user"></i> <?php echo $username ?>
@@ -13,7 +13,6 @@
 				</ul>
 			</div>
 			<div class="nav-collapse">
-
 					<?php echo Proxima::admin_nav(); ?>
 			</div><!--/.nav-collapse -->
 		</div>
