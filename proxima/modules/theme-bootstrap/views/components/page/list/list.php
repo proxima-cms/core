@@ -1,4 +1,4 @@
-
+    <div class="posts span9">
 <?php foreach($pages as $page){?>
 
 	<div class="box post">
@@ -35,4 +35,6 @@
 
 <div class="pagination">
 	<?php echo $page_links; ?>
+</div>
+
 </div>

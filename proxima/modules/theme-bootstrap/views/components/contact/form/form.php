@@ -1,3 +1,4 @@
+<div class="entry">
 <?php echo Form::open()?>
 
 	<fieldset>
@@ -27,3 +28,4 @@
 	</fieldset>
 
 <?php echo Form::close()?>
+</div>

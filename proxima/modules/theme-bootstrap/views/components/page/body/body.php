@@ -1,4 +1,4 @@
-<div class="box post">
+<div class="entry">
 
 	<h2 class="title"><?php echo HTML::anchor($page->uri, $page->title)?></h2>
 
