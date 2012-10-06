@@ -42,7 +42,7 @@
 	url = git@github.com:badsyntax/orm.git
 [submodule "modules/assets"]
 	path = modules/assets
-	url = git@github.com:proxima-cms/kohana-assets.git
+	url = https://github.com/Zeelot/kohana-assets.git
 [submodule "proxima/modules/blogimport"]
 	path = proxima/modules/blogimport
 	url = git@github.com:proxima-cms/blogimport.git
