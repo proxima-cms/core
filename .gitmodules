@@ -40,9 +40,6 @@
 [submodule "modules/orm"]
 	path = modules/orm
 	url = git@github.com:badsyntax/orm.git
-[submodule "modules/assets"]
-	path = modules/assets
-	url = https://github.com/Zeelot/kohana-assets.git
 [submodule "proxima/modules/blogimport"]
 	path = proxima/modules/blogimport
 	url = git@github.com:proxima-cms/blogimport.git
@@ -55,3 +52,6 @@
 [submodule "proxima/modules/theme-newadmin"]
 	path = proxima/modules/theme-newadmin
 	url = git@github.com:proxima-cms/theme-newadmin.git
+[submodule "modules/assets"]
+	path = modules/assets
+	url = git@github.com:proxima-cms/kohana-assets.git
